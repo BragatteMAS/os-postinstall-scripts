@@ -1,19 +1,17 @@
 from functools import reduce
 
-import panda as pd
+import pandas as pd
 import itertools
 import glob
 
-def read.file(path):
+def read_file(path):
         df = pd.DataFrame(pd.read_csv(path, index_col=0).unstack(level=0)).T
-        de.columns = ['_'.join(combination) for combination in itertools.products(*df.columns.levels)]
+        df.columns = ['_'.join(combination) for combination in itertools.product(*df.columns.levels)]
         df['name'] = path
-        df.set_index(name, drop=True, inplace=True)
+        df.set_index('name', drop=True, inplace=True)
         return df
-        
-files = [f for f in glob.glob('./**') if ".csv' in f]
-
-final_df = reduce(lambda prev_df, new_df: prev.df.append(read_file(new_df)),
-        files,
-        pd.DataFrame())
+    
+final_df = reduce(lambda prev_df, new_df: prev_df.append(read_file(new_df)), 
+                  files,
+                  pd.DataFrame())
 final_df
