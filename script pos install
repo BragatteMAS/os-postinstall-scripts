@@ -64,11 +64,11 @@ wget -c https://dl.4kdownload.com/app/4kvideodownloader_4.9.2-1_amd64.deb
 
 wget -c https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.20.40428-bionic_amd64.deb
 
-## Instalando pacotes .deb baixados na sessão anterior ##
+## Installing .deb Packages Downloaded in the Previous Session ##
 
 sudo dpkg -i *.deb
 
-## Programas do repositório APT##
+## APT Repository Programs ##
 
 sudo apt install -yy winff guvcview flameshot dropbox openssh-server zsh audacity gnome-sushi
 
@@ -84,7 +84,7 @@ python-nose python-epydoc -y
 
 # sudo apt install lutris libvulkan1 libvulkan1:i386 -y #optional for games
 
-sudo apt install virtualbox virtualbox-ext-pack -license accept
+sudo apt install virtualbox virtualbox-ext-pack -yy
 sudo adduser $USER vboxusers
 
 sudo apt install docker.io
@@ -99,7 +99,7 @@ sudo apt install libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:
 
 flatpak install flathub com.obsproject.Studio -y
 
-## Instalando pacotes Snap ##
+## Installing Flatpak Packages ##
 
 sudo snap install spotify
 
@@ -131,7 +131,7 @@ unzip pychimera*.zip
 cd pychimera-master
 python setup.py install
 
-## Finalização, atualização e limpeza##
+## Finishing, updating and cleaning ##
 
 sudo apt update && sudo apt dist-upgrade -y
 
