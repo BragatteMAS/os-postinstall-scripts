@@ -3,7 +3,7 @@
 ###Script after intalation of UBUNTU 18.04 and complements###
 ## commented after tab is an optional command##
 #NOTE: Run this script as ROOT#
-#Versão 0.3
+#Versão 0.4
 
 echo -e '
 	\n Auto install Bragatte_mode!!!!
@@ -53,6 +53,8 @@ sudo apt-add-repository -y ppa:teejee2008/ppa
 
 sudo apt install snapd -y
 
+sudo apt install flatpak -y
+
 wget -nc https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
 sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/bionic main'
 sudo apt install wine-development
@@ -77,6 +79,7 @@ wget -c https://dl.4kdownload.com/app/4kvideodownloader_4.9.2-1_amd64.deb
 
 # wget -c https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.20.40428-bionic_amd64.deb
 
+
 ## Instalando pacotes .deb baixados na sessão anterior ##
 
 sudo dpkg -i *.deb
@@ -84,6 +87,8 @@ sudo dpkg -i *.deb
 ## Programas do repositório APT##
 
 sudo apt install -y zsh #alternative option for bash in terminal
+
+sudo apt install -y rpm yum #other formats in linux
 
 sudo apt install -y flameshot #capture and film screen
 
@@ -98,6 +103,10 @@ sudo apt install -y guvcview #webcam app for streams
 sudo apt install -y openssh-server #remotely controlling & transferring
 
 sudo apt install -y audacity #digital audio editor and recording app
+
+sudo apt install -y xpad #sticky note application for GTK
+
+sudo apt install -y python-pip #installs packages
 
 	#sudo apt install -y ratbagd piper #optional config mouse
 
@@ -118,7 +127,7 @@ sudo apt install docker.io #containers
 sudo groupadd docker
 sudo usermod -aG docker $USER 
 
-sudo apt-get install --install-recommends winehq-stable wine-stable wine-stable-i386 wine-stable-amd64 -y #adapt win programs
+sudo apt install --install-recommends winehq-stable wine-stable wine-stable-i386 wine-stable-amd64 -y #extra wine programs
 
 sudo apt install libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:i386 libasound2-plugins:i386 libsdl2-2.0-0:i386 libfreetype6:i386 libdbus-1-3:i386 libsqlite3-0:i386 -y
 
@@ -156,15 +165,23 @@ sudo snap install spotify #digital music service
 
 sudo snap install angstrom # management tool
 
+'''
+Option one command line without explanations:
+sudo snap install -y sublime-text --classic atom --classic pycharm-community --classic notepad-plus-plus simplenote inkscape blender-tpaw photogimp slack skype discord telegram-desktop spotify angstrom
+'''
+
 ## Tools for Data Science ##
 
 wget -c https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh #edit "Anaconda3-xxx" for updates
-bash ~/anaconda.sh -b -p $HOME/anaconda3 #-b agree with license terms
+sudo bash ~/anaconda.sh -b -u -p
+#-b(agree with license)-u(unsubscrive)-p(prefix home)
+source /home/$USER/anaconda3/bin/activate
+source ~/.bashrc #activate installation
+conda config --set auto_activate_base true
+#to not activate : conda config --set auto_activate_base false
+source /home/$USER/anaconda3/bin/activate
+#open new terminal and wirte "anaconda-navigator#
 
-wget -c https://github.com/insilichem/pychimera/archive/master.zip
-unzip pychimera*.zip
-cd pychimera-master
-python setup.py install
 
 ## Finishing, updating and cleaning##
 
