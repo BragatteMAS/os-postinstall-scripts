@@ -3,7 +3,7 @@
 ###Script after intalation of UBUNTU 18.04 and complements###
 ## commented after tab is an optional command##
 #NOTE: Run this script as ROOT#
-#Versão 0.3
+#Versão 0.1
 
 echo -e '
 	\n Auto install Bragatte_mode!!!!
@@ -127,7 +127,13 @@ flatpak install flathub com.obsproject.Studio -y
 
 sudo snap install sublime-text --classic #IDE generic
 
+sudo snap install atom --classic #IDE generic other option
+
 sudo snap install pycharm-community --classic #IDE python
+
+sudo snap install notepad-plus-plus #text editor (work with wine)
+
+sudo snap install simplenote #keep notes
 
 sudo snap install inkscape #vector graphics software
 
@@ -144,6 +150,8 @@ sudo snap install discord #comunication app focus on headset
 sudo snap install telegram-desktop #alternative for whatsapp
 
 sudo snap install spotify #digital music service
+
+sudo snap install angstrom # management tool
 
 ## Tools for Data Science ##
 
