@@ -35,17 +35,18 @@ sudo apt update
 
 ## Adding 3rd Party Repositories and Snap Support (Logitech Driver, Lutris, and Nvidia Drivers)##
 
-sudo apt-add-repository ppa:graphics-drivers/ppa -y
+sudo apt-add-repository -y ppa:graphics-drivers/ppa
 
-	#sudo apt-add-repository ppa:libratbag-piper/piper-libratbag-git -y
+sudo apt-add-repository -y ppa:teejee2008/ppa
 
-	#sudo apt-add-repository ppa:lutris-team/lutris -y
+	#sudo apt-add-repository -y ppa:libratbag-piper/piper-libratbag-git
 
-	#sudo apt-add-repository ppa:maarten-baert/simplescreenrecorder -y
+	#sudo apt-add-repository -y ppa:lutris-team/lutris -y
 
-	#sudo apt-add-repository ppa:libratbag-piper/piper-libratbag-git -y
+	#sudo apt-add-repository -y ppa:maarten-baert/simplescreenrecorder
 
-	#sudo apt-add-repository ppa:...timeshift
+	#sudo apt-add-repository -y ppa:libratbag-piper/piper-libratbag-git
+
 ----
 
 ## other repositories ##
@@ -85,6 +86,8 @@ sudo dpkg -i *.deb
 sudo apt install -y zsh #alternative option for bash in terminal
 
 sudo apt install -y flameshot #capture and film screen
+
+sudo apt install -y timeshift # backup of our Linux system
 
 sudo apt install -y gnome-sushi #previsualize files pressing space
 
