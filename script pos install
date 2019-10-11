@@ -68,9 +68,17 @@ wget -c https://dl.4kdownload.com/app/4kvideodownloader_4.9.2-1_amd64.deb
 
 wget -c https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.20.40428-bionic_amd64.deb
 
+	#wget -c https://www.rbvi.ucsf.edu/chimerax/download.html/file=ubuntu-18.04/ucsf-chimerax_0.9_amd64.deb
+
+	#wget -c https://www.cgl.ucsf.edu/chimera/cgi-bin/secure/chimera-get.py?file=linux_x86_64/chimera-1.14-linux_x86_64.bin
+
 ## Instalando pacotes .deb baixados na sessão anterior ##
 
 sudo dpkg -i *.deb
+
+	#sudo apt install -y ucsf-chimerax_0.9_amd64.deb
+
+	#sudo apt install -y chimera-1.14-linux_x86_64.bin
 
 ## Programas do repositório APT##
 
@@ -195,7 +203,7 @@ cat > Anaconda-Navigator.desktop <<EOF
  StartupNotify=true
  MimeType=text/x-python;
 EOF
-#Attention with paths, name of the images and version of python3.*
+#Attention with paths, name of the images and version of python3.*#
 
 ## Finishing, updating and cleaning##
 
