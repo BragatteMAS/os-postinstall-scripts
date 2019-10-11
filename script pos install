@@ -182,8 +182,6 @@ source /home/$USER/anaconda3/bin/activate
 cd /usr/share/applications/
 #!/bin/bash
 cat > Anaconda-Navigator.desktop <<EOF
-###
-#Create or modify the script for launchers - example name for archive:
 [Desktop Entry]
  Version=1.0
  Type=Application
@@ -196,12 +194,8 @@ cat > Anaconda-Navigator.desktop <<EOF
  Terminal=false
  StartupNotify=true
  MimeType=text/x-python;
-
-#Attention with paths, name of the images and version of python3.*
-###
-
 EOF
-
+#Attention with paths, name of the images and version of python3.*
 
 ## Finishing, updating and cleaning##
 
