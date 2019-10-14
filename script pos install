@@ -104,6 +104,8 @@ sudo apt install -y xpad #sticky note application for GTK
 
 sudo apt install -y python-pip #installs packages
 
+sudp apt install -y wps-office # use office files at linux
+
 ## Gamers repositories and packages
 
 	#sudo apt install -y ratbagd piper #optional config mouse
