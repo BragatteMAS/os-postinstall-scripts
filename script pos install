@@ -62,13 +62,13 @@ sudo apt update -y
 
 ## Download and install external programs .deb ##
 mkdir "$DIR_DOWNLOADS"
-wget -c "$URL_GOOGLE_CHROME"		     -P "$Dir_Downloads"
-wget -c "$URL_Albert"              -P "$Dir_Downloads"
-wget -c "$URL_SIMPLE_NOTE"		       -P "$Dir_Downloads"
-wget -c "$URL_4K_VIDEO_DOWNLOADER"	-P "$Dir_Downloads"
-wget -c "$URL_INSYNC"			           -P "$Dir_Downloads"
-wget -c "URL_Chimera"		           	-P "$Dir_Downloads"
-wget -c "URL_ChimeraX"			          -P "$Dir_Downloads"
+wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
+wget -c "$URL_Albert" -P "$Dir_Downloads"
+wget -c "$URL_SIMPLE_NOTE" -P "$Dir_Downloads"
+wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$Dir_Downloads"
+wget -c "$URL_INSYNC" -P "$Dir_Downloads"
+wget -c "URL_Chimera" -P "$Dir_Downloads"
+wget -c "URL_ChimeraX" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
 sudo dpkg -i $Dir_Downloads/*.deb
