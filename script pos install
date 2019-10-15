@@ -89,7 +89,7 @@ sudo apt install python-pip -y # installs packages
 sudp apt install wps-office -y # use office files at linux
 sudo apt install virtualbox -y #emulate SO version 5
  sudo adduser $USER vboxusers
-sudo apt install htop gdebi synaptic grsync bleachbit gufw gnome-tweak-tool unity-tweak-tool -y # install without questions even with errors
+sudo apt install htop gdebi synaptic grsync bleachbit gufw gnome-tweak-tool unity-tweak-tool -y # system suporters
 #sudo apt install mint-meta-codecs -y # for MINT distro
 #sudo apt install nemo-dropbox -y # for MINT distro
 
