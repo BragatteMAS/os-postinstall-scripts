@@ -148,7 +148,7 @@ source /home/$USER/anaconda3/bin/activate
 #Acess the directory for apps
 cd /usr/share/applications/
 #!/bin/bash
-cat > anaconda-navigator.desktop <<EOF
+cat > Anaconda-Navigator.desktop <<EOF
 [Desktop Entry]
  Version=1.0
  Type=Application
