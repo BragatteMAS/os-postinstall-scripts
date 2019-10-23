@@ -2,16 +2,18 @@
 Scripts for preparing linux environmental.
 
 Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
-  This scripts will install programs autonomously.
+
+This scripts will install programs autonomously.
   
   1. Save the file with name.sh - example: posintall.sh
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
-    example: 2.1 sudo chmod 777 posintall_script.sh
-             2.2 sudo ./posintall_script.sh
+    example:
+    sudo chmod 777 posintall_script.sh
+    sudo ./posintall_script.sh
 
- #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" with "root" ####
- #### To solve this issue, edit the file at sudo in the terminal with gedit or nano.####
+ #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" like "root" ####
+ #### To solve this issue, edit the file at 'sudo' in the terminal with gedit or nano.####
  
     example:    
     cd /usr/share/applications/
@@ -22,7 +24,7 @@ Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
     Categories=Development;Science;IDE;Qt;Education;
     Icon=/home/$USER/anaconda3/lib/python3.7/site-packages/anaconda_navigator/static/images/anaconda.png
    
-And save the edited file.
+  And save the edited file.
 #### Done! ####
  
  Versions should works for Debian / Ubuntu / Mint with litlle adaptation.
