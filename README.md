@@ -11,7 +11,7 @@ Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
              2.2 sudo ./posintall_script.sh
 
  #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" with "root" ####
- #To solve this issue, edit the file at sudo in the terminal with gedit or nano.
+ #### To solve this issue, edit the file at sudo in the terminal with gedit or nano.####
  
     example:    
     cd /usr/share/applications/
