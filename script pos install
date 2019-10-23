@@ -138,7 +138,7 @@ sudo apt install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libx
 wget -c https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh #edit "Anaconda3-xxx" for updates
 sudo bash ~/anaconda.sh -b -u -p
 #-b(agree with license)-u(unsubscrive)-p(prefix home)
-source /home/$USER/anaconda3/bin/activate
+source /home/$USER/anaconda3/bin/activate ## activate base conda terminal
 source ~/.bashrc #activate installation
 conda config --set auto_activate_base true
 #to not activate : conda config --set auto_activate_base false
@@ -148,7 +148,7 @@ source /home/$USER/anaconda3/bin/activate
 #Acess the directory for apps
 cd /usr/share/applications/
 #!/bin/bash
-cat > Anaconda-Navigator.desktop <<EOF
+cat > anaconda-navigator.desktop <<EOF
 [Desktop Entry]
  Version=1.0
  Type=Application
