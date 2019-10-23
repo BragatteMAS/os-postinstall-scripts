@@ -6,6 +6,7 @@ Pos-install scripts are made to execute after install SO.
   
   1. Save the file with name.sh - example: posintall.sh
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
+  
     example: 2.1 sudo chmod 777 posintall_script.sh
              2.2 sudo ./posintall_script.sh
 
