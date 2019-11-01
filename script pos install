@@ -83,6 +83,7 @@ sudo apt install timeshift -y # backup of our Linux system
 sudo apt install gnome-sushi -y # previsualize files pressing space
 sudo apt install winff -y # convert vieo formats
 sudo apt install guvcview -y # webcam app for streams
+sudo apt install make - Y # support install packages
 sudo apt install openssh-server -y # remotely controlling & transferring
 sudo apt install audacity -y # digital audio editor and recording app
 sudo apt install xpad -y # sticky note application for GTK
