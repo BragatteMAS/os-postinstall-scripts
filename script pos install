@@ -76,6 +76,8 @@ sudo dpkg -i $Dir_Downloads/*.deb
 ## APT repository programs##
 sudo apt install albert -y # global search at system
 sudo apt install zsh -y # alternative option for bash in terminal
+sudo apt install tmux -y # split virtual terminals 
+sudo apt install tilix zsh -y #virtual terminal custom
 sudo apt install rpm yum -y # other formats in linux
 sudo apt install flameshot -y # capture and film screen
 sudo apt install simplescreenrecorder -y # capture and film screen2
@@ -91,7 +93,9 @@ sudo apt install python-pip -y # installs packages
 sudo apt install wps-office -y # use office files at linux
 sudo apt install virtualbox -y #emulate SO version 5
  sudo adduser $USER vboxusers
+sudo apt install build-essential default-jdk libssl-dev exuberant-ctags ncurses-term ack-grep silversearcher-ag fontconfig imagemagick libmagickwand-dev software-properties-common git vim-gtk3 curl -y # programmer packages
 sudo apt install htop gdebi synaptic grsync bleachbit gufw gnome-tweak-tool unity-tweak-tool -y # system suporters
+sudo apt install ubunutu-restricted-extras -y 
 sudo apt install mint-meta-codecs -y # for MINT distro
 sudo apt install nemo-dropbox -yy # for MINT distro
 
@@ -164,6 +168,41 @@ cat > Anaconda-Navigator.desktop <<EOF
  MimeType=text/x-python;
 EOF
 #Attention with paths, name of the images and version of python3.*#
+
+##ASDF - CLI tool that can manage multiple language runtime versions on a per-project basis
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.4
+#''' https://asdf-vm.com/#/core-manage-asdf-vm?id=install-asdf-vm https://github.com/asdf-vm/asdf '''
+#check the last version#
+#git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+#cd ~/.asdf
+#git checkout "$(git describe --abbrev=0 --tags)"
+
+#Bash
+echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
+echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
+
+#Zsh
+#echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.zshrc
+#echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.zshrc
+
+sudo apt install \
+  automake autoconf libreadline-dev \
+  libncurses-dev libssl-dev libyaml-dev \
+  libxslt-dev libffi-dev libtool unixodbc-dev \
+  unzip curl
+
+asdf update
+#After restart terminal, could install pluggins for different languages
+#asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git #ruby
+#asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git #nodejs / javascript
+#bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+#asdf plugin-add golang https://github.com/kennyp/asdf-golang.git #golang
+#asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git #erlang
+#sudo apt -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop
+#asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+#asdf plugin-add kotlin https://github.com/missingcharacter/asdf-kotlin.git #kotlin
+#asdf plugin-add crystal https://github.com/marciogm/asdf-crystal.git # crystal
+#sudo apt -y install postgresql-10 postgresql-contrib postgresql-server-dev-10 redis-server libhiredis-dev memcached libmemcached-dev #Data banks...
 
 ## Programs with alternative versions - specific demand ##
 #Albert
