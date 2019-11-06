@@ -221,11 +221,15 @@ asdf update
 
 ### ------------------------------------------------------------------- ###
 
+
 ### ---------------------------- After install ------------------------ ###
 ## Finishing, updating and cleaning##
 sudo apt update && sudo apt upgrade && apt dist-upgrade -y
+alias sauu='sudo apt update && sudo apt upgrade'
+alias sauud='sudo apt update && sudo apt upgrade && sudo apt dist-upgrade'
 flatpak update -y
 sudo apt autoclean
 sudo apt autoremove -y
+alias cleaner='sudo apt autoclean && sudo apt autoremove'
 echo -e '\n All done! Reboot your pc and keep walking!'
 ### ------------------------------------------------------------------- ####
