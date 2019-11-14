@@ -12,6 +12,7 @@ PPA_Lutris="ppa:lutris-team/lutris"
 PPA_Libratbag="ppa:libratbag-piper/piper-libratbag-git"
 PPA_Screenrecorder="ppa:maarten-baert/simplescreenrecorder"
 
+
 URL_Wine_key="https://dl.winehq.org/wine-builds/winehq.key"
 URL_PPA_Wine="https://dl.winehq.org/wine-builds/ubuntu/"
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
@@ -212,6 +213,12 @@ asdf update
 #sudo apt-get update
 #sudo apt-get install albert
  # Ref: https://software.opensuse.org/download.html?project=home:manuelschneid3r&package=albert #
+ 
+ #Balena Etcher
+ #echo "deb https://deb.etcher.io stable etcher" | sudo tee /etc/apt/sources.list.d/balena-etcher.list
+ #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 379CE192D401AB61
+ #sudo apt-get update
+ #sudo apt-get install balena-etcher-electron 
  
  #VirtualBox 6.0
  #wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
