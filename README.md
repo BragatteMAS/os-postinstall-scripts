@@ -9,7 +9,7 @@ This scripts will install programs autonomously.
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
-    sudo chmod 777 posintall_script.sh
+    sudo chmod 777 posintall.sh
     sudo ./posintall_script.sh
 
  #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" like "root" ####
