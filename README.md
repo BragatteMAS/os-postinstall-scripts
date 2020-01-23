@@ -10,7 +10,7 @@ This scripts will install programs autonomously.
   
     example:
     sudo chmod 777 posintall.sh
-    sudo ./posintall_script.sh
+    sudo ./posintall.sh
 
  #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" like "root" ####
  #### To solve this issue, edit the file at 'sudo' in the terminal with gedit or nano.####
