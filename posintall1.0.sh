@@ -71,6 +71,7 @@ sudo apt install libmuparser2v5 libqt5charts5 libqt5concurrent5 libqt5qml5 libqt
 sudo apt update -y
 
 ## APT repository programs##
+sudo apt install git -y #control modifications
 sudo apt install albert -y # global search at system
 sudo apt install zsh -y # alternative option for bash in terminal
 sudo apt install tmux -y # split virtual terminals
