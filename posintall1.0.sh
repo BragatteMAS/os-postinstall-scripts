@@ -7,8 +7,8 @@ echo -e '	\n Auto install Bragatte_mode!!!! \n	'
 
 ### ----------------------- Variable PPA & URLs ----------------------- ###
 PPA_Graphics_drivers="ppa:graphics-drivers/ppa"
-PPA_Lutris="ppa:lutris-team/lutris"
-PPA_Libratbag="ppa:libratbag-piper/piper-libratbag-git"
+#PPA_Lutris="ppa:lutris-team/lutris"
+#PPA_Libratbag="ppa:libratbag-piper/piper-libratbag-git"
 PPA_Screenrecorder="ppa:maarten-baert/simplescreenrecorder"
 URL_PPA_Albert="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_18.04/"
 URL_Albert="https://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_18.04/amd64/albert_0.16.1_amd64.deb"
@@ -16,7 +16,7 @@ URL_PPA_Wine="https://dl.winehq.org/wine-builds/ubuntu/"
 URL_Wine_key="https://dl.winehq.org/wine-builds/winehq.key"
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 URL_4K_VIDEO_DOWNLOADER="https://dl.4kdownload.com/app/4kvideodownloader_4.9.2-1_amd64.deb"
-URL_Balena="https://dl.bintray.com/etcher/debian/etcher-electron_1.4.4_amd64.deb"
+#URL_Balena="https://dl.bintray.com/etcher/debian/etcher-electron_1.4.4_amd64.deb"
 Dir_Downloads="$HOME/Downloads/Programs"
 ### ------------------------------------------------------------------- ###
 
@@ -33,8 +33,8 @@ sudo apt update -y
 
 ### ---------- Adding 3rd Party Repositories and Snap Support --------- ###
 sudo apt-add-repository "$PPA_Graphics_drivers" -y	# nvidia configs
-sudo add-apt-repository "$PPA_Lutris" -y		# steam configs
-sudo apt-add-repository "$PPA_Libratbag" -y		# logitech configs
+#sudo add-apt-repository "$PPA_Lutris" -y		# steam configs
+#sudo apt-add-repository "$PPA_Libratbag" -y		# logitech configs
 sudo apt-add-repository "$PPA_Screenrecorder" -y	# simplescreenrecorder
 wget -nc "$URL_Wine_key"
 sudo apt-key add winehq.key
@@ -42,8 +42,8 @@ sudo apt-add-repository "deb $URL_PPA_Wine bionic main"
 wget -nc "$URL_Albert"
 sudo apt-key add Release.key
 sudo apt-add-repository "deb $URL_PPA_Albert /"
-wget -nc "$URL_Balena"
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 379CE192D401AB61
+#wget -nc "$URL_Balena"
+#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 379CE192D401AB61
 
 
 
