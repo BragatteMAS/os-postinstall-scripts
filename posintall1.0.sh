@@ -135,6 +135,7 @@ sudo snap install telegram-desktop #alternative for whatsapp
 sudo snap install spotify #digital music service
 sudo snap install angstrom # management tool
 sudo snap install mcomix-tabetai
+sudo snap install rambox
 sudo snap install docker  #container environmental
     sudo groupadd docker
     sudo usermod -aG docker $USER
@@ -201,6 +202,11 @@ sudo apt update && sudo apt upgrade && apt dist-upgrade -y
 flatpak update -y
 sudo apt autoclean
 sudo apt autoremove -y
+
+#install stacer
+#sudo add-apt-repository ppa:oguzhaninan/stacer -y
+#sudo apt-get update
+#sudo apt-get install stacer -y
 
 echo -e '\n All done! Reboot your pc and keep walking!'
 ### ------------------------------------------------------------------- ####
