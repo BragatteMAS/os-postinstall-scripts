@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #NOTE: Run this script with 'sudo'
-#Versão 1.0_Mint19.3
+#Versão 0.9_Mint19.3
 
 echo -e '	\n Auto install Bragatte_mode!!!! \n	'
 
