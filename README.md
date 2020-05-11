@@ -30,4 +30,5 @@ This scripts will install programs autonomously.
  Versions should works for Debian / Ubuntu / Mint with litlle adaptation.
  
  Tested 21/01/20 at Mint 19.3 & Ubuntu 18.04.3 = status ok
+ 
  Version Ubuntu 20.04 been edited this month, comming soon.
