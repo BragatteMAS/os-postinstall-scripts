@@ -43,6 +43,6 @@ This **scripts will install Anaconda autonomously**.
 --------------------------------------------------------------------------------------------------------
  Versions should works for Debian / Ubuntu / Mint with litlle adaptation.
     Old_distros:
-    Tested 21/01/20 at Mint 19.3 & Ubuntu 18.04.3 = status ok
+    Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
  
- Script 20.04 tested with POP-OS! Ago 2020
+ Script **20.04 tested with POP-OS! = status ok|Ago 2020**
