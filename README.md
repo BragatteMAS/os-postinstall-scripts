@@ -12,7 +12,8 @@ This **scripts will install programs autonomously**.
     sudo chmod 777 posintall.sh
     sudo ./posintall.sh
 --------------------------------------------------------------------------------------------------------
-# Anaconda.sh #ToolKit for science
+# Anaconda auto install
+Script to auto install toolKit for science. 
 
 This **scripts will install Anaconda autonomously**.
   
