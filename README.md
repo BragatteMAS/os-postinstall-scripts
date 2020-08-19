@@ -3,7 +3,7 @@ Scripts for preparing linux environmental.
 
 Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
 
-This **scripts will install programs autonomously**.
+This **scripts will install programs automatically**.
   
   1. Save the file with name.sh - example: posintall.sh
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
@@ -15,7 +15,7 @@ This **scripts will install programs autonomously**.
 # Anaconda auto install
 Script to auto install toolKit for science. 
 
-This **scripts will install Anaconda autonomously**.
+This **scripts will install Anaconda automatically**.
   
   1. Save the file with name.sh - example: anaconda.sh
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
