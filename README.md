@@ -11,7 +11,7 @@ This **scripts will install programs autonomously**.
     example:
     sudo chmod 777 posintall.sh
     sudo ./posintall.sh
---------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Anaconda auto install
 Script to auto install toolKit for science. 
 
@@ -40,8 +40,22 @@ This **scripts will install Anaconda autonomously**.
   And save the edited file.
 #### Done! ####
 
---------------------------------------------------------------------------------------------------------
- Versions should works for Debian / Ubuntu / Mint with litlle adaptation.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Flavors auto install - experimental process
+
+This **scripts will install different flavors as an option into the user login**.
+Open the script and delete the "#" in the flavor select to install into your system.
+
+  1. Save the file with name.sh - example: flavors.sh
+  2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
+    
+    example:
+    sudo chmod 777 posintall.sh
+    sudo ./flavor.sh  
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ Versions should works for Debian / Ubuntu / Mint with little adaptation.
     Old_distros:
     Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
  
