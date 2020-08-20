@@ -21,7 +21,7 @@ This **scripts will install Anaconda automatically**.
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
     
     example:
-    sudo chmod 777 posintall.sh
+    sudo chmod 777 anaconda.sh
     sudo ./anaconda.sh  
 
  #### P.S.: Sometimes an error with "anaconda-navigator" occur, subscribing the "$USER" like "root" ####
@@ -50,7 +50,7 @@ Open the script and delete the "#" in the flavor select to install into your sys
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
     
     example:
-    sudo chmod 777 posintall.sh
+    sudo chmod 777 flavor.sh
     sudo ./flavor.sh  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
