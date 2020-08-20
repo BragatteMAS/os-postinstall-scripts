@@ -14,8 +14,8 @@ This **scripts will install programs automatically**.
     
  Script       **20.04 tested with POP-OS! = status ok|Ago 2020**
  
- Versions should works for Debian / Ubuntu / Mint with little adaptation.
- Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
+  Versions should works for Debian / Ubuntu / Mint with little adaptation.
+  Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Anaconda auto install
 Script to auto install toolKit for science. 
