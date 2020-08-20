@@ -155,7 +155,7 @@ sudo snap install vlc #video
 sudo snap install feedreader
 sudo snap install opera
 sudo snap install zotero-snap
-
+sudo snap install bitwarden
 sudo snap install docker  #container environmental
     sudo groupadd docker
     sudo usermod -aG docker $USER
