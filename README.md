@@ -11,6 +11,11 @@ This **scripts will install programs automatically**.
     example:
     sudo chmod 777 posintall.sh
     sudo ./posintall.sh
+    
+ Script       **20.04 tested with POP-OS! = status ok|Ago 2020**
+ 
+ Versions should works for Debian / Ubuntu / Mint with little adaptation.
+ Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Anaconda auto install
 Script to auto install toolKit for science. 
@@ -54,9 +59,3 @@ Open the script and delete the "#" in the flavor select to install into your sys
     sudo ./flavor.sh  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
- Versions should works for Debian / Ubuntu / Mint with little adaptation.
-    Old_distros:
-    Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
- 
- Script **20.04 tested with POP-OS! = status ok|Ago 2020**
