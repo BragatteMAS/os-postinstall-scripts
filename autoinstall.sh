@@ -47,7 +47,7 @@ done
   com.github.johnfactotum.Foliate
   org.jamovi.jamovi
   ch.openboard.OpenBoard
-
+  org.geogebra.GeoGebra
 )
 
 ## Install programs apt
