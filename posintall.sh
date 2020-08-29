@@ -154,7 +154,8 @@ sudo snap install vlc #video
 #Productivity
 sudo snap install feedreader
 sudo snap install opera
-
+sudo snap install zotero-snap
+sudo snap install bitwarden
 sudo snap install docker  #container environmental
     sudo groupadd docker
     sudo usermod -aG docker $USER
@@ -175,6 +176,11 @@ flatpak install flathub com.dropbox.Client #dropbox files manager
 ## Finishing, updating and cleaning##
 cd ~
 cat > .bashrc <<EOF
+
+export TERM=xterm-256color 
+tput setaf 2
+tput -T linux setaf 2
+tput -T xterm setaf 2
 
 blue=$(tput setaf 33);
 aquablue=$(tput setaf 45);
@@ -200,6 +206,9 @@ export PS1
 alias sauu='sudo apt update -y && sudo apt upgrade -y'
 alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
 alias clean='sudo apt autoclean && sudo apt autoremove -y'
+alias condaon='conda config --set auto_activate_base True'
+alias condaoff='conda config --set auto_activate_base False'
+
 EOF
 
 sudo apt update && sudo apt upgrade && apt dist-upgrade -y
