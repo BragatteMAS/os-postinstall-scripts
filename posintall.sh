@@ -206,6 +206,7 @@ export PS1
 alias sauu='sudo apt update -y && sudo apt upgrade -y'
 alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
 alias clean='sudo apt autoclean && sudo apt autoremove -y'
+alias apps='sudo snap refresh && flatpak update -y'
 alias condaon='conda config --set auto_activate_base True'
 alias condaoff='conda config --set auto_activate_base False'
 
