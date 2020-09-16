@@ -14,6 +14,8 @@
   libfreetype6:i386
   libdbus-1-3:i386
   libsqlite3-0:i386
+  gifcurry
+  homeserver
 )
 
 ## Install programs apt
@@ -48,6 +50,9 @@ done
   org.jamovi.jamovi
   ch.openboard.OpenBoard
   org.geogebra.GeoGebra
+  com.rafaelmardojai.Blanket
+  org.librehunt.Organizer
+
 )
 
 ## Install programs apt

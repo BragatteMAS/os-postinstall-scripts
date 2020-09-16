@@ -137,6 +137,7 @@ sudo snap install code --classic #best IDE
 sudo snap install photogimp #patch 'Adobe' for GIMP
 sudo snap install inkscape #vector graphics software
 sudo snap install blender --classic #3D pipeline—model,animation,simulation,rendering.
+sudo snap install gifcurry #gif creator
 ##Videos
 sudo snap install obs-studio
 sudo snap install kdenlive
@@ -156,6 +157,7 @@ sudo snap install feedreader
 sudo snap install opera
 sudo snap install zotero-snap
 sudo snap install bitwarden
+sudo snap install homeserver
 sudo snap install docker  #container environmental
     sudo groupadd docker
     sudo usermod -aG docker $USER
@@ -170,6 +172,8 @@ flatpak install flathub org.vim.Vim -y #text editor
 flatpak install flathub info.febvre.Komikku -y #leitor comic
 flatpak install flathub com.wps.Office -y #office reader for doc win
 flatpak install flathub com.dropbox.Client #dropbox files manager
+flatpak install flathub com.rafaelmardojai.Blanket #productivity sounds
+flatpak install flathub org.librehunt.Organizer #auto order files for types
 ### ------------------------------------------------------------------- ###
 
 ### ---------------------------- After install ------------------------ ###
