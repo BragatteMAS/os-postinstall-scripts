@@ -1,21 +1,20 @@
- #!/usr/bin/env bash
+#!/usr/bin/env bash
 # ---------------------------------------------------------------------- #
 #APT
 ## program name used in sudo method
- APT INSTALL=(
+
+APT INSTALL=(
   libvulkan1
   libvulkan1:i386
   libgnutls30:i386
   libldap-2.4-2:i386
   libgpg-error0:i386
   libxml2:i386
-  libasound2-plugins:i386
+  libasound2-plugins:i386\x 
   libsdl2-2.0-0:i386
   libfreetype6:i386
   libdbus-1-3:i386
   libsqlite3-0:i386
-  gifcurry
-  homeserver
 )
 
 ## Install programs apt
@@ -31,6 +30,8 @@ done
 ## program name used in SNAP store
  SNAP INSTALL=(
   foliate
+  homeserver
+  gifcurry
 
 )
 
