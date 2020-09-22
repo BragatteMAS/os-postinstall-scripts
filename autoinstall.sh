@@ -3,7 +3,9 @@
 #APT
 ## program name used in sudo method
 
-APT INSTALL=(
+DIRETORIO_DOWNLOADS="$HOME/Downloads/programs"
+
+APT_INSTALL=(
   libvulkan1
   libvulkan1:i386
   libgnutls30:i386
@@ -15,20 +17,22 @@ APT INSTALL=(
   libfreetype6:i386
   libdbus-1-3:i386
   libsqlite3-0:i386
+  
 )
 
 ## Install programs apt
-for apt_program in ${APT INSTALL[@]}; do
+for apt_program in ${APT_INSTALL[@]}; do
   if ! dpkg -l | grep -q $apt_program; then # Just install if not exist
     apt install "$apt_program" -y
   else
     echo "[successful installation] - $apt_program"
   fi
 done
+
 # ---------------------------------------------------------------------- #
 #SNAP
 ## program name used in SNAP store
- SNAP INSTALL=(
+ SNAP_INSTALL=(
   foliate
   homeserver
   gifcurry
@@ -36,7 +40,7 @@ done
 )
 
 ## Install programs apt
-for snap_program in ${SNAP INSTALL[@]}; do
+for snap_program in ${SNAP_INSTALL[@]}; do
   if ! dpkg -l | grep -q $snap_program; then # Just install if not exist
     snap install "$snap_program" -y
   else
@@ -57,7 +61,7 @@ done
 )
 
 ## Install programs apt
-for flat_program in ${FLAT INSTALL[@]}; do
+for flat_program in ${FLAT_INSTALL[@]}; do
   if ! dpkg -l | grep -q $flat_program; then # Just install if not exist
     flatpak install flathub "$flat_program" -y
   else
