@@ -36,7 +36,7 @@ done
   foliate
   homeserver
   gifcurry
-
+  todoist
 )
 
 ## Install programs apt
@@ -47,6 +47,7 @@ for snap_program in ${SNAP_INSTALL[@]}; do
     echo "[successful installation] - $snap_program"
   fi
 done
+
 # ---------------------------------------------------------------------- #
 #Flatpak
 ## program name used in Flathub
@@ -61,6 +62,7 @@ done
   org.geogebra.GeoGebra
   com.rafaelmardojai.Blanket
   org.librehunt.Organizer
+  com.github.calo001.fondo
   
 )
 
