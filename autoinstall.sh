@@ -51,13 +51,17 @@ done
 #Flatpak
 ## program name used in Flathub
  FLAT_INSTALL=(
+  com.valvesoftware.Steam
+  
+  org.freedesktop.Piper
+  com.valvesoftware.Steam
   com.github.johnfactotum.Foliate
   org.jamovi.jamovi
   ch.openboard.OpenBoard
   org.geogebra.GeoGebra
   com.rafaelmardojai.Blanket
   org.librehunt.Organizer
-
+  
 )
 
 ## Install programs apt
