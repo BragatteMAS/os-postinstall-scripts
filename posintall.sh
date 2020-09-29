@@ -22,12 +22,12 @@ echo ' \n Auto install Bragatte_mode!!!! \n	'
 #APT command line package used to install programs Debian/Ubuntu distros stores
 # -----------------------------VARIABLES APT-------------------------------- #
 APT_INSTALL=(
-synaptic			        #System|program manager
-git git-lfs     	    #System|control modifications
-stacer 			          #System|clean and monitor programs
-htop				          #System|memory verify
-gufw				          #System|firewall for linux
-timeshift 		        #System|backup
+synaptic  #System|program manager
+git git-lfs  #System|control modifications
+stacer  #System|clean and monitor programs
+htop  #System|memory verify
+gufw  #System|firewall for linux
+timeshift   #System|backup
 virtualbox-qt  		    #System|emulate OS	'sudo adduser $USER vboxusers'
 gdebi make rpm		    #System|packages manager
 nemo dolphin          #System|file manager
