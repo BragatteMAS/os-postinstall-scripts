@@ -13,7 +13,7 @@
 ##	|                                                                       |
 ##	| This script should be run with SUDO command.                          |
 ##	| Detail instructions:                                                  |
-##    |  <https://github.com/BragatteMAS/Linux_posintall_script>              |                                                       |
+##      |  <https://github.com/BragatteMAS/Linux_posintall_script>              |                                                       |
 ##	+-----------------------------------------------------------------------+
 
 echo ' \n Auto install Bragatte_mode!!!! \n	'
