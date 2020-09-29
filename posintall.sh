@@ -32,11 +32,11 @@ virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
 gdebi make rpm        #System|packages manager
 nemo dolphin          #System|file manager
 zsh                   #Terminal|alternative option for bash in terminal
-terminator 			      #Terminal|high configurtion term
-tilix			            #Terminal|virtual terminal custom
-gnome-sushi			      #Image|previsualize files pressing space Nautilus
-flameshot			        #Image|capture screen
-ffmpeg			          #Image|extension
+terminator            #Terminal|high configurtion term
+tilix                 #Terminal|virtual terminal custom
+gnome-sushi           #Image|previsualize files pressing space Nautilus
+flameshot             #Image|capture screen
+ffmpeg                #Image|extension
 arandr                #Video|monitor settings
 simplescreenrecorder  #Video|capture and film screen
 winff winff-gtk2 winff-qt       #Video|convert formats
@@ -54,27 +54,27 @@ gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-she
 #Programs select from SNAP store <https://snapcraft.io/store>
 # -----------------------------VARIABLES SNAP------------------------------- #
 SNAP_INSTALL=(
-bitwarden		  	  #System|password manager
-code		 		      #Terminal|best IDE
-audacity 			    #Sound|audio editor and recording app
-spotify			      #Sound|digital music service
-photogimp	 		    #Image|patch 'Adobe' for GIMP
-inkscape 			    #Image|vector graphics software
+bitwarden         #System|password manager
+code              #Terminal|best IDE
+audacity          #Sound|audio editor and recording app
+spotify           #Sound|digital music service
+photogimp         #Image|patch 'Adobe' for GIMP
+inkscape          #Image|vector graphics software
 blender --classic #Image|3D pipeline—model,animation,simulation,rendering
-gifcurry 			    #Image|gif creator
-obs-studio		    #Video|Edition
-kdenlive			    #Video|Edition
-vlc				        #Video|Viewer
-discord 			    #Comunication|interaction/gamer chat
-telegram-desktop 	#Comunication|alternative for whatsapp
-rambox 			      #Comunication|join different systems of comunication
-opera			        #Productivity|browser
-todoist			      #Productivity|Task manager
-foliate			      #Productivity|ebook viewer
-feedreader			  #Productivity|RSS
-zotero-snap			  #Productivity|References
-homeserver		    #Productivity|Share folders in urls
-docker  			    #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
+gifcurry          #Image|gif creator
+obs-studio        #Video|Edition
+kdenlive          #Video|Edition
+vlc               #Video|Viewer
+discord           #Comunication|interaction/gamer chat
+telegram-desktop  #Comunication|alternative for whatsapp
+rambox            #Comunication|join different systems of comunication
+opera             #Productivity|browser
+todoist           #Productivity|Task manager
+foliate           #Productivity|ebook viewer
+feedreader        #Productivity|RSS
+zotero-snap       #Productivity|References
+homeserver        #Productivity|Share folders in urls
+docker            #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
 nextcloud-desktop #Productivity|file synced
 pymol-oss         #Research
 
