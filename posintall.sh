@@ -86,20 +86,20 @@ FLAT_INSTALL=(
 flatseal            #System|permissions
 filezilla           #System|SQL manager
 boxes               #System|virtualization
-vim.vim				          #Terminal|alternative
+vim.vim             #Terminal|alternative
 obsproject.Studio   #Video|streaming software
-zoom				        #Video|webinars
-slack			          #Comunication|team chat
-skype			          #Comunication|chat support
-dropbox			        #Productivity|online files manager
-masterpdf 	        #Productivity|pdf-editor
+zoom                #Video|webinars
+slack               #Comunication|team chat
+skype               #Comunication|chat support
+dropbox             #Productivity|online files manager
+masterpdf           #Productivity|pdf-editor
 ankiweb             #Productivity|Flashcards
-wps 			          #Productivity|office reader for doc win
-jamovi			        #Productivity|real-time, statisticial spreadsheet
-openboard	          #Productivity|educational software interactive board
-geogebra	          #Productivity|dynamic geometry program
-blanket		          #Productivity|back environmental sounds to work
-organizer	          #Productivity|shifts your files according to their filetype
+wps                 #Productivity|office reader for doc win
+jamovi              #Productivity|real-time, statisticial spreadsheet
+openboard           #Productivity|educational software interactive board
+geogebra            #Productivity|dynamic geometry program
+blanket             #Productivity|back environmental sounds to work
+organizer           #Productivity|shifts your files according to their filetype
 meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
