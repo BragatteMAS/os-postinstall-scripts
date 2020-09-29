@@ -39,8 +39,8 @@ sudo apt install snapd -y
 # ---------------------------------------------------------------------- #
 ## Install programs SNAP
 for snap_program in ${SNAP_INSTALL[@]}; do
-  if ! dpkg -l | grep -q $snap_program; then    # Just install if not exist
-    snap install "$snap_program"                #$# Change this line if you have other distro than debian/ubuntu base
+  if ! dpkg -l | grep -q $snap_program; then # Just install if not exist
+    snap install "$snap_program" 
   fi
 done
 
