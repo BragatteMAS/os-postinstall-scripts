@@ -177,6 +177,7 @@ sudo apt install albert -y          #global search at system
 HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"
+sudo chmod 777 -R "$Dir_Downloads"
 wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 wget -c "$URL_RStudio" -P "$Dir_Downloads"
 wget -c "$URL_Balena" -P "$Dir_Downloads"
