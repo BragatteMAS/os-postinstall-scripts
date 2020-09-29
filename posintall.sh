@@ -37,16 +37,16 @@ tilix			            #Terminal|virtual terminal custom
 gnome-sushi			      #Image|previsualize files pressing space Nautilus
 flameshot			        #Image|capture screen
 ffmpeg			          #Image|extension
-arandr                          #Video|monitor settings
-simplescreenrecorder	          #Video|capture and film screen
+arandr                #Video|monitor settings
+simplescreenrecorder  #Video|capture and film screen
 winff winff-gtk2 winff-qt       #Video|convert formats
-xpad				                    #Productivity|sticky note application for GTK
+xpad                            #Productivity|sticky note application for GTK
 github-desktop                  #Code import
-steam lutris piper ratbagd wine	#Games|systems
-openssh-server 		                                                              #System|remotely controlling & transferring
-tigervnc-viewer                                                                 #System|VNC
-openconnect network-manager-openconnect network-manager-openconnect-gnome       #System|VPN
-openvpn network-manager-openvpn network-manager-openvpn-gnome                   #System|ProtonVPN
+steam lutris piper ratbagd wine #Games|systems
+openssh-server                  #System|remotely controlling & transferring
+tigervnc-viewer                 #System|VNC
+openconnect network-manager-openconnect network-manager-openconnect-gnome           #System|VPN
+openvpn network-manager-openvpn network-manager-openvpn-gnome                       #System|ProtonVPN
 gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell  #Gnome|desktop utilities
 
 )
