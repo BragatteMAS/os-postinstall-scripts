@@ -28,10 +28,10 @@ stacer                #System|clean and monitor programs
 htop                  #System|memory verify
 gufw                  #System|firewall for linux
 timeshift             #System|backup
-virtualbox-qt  		    #System|emulate OS	'sudo adduser $USER vboxusers'
-gdebi make rpm		    #System|packages manager
+virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
+gdebi make rpm        #System|packages manager
 nemo dolphin          #System|file manager
-zsh 				          #Terminal|alternative option for bash in terminal
+zsh                   #Terminal|alternative option for bash in terminal
 terminator 			      #Terminal|high configurtion term
 tilix			            #Terminal|virtual terminal custom
 gnome-sushi			      #Image|previsualize files pressing space Nautilus
