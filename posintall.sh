@@ -13,7 +13,7 @@
 ##	|                                                                       |
 ##	| This script should be run with SUDO command.                          |
 ##	| Detail instructions:                                                  |
-##  | <https://github.com/BragatteMAS/Linux_posintall_script>               |                                                       |
+##  |  <https://github.com/BragatteMAS/Linux_posintall_script>              |                                                       |
 ##	+-----------------------------------------------------------------------+
 
 echo ' \n Auto install Bragatte_mode!!!! \n	'
@@ -37,10 +37,10 @@ tilix			            #Terminal|virtual terminal custom
 gnome-sushi			      #Image|previsualize files pressing space Nautilus
 flameshot			        #Image|capture screen
 ffmpeg			          #Image|extension
+arandr                          #Video|monitor settings
 simplescreenrecorder	          #Video|capture and film screen
 winff winff-gtk2 winff-qt       #Video|convert formats
 xpad				                    #Productivity|sticky note application for GTK
-ttf-mscorefonts-installer       #Productivity|fonts for microsoft
 github-desktop                  #Code import
 steam lutris piper ratbagd wine	#Games|systems
 openssh-server 		                                                              #System|remotely controlling & transferring
@@ -60,12 +60,11 @@ audacity 			    #Sound|audio editor and recording app
 spotify			      #Sound|digital music service
 photogimp	 		    #Image|patch 'Adobe' for GIMP
 inkscape 			    #Image|vector graphics software
-blender	 		      #Image|3D pipeline—model,animation,simulation,rendering
+blender --classic #Image|3D pipeline—model,animation,simulation,rendering
 gifcurry 			    #Image|gif creator
 obs-studio		    #Video|Edition
 kdenlive			    #Video|Edition
 vlc				        #Video|Viewer
-arandr            #Video|monitor settings
 discord 			    #Comunication|interaction/gamer chat
 telegram-desktop 	#Comunication|alternative for whatsapp
 rambox 			      #Comunication|join different systems of comunication
@@ -109,7 +108,11 @@ gitkraken           #Productivity|code commit
 # ---------------------------------------------------------------------- #
 #Deb packages
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/:balena-etcher-electron_1.5.99_amd64.deb"
+URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etcher-electron_1.5.99_amd64.deb"  #att with inexistent ":" insert in the middle of url
+URL_RStudio="https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.3.1093-amd64.deb"
+URL_ttf="http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb"
+#PPA
+sudo add-apt-repository ppa:lutris-team/lutris
 # ---------------------------------------------------------------------- #
 #Appimages
 APP_Balena="https://github.com/balena-io/etcher/releases/download/v1.5.109/balena-etcher-electron-1.5.109-linux-x64.zip"
@@ -156,7 +159,7 @@ done
 
 ### --------------------------- Exceptions----------------------------- ###
 ## Brave Browser
-sudo apt install apt-transport-https curl
+sudo apt install apt-transport-https curl -y
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt update -y
@@ -171,18 +174,20 @@ sudo apt install albert -y          #global search at system
 
 ### ------------------------------------------------------------------- ###
 ## Download and install external programs .deb ##
+HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"
 wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
+wget -c "$URL_RStudio" -P "$Dir_Downloads"
 wget -c "$URL_Balena" -P "$Dir_Downloads"
 wget -c "$APP_Balena" -P "$Dir_Downloads"
+wget -c "$URL_ttf" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
 sudo dpkg -i $Dir_Downloads/*.deb
+sudo ACCEPT_EULA=Y apt-get install ttf-mscorefonts-installer -y
 sudo apt update -y
 sudo apt -f install #Comand for using appimages with double click
-
-### ------------------------------------------------------------------- ###
 
 ### ---------------------------- After install ------------------------ ###
 ## Finishing, updating and cleaning##
