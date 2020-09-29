@@ -13,7 +13,7 @@
 ##	|                                                                       |
 ##	| This script should be run with SUDO command.                          |
 ##	| Detail instructions:                                                  |
-##      |  <https://github.com/BragatteMAS/Linux_posintall_script>              |                                                       |
+##  |  <https://github.com/BragatteMAS/Linux_posintall_script>              |                                                       |
 ##	+-----------------------------------------------------------------------+
 
 echo ' \n Auto install Bragatte_mode!!!! \n	'
@@ -177,6 +177,7 @@ sudo apt install albert -y          #global search at system
 HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"
+sudo chmod 777 "$Dir_Downloads" 
 wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 wget -c "$URL_RStudio" -P "$Dir_Downloads"
 wget -c "$URL_Balena" -P "$Dir_Downloads"
