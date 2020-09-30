@@ -68,6 +68,7 @@ vlc               #Video|Viewer
 discord           #Comunication|interaction/gamer chat
 telegram-desktop  #Comunication|alternative for whatsapp
 rambox            #Comunication|join different systems of comunication
+chromium          #Productivity|browser
 opera             #Productivity|browser
 todoist           #Productivity|Task manager
 foliate           #Productivity|ebook viewer

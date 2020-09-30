@@ -19,9 +19,10 @@ kdenlive			    #Video|Edition
 vlc				        #Video|Viewer
 arandr            #Video|monitor settings
 discord 			    #Comunication|interaction/gamer chat
-telegram-desktop 	#Comunication|alternative for whatsapp
+telegram-desktop  #Comunication|alternative for whatsapp
 rambox 			      #Comunication|join different systems of comunication
-opera			        #Productivity|browser
+chromium          #Productivity|browser
+opera             #Productivity|browser
 todoist			      #Productivity|Task manager
 foliate			      #Productivity|ebook viewer
 feedreader			  #Productivity|RSS
