@@ -1,25 +1,41 @@
 # Linux_posintall_script
-Scripts for preparing linux environmental.
+Scripts for preparing linux environmental
 
 
 Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
 
-This **scripts will install programs automatically**.
+This **scripts will install programs automatically**, this is my config.
   
-  1. Save the file with name.sh - example: posintall.sh
+  1. Download the file posinstall.sh into Download file.
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
-    sudo chmod 777 posintall.sh
-    sudo ./posintall.sh
+    1.sudo chmod 777 posintall.sh
+    2.sudo ./posintall.sh
     
- Script  = status ok|Ago 2020  **tested with POP-OS!20.04**
+ Script  = status ok|Set 2020  **tested with POP-OS & Ubuntu 20.04**
  
  
-  Versions should works for Debian / Ubuntu / Mint with little adaptation.
+  Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
   Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Auto_snap or auto_flat or auto_apt
+
+This script will install programs from this especific app managers.
+
+1. Download the file auto_......sh into Download file.
+2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
+  
+    example:
+    1.sudo chmod 777 posintall.sh
+    2.sudo ./auto_apt.sh
+    
+ Script  = status ok|Set 2020  **tested with POP-OS & Ubuntu 20.04**
+ 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Anaconda auto install
 Script to auto install toolKit for science. 
 
