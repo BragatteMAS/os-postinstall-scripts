@@ -13,10 +13,10 @@ This **scripts will install programs automatically**, this is my config.
     1.sudo chmod 777 posintall.sh
     2.sudo ./posintall.sh
     
- Script  = status ok|Set 2020  **tested with POP-OS & Ubuntu 20.04**
- 
- 
-  Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
+ Script **Tested with POP-OS & Ubuntu 20.04** = status ok|Set 2020  
+  
+ Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
+  
   Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
