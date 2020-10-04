@@ -4,32 +4,27 @@ echo ' \n Auto install programs with SNAP \n '
 
 # ---------------------------------------------------------------------- #
 #Programs select from SNAP store <https://snapcraft.io/store>
-# -----------------------------VARIABLES-------------------------------- #
+# -----------------------------VARIABLES SNAP------------------------------- #
 SNAP_INSTALL=(
-bitwarden		  	  #System|password manager
-code		 		      #Terminal|best IDE
-audacity 			    #Sound|audio editor and recording app
-spotify			      #Sound|digital music service
-photogimp	 		    #Image|patch 'Adobe' for GIMP
-inkscape 			    #Image|vector graphics software
-blender	 		      #Image|3D pipeline—model,animation,simulation,rendering
-gifcurry 			    #Image|gif creator
-obs-studio		    #Video|Edition
-kdenlive			    #Video|Edition
-vlc				        #Video|Viewer
-arandr            #Video|monitor settings
-discord 			    #Comunication|interaction/gamer chat
+bitwarden         #System|password manager
+audacity          #Sound|audio editor and recording app
+spotify           #Sound|digital music service
+photogimp         #Image|patch 'Adobe' for GIMP
+inkscape          #Image|vector graphics software
+gifcurry          #Image|gif creator
+obs-studio        #Video|Edition
+kdenlive          #Video|Edition
+discord           #Comunication|interaction/gamer chat
 telegram-desktop  #Comunication|alternative for whatsapp
-rambox 			      #Comunication|join different systems of comunication
+rambox            #Comunication|join different systems of comunication
 chromium          #Productivity|browser
-opera             #Productivity|browser
-todoist			      #Productivity|Task manager
-foliate			      #Productivity|ebook viewer
-feedreader			  #Productivity|RSS
-zotero-snap			  #Productivity|References
-homeserver		    #Productivity|Share folders in urls
-docker  			    #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
-nextcloud-desktop #Productivity|file synced
+todoist           #Productivity|Task manager
+foliate           #Productivity|ebook viewer
+feedreader        #Productivity|RSS
+zotero-snap       #Productivity|References
+homeserver        #Productivity|Share folders in urls
+docker            #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
+nextcloud	   #Productivity|file synced
 pymol-oss         #Research
 
 )
