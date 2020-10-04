@@ -28,7 +28,9 @@ This script will install programs from this especific app managers.
 2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
+
     1.sudo chmod 777 posintall.sh
+    
     2.sudo ./auto_apt.sh
     
  Script  = status ok|Set 2020  **tested with POP-OS & Ubuntu 20.04**
