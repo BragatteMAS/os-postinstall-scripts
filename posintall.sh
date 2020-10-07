@@ -209,6 +209,11 @@ alias rebo='sudo reboot'
 EOF
 
 # ---------------------------------------------------------------------- #
+
+sudo add-apt-repository --remove ppa:lutris-team/lutris
+sudo add-apt-repository --remove ppa:linux/chrome/deb/
+
+# ---------------------------------------------------------------------- #
 sudo apt update && sudo apt upgrade && apt dist-upgrade -y
 sudo snap refresh
 flatpak update -y

@@ -5,70 +5,29 @@
 
 # ---------------------------------------------------------------------- #
 #Deb packages
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etcher-electron_1.5.99_amd64.deb"  #att with inexistent ":" insert in the middle of url
 URL_RStudio="https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.3.1093-amd64.deb"
 URL_Obsidian-"https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.1/obsidian_0.9.1_amd64.snap"
-URL_GithubDesktop="https://github.com/obsidianmd/obsidian-releases/releases/download/v0.9.1/obsidian_0.9.1_amd64.snap"
-URL_ttf="http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb"
-#PPA
-sudo add-apt-repository ppa:lutris-team/lutris
-# ---------------------------------------------------------------------- #
-#Appimages
-APP_Balena="https://github.com/balena-io/etcher/releases/download/v1.5.109/balena-etcher-electron-1.5.109-linux-x64.zip"
 
 ### ------------------------------------------------------------------- ###
 ## Download and install external programs .deb ##
+
 HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"
-wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 wget -c "$URL_RStudio" -P "$Dir_Downloads"
 wget -c "$URL_Obsidian" -P "$Dir_Downloads"
-wget -c "$URL_GithubDesktop" -P "$Dir_Downloads"
-wget -c "$URL_Balena" -P "$Dir_Downloads"
-wget -c "$APP_Balena" -P "$Dir_Downloads"
-wget -c "$URL_ttf" -P "$Dir_Downloads"
 sudo chmod 777 -R "$Dir_Downloads"
 ## Installing .deb packages ##
 sudo dpkg -i $Dir_Downloads/*.deb
 ## Other peculiarities
-sudo ACCEPT_EULA=Y apt-get install ttf-mscorefonts-installer -y
+sudo apt install snapd -y
 sudo apt update -y
-sudo apt -f install #Comand for using appimages with double click
 sudo snap install --dangerous obsidian_*.snap
+
 ### ---------------------------- After install ------------------------ ###
 ## Finishing, updating and cleaning##
-cd $HOME
+cd /home/$SUDO_USER/
 cat > .bashrc <<EOF
-
-export TERM=xterm-256color 
-
-tput setaf 2
-tput -T linux setaf 2
-tput -T xterm setaf 2
-
-blue=		$(tput setaf 33);
-aquablue=	$(tput setaf 45);
-blue2=		$(tput setaf 39);
-orange=	    $(tput setaf 166);
-yellow=	    $(tput setaf 228);
-green=		$(tput setaf 71);
-white=		$(tput setaf 15);
-bold=		$(tput bold);
-reset=		$(tput sgr0);
-
-PS1="\[${bold}\]";
-PS1+="\[${aquablue}\]\t "; #time
-PS1+="\[${blue2}\]\u"; #username
-#PS1+="\[${white}\] at ";
-#PS1+="\[${blue}\]\h"; #host
-PS1+="\[${white}\] in";
-PS1+="\[${green}\] \w "; #wortking directory
-PS1+="\n";
-PS1+="\[${white}\]\$ \[${reset}\]"; #'$' (and reset color)
-
-export PS1
 
 alias sauu='sudo apt update -y && sudo apt upgrade -y'
 alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
@@ -77,7 +36,7 @@ alias apps='sudo snap refresh && flatpak update -y'
 alias condaon='conda config --set auto_activate_base True'
 alias condaoff='conda config --set auto_activate_base False'
 alias end='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y && sudo fwupdmgr get-devices && sudo fwupdmgr get-updates && sudo fwupdmgr update'
-alias rebo='sudo reboot'
+alias rebo='reboot'
 
 EOF
 
