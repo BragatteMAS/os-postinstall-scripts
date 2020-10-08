@@ -23,6 +23,7 @@ echo ' \n Auto install Bragatte_mode!!!! \n	'
 # -----------------------------VARIABLES APT-------------------------------- #
 APT_INSTALL=(
 synaptic              #System|program manager
+neofetch              #System|verify info term
 gufw                  #System|firewall for linux
 git git-lfs           #System|control modifications
 stacer                #System|clean and monitor programs
@@ -110,6 +111,7 @@ Epiphany	     #Productivity|browser
 #Deb packages
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etcher-electron_1.5.99_amd64.deb"  #att with inexistent ":" insert in the middle of url
+URL_Iriun="http://iriun.gitlab.io/iriunwebcam.deb"
 
 #PPA
 sudo add-apt-repository ppa:lutris-team/lutris
@@ -187,6 +189,7 @@ mkdir "$Dir_Downloads"
 sudo chmod 777 -R "$Dir_Downloads"
 wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 wget -c "$URL_Balena" -P "$Dir_Downloads"
+wget -c "$URL_Iriun" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
 sudo dpkg -i $Dir_Downloads/*.deb
@@ -205,7 +208,7 @@ alias apps='sudo snap refresh && flatpak update -y'
 alias condaon='conda config --set auto_activate_base True'
 alias condaoff='conda config --set auto_activate_base False'
 alias end='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y && sudo fwupdmgr get-devices && sudo fwupdmgr get-updates && sudo fwupdmgr update'
-alias rebo='sudo reboot'
+alias rebo='reboot'
 EOF
 
 # ---------------------------------------------------------------------- #
