@@ -1,5 +1,5 @@
-###Auto install Anaconda 
 #!/usr/bin/env bash
+###Auto install anaconda 
 #Use SUDO user for this program!!!#
 ### ----------------------- Tools for Data Science -------------------- ###
 
