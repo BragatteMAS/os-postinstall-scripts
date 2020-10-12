@@ -10,7 +10,7 @@ This **scripts will install programs automatically**, this is my config.
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
-    1.sudo chmod 777 posintall.sh
+    1.sudo chmod 777 *.sh
     2.sudo ./posintall.sh
     
  Script **Tested with POP-OS & Ubuntu 20.04** = status ok|Set 2020  
