@@ -13,7 +13,7 @@ sudo chmod -R 777 /home/$SUDO_USER/anaconda3
 
 sudo -s source /home/$SUDO_USER/anaconda3/bin/activate ## activate base conda terminal
 sudo -s source /home/$SUDO_USER/.bashrc #activate installation
-#conda config --set auto_activate_base true
+conda config --set auto_activate_base true
 #conda config --set auto_activate_base false #to not activate
 sudo -s source /home/$SUDO_USER/anaconda3/bin/activate
 
