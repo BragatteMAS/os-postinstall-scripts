@@ -114,7 +114,7 @@ URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etc
 URL_Iriun="http://iriun.gitlab.io/iriunwebcam.deb"
 
 #PPA
-sudo add-apt-repository ppa:lutris-team/lutris
+#sudo add-apt-repository ppa:lutris-team/lutris
 
 ### --------------------- Basic system utilities ---------------------- ###
 ## Removing any apt locks ##
@@ -192,28 +192,14 @@ wget -c "$URL_Balena" -P "$Dir_Downloads"
 wget -c "$URL_Iriun" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
-sudo dpkg -i $Dir_Downloads/*.deb
+#sudo dpkg -i $Dir_Downloads/*.deb
 sudo apt update -y
 
 ### ---------------------------- After install ------------------------ ###
 
 # ---------------------------------------------------------------------- #
-## Finishing, updating and cleaning##
-cd ~
-cat > .bashrc <<EOF
-alias sauu='sudo apt update -y && sudo apt upgrade -y'
-alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
-alias clean='sudo apt autoclean && sudo apt autoremove -y'
-alias apps='sudo snap refresh && flatpak update -y'
-alias condaon='conda config --set auto_activate_base True'
-alias condaoff='conda config --set auto_activate_base False'
-alias end='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y && sudo fwupdmgr get-devices && sudo fwupdmgr get-updates && sudo fwupdmgr update'
-alias rebo='reboot'
-EOF
 
-# ---------------------------------------------------------------------- #
-
-sudo add-apt-repository --remove ppa:lutris-team/lutris
+#sudo add-apt-repository --remove ppa:lutris-team/lutris
 sudo add-apt-repository --remove ppa:linux/chrome/deb/
 
 # ---------------------------------------------------------------------- #
