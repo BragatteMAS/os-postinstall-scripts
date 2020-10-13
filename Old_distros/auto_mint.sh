@@ -29,6 +29,7 @@ terminator              #Terminal|high configurtion term
 flameshot               #Image|capture screen
 ffmpeg                  #Image|extension
 simplescreenrecorder    #Video|capture and film screen
+recoll                  #Productivity|File localizer
 
 )
 # -------------------------------------------------------------------------- #
