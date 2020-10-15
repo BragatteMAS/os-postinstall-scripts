@@ -141,5 +141,21 @@ alias clean='sudo apt autoclean && sudo apt autoremove -y'
 alias apps='sudo snap refresh && flatpak update -y'
 alias condaon='conda config --set auto_activate_base True'
 alias condaoff='conda config --set auto_activate_base False'
+alias dsz='source activate dsz'
 alias end='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y && sudo fwupdmgr get-devices && sudo fwupdmgr get-updates && sudo fwupdmgr update'
 alias rebo='reboot'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/bragatte/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/bragatte/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/bragatte/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/bragatte/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<

@@ -16,107 +16,58 @@
 ##	| <https://github.com/BragatteMAS/Linux_posintall_script>               |
 ##	+-----------------------------------------------------------------------+
 
-echo ' \n Auto install Bragatte_mode!!!! \n	'
+echo ' \n Auto install Bragatte_mode for Guille Mint!!!! \n	'
 
 # -------------------------------------------------------------------------- #
 #APT command line package used to install programs Debian/Ubuntu distros stores
 # -----------------------------VARIABLES APT-------------------------------- #
 APT_INSTALL=(
-synaptic              #System|program manager
-neofetch              #System|verify info term
-gufw                  #System|firewall for linux
-git git-lfs           #System|control modifications
-stacer                #System|clean and monitor programs
-htop                  #System|memory verify
-timeshift             #System|backup
-virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
-gdebi make rpm        #System|packages manager
-nemo dolphin          #System|file manager
-zsh                   #Terminal|alternative option for bash in terminal
-terminator            #Terminal|high configurtion term
-tilix                 #Terminal|virtual terminal custom
-gnome-sushi           #Image|previsualize files pressing space Nautilus
-flameshot             #Image|capture screen
-ffmpeg                #Image|extension
-arandr                #Video|monitor settings
-simplescreenrecorder  #Video|capture and film screen
-winff winff-gtk2 winff-qt       #Video|convert formats
-xpad                            #Productivity|sticky note application for GTK
-steam lutris piper ratbagd wine #Games|systems
-openssh-server                  #System|remotely controlling & transferring
-tigervnc-viewer                 #System|VNC
-openconnect network-manager-openconnect network-manager-openconnect-gnome           #System|VPN
-openvpn network-manager-openvpn network-manager-openvpn-gnome                       #System|ProtonVPN
-gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell  #Gnome|desktop utilities
+stacer                  #System|clean and monitor programs
+htop                    #System|memory verify
+gdebi make rpm          #System|packages manager
+terminator              #Terminal|high configurtion term
+flameshot               #Image|capture screen
+ffmpeg                  #Image|extension
+simplescreenrecorder    #Video|capture and film screen
+recoll                  #Productivity|File localizer
 
 )
 # -------------------------------------------------------------------------- #
 #Programs select from SNAP store <https://snapcraft.io/store>
 # -----------------------------VARIABLES SNAP------------------------------- #
-SNAP_INSTALL=(
-bitwarden         #System|password manager
-audacity          #Sound|audio editor and recording app
-spotify           #Sound|digital music service
-photogimp         #Image|patch 'Adobe' for GIMP
-inkscape          #Image|vector graphics software
-gifcurry          #Image|gif creator
-obs-studio        #Video|Edition
-kdenlive          #Video|Edition
-discord           #Comunication|interaction/gamer chat
-telegram-desktop  #Comunication|alternative for whatsapp
-rambox            #Comunication|join different systems of comunication
-chromium          #Productivity|browser
-todoist           #Productivity|Task manager
-foliate           #Productivity|ebook viewer
-feedreader        #Productivity|RSS
-zotero-snap       #Productivity|References
-homeserver        #Productivity|Share folders in urls
-docker            #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
-nextcloud	   #Productivity|file synced
-pymol-oss         #Research
-weka-james-carroll #ML
-
-)
+#SNAP_INSTALL=(
+#bitwarden         #System|password manager
+#
+#)
 # --------------------------------------------------------------------------- #
 #Programs select from Flathub store <https://flathub.org/home>
 # -----------------------------VARIABLES FLAT-------------------------------- #
 FLAT_INSTALL=(
-flatseal            #System|permissions
-filezilla           #System|SQL manager
 org.gnome.Boxes     #System|virtualization
 vim.vim             #Terminal|alternative
-pavucontrol	     #Sound|Control
+pavucontrol	        #Sound|Control
 obsproject.Studio   #Video|streaming software
 org.blender.Blender #Video|3D pipeline—model,animation,simulation,rendering
 org.videolan.VLC    #Video|media player open-source
+inkscape            #Video|image editor
 zoom                #Video|webinars
 slack               #Comunication|team chat
 skype               #Comunication|chat support
 dropbox             #Productivity|online files manager
 masterpdf           #Productivity|pdf-editor
-ankiweb             #Productivity|Flashcards
 com.wps.Office      #Productivity|office reader for doc win
-jamovi              #Productivity|real-time, statisticial spreadsheet
-openboard           #Productivity|educational software interactive board
-geogebra            #Productivity|dynamic geometry program
-blanket             #Productivity|back environmental sounds to work
-organizer           #Productivity|shifts your files according to their filetype
 meld                #Productivity|diif across files
-calibre             #Productivity|reader kindle types
-gitkraken           #Productivity|code commit
-Epiphany	     #Productivity|browser	
-
+spotify             #Sound|Music
+zotero              #Productivity|Articles
+notepadqq           #Productivity|Code editor
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etcher-electron_1.5.99_amd64.deb"  #att with inexistent ":" insert in the middle of url
-URL_Iriun="http://iriun.gitlab.io/iriunwebcam.deb"
+URL_Balena="https://dl.bintray.com/etcher/debian/pool/stable/e/etcher/balena-etcher-electron_1.5.99_amd64.deb"  
+URL_R="https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.3.1093-amd64.deb"
 
-#PPA
-#sudo add-apt-repository ppa:lutris-team/lutris
-
-### --------------------- Basic system utilities ---------------------- ###
+## --------------------- Basic system utilities ---------------------- ###
 ## Removing any apt locks ##
 sudo rm /var/lib/dpkg/lock-frontend
 sudo rm /var/cache/apt/archives/lock
@@ -124,11 +75,11 @@ sudo rm /var/cache/apt/archives/lock
 ## Adding / Confirming 32-bit Architecture ##
 sudo dpkg --add-architecture i386
 
+##Packages of apps for Linux
+sudo rm /etc/apt/preferences.d/nosnap.pref
 ## Updating the repository ##
 sudo apt update -y
-
-##Packages of apps for Linux
-sudo apt install snapd -y
+#sudo apt install snapd -y
 
 sudo apt install flatpak -y
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -144,11 +95,11 @@ for apt_program in ${APT_INSTALL[@]}; do
 done
 
 ## Install programs SNAP
-for snap_program in ${SNAP_INSTALL[@]}; do
-  if ! dpkg -l | grep -q $snap_program; then # Just install if not exist
-    snap install "$snap_program" 
-  fi
-done
+#for snap_program in ${SNAP_INSTALL[@]}; do
+#  if ! dpkg -l | grep -q $snap_program; then # Just install if not exist
+#    snap install "$snap_program" 
+#  fi
+#done
 
 ## Install programs FLATPAK
 for flat_program in ${FLAT_INSTALL[@]}; do
@@ -172,14 +123,6 @@ sudo wget -nv https://download.opensuse.org/repositories/home:manuelschneid3r/xU
 sudo apt update -y
 sudo apt install albert -y          #global search at system
 
-##Github Desktop
-wget -qO - https://packagecloud.io/shiftkey/desktop/gpgkey | sudo apt-key add -
-sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/shiftkey/desktop/any/ any main" > /etc/apt/sources.list.d/packagecloud-shiftky-desktop.list'
-sudo apt-get update
-sudo apt install github-desktop -y
-
-## --classic options for SNAP packs need to run separated
-sudo snap install code --classic	#Terminal|best IDE
 
 ### ------------------------------------------------------------------- ###
 ## Download and install external programs .deb ##
@@ -189,22 +132,14 @@ mkdir "$Dir_Downloads"
 sudo chmod 777 -R "$Dir_Downloads"
 wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 wget -c "$URL_Balena" -P "$Dir_Downloads"
-wget -c "$URL_Iriun" -P "$Dir_Downloads"
-
+wget -c "$URL_R" -P "$Dir_Downloads"
 ## Installing .deb packages ##
 #sudo dpkg -i $Dir_Downloads/*.deb
-sudo apt update -y
+#sudo apt update -y
 
 ### ---------------------------- After install ------------------------ ###
-
-# ---------------------------------------------------------------------- #
-
-#sudo add-apt-repository --remove ppa:lutris-team/lutris
-sudo add-apt-repository --remove ppa:linux/chrome/deb/
-
 # ---------------------------------------------------------------------- #
 sudo apt update && sudo apt upgrade && apt dist-upgrade -y
-sudo snap refresh
 flatpak update -y
 sudo apt autoclean
 sudo apt autoremove -y
