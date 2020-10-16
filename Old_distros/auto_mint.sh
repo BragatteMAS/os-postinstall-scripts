@@ -45,7 +45,7 @@ recoll                  #Productivity|File localizer
 FLAT_INSTALL=(
 org.gnome.Boxes     #System|virtualization
 vim.vim             #Terminal|alternative
-pavucontrol	        #Sound|Control
+pavucontrol         #Sound|Control
 obsproject.Studio   #Video|streaming software
 org.blender.Blender #Video|3D pipeline—model,animation,simulation,rendering
 org.videolan.VLC    #Video|media player open-source
