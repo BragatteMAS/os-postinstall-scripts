@@ -85,7 +85,7 @@ flatseal            #System|permissions
 filezilla           #System|SQL manager
 org.gnome.Boxes     #System|virtualization
 vim.vim             #Terminal|alternative
-pavucontrol	     #Sound|Control
+pavucontrol	        #Sound|Control
 obsproject.Studio   #Video|streaming software
 org.blender.Blender #Video|3D pipeline—model,animation,simulation,rendering
 org.videolan.VLC    #Video|media player open-source
@@ -104,7 +104,7 @@ organizer           #Productivity|shifts your files according to their filetype
 meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
-Epiphany	     #Productivity|browser	
+Epiphany	          #Productivity|browser
 
 )
 # ---------------------------------------------------------------------- #
