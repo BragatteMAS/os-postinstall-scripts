@@ -2,7 +2,7 @@
 Scripts for preparing linux environmental
 
 
-Pos-install scripts are made to execute after install linux SO (example:UBUNTU).
+Pos-install scripts are made to execute after install linux OS (example:UBUNTU).
 
 This **scripts will install programs automatically**, this is my config.
   
