@@ -192,7 +192,7 @@ wget -c "$URL_Balena" -P "$Dir_Downloads"
 wget -c "$URL_Iriun" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
-#sudo dpkg -i $Dir_Downloads/*.deb
+sudo dpkg -i $Dir_Downloads/*.deb
 sudo apt update -y
 
 ### ---------------------------- After install ------------------------ ###
