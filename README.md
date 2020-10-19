@@ -10,10 +10,10 @@ This **scripts will install programs automatically**, this is my config.
   2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
-    1.sudo chmod 777 *.sh
+    1.sudo chmod 777 posintall.sh
     2.sudo ./posintall.sh
     
- Script **Tested with POP-OS & Ubuntu 20.04** = status ok|Set 2020  
+ Script **Tested with POP-OS & Ubuntu 20.04** = status ok|Oct 2020  
   
  Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
   
@@ -24,11 +24,11 @@ This **scripts will install programs automatically**, this is my config.
 
 This script will install programs from this especific app managers.
 
-1. Download the file auto_......sh into Download file.
+1. Download the file auto_*.sh into Download file. # * = name of different file used e.g = auto_snap or auto_flat
 2. In the directory (/home/$USER/Downloads) execute the script in "sudo" mode with "./" command
   
     example:
-    1.sudo chmod 777 posintall.sh
+    1.sudo chmod 777 auto_apt.sh
     2.sudo ./auto_apt.sh
     
  Script  = status ok|Set 2020  **tested with POP-OS & Ubuntu 20.04**
