@@ -135,6 +135,7 @@ PS1+="\[${green}\] \w "; #wortking directory
 PS1+="\n";
 PS1+="\[${white}\]\$ \[${reset}\]"; #'$' (and reset color)
 export PS1
+
 alias sauu='sudo apt update -y && sudo apt upgrade -y'
 alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
 alias clean='sudo apt autoclean && sudo apt autoremove -y'
