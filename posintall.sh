@@ -72,9 +72,11 @@ feedreader        #Productivity|RSS
 zotero-snap       #Productivity|References
 homeserver        #Productivity|Share folders in urls
 docker            #Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
-nextcloud	   #Productivity|file synced
+nextcloud	        #Productivity|file synced
+qsnapstore        #Productivity|Snap store improved
 pymol-oss         #Research
 weka-james-carroll #ML
+
 
 )
 # --------------------------------------------------------------------------- #
@@ -105,7 +107,7 @@ meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
 Epiphany	          #Productivity|browser
-
+com.github.calo001.fondo  ##Productivity|wallpapers
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
