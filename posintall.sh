@@ -27,6 +27,7 @@ neofetch              #System|verify info term
 gufw                  #System|firewall for linux
 git git-lfs           #System|control modifications
 stacer                #System|clean and monitor programs
+alacritty             #System|GPU enhanced terminal
 htop                  #System|memory verify
 timeshift             #System|backup
 virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
