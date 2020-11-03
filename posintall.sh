@@ -35,7 +35,6 @@ gdebi make rpm        #System|packages manager
 nemo dolphin          #System|file manager
 zsh                   #Terminal|alternative option for bash in terminal
 terminator            #Terminal|high configurtion term
-tilix                 #Terminal|virtual terminal custom
 gnome-sushi           #Image|previsualize files pressing space Nautilus
 flameshot             #Image|capture screen
 ffmpeg                #Image|extension
@@ -61,7 +60,6 @@ spotify           #Sound|digital music service
 photogimp         #Image|patch 'Adobe' for GIMP
 inkscape          #Image|vector graphics software
 gifcurry          #Image|gif creator
-obs-studio        #Video|Edition
 kdenlive          #Video|Edition
 discord           #Comunication|interaction/gamer chat
 telegram-desktop  #Comunication|alternative for whatsapp
@@ -78,7 +76,6 @@ qsnapstore        #Productivity|Snap store improved
 pymol-oss         #Research
 weka-james-carroll #ML
 
-
 )
 # --------------------------------------------------------------------------- #
 #Programs select from Flathub store <https://flathub.org/home>
@@ -87,7 +84,6 @@ FLAT_INSTALL=(
 flatseal            #System|permissions
 filezilla           #System|SQL manager
 org.gnome.Boxes     #System|virtualization
-vim.vim             #Terminal|alternative
 pavucontrol	        #Sound|Control
 obsproject.Studio   #Video|streaming software
 org.blender.Blender #Video|3D pipeline—model,animation,simulation,rendering
@@ -97,7 +93,6 @@ slack               #Comunication|team chat
 skype               #Comunication|chat support
 dropbox             #Productivity|online files manager
 masterpdf           #Productivity|pdf-editor
-ankiweb             #Productivity|Flashcards
 com.wps.Office      #Productivity|office reader for doc win
 jamovi              #Productivity|real-time, statisticial spreadsheet
 openboard           #Productivity|educational software interactive board
@@ -107,7 +102,6 @@ organizer           #Productivity|shifts your files according to their filetype
 meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
-Epiphany	          #Productivity|browser
 com.github.calo001.fondo  ##Productivity|wallpapers
 )
 # ---------------------------------------------------------------------- #
@@ -183,6 +177,7 @@ sudo apt install github-desktop -y
 
 ## --classic options for SNAP packs need to run separated
 sudo snap install code --classic	#Terminal|best IDE
+sudo snap install alacritty --classic #Terminal with GPU 
 
 ### ------------------------------------------------------------------- ###
 ## Download and install external programs .deb ##
