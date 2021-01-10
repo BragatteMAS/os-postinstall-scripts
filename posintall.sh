@@ -4,7 +4,7 @@
 ##	|                                                                       |
 ##	|                        Pos Install Scrypt                             |
 ##	|                                                                       |
-##	| Copyright (c) 2020, Bragatte <marcelobragatte@gmail.com>.             |
+##	| Copyright (c) 2021, Bragatte <marcelobragatte@gmail.com>.             |
 ##	|                                                                       |
 ##	| All programs are free software: you can redistribute it and/or modify |
 ##	| it under the terms of the GNU General Public License as published by  |
@@ -101,6 +101,7 @@ organizer           #Productivity|shifts your files according to their filetype
 meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
+nz.mega.MEGAsync    #Productivity|storage
 com.github.calo001.fondo  ##Productivity|wallpapers
 )
 # ---------------------------------------------------------------------- #
