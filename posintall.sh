@@ -102,7 +102,7 @@ meld                #Productivity|diif across files
 calibre             #Productivity|reader kindle types
 gitkraken           #Productivity|code commit
 nz.mega.MEGAsync    #Productivity|storage
-com.github.calo001.fondo  ##Productivity|wallpapers
+fontfinder          #Productivity|design
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
