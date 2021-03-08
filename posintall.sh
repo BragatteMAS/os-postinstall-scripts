@@ -28,7 +28,6 @@ gufw                  #System|firewall for linux
 git git-lfs           #System|control modifications
 stacer                #System|clean and monitor programs
 alacritty             #System|GPU enhanced terminal
-htop                  #System|memory verify
 timeshift             #System|backup
 virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
 gdebi make rpm        #System|packages manager
@@ -61,6 +60,7 @@ photogimp         #Image|patch 'Adobe' for GIMP
 inkscape          #Image|vector graphics software
 gifcurry          #Image|gif creator
 kdenlive          #Video|Edition
+bpytop            #System|memory verify
 discord           #Comunication|interaction/gamer chat
 telegram-desktop  #Comunication|alternative for whatsapp
 rambox            #Comunication|join different systems of comunication
