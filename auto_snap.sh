@@ -14,6 +14,7 @@ inkscape          #Image|vector graphics software
 gifcurry          #Image|gif creator
 obs-studio        #Video|Edition
 kdenlive          #Video|Edition
+bpytop            #System|memory verify
 discord           #Comunication|interaction/gamer chat
 telegram-desktop  #Comunication|alternative for whatsapp
 rambox            #Comunication|join different systems of comunication
