@@ -31,7 +31,7 @@ alacritty             #System|GPU enhanced terminal
 timeshift             #System|backup
 virtualbox-qt         #System|emulate OS	'sudo adduser $USER vboxusers'
 gdebi make rpm        #System|packages manager
-nemo dolphin          #System|file manager
+nemo                  #System|file manager
 zsh                   #Terminal|alternative option for bash in terminal
 terminator            #Terminal|high configurtion term
 gnome-sushi           #Image|previsualize files pressing space Nautilus
@@ -44,8 +44,8 @@ xpad                            #Productivity|sticky note application for GTK
 steam lutris piper ratbagd wine #Games|systems
 openssh-server                  #System|remotely controlling & transferring
 tigervnc-viewer                 #System|VNC
-openconnect network-manager-openconnect network-manager-openconnect-gnome           #System|VPN
-openvpn network-manager-openvpn network-manager-openvpn-gnome                       #System|ProtonVPN
+openconnect network-manager-openconnect network-manager-openconnect-gnome       #System|VPN
+openvpn network-manager-openvpn network-manager-openvpn-gnome                   #System|ProtonVPN
 gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell  #Gnome|desktop utilities
 
 )
@@ -58,7 +58,7 @@ audacity          #Sound|audio editor and recording app
 spotify           #Sound|digital music service
 photogimp         #Image|patch 'Adobe' for GIMP
 inkscape          #Image|vector graphics software
-gifcurry          #Image|gif creator
+peek              #Image|gif creator
 kdenlive          #Video|Edition
 bpytop            #System|memory verify
 discord           #Comunication|interaction/gamer chat
@@ -104,6 +104,7 @@ gitkraken              #Productivity|code commit
 nz.mega.MEGAsync       #Productivity|storage
 fontfinder             #Productivity|design
 com.toggl.TogglDesktop #Productivity|design
+om.gitlab.cunidev.Workflow #Productivity|timecontrol
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
