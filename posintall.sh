@@ -104,7 +104,7 @@ gitkraken              #Productivity|code commit
 nz.mega.MEGAsync       #Productivity|storage
 fontfinder             #Productivity|design
 com.toggl.TogglDesktop #Productivity|design
-om.gitlab.cunidev.Workflow #Productivity|timecontrol
+com.gitlab.cunidev.Workflow #Productivity|timecontrol
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
