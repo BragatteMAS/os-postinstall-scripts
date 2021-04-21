@@ -80,9 +80,10 @@ weka-james-carroll #ML
 #Programs select from Flathub store <https://flathub.org/home>
 # -----------------------------VARIABLES FLAT-------------------------------- #
 FLAT_INSTALL=(
-flatseal               #System|permissions
-filezilla              #System|SQL manager
-org.gnome.Boxes        #System|virtualization
+flatseal                  #System|permissions
+filezilla                 #System|SQL manager
+org.gnome.Boxes           #System|virtualization
+org.onionshare.OnionShare #System|transfer files safety
 pavucontrol	           #Sound|Control
 obsproject.Studio      #Video|streaming software
 org.blender.Blender    #Video|3D pipeline—model,animation,simulation,rendering
