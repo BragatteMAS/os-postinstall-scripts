@@ -56,6 +56,7 @@ SNAP_INSTALL=(
 bitwarden         #System|password manager
 audacity          #Sound|audio editor and recording app
 spotify           #Sound|digital music service
+bing-wall         #Image|Wallpapers automatically generated
 photogimp         #Image|patch 'Adobe' for GIMP
 inkscape          #Image|vector graphics software
 peek              #Image|gif creator
