@@ -213,4 +213,3 @@ sudo apt autoremove -y
 # ---------------------------------------------------------------------- #
 echo '\n All done! Reboot your pc, run this script a second time to check the instalation confirmation message and keep walking!'
 ### ------------------------------------------------------------------- ####
-
