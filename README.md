@@ -77,3 +77,7 @@ Open the script and delete the "#" in the flavor select to install into your sys
     sudo ./flavor.sh  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Authors
+
+- [@BragatteMAS](https://github.com/BragatteMAS)
