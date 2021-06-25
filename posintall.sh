@@ -107,6 +107,7 @@ nz.mega.MEGAsync       #Productivity|storage
 fontfinder             #Productivity|design
 com.toggl.TogglDesktop #Productivity|design
 com.gitlab.cunidev.Workflow #Productivity|timecontrol
+gpuviewer
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
