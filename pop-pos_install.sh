@@ -53,7 +53,8 @@ SNAP_INSTALL=(
 bing-wall          	#Image|Wallpapers automatically generated
 photogimp          	#Image|patch 'Adobe' for GIMP
 
-bpytop	        	#System|memory verify
+bpytop	          	#System|memory verify
+authy               #System|backup two steps factors
 
 homeserver	        #Productivity|Share folders in urls
 docker             	#Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
