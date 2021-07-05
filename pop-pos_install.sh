@@ -32,7 +32,7 @@ alacritty             		#System|GPU enhanced terminal
 timeshift             		#System|backup
 virtualbox-qt         		#System|emulate OS	'sudo adduser $USER vboxusers'
 nemo                   		#System|file manager
-flameshot             		#Image|capture screen 
+flameshot             		#Image|capture screen with shortcut system
 zsh                    		#Terminal|alternative option for bash in terminal
 terminator            		#Terminal|high configurtion term
 gnome-sushi            		#Image|previsualize files pressing space Nautilus
