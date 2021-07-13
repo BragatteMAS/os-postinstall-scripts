@@ -32,15 +32,20 @@ alacritty             		#System|GPU enhanced terminal
 timeshift             		#System|backup
 virtualbox-qt         		#System|emulate OS	'sudo adduser $USER vboxusers'
 nemo                   		#System|file manager
+
 flameshot             		#Image|capture screen with shortcut system
 zsh                    		#Terminal|alternative option for bash in terminal
 terminator            		#Terminal|high configurtion term
 gnome-sushi            		#Image|previsualize files pressing space Nautilus
 ffmpeg                		#Image|extension
+
 simplescreenrecorder  		#Video|capture and film screen
+
 lutris piper ratbagd wine      	#Games|systems
+
 openssh-server                  #System|remotely controlling & transferring
 tigervnc-viewer                 #System|VNC
+
 openconnect network-manager-openconnect network-manager-openconnect-gnome      		  #System|VPN
 openvpn network-manager-openvpn network-manager-openvpn-gnome                   	  #System|ProtonVPN
 gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell	#Gnome|desktop utilities
