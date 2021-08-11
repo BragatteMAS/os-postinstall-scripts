@@ -82,10 +82,10 @@ pavucontrol	      	    	#Sound|Control
 com.spotify.Client	    	#Sound|digital music service
 org.audacityteam.Audacity #Sound|Record and edit audio files
 
-com.uploadedlobster.peek	#Image|gif creator
-com.endlessm.photos       #Image|quick editor
-org.inkscape.Inkscape	  	#Image|vector graphics software
-org.flozz.yoga-image-optimizer #Image|converter
+com.uploadedlobster.peek	      #Image|gif creator
+com.endlessm.photos             #Image|quick editor
+org.inkscape.Inkscape	          #Image|vector graphics software
+org.flozz.yoga-image-optimizer  #Image|converter
 
 org.kde.kdenlive	        #Video|Edition
 obsproject.Studio      		#Video|streaming software
@@ -99,33 +99,32 @@ slack                  		#Comunication|team chat
 org.telegram.desktop	  	#Comunication|popular messaging protocol
 com.discordapp.Discord		#Comunication|messaging electron framework
 
-org.chromium.Chromium		#Productivity|browser
+org.chromium.Chromium		      #Productivity|browser
 io.gitlab.librewolf-community	#Productivity|browser
 
 dropbox               		#Productivity|online files manager storage
 nz.mega.MEGAsync       		#Productivity|online files manager storage
 
-masterpdf              		#Productivity|pdf-editor
-com.wps.Office         		#Productivity|office reader for doc win
-calibre                		#Productivity|reader kindle types
-fontfinder             		#Productivity|design
-openboard              		#Productivity|educational software interactive board
+org.kde.okular                  #Productivity|pdf-editor
+calibre                	      	#Productivity|reader kindle types
+fontfinder             	      	#Productivity|design
+openboard              		      #Productivity|educational software interactive board
 com.github.johnfactotum.Foliate	#Productivity|ebook viewer
 
-com.visualstudio.code		#Productivity|Best IDE
+com.visualstudio.code		  #Productivity|Best IDE
 meld                   		#Productivity|diif across files
 gitkraken              		#Productivity|code commit
 
-blanket	                	#Productivity|back environmental sounds to work
-organizer              		#Productivity|shifts files according to their filetype
-com.toggl.TogglDesktop 		#Productivity|design
+blanket	                    	#Productivity|back environmental sounds to work
+organizer              	    	#Productivity|shifts files according to their filetype
+com.toggl.TogglDesktop 	    	#Productivity|design
 com.gitlab.cunidev.Workflow 	#Productivity|timecontrol
 
 geogebra               		#Research|dynamic geometry program
-org.pymol.PyMOL			#Research|3D viewer
+org.pymol.PyMOL			      #Research|3D viewer
 org.zotero.Zotero      		#Research|References
 org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
-md.obsidian.Obsidian		#Research|Link your thinking
+md.obsidian.Obsidian		  #Research|Link your thinking
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
