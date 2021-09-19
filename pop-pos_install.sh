@@ -81,6 +81,7 @@ org.gnome.Boxes       		#System|virtualization
 pavucontrol	      	    	#Sound|Control
 com.spotify.Client	    	#Sound|digital music service
 org.audacityteam.Audacity #Sound|Record and edit audio files
+io.github.seadve.Mousai   #Sound|discover songs
 
 com.uploadedlobster.peek	      #Image|gif creator
 com.endlessm.photos             #Image|quick editor
