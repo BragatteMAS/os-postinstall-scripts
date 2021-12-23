@@ -108,24 +108,25 @@ nz.mega.MEGAsync       		#Productivity|online files manager storage
 
 org.kde.okular                  #Productivity|pdf-editor
 calibre                	      	#Productivity|reader kindle types
-fontfinder             	      	#Productivity|design
 openboard              		      #Productivity|educational software interactive board
 com.github.johnfactotum.Foliate	#Productivity|ebook viewer
+fontfinder             	      	#Productivity|design
 
 com.visualstudio.code		  #Productivity|Best IDE
 meld                   		#Productivity|diif across files
 gitkraken              		#Productivity|code commit
 
+com.toggl.TogglDesktop 	    	#Productivity|design
+org.texstudio.TeXstudio       #Productivity|writing
 blanket	                    	#Productivity|back environmental sounds to work
 organizer              	    	#Productivity|shifts files according to their filetype
-com.toggl.TogglDesktop 	    	#Productivity|design
 com.gitlab.cunidev.Workflow 	#Productivity|timecontrol
 
-geogebra               		#Research|dynamic geometry program
-org.pymol.PyMOL			      #Research|3D viewer
-org.zotero.Zotero      		#Research|References
-org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
 md.obsidian.Obsidian		  #Research|Link your thinking
+org.zotero.Zotero      		#Research|References
+org.pymol.PyMOL			      #Research|3D viewer
+org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
+geogebra               		#Research|dynamic geometry program
 )
 # ---------------------------------------------------------------------- #
 #Deb packages
