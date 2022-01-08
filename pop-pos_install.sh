@@ -55,7 +55,7 @@ gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-she
 #Programs select from SNAP store <https://snapcraft.io/store>
 # -----------------------------VARIABLES SNAP------------------------------- #
 SNAP_INSTALL=(
-bing-wall          	#Image|Wallpapers automatically generated
+bing-wall            #Image|Wallpapers automatically generated
 photogimp          	#Image|patch 'Adobe' for GIMP
 
 bpytop	          	#System|memory verify
@@ -68,7 +68,7 @@ qsnapstore         	#Productivity|Snap store improved
 weka-james-carroll 	#Research|ML
 )
 # --------------------------------------------------------------------------- #
-#Programs select from Flathub store <https://flathub.org/home>
+#Programs select from Flathub store <https://flathuby.org/home>
 # -----------------------------VARIABLES FLAT-------------------------------- #
 FLAT_INSTALL=(
 com.bitwarden.desktop	  	#System|password manager
