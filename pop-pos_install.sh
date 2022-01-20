@@ -81,12 +81,12 @@ org.gnome.Boxes       		#System|virtualization
 pavucontrol	      	    	#Sound|Control
 com.spotify.Client	    	#Sound|digital music service
 org.audacityteam.Audacity #Sound|Record and edit audio files
-io.github.seadve.Mousai   #Sound|discover songs
+#io.github.seadve.Mousai   #Sound|discover songs
 
 com.uploadedlobster.peek	      #Image|gif creator
 com.endlessm.photos             #Image|quick editor
 org.inkscape.Inkscape	          #Image|vector graphics software
-org.flozz.yoga-image-optimizer  #Image|converter
+#org.flozz.yoga-image-optimizer  #Image|converter
 
 org.kde.kdenlive	        #Video|Edition
 obsproject.Studio      		#Video|streaming software
