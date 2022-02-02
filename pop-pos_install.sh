@@ -81,7 +81,7 @@ org.gnome.Boxes       		#System|virtualization
 pavucontrol	      	    	#Sound|Control
 com.spotify.Client	    	#Sound|digital music service
 org.audacityteam.Audacity #Sound|Record and edit audio files
-#io.github.seadve.Mousai   #Sound|discover songs
+io.github.seadve.Mousai   #Sound|discover songs
 
 com.uploadedlobster.peek	      #Image|gif creator
 com.endlessm.photos             #Image|quick editor
@@ -111,6 +111,8 @@ calibre                	      	#Productivity|reader kindle types
 openboard              		      #Productivity|educational software interactive board
 com.github.johnfactotum.Foliate	#Productivity|ebook viewer
 fontfinder             	      	#Productivity|design
+io.github.lainsce.Colorway      #Productivity|design
+io.github.lainsce.Emulsion      #Productivity|design
 
 com.visualstudio.code		  #Productivity|Best IDE
 meld                   		#Productivity|diif across files
@@ -219,4 +221,3 @@ sudo apt autoremove -y
 # ---------------------------------------------------------------------- #
 echo '\n All done! Reboot your pc, run this script a second time to check the instalation confirmation message and keep walking!'
 ### ------------------------------------------------------------------- ####
-
