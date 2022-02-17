@@ -77,6 +77,8 @@ filezilla              		#System|SQL manager
 gpuviewer		            	#System|GPU easy info
 OnionShare            		#System|transfer files safety
 org.gnome.Boxes       		#System|virtualization
+de.haeckerfelix.Fragments #System|bitTorrent client for gnome
+fr.romainvigier.MetadataCleaner #System|clean metadata imgs before upload to internet
 
 pavucontrol	      	    	#Sound|Control
 com.spotify.Client	    	#Sound|digital music service
@@ -110,7 +112,8 @@ org.kde.okular                  #Productivity|pdf-editor
 calibre                	      	#Productivity|reader kindle types
 openboard              		      #Productivity|educational software interactive board
 com.github.johnfactotum.Foliate	#Productivity|ebook viewer
-fontfinder             	      	#Productivity|design
+fontfinder             	      	 #Productivity|design
+org.gustavoperedo.FontDownloader #Productivity|design
 io.github.lainsce.Colorway      #Productivity|design
 io.github.lainsce.Emulsion      #Productivity|design
 
