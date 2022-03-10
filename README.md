@@ -80,4 +80,4 @@ Open the script and delete the "#" in the flavor select to install into your sys
 
 ## Authors
 
-- [@BragatteMAS](https://github.com/BragatteMAS)
+- [Ref](https://github.com/Diolinux/Linux-Mint-19.x-PosInstall)actor by [@BragatteMAS](https://github.com/BragatteMAS). Thanks to [Diolinux for the inspiration and FOSS philosophy](https://www.youtube.com/watch?v=vBfj5dNZOSA&t=8s).
