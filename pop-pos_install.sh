@@ -118,6 +118,7 @@ io.github.lainsce.Colorway      #Productivity|design
 io.github.lainsce.Emulsion      #Productivity|design
 
 com.visualstudio.code		  #Productivity|Best IDE
+rest.insomnia.Insomnia    #Productivity|open source rest api tester
 meld                   		#Productivity|diif across files
 gitkraken              		#Productivity|code commit
 
