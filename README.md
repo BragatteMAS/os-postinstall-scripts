@@ -12,7 +12,7 @@ This **scripts will install programs automatically**, this is my config.
     1.sudo chmod 777 posintall.sh or chmod +urwx posintall.sh
     2.sudo ./posintall.sh
     
- Script **Tested with POP-OS & Ubuntu 20.04** = status ok|Oct 2020  
+ Script **Tested with POP-OS 21.10 & Ubuntu 20.04** = status ok|Oct 2021  
   
  Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
   
@@ -80,4 +80,4 @@ Open the script and delete the "#" in the flavor select to install into your sys
 
 ## Authors
 
-- [@BragatteMAS](https://github.com/BragatteMAS)
+- [Ref](https://github.com/Diolinux/Linux-Mint-19.x-PosInstall)actor by [@BragatteMAS](https://github.com/BragatteMAS). Thanks to [Diolinux for the inspiration and FOSS philosophy](https://www.youtube.com/watch?v=vBfj5dNZOSA&t=8s).
