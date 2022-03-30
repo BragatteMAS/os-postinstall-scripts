@@ -50,6 +50,7 @@ openconnect network-manager-openconnect network-manager-openconnect-gnome      	
 openvpn network-manager-openvpn network-manager-openvpn-gnome                   	  #System|ProtonVPN
 gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell	#Gnome|desktop utilities
 
+pspp #Research|Stats
 )
 # -------------------------------------------------------------------------- #
 #Programs select from SNAP store <https://snapcraft.io/store>
