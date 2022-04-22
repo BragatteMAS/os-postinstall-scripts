@@ -103,6 +103,7 @@ slack                  		#Comunication|team chat
 org.telegram.desktop	  	#Comunication|popular messaging protocol
 com.discordapp.Discord		#Comunication|messaging electron framework
 
+com.google.Chrome             #Productivity|browser 
 org.chromium.Chromium		      #Productivity|browser
 io.gitlab.librewolf-community	#Productivity|browser
 
