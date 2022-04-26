@@ -12,11 +12,11 @@ This **scripts will install programs automatically**, this is my config.
     1.sudo chmod 777 posintall.sh or chmod +urwx posintall.sh
     2.sudo ./posintall.sh
     
- Script **Tested with POP-OS 21.10 & Ubuntu 20.04** = status ok|Oct 2021  
+ Script **Tested with POP-OS 22.04 & Ubuntu 22.04** = status ok|Apr 2022
   
  Versions should works for Debian, ElemntaryOS e Mint with little adaptation.
   
-        Old_distros:   Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
+        Old_distros: Pop_OS 21.10 Ubuntu 20.04  Mint 19.3 & Ubuntu 18.04.3 = status ok|Jan 2020
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Auto_snap or auto_flat or auto_apt
