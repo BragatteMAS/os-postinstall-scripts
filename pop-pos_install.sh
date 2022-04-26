@@ -56,7 +56,7 @@ pspp #Research|Stats
 #Programs select from SNAP store <https://snapcraft.io/store>
 # -----------------------------VARIABLES SNAP------------------------------- #
 SNAP_INSTALL=(
-bing-wall            #Image|Wallpapers automatically generated
+#bing-wall            #Image|Wallpapers automatically generated | change for gnome extension
 photogimp          	#Image|patch 'Adobe' for GIMP
 
 bpytop	          	#System|memory verify
