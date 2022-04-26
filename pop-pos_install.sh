@@ -4,7 +4,7 @@
 ##	|                                                                       |
 ##	|                        Pos Install Scrypt                             |
 ##	|                                                                       |
-##	| Copyright (c) 2021, Bragatte <marcelobragatte@gmail.com>.             |
+##	| Copyright (c) 2022, Bragatte <marcelobragatte@gmail.com>.             |
 ##	|                                                                       |
 ##	| All programs are free software: you can redistribute it and/or modify |
 ##	| it under the terms of the GNU General Public License as published by  |
@@ -14,7 +14,7 @@
 ##	| This script should be run with SUDO command.                          |
 ##	| Detail instructions:                                                  |
 ##	| <https://github.com/BragatteMAS/Linux_posintall_script> 		|
-##      | POP-OS 21.04 version 	- Tested 202107				                |
+##      | POP-OS 22.04 version 	- Tested 20220426				                |
 ##	+-----------------------------------------------------------------------+
 
 echo ' \n Auto install Bragatte_mode!!!! \n	'
@@ -33,7 +33,7 @@ timeshift             		#System|backup
 virtualbox-qt         		#System|emulate OS	'sudo adduser $USER vboxusers'
 nemo                   		#System|file manager
 
-flameshot             		#Image|capture screen with shortcut system
+flameshot             		#Image|capture screen with shortcut system -> easir to manager with .deb
 zsh                    		#Terminal|alternative option for bash in terminal
 terminator            		#Terminal|high configurtion term
 gnome-sushi            		#Image|previsualize files pressing space Nautilus
@@ -136,7 +136,8 @@ org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
 geogebra               		#Research|dynamic geometry program
 )
 # ---------------------------------------------------------------------- #
-#Deb packages when Flathub for Chrome not exist
+#Deb packages
+##Alternative for Flathub from Chrome released 2022
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 #PPA
