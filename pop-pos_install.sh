@@ -87,7 +87,6 @@ org.audacityteam.Audacity #Sound|Record and edit audio files
 io.github.seadve.Mousai   #Sound|discover songs
 
 com.uploadedlobster.peek	      #Image|gif creator
-com.endlessm.photos             #Image|quick editor
 org.inkscape.Inkscape	          #Image|vector graphics software
 #org.flozz.yoga-image-optimizer  #Image|converter
 
@@ -122,7 +121,7 @@ io.github.lainsce.Emulsion      #Productivity|design
 com.visualstudio.code		  #Productivity|Best IDE
 rest.insomnia.Insomnia    #Productivity|open source rest api tester
 meld                   		#Productivity|diif across files
-gitkraken              		#Productivity|code commit
+#gitkraken              		#Productivity|code commit
 
 com.toggl.TogglDesktop 	    	#Productivity|design
 org.texstudio.TeXstudio       #Productivity|writing
@@ -137,7 +136,7 @@ org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
 geogebra               		#Research|dynamic geometry program
 )
 # ---------------------------------------------------------------------- #
-#Deb packages
+#Deb packages when Flathub for Chrome not exist
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 #PPA
@@ -200,7 +199,7 @@ sudo apt install github-desktop -y
 
 
 ### ------------------------------------------------------------------- ###
-## Download and install external programs .deb ##
+## Download and install external programs .deb -> using for Bravebrowser##
 HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"

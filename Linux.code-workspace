@@ -8,7 +8,7 @@
 		"workbench.activityBar.visible": true,
 		"workbench.statusBar.visible": true,
 		"editor.minimap.enabled":true,
-		"workbench.colorTheme": "Atom One Dark",
+		"workbench.colorTheme": "Monokai",
 		"workbench.iconTheme":"vscode-icons",
 		 
 	}

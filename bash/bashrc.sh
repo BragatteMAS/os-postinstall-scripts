@@ -135,13 +135,15 @@ PS1+="\[${green}\] \w "; #wortking directory
 PS1+="\n";
 PS1+="\[${white}\]\$ \[${reset}\]"; #'$' (and reset color)
 export PS1
+
 alias sauu='sudo apt update -y && sudo apt upgrade -y'
 alias sauud='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y'
-alias clean='sudo apt autoclean && sudo apt autoremove -y'
+alias cls='sudo apt autoclean && sudo apt autoremove -y'
 alias apps='sudo snap refresh && flatpak update -y'
 alias condaon='conda config --set auto_activate_base True'
 alias condaoff='conda config --set auto_activate_base False'
-alias dsz='source activate dsz'
+alias base='conda deactivate'
+alias pop='source activate pop'
 alias end='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y && sudo fwupdmgr get-devices && sudo fwupdmgr get-updates && sudo fwupdmgr update'
 alias rebo='reboot'
 
@@ -159,3 +161,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
