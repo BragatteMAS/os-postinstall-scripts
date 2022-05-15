@@ -13,8 +13,8 @@
 ##	|                                                                       |
 ##	| This script should be run with SUDO command.                          |
 ##	| Detail instructions:                                                  |
-##	| <https://github.com/BragatteMAS/Linux_posintall_script> 		|
-##      | POP-OS 22.04 version 	- Tested 20220426				                |
+##	| <https://github.com/BragatteMAS/Linux_posintall_script> 	          	|
+##  | POP-OS 22.04 version 	- Tested 20220426				                        |
 ##	+-----------------------------------------------------------------------+
 
 echo ' \n Auto install Bragatte_mode!!!! \n	'
