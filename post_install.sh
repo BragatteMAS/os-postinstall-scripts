@@ -138,7 +138,7 @@ geogebra               		#Research|dynamic geometry program
 # ---------------------------------------------------------------------- #
 #Deb packages
 ##Alternative for Flathub from Chrome released 2022
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+#URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 #PPA
 #sudo add-apt-repository ppa:lutris-team/lutris
@@ -205,7 +205,7 @@ HOME="$(getent passwd $SUDO_USER | cut -d: -f6)"
 Dir_Downloads="$HOME/Downloads/Programs"
 mkdir "$Dir_Downloads"
 sudo chmod 777 -R "$Dir_Downloads"
-wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
+#wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
 sudo dpkg -i $Dir_Downloads/*.deb
