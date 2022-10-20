@@ -1,15 +1,47 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"workbench.activityBar.visible": true,
-		"workbench.statusBar.visible": true,
-		"editor.minimap.enabled":true,
-		"workbench.colorTheme": "Monokai",
-		"workbench.iconTheme":"vscode-icons",
-		 
-	}
-}
+    "sync.autoUpload": true,
+    "sync.quietSync": true,
+    "sync.autoDownload": true,
+    
+    "terminal.integrated.gpuAcceleration": "off",
+    "terminal.integrated.lineHeight": 1.1 , #see underlined below terminal
+    
+    "liveServer.settings.donotShowInfoMsg": true,
+    
+    "vsicons.dontShowNewVersionMessage": true,
+    
+    "workbench.sideBar.location": "right",
+    "workbench.activityBar.visible": true,
+    "workbench.statusBar.visible": true,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Cobalt2 Italic",
+    "workbench.preferredDarkColorTheme": "Cobalt2 Italic",
+    "workbench.view.alwaysShowHeaderActions":true,
+    "security.workspace.trust.untrustedFiles": "open",
+    
+    "window.autoDetectColorScheme": true,
+    
+    "BioSyntax.nonBioTheme": "Cobalt2 Italic",
+    
+    "editor.minimap.enabled":true,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    
+    "jupyter.logKernelOutputSeparately": true,
+    
+    "tabnine.experimentalAutoImports": true,
+    "kite.showWelcomeNotificationOnStartup": false,
+    
+    "files.associations": {
+        "*.rmd": "markdown",
+        "Snakefile_O": "python"
+    },
+    
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "indentRainbow.excludedLanguages": [
+
+        "plaintext"
+    ],
+}	
+		
