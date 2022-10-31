@@ -1,47 +1,61 @@
 {
-    "sync.autoUpload": true,
-    "sync.quietSync": true,
-    "sync.autoDownload": true,
-    
-    "terminal.integrated.gpuAcceleration": "off",
-    "terminal.integrated.lineHeight": 1.1 , #see underlined below terminal
-    
-    "liveServer.settings.donotShowInfoMsg": true,
-    
-    "vsicons.dontShowNewVersionMessage": true,
-    
-    "workbench.sideBar.location": "right",
-    "workbench.activityBar.visible": true,
-    "workbench.statusBar.visible": true,
-    "workbench.iconTheme": "vscode-icons",
-    "workbench.colorTheme": "Cobalt2 Italic",
-    "workbench.preferredDarkColorTheme": "Cobalt2 Italic",
-    "workbench.view.alwaysShowHeaderActions":true,
-    "security.workspace.trust.untrustedFiles": "open",
-    
-    "window.autoDetectColorScheme": true,
-    
-    "BioSyntax.nonBioTheme": "Cobalt2 Italic",
-    
-    "editor.minimap.enabled":true,
-    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-    
-    "jupyter.logKernelOutputSeparately": true,
-    
-    "tabnine.experimentalAutoImports": true,
-    "kite.showWelcomeNotificationOnStartup": false,
-    
-    "files.associations": {
-        "*.rmd": "markdown",
-        "Snakefile_O": "python"
-    },
-    
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
-    },
-    "indentRainbow.excludedLanguages": [
+"editor.minimap.enabled" : true,
+"editor.accessibilitySupport" : "off",
+"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
 
-        "plaintext"
-    ],
-}	
-		
+"indentRainbow.excludedLanguages" : [
+  "plaintext"
+],
+
+"BioSyntax.nonBioTheme": "Cobalt2 Italic",
+
+"workbench.preferredDarkColorTheme" : "Cobalt2 Italic",
+"workbench.colorTheme" : "Cobalt2 Italic",
+"workbench.sideBar.location" : "right",
+"workbench.iconTheme" : "vscode-icons",
+"workbench.view.alwaysShowHeaderActions" : true,
+"workbench.activityBar.visible" : true,
+"workbench.statusBar.visible" : true,
+
+
+"terminal.integrated.gpuAcceleration" : "off",
+"terminal.integrated.lineHeight" : 1.1000000000000001,
+"terminal.integrated.fontFamily": "MesloLGS NF",
+"terminal.integrated.env.osx": {
+  "FIG_NEW_SESSION": "1"
+},
+
+"sync.quietSync" : false,
+"sync.autoUpload" : false,
+"sync.autoDownload" : false,
+
+"tabnine.experimentalAutoImports" : true,
+
+"launch" : {
+  "configurations" : [
+  ],
+  "compounds" : [
+  ]
+},
+
+"vsicons.dontShowNewVersionMessage" : true,
+"files.associations" : {
+  "*.rmd" : "markdown",
+  "Snakefile_O" : "python"
+},
+"liveServer.settings.donotShowInfoMsg" : true,
+"window.autoDetectColorScheme" : true,
+
+"kite.showWelcomeNotificationOnStartup": false,
+"[python]" : {
+  "editor.defaultFormatter" : "ms-python.python"
+},
+
+"security.workspace.trust.untrustedFiles" : "open",
+
+"window.zoomLevel": 2,
+
+"redhat.telemetry.enabled": true,
+
+"sync.gist": "0efbdbdb6d37998eca8c8606b17d3cdf"
+}
