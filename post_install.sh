@@ -37,6 +37,7 @@ flameshot             		#Image|capture screen with shortcut system -> easir to m
 zsh                    		#Terminal|alternative option for bash in terminal
 terminator            		#Terminal|high configurtion term
 gnome-sushi            		#Image|previsualize files pressing space Nautilus
+folder-color              #Image|visual productivity for management folders structures
 ffmpeg                		#Image|extension
 
 simplescreenrecorder  		#Video|capture and film screen
