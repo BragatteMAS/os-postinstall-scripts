@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a Question
+    url: https://github.com/BragatteMAS/os-postinstall-scripts/discussions/new?category=q-a
+    about: Ask questions and discuss with the community
+  - name: Show and Tell
+    url: https://github.com/BragatteMAS/os-postinstall-scripts/discussions/new?category=show-and-tell
+    about: Share your customizations and configurations
