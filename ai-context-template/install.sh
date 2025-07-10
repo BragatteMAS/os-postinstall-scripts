@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -euo pipefail
+IFS=$'\n\t'
 # AI Context Template - Master Installation Script
 # Provides multiple installation options
 

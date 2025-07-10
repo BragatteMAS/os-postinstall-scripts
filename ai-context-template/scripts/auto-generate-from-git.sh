@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -euo pipefail
+IFS=$'\n\t'
 # AI Context Template - Auto-Generate from Git
 # Analyzes git history and project structure to auto-generate context
 

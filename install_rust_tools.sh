@@ -387,7 +387,7 @@ main() {
     cat > "$HOME/.config/portable-dev/quick_install.sh" << 'EOF'
 #!/usr/bin/env bash
 # Instalação rápida via curl
-curl -sSL https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/install_rust_tools.sh | bash
+curl -sSL https://raw.githubusercontent.com/BragatteMAS/SEU_REPO/main/install_rust_tools.sh | bash
 EOF
     
     echo -e "${GREEN}✅ Configuração completa!${NC}"

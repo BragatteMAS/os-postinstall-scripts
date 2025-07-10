@@ -1,5 +1,6 @@
 #!/bin/bash
-# monitor-dependencies.sh - Monitor and alert on dependency changes
+set -euo pipefail
+IFS=$'\n\t'# monitor-dependencies.sh - Monitor and alert on dependency changes
 
 set -e
 

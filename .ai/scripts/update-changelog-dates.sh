@@ -1,5 +1,6 @@
 #!/bin/bash
-# update-changelog-dates.sh - Update CHANGELOG.md dates dynamically
+set -euo pipefail
+IFS=$'\n\t'# update-changelog-dates.sh - Update CHANGELOG.md dates dynamically
 
 set -e
 

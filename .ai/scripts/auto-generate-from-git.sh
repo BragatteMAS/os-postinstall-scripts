@@ -1,5 +1,6 @@
 #!/bin/bash
-# auto-generate-from-git.sh - Generate AI context from git history
+set -euo pipefail
+IFS=$'\n\t'# auto-generate-from-git.sh - Generate AI context from git history
 
 set -e
 
