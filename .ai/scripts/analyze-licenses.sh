@@ -1,5 +1,6 @@
 #!/bin/bash
-# analyze-licenses.sh - Analyze and document all dependency licenses
+set -euo pipefail
+IFS=$'\n\t'# analyze-licenses.sh - Analyze and document all dependency licenses
 
 set -e
 

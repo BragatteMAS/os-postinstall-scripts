@@ -1,5 +1,6 @@
 #!/bin/bash
-# setup-scripts.sh - Ensure all scripts are properly configured
+set -euo pipefail
+IFS=$'\n\t'# setup-scripts.sh - Ensure all scripts are properly configured
 
 set -e
 

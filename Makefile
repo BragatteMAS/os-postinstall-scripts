@@ -1,18 +1,30 @@
 # Makefile for Linux Post-Install Scripts
 
+# Include project-specific targets if available
+-include Makefile.project
+
 .PHONY: changelog help install-zsh test clean requirements licenses monitor-deps ip-docs all-docs setup-dirs setup
 
 # Default target
 help:
-	@echo "Available targets:"
+	@echo "=== BMad Method Targets ==="
 	@echo "  setup        - Initial setup (run this first)"
 	@echo "  changelog    - Generate CHANGELOG.md with proper dates"
-	@echo "  install-zsh  - Install zsh configuration"
 	@echo "  requirements - Generate requirements files"
 	@echo "  licenses     - Analyze dependency licenses"
 	@echo "  monitor-deps - Monitor dependency changes"
 	@echo "  ip-docs      - Generate IP documentation package"
 	@echo "  all-docs     - Generate all documentation"
+	@echo ""
+	@echo "=== Project-Specific Targets ==="
+	@echo "  install-linux - Run full Linux post-installation"
+	@echo "  install-zsh  - Install zsh configuration"
+	@echo "  install-rust - Install Rust CLI tools"
+	@echo "  verify       - Verify installed tools"
+	@echo "  check-scripts - Check shell scripts for issues"
+	@echo "  fix-permissions - Fix script permissions"
+	@echo ""
+	@echo "=== Common Targets ==="
 	@echo "  test         - Run tests"
 	@echo "  clean        - Clean generated files"
 

@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -euo pipefail
+IFS=$'\n\t'
 # Minimal AI Context Setup Script
 # Creates the bare minimum files needed for AI assistance
 # Time: ~2 minutes

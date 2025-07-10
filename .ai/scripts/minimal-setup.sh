@@ -1,5 +1,6 @@
 #!/bin/bash
-# minimal-setup.sh - Ultra-simple AI context setup (2 files only)
+set -euo pipefail
+IFS=$'\n\t'# minimal-setup.sh - Ultra-simple AI context setup (2 files only)
 
 set -e
 

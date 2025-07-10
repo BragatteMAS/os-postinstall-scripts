@@ -1,5 +1,6 @@
 #!/bin/bash
-# generate-requirements.sh - Auto-detect and generate requirements files
+set -euo pipefail
+IFS=$'\n\t'# generate-requirements.sh - Auto-detect and generate requirements files
 
 set -e
 

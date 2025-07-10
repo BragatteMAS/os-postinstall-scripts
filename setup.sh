@@ -15,7 +15,7 @@ PURPLE='\033[0;35m'
 NC='\033[0m'
 
 # Configuração
-REPO_URL="${REPO_URL:-https://github.com/SEU_USUARIO/os-postinstall-scripts}"
+REPO_URL="${REPO_URL:-https://github.com/BragatteMAS/os-postinstall-scripts}"
 REPO_DIR="$HOME/.config/linux-postinstall"
 
 # Banner

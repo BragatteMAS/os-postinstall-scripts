@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -euo pipefail
+IFS=$'\n\t'
 # Smart AI Tool Detector
 # Automatically detects which AI tools you use and creates appropriate config files
 

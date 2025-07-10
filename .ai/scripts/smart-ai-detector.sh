@@ -1,5 +1,6 @@
 #!/bin/bash
-# smart-ai-detector.sh - Detects AI assistant and creates appropriate config
+set -euo pipefail
+IFS=$'\n\t'# smart-ai-detector.sh - Detects AI assistant and creates appropriate config
 
 set -e
 

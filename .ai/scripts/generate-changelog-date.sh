@@ -1,5 +1,6 @@
 #!/bin/bash
-# generate-changelog-date.sh - Generate appropriate date for CHANGELOG.md
+set -euo pipefail
+IFS=$'\n\t'# generate-changelog-date.sh - Generate appropriate date for CHANGELOG.md
 
 set -e
 

@@ -1,0 +1,52 @@
+# Project-specific Makefile for OS Post-Install Scripts
+# This file contains targets specific to our project
+# Include this in the main Makefile with: include Makefile.project
+
+.PHONY: install-linux install-zsh install-rust verify check-scripts fix-permissions
+
+# Run full Linux installation
+install-linux:
+	@echo "🚀 Starting Linux post-installation..."
+	@cd linux && chmod +x post_install.sh && sudo ./post_install.sh
+
+# Install Zsh configuration
+install-zsh:
+	@echo "🐚 Installing Zsh configuration..."
+	@if [ -f ~/.zshrc ]; then \
+		cp ~/.zshrc ~/.zshrc.backup.$$(date +%Y%m%d_%H%M%S); \
+		echo "✅ Backed up existing .zshrc"; \
+	fi
+	@cp zshrc ~/.zshrc
+	@echo "✅ Installed new .zshrc"
+	@echo "🔄 Run 'source ~/.zshrc' to reload"
+
+# Install Rust tools
+install-rust:
+	@echo "🦀 Installing Rust CLI tools..."
+	@chmod +x install_rust_tools.sh && ./install_rust_tools.sh
+
+# Verify installed tools
+verify:
+	@echo "🔍 Verifying installed tools..."
+	@bash -c 'source zshrc && type checktools &>/dev/null && checktools || echo "⚠️  checktools function not found"'
+
+# Check scripts for common issues
+check-scripts:
+	@echo "📋 Checking scripts..."
+	@echo "Scripts with missing shebang:"
+	@find . -name "*.sh" -type f | while read script; do \
+		head -1 "$$script" | grep -q "^#!" || echo "  $$script"; \
+	done
+	@echo ""
+	@echo "Non-executable scripts:"
+	@find . -name "*.sh" -type f ! -executable -print | sed 's/^/  /'
+	@echo ""
+	@echo "Scripts with placeholder URLs:"
+	@grep -r "SEU_USUARIO" --include="*.sh" . | cut -d: -f1 | sort -u | sed 's/^/  /'
+
+# Fix script permissions
+fix-permissions:
+	@echo "🔧 Fixing script permissions..."
+	@chmod +x setup.sh install_rust_tools.sh
+	@find linux -name "*.sh" -type f -exec chmod +x {} \;
+	@echo "✅ Scripts are now executable"
