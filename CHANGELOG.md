@@ -5,7 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-01-10
+## [Unreleased]
+
+## [2.1.0] - 2025-07-10
+
+### Added
+- Comprehensive test harness for validating script functionality
+- Script inventory documentation
+- Logging system for all scripts
+- Safe APT lock handling mechanism
+- BMad Method integration with AI-assisted development
+- Dual Makefile system (BMad + Project-specific targets)
+- Security improvements across all scripts
+
+### Changed
+- All scripts now use `set -euo pipefail` for better error handling
+- Fixed placeholder URLs (SEU_USUARIO → BragatteMAS)
+- Improved script permissions (all scripts now executable)
+- Reorganized documentation structure
+
+### Fixed
+- Security vulnerabilities in APT lock handling
+- Missing error handling in scripts
+- Non-executable script permissions
+- Placeholder URLs causing script failures
+
+### Security
+- Added proper error trapping to prevent silent failures
+- Implemented safe APT lock waiting instead of force removal
+- Added logging for audit trails
+
+## [2.0.0] - 2024-12-15
 
 ### Added
 - **Section 22: Advanced Enhancements** - 13 major new features:
