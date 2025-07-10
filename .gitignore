@@ -100,4 +100,4 @@ Cargo.lock
 
 # Test results
 test-results/
-*.test
+*.test**/.DS_Store
