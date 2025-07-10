@@ -1,0 +1,45 @@
+name: ShellCheck
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+      - '.github/workflows/shellcheck.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+      - '.github/workflows/shellcheck.yml'
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install ShellCheck
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+    
+    - name: Run ShellCheck on all shell scripts
+      run: |
+        echo "🔍 Finding all shell scripts..."
+        find . -type f -name "*.sh" -print0 | while IFS= read -r -d '' file; do
+          echo "Checking: $file"
+          shellcheck "$file" || exit 1
+        done
+        
+    - name: Check shell scripts without .sh extension
+      run: |
+        echo "🔍 Checking files with bash shebang..."
+        grep -rl '^#!/.*bash' . --exclude-dir=.git --exclude-dir=node_modules --exclude="*.sh" | while read -r file; do
+          if file "$file" | grep -q "shell script"; then
+            echo "Checking: $file"
+            shellcheck "$file" || exit 1
+          fi
+        done

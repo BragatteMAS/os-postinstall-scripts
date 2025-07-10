@@ -1,0 +1,149 @@
+name: Dependency and License Check
+
+on:
+  push:
+    paths:
+      - 'requirements*.txt'
+      - 'package*.json'
+      - 'Cargo.toml'
+      - 'go.mod'
+      - 'Gemfile'
+      - 'composer.json'
+  pull_request:
+    paths:
+      - 'requirements*.txt'
+      - 'package*.json'
+      - 'Cargo.toml'
+      - 'go.mod'
+      - 'Gemfile'
+      - 'composer.json'
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Full history for git analysis
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install analysis tools
+      run: |
+        # Python tools
+        pip install pip-licenses safety
+        
+        # Node.js tools
+        npm install -g license-checker npm-check
+        
+        # Make scripts executable
+        chmod +x .ai/scripts/*.sh
+    
+    - name: Generate requirements
+      run: |
+        bash .ai/scripts/generate-requirements.sh
+    
+    - name: Analyze licenses
+      run: |
+        bash .ai/scripts/analyze-licenses.sh
+    
+    - name: Check for dependency changes
+      run: |
+        bash .ai/scripts/monitor-dependencies.sh --check || true
+    
+    - name: Security vulnerability scan
+      run: |
+        # Python security check
+        if [ -f "requirements.txt" ]; then
+          safety check --json || true
+        fi
+        
+        # npm audit
+        if [ -f "package.json" ]; then
+          npm audit --json || true
+        fi
+    
+    - name: Upload reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: dependency-reports
+        path: |
+          requirements/
+          licenses/
+          .dependency-monitor/
+    
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read license summary if exists
+          let licenseSummary = 'No license issues found.';
+          try {
+            if (fs.existsSync('licenses/LICENSE-SUMMARY.md')) {
+              licenseSummary = fs.readFileSync('licenses/LICENSE-SUMMARY.md', 'utf8')
+                .split('\n')
+                .slice(0, 30)
+                .join('\n');
+            }
+          } catch (e) {}
+          
+          // Read security alerts if any
+          let securityAlerts = '';
+          try {
+            const alerts = fs.readFileSync('.dependency-monitor/alerts.log', 'utf8')
+              .split('\n')
+              .filter(line => line.includes('SECURITY'))
+              .slice(-5);
+            if (alerts.length > 0) {
+              securityAlerts = '⚠️ **Security Alerts:**\n```\n' + alerts.join('\n') + '\n```\n';
+            }
+          } catch (e) {}
+          
+          const comment = `## 📊 Dependency Analysis Report
+          
+          ${securityAlerts}
+          
+          ### License Summary
+          ${licenseSummary}
+          
+          ---
+          View full reports in the [workflow artifacts](${context.payload.pull_request.html_url}/checks).
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+    
+    - name: Fail on critical issues
+      run: |
+        # Check for GPL contamination if proprietary
+        if grep -q "GPL" licenses/LICENSE-SUMMARY.md 2>/dev/null; then
+          echo "⚠️ GPL licenses detected - review required"
+        fi
+        
+        # Fail on critical security vulnerabilities
+        if grep -q "CRITICAL" .dependency-monitor/alerts.log 2>/dev/null; then
+          echo "❌ Critical security vulnerabilities found!"
+          exit 1
+        fi
