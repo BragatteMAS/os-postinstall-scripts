@@ -25,6 +25,18 @@
 
 </div>
 
+## 🆕 What's New in v2.2.0
+
+- **🎯 Interactive Menu System** - New `main.sh` with user-friendly navigation
+- **📂 Modular Structure** - Scripts organized by function (install/, verify/, utils/)
+- **🔍 Verification System** - Check 40+ tools with `check-installation.sh`
+- **🔒 Enhanced Security** - All scripts now use proper error handling
+- **✅ 100% Test Coverage** - 50 automated tests ensure reliability
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
+</div>
+
 ## 📖 About
 
 **OS Post-Install Scripts** is a comprehensive automation toolkit that transforms hours of manual setup into minutes of automated configuration. Whether you're setting up a new development machine, deploying multiple workstations, or just love having a perfectly configured system, this project has you covered.
@@ -95,6 +107,36 @@
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
 </div>
 
+## 📁 Project Structure
+
+```
+os-postinstall-scripts/
+├── linux/                 # Linux scripts
+│   ├── main.sh           # 🎯 Central menu (NEW!)
+│   ├── install/          # Installation scripts
+│   │   ├── apt.sh        # APT packages
+│   │   ├── flatpak.sh    # Flatpak apps
+│   │   ├── snap.sh       # Snap packages
+│   │   └── desktop-environments.sh
+│   ├── verify/           # Verification tools
+│   │   └── check-installation.sh
+│   ├── utils/            # Utilities
+│   │   └── logging.sh    # Logging system
+│   └── post_install.sh   # Legacy entry point
+├── windows/              # Windows scripts
+│   └── win11.ps1
+├── tests/                # Test suite
+│   ├── test_harness.sh   # 50+ automated tests
+│   └── script_inventory.md
+├── zshrc                 # Advanced Zsh (1700+ lines)
+├── install-rust-tools.sh # Rust CLI tools
+└── VERSION              # Semantic versioning
+```
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
+</div>
+
 ## 🚀 Quick Start
 
 ### 🐧 Linux Installation
@@ -107,9 +149,11 @@
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
 
-# Run the installer
+# NEW: Run the interactive menu
 cd linux
-chmod +x post_install.sh
+./main.sh
+
+# Or use the legacy installer
 sudo ./post_install.sh
 ```
 
@@ -491,7 +535,7 @@ make lint
 | ✅ | Advanced Zsh configuration | Done | v2.0.0 |
 | ✅ | CI/CD with GitHub Actions | Done | v2.1.0 |
 | ✅ | Test harness & security improvements | Done | v2.1.0 |
-| 🚧 | Script reorganization | In Progress | v2.2.0 |
+| ✅ | Script reorganization & modular structure | Done | v2.2.0 |
 | 📋 | macOS support | Q3 2025 | v3.0.0 |
 | 📋 | GUI installer | Q4 2025 | v3.1.0 |
 | 📋 | Ansible playbooks | Q4 2025 | v3.2.0 |
