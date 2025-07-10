@@ -1,0 +1,41 @@
+{
+  "name": "create-ai-context",
+  "version": "1.0.0",
+  "description": "Quick setup for AI-assisted development with Claude, Copilot, Cursor, and more",
+  "main": "scripts/interactive-setup.js",
+  "bin": {
+    "create-ai-context": "./scripts/interactive-setup.js"
+  },
+  "scripts": {
+    "start": "node scripts/interactive-setup.js",
+    "minimal": "bash scripts/minimal-setup.sh",
+    "detect": "bash scripts/smart-ai-detector.sh",
+    "from-git": "bash scripts/auto-generate-from-git.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BragatteMAS/ai-context-template.git"
+  },
+  "keywords": [
+    "ai",
+    "claude",
+    "copilot",
+    "cursor",
+    "chatgpt",
+    "development",
+    "context",
+    "template",
+    "documentation"
+  ],
+  "author": "Bragatte",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^8.2.5",
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "preferGlobal": true
+}
