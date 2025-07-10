@@ -484,17 +484,18 @@ make lint
 
 <div align="center">
 
-| Status | Feature | Target |
-|--------|---------|--------|
-| ✅ | Linux support (Ubuntu, Pop!_OS, Mint) | Done |
-| ✅ | Windows 11 support | Done |
-| ✅ | Advanced Zsh configuration | Done |
-| ✅ | CI/CD with GitHub Actions | Done |
-| 🚧 | macOS support | Q1 2024 |
-| 📋 | GUI installer | Q2 2024 |
-| 📋 | Ansible playbooks | Q2 2024 |
-| 📋 | Profile-based installations | Q3 2024 |
-| 📋 | Cloud backup sync | Q4 2024 |
+| Status | Feature | Target | Version |
+|--------|---------|--------|---------|
+| ✅ | Linux support (Ubuntu, Pop!_OS, Mint) | Done | v1.0.0 |
+| ✅ | Windows 11 support | Done | v2.0.0 |
+| ✅ | Advanced Zsh configuration | Done | v2.0.0 |
+| ✅ | CI/CD with GitHub Actions | Done | v2.1.0 |
+| ✅ | Test harness & security improvements | Done | v2.1.0 |
+| 🚧 | Script reorganization | In Progress | v2.2.0 |
+| 📋 | macOS support | Q3 2025 | v3.0.0 |
+| 📋 | GUI installer | Q4 2025 | v3.1.0 |
+| 📋 | Ansible playbooks | Q4 2025 | v3.2.0 |
+| 📋 | Profile-based installations | 2026 | v4.0.0 |
 
 </div>
 
