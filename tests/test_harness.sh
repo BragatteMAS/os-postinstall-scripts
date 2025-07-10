@@ -99,10 +99,10 @@ done < <(find . -name "*.sh" -type f -print0 2>/dev/null)
 # Test 4: Check for placeholder URLs
 header "Placeholder URL Tests"
 
-if grep -r "SEU_USUARIO" --include="*.sh" . 2>/dev/null | grep -q .; then
+if grep -r "SEU_USUARIO" --include="*.sh" . 2>/dev/null | grep -v "test_harness.sh" | grep -v "fix-security.sh" | grep -q .; then
     fail "Found placeholder URLs (SEU_USUARIO) in scripts"
     echo "  Files with placeholders:"
-    grep -r "SEU_USUARIO" --include="*.sh" . 2>/dev/null | cut -d: -f1 | sort -u | sed 's/^/    /'
+    grep -r "SEU_USUARIO" --include="*.sh" . 2>/dev/null | grep -v "test_harness.sh" | grep -v "fix-security.sh" | cut -d: -f1 | sort -u | sed 's/^/    /'
 else
     pass "No placeholder URLs found"
 fi
