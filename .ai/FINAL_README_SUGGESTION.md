@@ -92,8 +92,8 @@ This repository provides a complete solution for system setup automation:
 
 ```bash
 # Clone the repository
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
-cd os-postinstall-scripts
+git clone https://github.com/BragatteMAS/Linux_posintall_script
+cd Linux_posintall_script
 
 # For post-installation script
 cd linux
@@ -117,7 +117,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 ```bash
 # Quick install (backs up existing .zshrc)
-curl -fsSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/zshrc > ~/.zshrc.new
+curl -fsSL https://raw.githubusercontent.com/BragatteMAS/Linux_posintall_script/main/zshrc > ~/.zshrc.new
 [ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.backup
 mv ~/.zshrc.new ~/.zshrc
 source ~/.zshrc
@@ -147,7 +147,7 @@ source ~/.zshrc
 ## 📁 Project Structure
 
 ```
-os-postinstall-scripts/
+Linux_posintall_script/
 ├── .ai/                    # AI context (BMad Method)
 │   ├── README.md          # Project overview for AI
 │   ├── conventions/       # Coding standards
@@ -206,7 +206,7 @@ We welcome contributions! This project uses the BMad Method for AI-assisted deve
 1. Check `.ai/conventions/CONVENTIONS.md` for coding standards
 2. Review `.ai/patterns/PATTERNS.md` for common patterns
 3. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
-4. Join discussions in [Issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
+4. Join discussions in [Issues](https://github.com/BragatteMAS/Linux_posintall_script/issues)
 
 ## 🔄 Roadmap
 
@@ -244,9 +244,9 @@ This project is licensed under the GNU General Public License v3.0 - see [LICENS
 
 ## 🐛 Support
 
-- [Report bugs](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-- [Request features](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-- [Discussions](https://github.com/BragatteMAS/os-postinstall-scripts/discussions)
+- [Report bugs](https://github.com/BragatteMAS/Linux_posintall_script/issues)
+- [Request features](https://github.com/BragatteMAS/Linux_posintall_script/issues)
+- [Discussions](https://github.com/BragatteMAS/Linux_posintall_script/discussions)
 
 ---
 
