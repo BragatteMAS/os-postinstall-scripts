@@ -1,4 +1,5 @@
-###Standard Bashrc file + configuration to see hour / name / pwd.
+#!/usr/bin/env bash
+# Standard Bashrc file + configuration to see hour / name / pwd.
 
 ###Configurantion .bashrc
 #master file : /etc/bash.bashrc	#etc/profile
