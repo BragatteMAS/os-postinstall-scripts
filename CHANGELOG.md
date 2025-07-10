@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2025-07-10
+
+### Added
+- New modular directory structure (install/, utils/, verify/)
+- Central orchestrator script (main.sh) with interactive menu
+- Comprehensive verification system (check-installation.sh)
+- Interactive desktop environment installer
+- Backward compatibility wrappers
+
+### Changed
+- Reorganized all scripts into logical directories
+- Standardized naming convention (hyphens instead of underscores)
+- Converted flavors.sh into interactive desktop-environments.sh
+- All scripts now have proper shebangs and error handling
+
+### Fixed
+- All 50 tests now passing
+- Missing shebangs in bashrc.sh and flavors.sh
+- Script permission issues resolved
+- Test harness now ignores test files for URL checks
+
 ## [2.1.0] - 2025-07-10
 
 ### Added
