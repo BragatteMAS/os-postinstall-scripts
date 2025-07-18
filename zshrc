@@ -1347,6 +1347,7 @@ show_welcome() {
     echo "├─ 🔍 Search:   a <term> (aliases) | cmd <term> (commands) | rgf (files) | fp (preview)"
     echo "├─ 📊 Data:     quick_csv | nu_open | explore | pstats (project stats)"
     echo "├─ 🚀 Project:  init_project | create_sci_env | backup_configs | qm (quick menu)"
+    echo "├─ 🤖 Claude:   cc (claude-code) | ci (claude-init) | cs (claude-status)"
     echo "└─ 💻 System:   bum (update) | checktools | shell_benchmark | c (clear)"
     echo ""
     echo "🦀 RUST TOOLS: bat (cat) | fd (find) | rg (grep) | eza (ls) | delta (diff) | z (cd)"
@@ -1367,8 +1368,8 @@ show_welcome() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
-## Call welcome message
-show_welcome
+## Call welcome message (disabled for non-interactive shells)
+[[ $- == *i* ]] && [[ ! "$ZSH_EXECUTION_STRING" ]] && show_welcome
 
 # ──────────────────────────────────────────────────────────────────────────────
 # SECTION 21.3: Tool Check Function
@@ -1918,6 +1919,80 @@ claude-code() {
     fi
 }
 alias cc='claude-code'  ## Short alias for convenience
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CLAUDE.md - Configuração Global para IA
+# ──────────────────────────────────────────────────────────────────────────────
+claude_init() {
+    local claude_global="~/CLAUDE.md"
+    local claude_local="./CLAUDE.md"
+    
+    # Verificar se o arquivo global existe
+    if [[ ! -f "$claude_global" ]]; then
+        echo "❌ CLAUDE.md global não encontrado em: $claude_global"
+        return 1
+    fi
+    
+    # Verificar se já existe um CLAUDE.md local
+    if [[ -e "$claude_local" ]]; then
+        echo "⚠️  CLAUDE.md já existe neste diretório!"
+        echo -n "Deseja substituir? (s/N): "
+        read -r response
+        if [[ ! "$response" =~ ^[Ss]$ ]]; then
+            echo "❌ Operação cancelada"
+            return 1
+        fi
+        rm -f "$claude_local"
+    fi
+    
+    # Criar symlink
+    ln -s "$claude_global" "$claude_local"
+    
+    # Verificar se foi criado com sucesso
+    if [[ -L "$claude_local" ]]; then
+        echo "✅ CLAUDE.md linkado com sucesso!"
+        echo "📍 Fonte: $claude_global"
+        echo "🔗 Link: $claude_local"
+        
+        # Mostrar versão atual
+        local version=$(grep "Versão:" "$claude_local" | head -1)
+        [[ -n "$version" ]] && echo "📋 $version"
+    else
+        echo "❌ Erro ao criar symlink"
+        return 1
+    fi
+}
+
+# Alias simples para uso rápido
+alias claude-init='claude_init'
+alias ci='claude_init'
+
+# Função para verificar status do CLAUDE.md no diretório atual
+claude_status() {
+    if [[ -L "./CLAUDE.md" ]]; then
+        echo "✅ CLAUDE.md está linkado"
+        echo "📍 Aponta para: $(readlink ./CLAUDE.md)"
+        
+        # Verificar se o arquivo de destino existe
+        if [[ -f "./CLAUDE.md" ]]; then
+            echo "✅ Arquivo de destino existe"
+            local version=$(grep "Versão:" "./CLAUDE.md" | head -1)
+            [[ -n "$version" ]] && echo "📋 $version"
+        else
+            echo "❌ Arquivo de destino não encontrado!"
+        fi
+    elif [[ -f "./CLAUDE.md" ]]; then
+        echo "📄 CLAUDE.md existe mas não é um symlink"
+        local version=$(grep "Versão:" "./CLAUDE.md" | head -1)
+        [[ -n "$version" ]] && echo "📋 $version"
+    else
+        echo "❌ CLAUDE.md não encontrado neste diretório"
+        echo "💡 Use 'ci' ou 'claude-init' para linkar o arquivo global"
+    fi
+}
+
+alias claude-status='claude_status'
+alias cs='claude_status'
 
 # End of zshrc enhancements
 # bun completions
