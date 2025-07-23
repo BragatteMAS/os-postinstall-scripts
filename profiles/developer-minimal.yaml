@@ -1,0 +1,74 @@
+# Developer Minimal Profile
+# Perfect for: Quick setup, containers, cloud development
+# Install time: ~5 minutes
+
+name: developer-minimal
+description: Essential tools only - Git, Docker, and code editor
+author: OS Post-Install Scripts Team
+version: 1.0.0
+
+# What gets installed
+packages:
+  # Version Control (essential only)
+  version_control:
+    - git
+    - git-lfs
+    
+  # Container Tools (essential)
+  containers:
+    - docker
+    - docker-compose
+    
+  # Programming Languages (minimal)
+  languages:
+    - python3
+    - nodejs
+    
+  # Package Managers (minimal)
+  package_managers:
+    - pip
+    - npm
+    
+  # Editors (pick one)
+  editors:
+    - vscode
+    
+  # Shell Enhancement (basic)
+  shell:
+    - zsh
+    
+  # Development Tools (essential)
+  dev_tools:
+    - make
+    - curl
+    - wget
+    - jq
+    
+  # Productivity (minimal)
+  productivity:
+    - htop
+
+# Configuration
+config:
+  shell:
+    default: bash  # Keep it simple
+    
+  git:
+    setup_credentials: true
+    
+  vscode:
+    install_extensions: false  # Manual selection
+      
+  docker:
+    add_user_to_group: true
+
+# Post-install actions
+post_install:
+  - message: "✓ Minimal setup complete!"
+  - show_versions: true
+
+# System requirements
+requirements:
+  min_ram: 2GB
+  recommended_ram: 4GB
+  disk_space: 5GB

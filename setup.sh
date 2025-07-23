@@ -17,6 +17,32 @@ NC='\033[0m'
 # Configuração
 REPO_URL="${REPO_URL:-https://github.com/BragatteMAS/os-postinstall-scripts}"
 REPO_DIR="$HOME/.config/linux-postinstall"
+DEFAULT_PROFILE="${DEFAULT_PROFILE:-developer-standard}"
+USE_PROFILE=false
+
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        --profile=*)
+            USE_PROFILE=true
+            PROFILE="${arg#*=}"
+            shift
+            ;;
+        --minimal)
+            USE_PROFILE=true
+            PROFILE="developer-minimal"
+            shift
+            ;;
+        --help)
+            echo "Usage: $0 [OPTIONS]"
+            echo "Options:"
+            echo "  --profile=NAME    Use specific installation profile"
+            echo "  --minimal         Use minimal installation profile"
+            echo "  --help            Show this help"
+            exit 0
+            ;;
+    esac
+done
 
 # Banner
 show_banner() {
