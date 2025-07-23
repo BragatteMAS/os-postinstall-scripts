@@ -7,8 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [2.3.1-alpha.4] - 2025-07-23
+#### Added
+- ✅ Comprehensive security tests for APT lock handling
+  - test_apt_lock_safety.sh - 10 security validations
+  - test_apt_timeout_scenarios.sh - 5 integration scenarios
+  - test_apt_safety_simple.sh - CI/CD friendly tests
+  - Security test documentation (tests/security/README.md)
+
+#### Changed
+- Made logging.sh compatible with Bash 3.2 (macOS support)
+- Improved test coverage from ~5% to ~10%
+- Repository reorganized for user focus (v2.3.1-alpha.3)
+
+#### Security
+- All APT lock handling tests passing
+- 80% of Epic 0 security fixes complete
+
 ### Upcoming
-- Complete security tests for APT operations (v2.3.1)
+- Update CI/CD to run security tests (v2.3.1)
 - Implement bats-core testing framework (v2.4.0)
 - Core/Adapters architecture (v2.5.0)
 - Full platform parity (v3.0.0)

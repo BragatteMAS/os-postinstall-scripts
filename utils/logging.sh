@@ -30,13 +30,17 @@ readonly COLOR_PURPLE='\033[0;35m'
 readonly COLOR_CYAN='\033[0;36m'
 readonly COLOR_GRAY='\033[0;90m'
 
-# Log level values for comparison
-declare -A LOG_LEVELS=(
-    ["DEBUG"]=0
-    ["INFO"]=1
-    ["WARNING"]=2
-    ["ERROR"]=3
-)
+# Log level values for comparison (Bash 3 compatible)
+# Using functions instead of associative arrays
+get_log_level_value() {
+    case "$1" in
+        "DEBUG") echo 0 ;;
+        "INFO") echo 1 ;;
+        "WARNING") echo 2 ;;
+        "ERROR") echo 3 ;;
+        *) echo 1 ;;
+    esac
+}
 
 # Initialize logging
 init_logging() {
@@ -71,8 +75,8 @@ get_timestamp() {
 # Check if we should log at this level
 should_log() {
     local msg_level=$1
-    local current_level=${LOG_LEVELS[$LOG_LEVEL]:-1}
-    local message_level=${LOG_LEVELS[$msg_level]:-1}
+    local current_level=$(get_log_level_value "$LOG_LEVEL")
+    local message_level=$(get_log_level_value "$msg_level")
     
     [[ $message_level -ge $current_level ]]
 }
