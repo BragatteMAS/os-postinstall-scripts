@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Desktop%20Computer.png" alt="Desktop Computer" width="30" height="30" /> OS Post-Install Scripts
+# 🚀 OS Post-Install Scripts
 
 <div align="center">
 
@@ -8,593 +8,156 @@
 [![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 [![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=white)](https://www.apple.com/macos/)
 
-[![ShellCheck](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/shellcheck.yml)
-[![Test Scripts](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/test-scripts.yml/badge.svg)](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/test-scripts.yml)
-[![Documentation](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/documentation.yml/badge.svg)](https://github.com/BragatteMAS/os-postinstall-scripts/actions/workflows/documentation.yml)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+**Transform your fresh OS installation into a fully configured development environment in minutes!**
 
-**Transform your fresh OS installation into a fully configured development powerhouse**  
-*Automated • Customizable • Cross-Platform*
-
-[<kbd> <br> 🚀 Quick Start <br> </kbd>](#-quick-start)
-[<kbd> <br> 📚 Documentation <br> </kbd>](#-documentation)
-[<kbd> <br> 🎯 Features <br> </kbd>](#-key-features)
-[<kbd> <br> 💝 Contributing <br> </kbd>](#-contributing)
-
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" alt="rainbow line" width="100%" height="3px" />
+[**Quick Start**](#-quick-start) • [**What Gets Installed**](#-what-gets-installed) • [**Documentation**](#-documentation) • [**Contributing**](#-contributing)
 
 </div>
 
-## 🆕 What's New in v2.3.1-alpha.2
+---
 
-- **🔒 Critical Security Fix** - Safe APT lock handling (60% complete)
-- **🤖 CLAUDE.md v2.3.0** - Context Engineering for AI-powered development
-- **📂 Enhanced Modularity** - New utils/ directory with safety modules
-- **📋 Comprehensive Documentation** - PRD, STORIES, STATUS, and 8 ADRs
-- **⚠️ Transparency Note** - Test coverage is ~5% (20 basic checks) - see ADR-006
+## 🎯 Quick Start
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 📖 About
-
-**OS Post-Install Scripts** is a comprehensive automation toolkit that transforms hours of manual setup into minutes of automated configuration. Whether you're setting up a new development machine, deploying multiple workstations, or just love having a perfectly configured system, this project has you covered.
-
-### 🎯 Who Is This For?
-
-- **👩‍💻 Developers** who want consistent development environments
-- **🚀 DevOps Engineers** managing multiple systems
-- **🎓 Students** setting up for courses or projects
-- **🏢 IT Professionals** deploying standardized workstations
-- **🐧 Linux Enthusiasts** who frequently distro-hop
-- **⚡ Anyone** who values their time and wants a perfect setup
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## ✨ Key Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 🔧 **System Configuration**
-- ✅ Automated software installation
-- ✅ Development environment setup
-- ✅ System optimizations
-- ✅ Security configurations
-- ✅ Backup solutions
-
-</td>
-<td width="50%">
-
-### 🎨 **Shell Enhancement**
-- ✅ 1700+ lines of Zsh optimizations
-- ✅ Rust-powered modern CLI tools
-- ✅ Custom themes and prompts
-- ✅ Intelligent auto-completions
-- ✅ Performance monitoring
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 📦 **Package Management**
-- ✅ APT (Debian/Ubuntu)
-- ✅ Flatpak (Universal)
-- ✅ Snap (Universal)
-- ✅ Winget (Windows)
-- ✅ Direct downloads
-
-</td>
-<td width="50%">
-
-### 🌐 **Cross-Platform**
-- ✅ Ubuntu (20.04, 22.04, 24.04)
-- ✅ Pop!_OS
-- ✅ Linux Mint
-- ✅ Windows 11
-- ✅ macOS (coming soon)
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 📁 Project Structure
-
-```
-os-postinstall-scripts/
-├── linux/                 # Linux scripts
-│   ├── main.sh           # 🎯 Central menu (NEW!)
-│   ├── install/          # Installation scripts
-│   │   ├── apt.sh        # APT packages
-│   │   ├── flatpak.sh    # Flatpak apps
-│   │   ├── snap.sh       # Snap packages
-│   │   └── desktop-environments.sh
-│   ├── verify/           # Verification tools
-│   │   └── check-installation.sh
-│   ├── utils/            # Utilities
-│   │   └── logging.sh    # Logging system
-│   └── post_install.sh   # Legacy entry point
-├── windows/              # Windows scripts
-│   └── win11.ps1
-├── tests/                # Test suite
-│   ├── test_harness.sh   # 50+ automated tests
-│   └── script_inventory.md
-├── zshrc                 # Advanced Zsh (1700+ lines)
-├── install-rust-tools.sh # Rust CLI tools
-└── VERSION              # Semantic versioning
-```
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 🚀 Quick Start
-
-### 🐧 Linux Installation
-
-<details open>
-<summary><b>Option 1: Full Installation (Recommended)</b></summary>
-
+### One Command Install (Recommended)
 ```bash
-# Clone the repository
+curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
+```
+
+### Manual Install
+```bash
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
-
-# NEW: Run the interactive menu
-cd linux
-./main.sh
-
-# Or use the legacy installer
-sudo ./post_install.sh
+./setup.sh
 ```
 
-</details>
-
-<details>
-<summary><b>Option 2: Zsh Configuration Only</b></summary>
-
+### Interactive Mode
 ```bash
-# Quick install (backs up existing config)
-curl -fsSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/zshrc > ~/.zshrc.new
-[ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.backup
-mv ~/.zshrc.new ~/.zshrc
-
-# Install Oh My Zsh and required plugins
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-source ~/.zshrc
+./linux/main.sh  # Menu-driven installation
 ```
 
-</details>
+---
 
-<details>
-<summary><b>Option 3: Selective Installation</b></summary>
-
-```bash
-# Install only specific components
-cd linux/auto
-
-# Choose what to install:
-./auto_apt.sh      # APT packages only
-./auto_flat.sh     # Flatpak apps only
-./auto_snap.sh     # Snap packages only
-```
-
-</details>
-
-### 🪟 Windows Installation
-
-<details>
-<summary><b>Windows 11 Setup</b></summary>
-
-```powershell
-# Run PowerShell as Administrator
-Set-ExecutionPolicy Bypass -Scope Process -Force
-
-# Clone and run
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
-cd os-postinstall-scripts\windows
-.\win11.ps1
-```
-
-</details>
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 📋 What Gets Installed?
+## 📦 What Gets Installed
 
 <details>
 <summary><b>🛠️ Development Tools</b></summary>
 
-| Category | Tools |
-|----------|-------|
-| **Version Control** | Git, Git LFS, GitHub CLI |
-| **Editors & IDEs** | VS Code, Vim, Neovim |
-| **Containers** | Docker, Docker Compose, Podman |
-| **Languages** | Python, Node.js, Rust, Go, Java |
-| **Databases** | PostgreSQL, MySQL, MongoDB tools |
-| **Build Tools** | Make, CMake, GCC, Clang |
+- **Version Control**: Git, Git LFS, GitHub CLI
+- **Containers**: Docker, Docker Compose, Podman
+- **Languages**: Python, Node.js, Rust, Go, Java
+- **Editors**: VS Code, Vim, Neovim
+- **Build Tools**: Make, CMake, GCC
 
 </details>
 
 <details>
-<summary><b>🎯 Productivity Software</b></summary>
-
-| Category | Applications |
-|----------|-------------|
-| **Communication** | Discord, Slack, Teams, Telegram |
-| **Office** | LibreOffice, OnlyOffice |
-| **Notes** | Obsidian, Joplin, Simplenote |
-| **Browsers** | Firefox, Chrome, Brave |
-| **Media** | VLC, Spotify, OBS Studio |
-| **Utilities** | Flameshot, Timeshift, Stacer |
-
-</details>
-
-<details>
-<summary><b>🦀 Modern CLI Tools (Rust-Powered)</b></summary>
-
-### Core Replacements
+<summary><b>🦀 Modern CLI Tools</b></summary>
 
 | Traditional | Modern | Description |
-|-------------|---------|-------------|
-| `cat` | `bat` | Syntax highlighting, Git integration |
-| `ls` | `eza` | Icons, tree view, Git status |
-| `find` | `fd` | Intuitive syntax, faster |
-| `grep` | `ripgrep` | Faster, respects .gitignore |
-| `cd` | `zoxide` | Smarter navigation with learning |
-| `sed` | `sd` | Intuitive find & replace |
-| `du` | `dust` | Visual disk usage in tree format |
-| `top` | `bottom` | Better resource monitor |
-| `diff` | `delta` | Beautiful Git diffs |
+|-------------|--------|-------------|
+| `cat` | `bat` | Syntax highlighting |
+| `ls` | `eza` | Icons & Git status |
+| `find` | `fd` | Intuitive & fast |
+| `grep` | `ripgrep` | Blazing fast |
+| `cd` | `zoxide` | Smart navigation |
 
-### Development Tools
-
-| Tool | Description |
-|------|-------------|
-| `cargo-watch` | Auto-reload for Rust projects |
-| `cargo-edit` | Add dependencies via CLI |
-| `cargo-audit` | Check for security vulnerabilities |
-| `bacon` | Background Rust task runner |
-| `tokei` | Code statistics and metrics |
-
-### Additional Productivity Tools
-
-| Tool | Description |
-|------|-------------|
-| `starship` | Customizable cross-shell prompt |
-| `helix` | Modern modal text editor |
-| `gitui` | Terminal UI for Git |
-| `xsv` | CSV data manipulation |
-| `httpie` | Modern HTTP client |
-
-### Quick Installation
-
-```bash
-# Install all Rust tools at once
-curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/install_rust_tools.sh | bash
-```
-
-The system includes intelligent fallbacks - if Rust tools aren't installed, it automatically uses traditional commands.
+Install all Rust tools: `./install_rust_tools.sh`
 
 </details>
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
+<details>
+<summary><b>🎨 Shell Configuration</b></summary>
 
-## 🎨 Zsh Configuration
+- **Zsh** with Oh My Zsh
+- **Starship** prompt
+- **1700+ lines** of optimizations
+- **100+ aliases** and functions
+- **Auto-completions** and suggestions
 
-Our advanced Zsh setup transforms your terminal into a productivity powerhouse:
+</details>
 
-### ⚡ Quick Commands
+<details>
+<summary><b>📱 Applications</b></summary>
 
-| Command | Description |
-|---------|-------------|
-| `qm` | **Quick Menu** - Interactive command palette |
-| `update` | Update all packages across package managers |
-| `backup_configs` | Backup your configurations |
-| `gi [type]` | Generate .gitignore files |
-| `extract [file]` | Extract any archive format |
-| `weather` | Check weather in terminal |
+- **Browsers**: Firefox, Chrome, Brave
+- **Communication**: Discord, Slack, Telegram
+- **Productivity**: Obsidian, LibreOffice, Flameshot
+- **Media**: VLC, Spotify, OBS Studio
+- **Utilities**: Timeshift, Stacer, Htop
 
-### 🎯 Smart Aliases
+</details>
 
-```bash
-# Navigation
-z project    # Jump to project directory (frecency-based)
-up 3         # Go up 3 directories
-mkcd folder  # Create and enter directory
+---
 
-# Git
-gs           # Git status with summary
-gco feature  # Checkout branch
-gcm "msg"    # Commit with message
-gp           # Push with upstream tracking
-glog         # Beautiful git log
+## 🖥️ Supported Systems
 
-# Docker
-dps          # Better docker ps
-dex nginx    # Execute into container
-dlog app     # Follow container logs
-dclean       # Clean unused resources
-```
+- ✅ **Linux**: Ubuntu 20.04+, Pop!_OS, Mint, Fedora, Arch
+- ✅ **Windows**: Windows 11 (PowerShell)
+- 🚧 **macOS**: Basic support (expanding)
 
-### 🚀 Performance Features
+---
 
-- **Instant Prompt** with Powerlevel10k
-- **Lazy Loading** for heavy tools (nvm, rbenv)
-- **Smart Caching** for completions
-- **Async Git** status updates
-- **Optimized PATH** management
+## ⚡ Features
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
+- 🎯 **One-command setup** - Get running in minutes
+- 📦 **Smart package management** - APT, Snap, Flatpak, Winget
+- 🔒 **Security first** - Safe APT lock handling, no forced removals
+- 🧪 **Tested** - CI/CD with GitHub Actions
+- 📝 **Well documented** - Clear guides and examples
+- 🛠️ **Modular** - Install only what you need
+- 🔄 **Idempotent** - Safe to run multiple times
 
-## 🛡️ Security & Best Practices
-
-- 🔒 **No Hardcoded Secrets** - Uses `.env.local` for sensitive data
-- 🔑 **SSH Key Management** - Automated SSH agent setup
-- 🛡️ **Firewall Configuration** - UFW setup included
-- 📝 **Backup System** - Configuration backup with rotation
-- ✅ **Verified Sources** - Only official repositories and packages
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
+---
 
 ## 📚 Documentation
 
-<div align="center">
+- 📖 [**User Guide**](docs/user-guide.md) - Detailed instructions
+- 🏗️ [**Architecture**](docs/core-architecture.md) - How it works
+- 🤝 [**Contributing**](CONTRIBUTING.md) - Help us improve
+- 📋 [**Changelog**](CHANGELOG.md) - What's new
+- 🗺️ [**Roadmap**](ROADMAP.md) - Where we're going
 
-| 📖 Resource | 📝 Description |
-|------------|---------------|
-| [**User Guide**](docs/user-guide.md) | Complete usage instructions |
-| [**CLAUDE.md**](CLAUDE.md) | AI Context Engineering guidelines (v2.3.0) |
-| [**Project Status**](STATUS.md) | Current project health and tracking |
-| [**Requirements**](PRD.md) | Product requirements and objectives |
-| [**User Stories**](STORIES.md) | User journeys and feature mapping |
-| [**Testing Guide**](TESTING.md) | Testing Trophy strategy for scripts |
-| [**Zsh Guide**](.ai/ZSH_CONFIGURATION_GUIDE.md) | Advanced shell configuration |
-| [**Contributing**](CONTRIBUTING.md) | How to contribute |
-| [**Architecture Decisions**](docs/adrs/) | Key technical decisions (ADRs) |
-| [**Changelog**](CHANGELOG.md) | Version history |
+### For Developers
+- 🏛️ [Architecture Decisions](.github/PROJECT_DOCS/adrs/) - Why we built it this way
+- 📋 [Project Status](.github/PROJECT_DOCS/STATUS.md) - Current development status
+- 🤖 [AI Context](.github/AI_CONTEXT/CLAUDE.md) - For AI-assisted development
 
-</div>
-
-### 🤖 AI-Powered Development
-
-This project uses **CLAUDE.md v2.3.0** for Context Engineering, ensuring:
-- 🎯 **Consistent AI interactions** - All AI assistants have full context
-- 📋 **Smart documentation** - Self-modulating based on project needs  
-- 🧪 **Testing Trophy approach** - Focus on integration tests that matter
-- 🌍 **Cross-platform excellence** - Unified experience across OS
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 🚦 Requirements
-
-### Minimum System Requirements
-
-- **OS**: Ubuntu 20.04+, Pop!_OS 20.04+, Linux Mint 19+, Windows 11
-- **RAM**: 4GB (8GB recommended)
-- **Storage**: 20GB free space
-- **Internet**: Required for package downloads
-- **Privileges**: sudo/admin access
-
-### Pre-Installation Checklist
-
-- [ ] Backup your important data
-- [ ] Note your current configurations
-- [ ] Have sudo/admin password ready
-- [ ] Stable internet connection
-- [ ] At least 1 hour of time (full installation)
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 🎯 Customization
-
-### Adding Your Own Packages
-
-<details>
-<summary><b>Linux Packages</b></summary>
-
-Edit the arrays in `linux/auto/auto_apt.sh`:
-
-```bash
-APT_INSTALL=(
-    # Add your packages here
-    "your-package"
-    "another-package"
-)
-```
-
-</details>
-
-<details>
-<summary><b>Windows Packages</b></summary>
-
-Edit the array in `windows/win11.ps1`:
-
-```powershell
-$packages = @(
-    # Add your packages here
-    "Company.Package"
-    "Another.Package"
-)
-```
-
-</details>
-
-### Personal Configuration
-
-Create `.zshrc.local` for your personal settings:
-
-```bash
-# ~/.zshrc.local
-export MY_API_KEY="your-key"
-alias myproject="cd ~/projects/myproject"
-
-# Your custom functions
-function my_function() {
-    echo "My custom function"
-}
-```
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 📊 Installation Process Flow
-
-```
-┌─────────────┐
-│   START     │
-└──────┬──────┘
-       │
-       ▼
-┌──────────────┐     ┌─────────────────┐     ┌──────────────┐
-│ First Time?  │ YES │   Clone Repo    │     │ Choose Type  │
-│              ├────▶│ & Initial Setup ├────▶│              │
-└──────┬───────┘     └─────────────────┘     └───────┬──────┘
-       │ NO                                           │
-       └──────────────────────────────────────────────┘
-                                                      │
-        ┌─────────────┬──────────────┬────────────────┼────────────────┬──────────────┐
-        ▼             ▼              ▼                ▼                ▼              ▼
-┌───────────┐ ┌──────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌────────────┐
-│   Full    │ │     Zsh      │ │  Selective  │ │   Windows   │ │    Rust     │ │   Custom   │
-│  Install  │ │     Only     │ │   Install   │ │   Install   │ │    Tools    │ │   Config   │
-└─────┬─────┘ └──────┬───────┘ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └─────┬──────┘
-      │              │                 │               │               │               │
-      ▼              ▼                 ▼               ▼               ▼               ▼
-┌───────────┐ ┌──────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌────────────┐
-│   Run:    │ │  Copy zshrc  │ │   Choose:   │ │     Run     │ │   Install   │ │   Create   │
-│post_install│ │  Install     │ │ • auto_apt  │ │  win11.ps1  │ │  Rust CLI   │ │ .zshrc.local│
-│    .sh     │ │  Oh My Zsh   │ │ • auto_flat │ │  (as Admin) │ │    Tools    │ │   files    │
-└─────┬─────┘ └──────┬───────┘ │ • auto_snap │ └──────┬──────┘ └──────┬──────┘ └─────┬──────┘
-      │              │          └──────┬──────┘        │               │               │
-      ▼              ▼                 ▼               ▼               ▼               ▼
-┌───────────┐ ┌──────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌────────────┐
-│ Complete  │ │   Source     │ │     Run     │ │   Restart   │ │   Verify    │ │   Ready!   │
-│   Setup   │ │   ~/.zshrc   │ │  Selected   │ │   Terminal  │ │   Tools     │ │            │
-└───────────┘ └──────────────┘ └─────────────┘ └─────────────┘ └─────────────┘ └────────────┘
-```
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
+---
 
 ## 🤝 Contributing
 
-We love contributions! This project uses the **[BMad Method](.ai/README.md)** for AI-assisted development.
+We love contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-### How to Contribute
-
+### Quick Contribution Guide
 1. 🍴 Fork the repository
-2. 🌿 Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. 📝 Follow our [conventions](.ai/conventions/CONVENTIONS.md)
-4. ✅ Test your changes
-5. 📊 Commit with meaningful messages
-6. 🚀 Push and create a Pull Request
+2. 🌿 Create a feature branch
+3. 📝 Make your changes
+4. ✅ Run tests: `./tests/test_harness.sh`
+5. 📤 Submit a pull request
 
-### Development Setup
+### Priority Areas
+- 🍎 **macOS scripts** - Expand platform support
+- 🧪 **Tests** - Increase coverage
+- 📚 **Documentation** - Improve guides
+- 🌍 **Translations** - Make it global
 
-```bash
-# Clone your fork
-git clone https://github.com/YOUR_USERNAME/os-postinstall-scripts
-cd os-postinstall-scripts
+---
 
-# Install development tools
-./setup.sh --dev
+## 🛡️ Security
 
-# Run tests
-make test
+- ✅ **No forced lock removal** - Safe APT operations
+- ✅ **Input validation** - Protected against injection
+- ✅ **Audit logging** - Track all operations
+- 🐛 Found a vulnerability? See [SECURITY.md](SECURITY.md)
 
-# Check code quality
-make lint
-```
+---
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
+## 📄 License
 
-## 🗺️ Roadmap
+GPL v3 - see [LICENSE](LICENSE) for details.
 
-<div align="center">
-
-| Status | Feature | Target | Version |
-|--------|---------|--------|---------|
-| ✅ | Linux support (Ubuntu, Pop!_OS, Mint) | Done | v1.0.0 |
-| ✅ | Windows 11 support | Done | v2.0.0 |
-| ✅ | Advanced Zsh configuration | Done | v2.0.0 |
-| ✅ | CI/CD with GitHub Actions | Done | v2.1.0 |
-| ✅ | Test harness & security improvements | Done | v2.1.0 |
-| ✅ | Script reorganization & modular structure | Done | v2.2.0 |
-| 📋 | macOS support | Q3 2025 | v3.0.0 |
-| 📋 | GUI installer | Q4 2025 | v3.1.0 |
-| 📋 | Ansible playbooks | Q4 2025 | v3.2.0 |
-| 📋 | Profile-based installations | 2026 | v4.0.0 |
-
-</div>
+---
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 📊 Project Stats
-
-<div align="center">
-
-![GitHub stars](https://img.shields.io/github/stars/BragatteMAS/os-postinstall-scripts?style=social)
-![GitHub forks](https://img.shields.io/github/forks/BragatteMAS/os-postinstall-scripts?style=social)
-![GitHub issues](https://img.shields.io/github/issues/BragatteMAS/os-postinstall-scripts)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/BragatteMAS/os-postinstall-scripts)
-
-</div>
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
-</div>
-
-## 🌟 Acknowledgments
-
-<div align="center">
-
-Special thanks to all contributors and projects that make this possible:
-
-**Created and maintained by** [**@BragatteMAS**](https://github.com/BragatteMAS)
-
-Enhanced with [**BMad Method**](https://github.com/bmadcode/bmad-method) • Powered by [**Modern Unix**](https://github.com/ibraheemdev/modern-unix) tools
-
-</div>
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" alt="rainbow line" width="100%" height="3px" />
-
-<h3>⭐ Star this project if it helps you!</h3>
-
-<p>Made with ❤️ for the open source community</p>
-
-[Report Bug](https://github.com/BragatteMAS/os-postinstall-scripts/issues) • 
-[Request Feature](https://github.com/BragatteMAS/os-postinstall-scripts/issues) • 
-[Join Discussions](https://github.com/BragatteMAS/os-postinstall-scripts/discussions)
-
+<sub>Built with ❤️ by developers, for developers</sub>
 </div>
