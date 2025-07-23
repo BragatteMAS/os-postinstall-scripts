@@ -1,75 +1,123 @@
-# BMad-Method Agentic Agile Driven Development User Guide
+# 📚 OS Post-Install Scripts User Guide
 
-This comprehensive guide will help you understand and effectively use the BMad Method framework for AI-assisted software development along with many expansion purposes.
+Complete guide for using OS Post-Install Scripts to set up your development environment quickly and efficiently.
 
 ## Table of Contents
 
-1. [Understanding BMad](#understanding-bmad)
-2. [Getting Started](#getting-started)
-3. [Agent System](#agent-system)
-4. [Templates and Document Creation](#templates-and-document-creation)
-5. [Development Workflow](#development-workflow)
-6. [IDE Integration](#ide-integration)
-7. [Web UI Usage](#web-ui-usage)
-8. [Advanced Features](#advanced-features)
+1. [Overview](#overview)
+2. [Quick Start](#quick-start)
+3. [Installation Methods](#installation-methods)
+4. [Using Profiles](#using-profiles)
+5. [Script Components](#script-components)
+6. [Customization](#customization)
+7. [Advanced Usage](#advanced-usage)
+8. [Maintenance](#maintenance)
 
-## Understanding BMad
+## Overview
 
-### What is BMad-Method?
+### What is OS Post-Install Scripts?
 
-BMad-Method (Breakthrough Method of Agile AI-Driven Development) is an AI agent orchestration framework that provides specialized AI agents for every role in a complete Agile development team. Unlike generic AI assistants, each BMad agent has deep expertise in their specific domain and can collaborate with you using advanced elicitation techniques, and guided workflows
+A comprehensive collection of scripts that automatically configure a fresh operating system installation with development tools, modern CLI utilities, and optimized shell configurations. Save hours of manual setup with our battle-tested installation scripts.
 
-### Core Principles
+### Key Features
 
-1. **Specialized Expertise**: Each agent focuses on a specific role (PM, Architect, Developer, QA, etc.)
-2. **True Agile Workflow**: Follows real Agile methodologies with proper story management
-3. **Self-Contained Templates**: Documents embed both output and processing instructions
-4. **Dynamic Dependencies**: Agents only load resources they need
-5. **Platform Agnostic**: Works with any Project Type or Agentic IDE
+1. **One-Command Setup**: Get a complete dev environment in minutes
+2. **Profile-Based Installation**: Choose pre-configured setups for your role
+3. **Cross-Platform**: Works on Linux, macOS, and Windows (WSL)
+4. **Modern Tools**: Includes Rust-powered CLI tools that replace traditional Unix utilities
+5. **Safe Operations**: Never forces package manager locks, validates inputs
+6. **Customizable**: Modular design lets you install only what you need
 
-### When to Use BMad
+### What Gets Installed
 
-- **New Projects (Greenfield)**: Complete end-to-end development
-- **Existing Projects (Brownfield)**: Feature additions and enhancements
-- **Team Collaboration**: Multiple roles working together
-- **Quality Assurance**: Structured testing and validation
-- **Documentation**: Professional PRDs, architecture docs, user stories
+- **Development Tools**: Git, Docker, VS Code, multiple programming languages
+- **Modern CLI**: bat (cat), eza (ls), ripgrep (grep), fd (find), and more
+- **Shell Enhancement**: Zsh with Oh My Zsh, Starship prompt, 1700+ lines of optimizations
+- **Productivity Apps**: Browsers, communication tools, media players
+- **System Utilities**: Package managers, system monitors, backup tools
 
-## Getting Started
+## Quick Start
 
-### Installation Options
-
-#### Option 1: Web UI (Fastest - 2 minutes)
-
-If you want to do the planning int he Web:
-
-1. Navigate to `dist/teams/`
-2. Copy `team-fullstack.txt` content
-3. Create new Gemini Gem or CustomGPT
-4. Upload file with instructions: "Your critical operating instructions are attached, do not break character as directed"
-5. Type `/help` to see available commands
-
-#### Option 2: IDE Integration (5 minutes)
+### Fastest Installation
 
 ```bash
-# Interactive installation (recommended)
-npx bmad-method install
+# One-line install (uses developer-standard profile)
+curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
 ```
 
-### CLI Commands
+### Recommended: Profile-Based Install
 
 ```bash
-# List all available agents
-npx bmad-method list
-
-# Install or update (automatically detects existing installations)
-npx bmad-method install
-
-# Check installation status
-npx bmad-method status
+# Clone and choose your profile
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+cd os-postinstall-scripts
+./setup-with-profile.sh
 ```
 
-## Agent System
+### Manual Control
+
+```bash
+# Interactive menu-driven installation
+./setup.sh  # or ./linux/main.sh for more options
+```
+
+### System Requirements
+
+- **OS**: Ubuntu 20.04+, Fedora 36+, macOS 12+, or Windows 11 (WSL2)
+- **RAM**: 4GB minimum (8GB recommended)
+- **Disk**: 10GB free space
+- **Network**: Internet connection required
+- **Permissions**: sudo/admin access
+
+## Installation Methods
+
+### Method 1: Profile-Based Installation (Recommended)
+
+Profiles are pre-configured sets of tools for specific use cases:
+
+```bash
+./setup-with-profile.sh
+```
+
+Available profiles:
+- **developer-standard**: Full development environment (15 min)
+- **developer-minimal**: Just essentials (5 min)
+- **devops**: Infrastructure and cloud tools (20 min)
+- **data-scientist**: Python, R, ML tools (25 min)
+- **student**: Multiple languages for learning (15 min)
+
+### Method 2: Interactive Menu
+
+```bash
+./setup.sh
+```
+
+Presents an interactive menu:
+1. 🦀 Install Rust tools only
+2. 📦 Install system packages
+3. 🔧 Complete setup (recommended)
+4. 🐍 Python with UV
+5. 🐳 Docker/Podman
+6. 📁 Sync dotfiles
+7. 🏃 Quick essentials
+8. 🔍 Check installed tools
+
+### Method 3: Individual Scripts
+
+For granular control:
+
+```bash
+# Just modern CLI tools
+./install_rust_tools.sh
+
+# Just Docker
+./linux/install/docker.sh
+
+# Just shell configuration
+./linux/config/zsh.sh
+```
+
+## Using Profiles
 
 ### Core Development Team
 
@@ -1111,32 +1159,93 @@ customTechnicalDocuments:
 - Check `architectureVersion` setting
 - Confirm sharding configuration matches reality
 
-### Extension Packs
+## Maintenance
 
-Add specialized capabilities:
+### Keeping Scripts Updated
 
-- **DevOps Pack**: CI/CD, deployment automation
-- **Mobile Pack**: iOS/Android development
-- **Data Pack**: Analytics, ML integration
-- **Security Pack**: Security analysis, compliance
+```bash
+# Pull latest changes
+git pull
 
-## Troubleshooting Guide
+# Check current version
+git describe --tags
+
+# See what's new
+cat CHANGELOG.md
+```
+
+### Version Management
+
+We use semantic versioning (MAJOR.MINOR.PATCH). See our [Versioning Guide](versioning-guide.md) for:
+- When to bump version numbers
+- Pre-release versioning (alpha, beta)
+- How versions relate to features and fixes
+- Integration with roadmap planning
+
+### Contributing Updates
+
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on:
+- Creating pull requests
+- Testing your changes
+- Following code standards
+- Updating documentation
+
+## Troubleshooting
+
+See our comprehensive [Troubleshooting Guide](troubleshooting.md) for solutions to common issues:
+- Installation problems
+- Shell configuration issues
+- Package manager errors
+- Platform-specific problems
+
+## Additional Resources
+
+### Documentation
+- [Quick Start Guide](quick-start.md) - Get started fast
+- [Installation Profiles](installation-profiles.md) - Choose your setup
+- [Modern CLI Tools](modern-cli-tools.md) - Master new tools
+- [Shell Customization](shell-customization.md) - Personalize your environment
+- [Troubleshooting](troubleshooting.md) - Fix common issues
+
+### Project Information
+- **GitHub**: [github.com/BragatteMAS/os-postinstall-scripts](https://github.com/BragatteMAS/os-postinstall-scripts)
+- **Issues**: [Report bugs or request features](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
+- **License**: GPL v3
+- **Changelog**: See [CHANGELOG.md](../CHANGELOG.md)
 
 ## Getting Help
 
-- **Discord Community**: [Join Discord](https://discord.gg/gk8jAdXWmj)
-- **GitHub Issues**: [Report bugs](https://github.com/bmadcode/bmad-method/issues)
-- **Documentation**: [Browse docs](https://github.com/bmadcode/bmad-method/tree/main/docs)
-- **YouTube**: [BMadCode Channel](https://www.youtube.com/@BMadCode)
+1. **Check Documentation First**
+   - This guide and linked documentation
+   - README.md for quick overview
+   - Troubleshooting guide for issues
+
+2. **Search Existing Issues**
+   - [GitHub Issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
+   - Someone may have already solved your problem
+
+3. **Create New Issue**
+   - Use issue templates
+   - Include system information
+   - Provide error messages
+   - Describe what you expected vs what happened
+
+4. **Community**
+   - Star the repo if you find it useful
+   - Share with others who might benefit
+   - Contribute improvements back
 
 ## Conclusion
 
-BMad-Method provides a comprehensive framework for AI-assisted software development. By following this guide, you'll be able to:
+OS Post-Install Scripts transforms the tedious task of setting up a new development environment into a simple, automated process. Whether you're:
 
-- Effectively use specialized AI agents
-- Create professional documentation
-- Follow structured development workflows
-- Integrate with your preferred tools
-- Maintain high quality standards
+- Setting up a new machine
+- Standardizing team environments
+- Learning modern CLI tools
+- Exploring different development stacks
 
-Remember: BMad is designed to enhance your development process, not replace your expertise. Use it as a powerful tool to accelerate your projects while maintaining control over design decisions and implementation details.
+These scripts save you hours of manual configuration while ensuring consistency and following best practices.
+
+**Remember**: Start with a profile that fits your needs, and customize from there. The scripts are modular and safe to run multiple times.
+
+Happy coding! 🚀
