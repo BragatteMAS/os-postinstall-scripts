@@ -363,13 +363,25 @@ dclean       # Clean unused resources
 | 📖 Resource | 📝 Description |
 |------------|---------------|
 | [**User Guide**](docs/user-guide.md) | Complete usage instructions |
+| [**CLAUDE.md**](CLAUDE.md) | AI Context Engineering guidelines (v2.3.0) |
+| [**Project Status**](STATUS.md) | Current project health and tracking |
+| [**Requirements**](PRD.md) | Product requirements and objectives |
+| [**User Stories**](STORIES.md) | User journeys and feature mapping |
+| [**Testing Guide**](TESTING.md) | Testing Trophy strategy for scripts |
 | [**Zsh Guide**](.ai/ZSH_CONFIGURATION_GUIDE.md) | Advanced shell configuration |
 | [**Contributing**](CONTRIBUTING.md) | How to contribute |
-| [**Conventions**](.ai/conventions/CONVENTIONS.md) | Coding standards |
-| [**Patterns**](.ai/patterns/PATTERNS.md) | Common implementation patterns |
-| [**Changelog**](CHANGELOG1.md) | Version history |
+| [**Architecture Decisions**](docs/adrs/) | Key technical decisions (ADRs) |
+| [**Changelog**](CHANGELOG.md) | Version history |
 
 </div>
+
+### 🤖 AI-Powered Development
+
+This project uses **CLAUDE.md v2.3.0** for Context Engineering, ensuring:
+- 🎯 **Consistent AI interactions** - All AI assistants have full context
+- 📋 **Smart documentation** - Self-modulating based on project needs  
+- 🧪 **Testing Trophy approach** - Focus on integration tests that matter
+- 🌍 **Cross-platform excellence** - Unified experience across OS
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
