@@ -1,6 +1,19 @@
 #!/usr/bin/env bash 
 set -euo pipefail
 IFS=$'\n\t'
+
+# Source safe package manager operations
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# Source safety module
+if [[ -f "${ROOT_DIR}/utils/package-manager-safety.sh" ]]; then
+    source "${ROOT_DIR}/utils/package-manager-safety.sh"
+else
+    echo "[ERROR] Required safety module not found: ${ROOT_DIR}/utils/package-manager-safety.sh" >&2
+    exit 1
+fi
+
 ##	+-----------------------------------+-----------------------------------+
 ##	|                                                                       |
 ##	|                        Pos Install Scrypt                             |
@@ -146,30 +159,38 @@ geogebra               		#Research|dynamic geometry program
 #sudo add-apt-repository ppa:lutris-team/lutris
 
 ### --------------------- Basic system utilities ---------------------- ###
-## Removing any apt locks ##
-sudo rm /var/lib/dpkg/lock-frontend
-sudo rm /var/cache/apt/archives/lock
+## Wait for APT locks to be free
+log_section "Preparing System"
+wait_for_apt
 
 ## Adding / Confirming 32-bit Architecture ##
 sudo dpkg --add-architecture i386
 
 ## Updating the repository ##
-sudo apt update -y
+log_info "Updating package lists..."
+safe_apt_update
 
 ##Packages of apps for Linux
-sudo apt install snapd -y
-
-sudo apt install flatpak -y
+log_info "Installing package managers..."
+safe_apt_install "snapd"
+safe_apt_install "flatpak"
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # ---------------------------------------------------------------------- #
 ## Install programs APT
-for apt_program in ${APT_INSTALL[@]}; do
-  if ! dpkg -l | grep -q $apt_program; then     # Just install if not exist
-    apt install -y "$apt_program"               #$# Change this line if you have other distro than debian/ubuntu base
-  else
-    echo "[successful installation] - $apt_program"
-  fi
+log_section "Installing APT packages" "-" 40
+
+total_packages=${#APT_INSTALL[@]}
+current_package=0
+
+for apt_program in "${APT_INSTALL[@]}"; do
+    current_package=$((current_package + 1))
+    log_progress $current_package $total_packages "Installing APT packages"
+    
+    # Use safe installation function
+    if ! safe_apt_install "$apt_program"; then
+        log_warning "Failed to install $apt_program, continuing with other packages..."
+    fi
 done
 
 ## Install programs SNAP
@@ -191,14 +212,14 @@ done
 sudo apt install apt-transport-https curl -y
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-sudo apt update -y
-sudo apt install brave-browser -y   #faster/browser
+safe_apt_update
+safe_apt_install "brave-browser"   #faster/browser
 
 ##Github Desktop
 wget -qO - https://packagecloud.io/shiftkey/desktop/gpgkey | sudo apt-key add -
 sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/shiftkey/desktop/any/ any main" > /etc/apt/sources.list.d/packagecloud-shiftky-desktop.list'
-sudo apt-get update
-sudo apt install github-desktop -y
+safe_apt_update
+safe_apt_install "github-desktop"
 
 
 ### ------------------------------------------------------------------- ###
@@ -210,8 +231,17 @@ sudo chmod 777 -R "$Dir_Downloads"
 #wget -c "$URL_GOOGLE_CHROME" -P "$Dir_Downloads"
 
 ## Installing .deb packages ##
-sudo dpkg -i $Dir_Downloads/*.deb
-sudo apt update -y
+if ls $Dir_Downloads/*.deb 1> /dev/null 2>&1; then
+    log_info "Installing downloaded .deb packages..."
+    if wait_for_apt; then
+        sudo dpkg -i $Dir_Downloads/*.deb
+        # Fix any dependency issues
+        if ! sudo apt-get install -f -y; then
+            log_error "Failed to resolve dependencies"
+        fi
+    fi
+fi
+safe_apt_update
 
 ### ---------------------------- After install ------------------------ ###
 
@@ -221,11 +251,31 @@ sudo apt update -y
 sudo add-apt-repository --remove ppa:linux/chrome/deb/
 
 # ---------------------------------------------------------------------- #
-sudo apt update && sudo apt upgrade && apt dist-upgrade -y
+log_section "Final System Update and Cleanup" "=" 50
+
+safe_apt_update
+
+log_info "Performing system upgrade..."
+if wait_for_apt; then
+    if sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y; then
+        log_success "System upgrade completed"
+    else
+        log_error "System upgrade failed"
+    fi
+fi
+
+log_info "Updating Snap packages..."
 sudo snap refresh
+
+log_info "Updating Flatpak packages..."
 flatpak update -y
-sudo apt autoclean
-sudo apt autoremove -y
+
+log_info "Cleaning up packages..."
+if wait_for_apt; then
+    sudo apt-get autoclean
+    sudo apt-get autoremove -y
+    log_success "Package cleanup completed"
+fi
 # ---------------------------------------------------------------------- #
 echo '\n All done! Reboot your pc, run this script a second time to check the instalation confirmation message and keep walking!'
 ### ------------------------------------------------------------------- ####
