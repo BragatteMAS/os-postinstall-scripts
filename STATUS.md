@@ -1,6 +1,6 @@
 # 📊 Project Status Dashboard - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-23 | **Project Version:** 2.2.0 | **CLAUDE.md Version:** 2.3.0
+> **Last Updated:** 2025-07-23 | **Project Version:** 2.3.0 | **CLAUDE.md Version:** 2.3.0
 
 ## 📈 Overall Health: 🔴 Critical Issues Found (v3.0.0 postponed)
 
@@ -64,7 +64,7 @@
 - **Platform Support:** Linux (100%), Windows (80%), macOS (20%)
 - **Test Coverage:** ~5% (only basic checks - see ADR-006)
 - **Documentation Coverage:** 100% (all core docs complete)
-- **Last Major Release:** v2.2.0 (2025-07-10)
+- **Last Major Release:** v2.3.0 (2025-07-23)
 
 ## 🔄 Update Schedule
 

@@ -198,8 +198,11 @@ The OS Post-Install Scripts project addresses this pain point by providing a com
 | v2.0.0 - Modular Architecture | 2024-12-15 | ✅ Complete |
 | v2.1.0 - Test Framework | 2025-07-10 | ✅ Complete |
 | v2.2.0 - Interactive System | 2025-07-10 | ✅ Complete |
-| v2.3.0 - CLAUDE.md Integration | 2025-07-30 | 🚧 In Progress |
-| v3.0.0 - Full Platform Parity | 2025-09-01 | 📋 Planned |
+| v2.3.0 - CLAUDE.md Integration | 2025-07-23 | ✅ Complete |
+| v2.3.1 - Security Hotfix (Epic 0.1) | 2025-07-30 | 🚨 Critical |
+| v2.4.0 - Real Testing Framework | 2025-08-15 | 📋 Planned |
+| v2.5.0 - Core/Adapters Architecture | 2025-09-01 | 📋 Planned |
+| v3.0.0 - Full Platform Parity | 2025-09-30 | ⏸️ Postponed |
 
 ## Risk Assessment
 
