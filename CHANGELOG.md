@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Upcoming
+- Complete security tests for APT operations (v2.3.1)
+- Implement bats-core testing framework (v2.4.0)
+- Core/Adapters architecture (v2.5.0)
+- Full platform parity (v3.0.0)
+
+---
+
+## OS Post-Install Scripts Releases
+
 ### [2.3.1-alpha.2] - 2025-07-23
 #### Security
 - ✅ Completed migration of ALL APT scripts to safe lock handling
@@ -48,8 +58,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Still updating: auto_apt.sh, post_install.sh, verify_apt.sh
 - Security tests pending implementation
 
-## CLAUDE.md Global Updates
-The following entries are from the global CLAUDE.md changelog and represent AI interaction guidelines updates:
+### [2.3.0] - 2025-07-23
+#### Added
+- CLAUDE.md v2.3.0 integration for Context Engineering
+- PRD.md with comprehensive project requirements
+- STORIES.md with user journey mapping and Epic 0
+- STATUS.md for project health tracking
+- TESTING.md with Testing Trophy strategy
+- 8 Architecture Decision Records (ADRs)
+- BMAD Method v4.30 integration
+
+#### Changed
+- Project now follows Context Engineering principles
+- Documentation structure aligned with CLAUDE.md standards
+- Adopted transparent communication about test coverage
+
+#### Security
+- Discovered critical APT lock vulnerability (see v2.3.1)
+
+---
+
+## CLAUDE.md Framework Updates
+*These entries document the evolution of the CLAUDE.md AI interaction framework:*
 
 ### [2.3.0] - 2025-07-23
 #### Added

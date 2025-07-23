@@ -225,4 +225,5 @@ The OS Post-Install Scripts project addresses this pain point by providing a com
 - [CHANGELOG.md](CHANGELOG.md) - Version history
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
 - [STATUS.md](STATUS.md) - Current project status
-- [STORIES.md](STORIES.md) - User stories and journeys (to be created)
+- [STORIES.md](STORIES.md) - User stories and journeys
+- [ROADMAP.md](ROADMAP.md) - Project roadmap and future vision
