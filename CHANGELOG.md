@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [2.3.1-alpha.1] - 2025-07-23
+#### Security
+- Implemented safe APT lock handling module (utils/package-manager-safety.sh)
+- Added centralized logging system (utils/logging.sh)
+- Started migration from dangerous force-removal to safe wait mechanisms
+
+#### Changed
+- Updated linux/install/apt.sh to use safe package manager operations
+- Replaced `sudo rm /var/lib/dpkg/lock-frontend` with proper wait logic
+- Added package name validation to prevent injection attacks
+
+#### Added
+- Package operation audit trail in /var/log/os-postinstall/
+- Timeout and retry mechanisms for APT operations
+- Progress indicators for package installation
+
+#### Work in Progress
+- Still updating: auto_apt.sh, post_install.sh, verify_apt.sh
+- Security tests pending implementation
+
 ## CLAUDE.md Global Updates
 The following entries are from the global CLAUDE.md changelog and represent AI interaction guidelines updates:
 
