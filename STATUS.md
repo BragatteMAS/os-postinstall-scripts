@@ -2,7 +2,7 @@
 
 > **Last Updated:** 2025-07-23 | **Project Version:** 2.2.0 | **CLAUDE.md Version:** 2.3.0
 
-## 📈 Overall Health: 🟢 Excellent (all core docs complete)
+## 📈 Overall Health: 🔴 Critical Issues Found (v3.0.0 postponed)
 
 ## 📋 Documentation Status
 
@@ -28,11 +28,12 @@
 | Linux Scripts | ✅ Active | 100% | Well organized in modular structure |
 | macOS Scripts | ⚠️ Minimal | 20% | Basic structure, needs expansion |
 | Windows Scripts | ✅ Active | 80% | Good Win11 coverage |
-| Tests | ✅ Active | 100% | 50 tests passing |
+| Tests | ⚠️ Basic | ~20 checks | Only existence/permission checks (see ADR-006) |
 | BMAD Integration | ✅ Active | v4.30 | Updated successfully |
 | CI/CD | ✅ Active | 100% | GitHub Actions working |
 | Documentation | ✅ Active | 100% | All core docs complete! |
-| ADRs | ✅ Active | 4 ADRs | Key decisions documented |
+| ADRs | ✅ Active | 8 ADRs | 3 critical issues + v3.0.0 postponement |
+| **Security** | 🔴 Critical | - | - | 🔴 | APT lock vulnerability (ADR-005) |
 
 ## 🎯 Current Sprint Focus
 
@@ -45,9 +46,14 @@
    - [x] Create initial ADRs
    - [x] Update README with CLAUDE.md section
 
-2. **Next Sprint: Implementation** (Starting Soon)
+2. **Epic 0: Critical Fixes** 🚨 BLOCKING v3.0.0
+   - [ ] Fix APT lock security vulnerability (ADR-005)
+   - [ ] Implement real testing framework (ADR-006)
+   - [ ] Implement core/adapters architecture (ADR-007)
+   - [ ] Update documentation with transparency
+   
+3. **Next Sprint: Implementation** (After Epic 0)
    - [ ] Create examples/ directory with approved patterns
-   - [ ] Implement Testing Trophy tests
    - [ ] Expand macOS support to 80%
    - [ ] Create ARCHITECTURE.md
    - [ ] Create MAINTENANCE.md
@@ -56,7 +62,7 @@
 
 - **Script Count:** 35+ automation scripts
 - **Platform Support:** Linux (100%), Windows (80%), macOS (20%)
-- **Test Coverage:** 100% (50 tests)
+- **Test Coverage:** ~5% (only basic checks - see ADR-006)
 - **Documentation Coverage:** 100% (all core docs complete)
 - **Last Major Release:** v2.2.0 (2025-07-10)
 
