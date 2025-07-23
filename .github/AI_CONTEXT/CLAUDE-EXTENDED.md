@@ -13,11 +13,12 @@
 3. [Testing Trophy](#testing-trophy)
 4. [Padrões de Código](#padroes-codigo)
 5. [Documentos do Projeto](#documentos-projeto)
-6. [Comandos Slash](#comandos-slash)
-7. [Captura de Prompts](#captura-prompts)
-8. [Cross-Platform](#cross-platform)
-9. [Modernidade](#modernidade)
-10. [Código Agnóstico](#codigo-agnostico)
+6. [Versionamento Semântico](#versionamento-semantico)
+7. [Comandos Slash](#comandos-slash)
+8. [Captura de Prompts](#captura-prompts)
+9. [Cross-Platform](#cross-platform)
+10. [Modernidade](#modernidade)
+11. [Código Agnóstico](#codigo-agnostico)
 
 ---
 
@@ -307,6 +308,86 @@ Como [persona], eu quero [ação] para [benefício]
 2. **Evolução**: Atualize conforme aprende
 3. **Revisão**: Monthly para docs principais
 4. **Arquivamento**: Versione decisões antigas
+
+---
+
+## 📊 Versionamento Semântico {#versionamento-semantico}
+
+### Estratégia Simplificada
+
+Usamos **Semantic Versioning**: `MAJOR.MINOR.PATCH`
+
+#### Decisão Rápida
+
+```
+Quebra compatibilidade? → MAJOR (3.0.0)
+Adiciona feature? → MINOR (2.4.0)  
+Corrige bug? → PATCH (2.3.1)
+```
+
+#### Detalhamento
+
+**MAJOR (X.0.0)**
+- Mudanças que quebram uso existente
+- Remoção de features
+- Mudança de sintaxe de comandos
+- Arquitetura nova
+
+**MINOR (0.X.0)**
+- Features novas sem quebrar existentes
+- Novos comandos/opções
+- Suporte a nova plataforma
+- Melhorias significativas
+
+**PATCH (0.0.X)**
+- Correções de bugs
+- Melhorias de performance
+- Atualizações de documentação
+- Ajustes de segurança
+
+### Pre-releases
+
+```bash
+2.3.1-alpha.1  # Primeira tentativa
+2.3.1-alpha.4  # Quarta iteração
+2.3.1-beta.1   # Feature complete, testando
+2.3.1          # Estável
+```
+
+### Tags vs Branches
+
+**Tags para:**
+- Releases: `v2.3.0`
+- Milestones: `v2.3.1-alpha.4`
+
+**Branches para:**
+- Desenvolvimento: `feature/nome`
+- Correções: `fix/nome`
+
+### Integração com ROADMAP
+
+```markdown
+## v2.4.0 - Profile Enhancement ⬆️ MINOR
+- Custom profiles
+- Profile inheritance
+
+## v3.0.0 - Breaking Changes ⬆️ MAJOR  
+- Nova sintaxe CLI
+- Remove suporte Ubuntu 20.04
+```
+
+### Commits e Versões
+
+```bash
+# Features → próximo MINOR
+feat: add data scientist profile
+
+# Fixes → próximo PATCH
+fix: correct APT timeout
+
+# Breaking → próximo MAJOR
+BREAKING CHANGE: remove Python 2 support
+```
 
 ---
 

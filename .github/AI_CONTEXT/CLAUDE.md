@@ -39,6 +39,7 @@ Conteúdo expandido em **[CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md)**:
 - [Testing Trophy](./CLAUDE-EXTENDED.md#testing-trophy) - Implementação prática
 - [Padrões de Código](./CLAUDE-EXTENDED.md#padroes-codigo) - Exemplos por linguagem
 - [Templates de Documentos](./CLAUDE-EXTENDED.md#documentos-projeto) - PRD, STORIES, STATUS
+- [Versionamento Semântico](./CLAUDE-EXTENDED.md#versionamento-semantico) - Estratégia simplificada
 - [Comandos Slash](./CLAUDE-EXTENDED.md#comandos-slash) - Criação e uso
 - [Cross-Platform](./CLAUDE-EXTENDED.md#cross-platform) - Estratégias por linguagem
 
