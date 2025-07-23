@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- AI context reorganization (.ai/ → .github/AI_CONTEXT/)
+- Multi-AI support documentation (Claude, Gemini, Codex, etc.)
+
+### Changed
+- Updated LICENSE copyright to "Bragatte"
+- Repository structure cleanup (removed unnecessary directories)
+- Improved .gitignore for local AI directories
+
 ### Upcoming
 - **v2.4.0** (current): Profile system enhancements
 - **v2.5.0**: Core/Adapters architecture refactor
