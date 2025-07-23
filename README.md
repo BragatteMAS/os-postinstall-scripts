@@ -25,13 +25,13 @@
 
 </div>
 
-## 🆕 What's New in v2.2.0
+## 🆕 What's New in v2.3.1-alpha.2
 
-- **🎯 Interactive Menu System** - New `main.sh` with user-friendly navigation
-- **📂 Modular Structure** - Scripts organized by function (install/, verify/, utils/)
-- **🔍 Verification System** - Check 40+ tools with `check-installation.sh`
-- **🔒 Enhanced Security** - All scripts now use proper error handling
-- **✅ 100% Test Coverage** - 50 automated tests ensure reliability
+- **🔒 Critical Security Fix** - Safe APT lock handling (60% complete)
+- **🤖 CLAUDE.md v2.3.0** - Context Engineering for AI-powered development
+- **📂 Enhanced Modularity** - New utils/ directory with safety modules
+- **📋 Comprehensive Documentation** - PRD, STORIES, STATUS, and 8 ADRs
+- **⚠️ Transparency Note** - Test coverage is ~5% (20 basic checks) - see ADR-006
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" alt="aqua line" width="100%" height="3px" />
