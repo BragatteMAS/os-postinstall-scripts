@@ -101,3 +101,7 @@ Cargo.lock
 # Test results
 test-results/
 *.test**/.DS_Store
+
+# Local AI directories (if recreated)
+.ai/
+.claude/
