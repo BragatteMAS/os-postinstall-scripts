@@ -7,6 +7,113 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## CLAUDE.md Global Updates
+The following entries are from the global CLAUDE.md changelog and represent AI interaction guidelines updates:
+
+### [2.3.0] - 2025-07-23
+#### Added
+- Quick Start section at the beginning of the document
+- Serena as 4th essential MCP
+- Instructions to activate the 4 MCPs by default
+- Separation of changelog into dedicated file
+
+#### Changed
+- Reorganization for better reading flow
+- MCPs are now 4 by default (Context7, fetch, sequential-thinking, serena)
+- Consolidated links to avoid redundancy
+
+#### Removed
+- Changelog from main file (moved to dedicated file)
+- Unnecessary external references (books, communities)
+
+### [2.2.0] - 2025-07-22
+#### Added
+- Specific technical preferences:
+  - Python: UV for environments, Polars > pandas
+  - Rust: Explicit typing and memory management
+  - React: Epic Stack patterns
+- Direct links to Epic Stack and modern tools
+
+#### Changed
+- More specific code patterns section by language
+- Updated recommended versions
+
+### [2.1.0] - 2025-07-22
+#### Added
+- Contextual self-modulation system with flow diagram
+- Detailed protocol for existing projects
+- Integrated bioinformatics specific examples
+- STORIES → CLAUDE.md decision table
+- Section on how decisions filter the document
+
+#### Changed
+- Reorganization to highlight adaptive flow at top
+- Improvements in code examples with bioinformatics cases
+- Expansion of startup protocol to include PRD verification
+
+#### Fixed
+- Clarification that not all sections always apply
+- Alignment with real flow STATUS → PRD → STORIES → CLAUDE
+
+### [2.0.0] - 2025-07-19
+#### Added
+- CLAUDE-EXTENDED.md as complementary document
+- Context Engineering vs Prompt Engineering complete section
+- Testing Trophy with detailed philosophy
+- Essential MCPs (Context7, fetch, sequential-thinking)
+- Prompt capture protocol [prompt-saved]
+
+#### Changed
+- Major restructuring to separate basic vs. advanced content
+- All extensive examples moved to EXTENDED
+- Focus on being an operational document, not encyclopedic
+
+### [1.5.0] - 2025-07-16
+#### Added
+- "Never Do" section expanded with 13 items
+- Cross-platform compatibility with pathlib
+- Conventional commit patterns
+- Tripartite quality checklist
+
+#### Changed
+- Code examples now with mandatory ## comments
+- Better organization of quick references
+
+### [1.0.0] - 2025-07-12
+#### Added
+- Official integration with BMAD Method
+- Essential documents system (red/purple/yellow)
+- ADRs with mandatory Mermaid diagrams
+- Simplicity philosophy with quotes
+
+#### Changed
+- Migration from loose guidelines to structured system
+- Prioritization of STATUS.md as entry point
+
+### [0.5.0] - 2025-07-08
+#### Added
+- Session startup protocol
+- Why-What-How as standard structure
+- Rules for artifacts
+- "Always Do" section
+
+#### Changed
+- Refinement of fundamental principles
+- Better definition of intellectual partnership
+
+### [0.2.0] - 2025-07-04
+#### Added
+- Basic fundamental principles
+- Initial comment structure for R/Python
+- "Documentation is code" concept
+
+### [0.1.0] - 2025-07-01
+- First draft of CLAUDE.md
+- Initial idea to prevent vibe-coding
+- Basic structure inspired by README.md
+
+## OS Post-Install Scripts Updates
+
 ## [2.2.0] - 2025-07-10
 
 ### Added
