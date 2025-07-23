@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [2.3.1-alpha.2] - 2025-07-23
+#### Security
+- ✅ Completed migration of ALL APT scripts to safe lock handling
+- ✅ Removed all instances of dangerous `sudo rm /var/lib/dpkg/lock*` commands
+- ✅ Implemented comprehensive error handling and recovery
+
+#### Changed
+- Updated ALL APT scripts (install/apt.sh, auto/auto_apt.sh, post_install.sh)
+- Replaced force-removal with proper wait mechanisms across the codebase
+- Added consistent logging and progress reporting
+
+#### Added
+- Safe wrapper functions for all APT operations
+- Automatic dependency resolution for .deb packages
+- Comprehensive operation logging with timestamps
+
+#### Work in Progress (40% remaining)
+- Security tests implementation for APT lock handling
+- Integration tests for timeout scenarios
+- Documentation of security best practices
+
 ### [2.3.1-alpha.1] - 2025-07-23
 #### Security
 - Implemented safe APT lock handling module (utils/package-manager-safety.sh)
