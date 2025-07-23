@@ -1,0 +1,121 @@
+# Developer Standard Profile
+# Perfect for: Full-stack developers, general software development
+# Install time: ~15 minutes
+
+name: developer-standard
+description: Complete development environment with all the essentials
+author: OS Post-Install Scripts Team
+version: 1.0.0
+
+# What gets installed
+packages:
+  # Version Control
+  version_control:
+    - git
+    - git-lfs
+    - github-cli
+    
+  # Container Tools  
+  containers:
+    - docker
+    - docker-compose
+    - podman (optional)
+    
+  # Programming Languages
+  languages:
+    - python3
+    - nodejs
+    - rust
+    - golang
+    - java (openjdk-17)
+    
+  # Package Managers
+  package_managers:
+    - pip
+    - npm
+    - yarn
+    - cargo
+    
+  # Editors & IDEs
+  editors:
+    - vscode
+    - neovim
+    - vim
+    
+  # Shell Enhancement
+  shell:
+    - zsh
+    - oh-my-zsh
+    - starship
+    
+  # Modern CLI Tools (Rust)
+  cli_tools:
+    - bat        # better cat
+    - eza        # better ls
+    - ripgrep    # better grep
+    - fd         # better find
+    - zoxide     # better cd
+    - bottom     # better top
+    - delta      # better diff
+    
+  # Development Tools
+  dev_tools:
+    - make
+    - cmake
+    - gcc
+    - httpie
+    - jq
+    - tmux
+    
+  # Productivity
+  productivity:
+    - flameshot  # screenshots
+    - timeshift  # backups
+    - htop       # process monitor
+    - ncdu       # disk usage
+
+# Configuration
+config:
+  shell:
+    default: zsh
+    theme: starship
+    
+  git:
+    setup_credentials: true
+    global_gitignore: true
+    
+  vscode:
+    install_extensions: true
+    extensions:
+      - ms-python.python
+      - dbaeumer.vscode-eslint
+      - esbenp.prettier-vscode
+      - eamodio.gitlens
+      - ms-azuretools.vscode-docker
+      
+  docker:
+    add_user_to_group: true
+    install_compose: true
+
+# Post-install actions
+post_install:
+  - message: "🎉 Development environment ready!"
+  - show_versions: true
+  - create_projects_folder: ~/Projects
+  - clone_dotfiles: false  # Set your repo to true
+
+# System requirements
+requirements:
+  min_ram: 4GB
+  recommended_ram: 8GB
+  disk_space: 10GB
+  
+# Platform specific
+platforms:
+  linux:
+    all: true
+  windows:
+    wsl: true
+    native: false
+  macos:
+    supported: true
