@@ -7,73 +7,81 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### [2.3.1-alpha.4] - 2025-07-23
-#### Added
-- ✅ Comprehensive security tests for APT lock handling
+### Upcoming
+- **v2.4.0** (current): Profile system enhancements
+- **v2.5.0**: Core/Adapters architecture refactor
+- **v2.6.0**: bats-core testing framework
+- **v3.0.0**: Full platform parity (breaking changes)
+
+## [2.4.0-alpha.1] - 2025-07-23
+### Added
+- 🎯 **Profile-based installation system**
+  - 5 pre-configured profiles: developer-standard, developer-minimal, devops, data-scientist, student
+  - setup-with-profile.sh for interactive profile selection
+  - YAML-based profile configuration
+  - Dry-run mode to preview installations
+  - Custom profile support
+- 📚 **Comprehensive user documentation**
+  - quick-start.md - Fast onboarding guide
+  - modern-cli-tools.md - Detailed tool usage guides
+  - shell-customization.md - Zsh/Oh-My-Zsh configuration
+  - installation-profiles.md - Complete profile documentation
+  - troubleshooting.md - Common issues and solutions
+  - versioning-guide.md - Clear semantic versioning strategy
+
+### Changed
+- Updated setup.sh to support --profile and --minimal arguments
+- Transformed user-guide.md to focus on actual usage instead of BMAD methodology
+- Added versioning strategy to CLAUDE-EXTENDED.md
+
+## [2.3.1] - 2025-07-23
+### Security
+- ✅ **Fixed critical APT lock vulnerability (ADR-005)**
+  - Removed all dangerous `sudo rm /var/lib/dpkg/lock*` commands
+  - Implemented safe wait mechanisms for package managers
+  - Added package-manager-safety.sh module
+  - 100% of APT scripts now use safe operations
+
+### Added
+- Comprehensive security test suite
   - test_apt_lock_safety.sh - 10 security validations
   - test_apt_timeout_scenarios.sh - 5 integration scenarios
   - test_apt_safety_simple.sh - CI/CD friendly tests
   - Security test documentation (tests/security/README.md)
 
-#### Changed
+### Changed
 - Made logging.sh compatible with Bash 3.2 (macOS support)
-- Improved test coverage from ~5% to ~10%
-- Repository reorganized for user focus (v2.3.1-alpha.3)
+- Repository reorganized for user-focused navigation
+- Moved development docs to .github/PROJECT_DOCS/
+- Moved AI context to .github/AI_CONTEXT/
 
-#### Security
-- All APT lock handling tests passing
-- 80% of Epic 0 security fixes complete
-
-### Upcoming
-- Update CI/CD to run security tests (v2.3.1)
-- Implement bats-core testing framework (v2.4.0)
-- Core/Adapters architecture (v2.5.0)
-- Full platform parity (v3.0.0)
+### Fixed
+- APT lock timeout issues
+- Package validation to prevent injection attacks
+- Error handling and recovery mechanisms
 
 ---
 
 ## OS Post-Install Scripts Releases
 
-### [2.3.1-alpha.2] - 2025-07-23
-#### Security
-- ✅ Completed migration of ALL APT scripts to safe lock handling
-- ✅ Removed all instances of dangerous `sudo rm /var/lib/dpkg/lock*` commands
-- ✅ Implemented comprehensive error handling and recovery
+## Pre-release History
 
-#### Changed
-- Updated ALL APT scripts (install/apt.sh, auto/auto_apt.sh, post_install.sh)
-- Replaced force-removal with proper wait mechanisms across the codebase
-- Added consistent logging and progress reporting
+### [2.3.1-alpha.4] - 2025-07-23 (Superseded by 2.3.1 release)
+- Completed security test suite
+- Fixed Bash 3.2 compatibility
+- Repository reorganization
 
-#### Added
-- Safe wrapper functions for all APT operations
-- Automatic dependency resolution for .deb packages
-- Comprehensive operation logging with timestamps
+### [2.3.1-alpha.3] - 2025-07-23
+- Repository reorganized for user focus
+- Moved docs to appropriate directories
 
-#### Work in Progress (40% remaining)
-- Security tests implementation for APT lock handling
-- Integration tests for timeout scenarios
-- Documentation of security best practices
+### [2.3.1-alpha.2] - 2025-07-23  
+- Completed migration of ALL APT scripts
+- Added safe wrapper functions
 
 ### [2.3.1-alpha.1] - 2025-07-23
-#### Security
-- Implemented safe APT lock handling module (utils/package-manager-safety.sh)
-- Added centralized logging system (utils/logging.sh)
-- Started migration from dangerous force-removal to safe wait mechanisms
-
-#### Changed
-- Updated linux/install/apt.sh to use safe package manager operations
-- Replaced `sudo rm /var/lib/dpkg/lock-frontend` with proper wait logic
-- Added package name validation to prevent injection attacks
-
-#### Added
-- Package operation audit trail in /var/log/os-postinstall/
-- Timeout and retry mechanisms for APT operations
-- Progress indicators for package installation
-
-#### Work in Progress
-- Still updating: auto_apt.sh, post_install.sh, verify_apt.sh
-- Security tests pending implementation
+- Initial security module implementation
+- Started APT script migration
 
 ### [2.3.0] - 2025-07-23
 #### Added
