@@ -1,0 +1,120 @@
+# Data Scientist Profile
+# Perfect for: ML engineers, Data analysts, Researchers
+# Install time: ~25 minutes
+
+name: data-scientist
+description: Python scientific stack with ML/AI tools and Jupyter
+author: OS Post-Install Scripts Team
+version: 1.0.0
+
+# What gets installed
+packages:
+  # Version Control
+  version_control:
+    - git
+    - git-lfs  # For large datasets
+    
+  # Container Tools (for reproducibility)
+  containers:
+    - docker
+    - docker-compose
+    
+  # Programming Languages
+  languages:
+    - python3
+    - r-base
+    - julia
+    
+  # Python Scientific Stack
+  python_science:
+    - python3-pip
+    - python3-venv
+    - python3-dev
+    - jupyter
+    - ipython
+    
+  # Data Tools
+  data_tools:
+    - postgresql-client
+    - sqlite3
+    - redis-tools
+    
+  # Editors & IDEs
+  editors:
+    - vscode
+    - rstudio
+    
+  # Shell Enhancement
+  shell:
+    - zsh
+    - oh-my-zsh
+    
+  # Visualization Tools
+  visualization:
+    - gnuplot
+    - graphviz
+    
+  # Development Tools
+  dev_tools:
+    - make
+    - cmake  # For compiled extensions
+    - gcc
+    - g++
+    - gfortran  # For scientific libraries
+    - curl
+    - jq
+    
+  # System Libraries (for Python packages)
+  system_libs:
+    - libatlas-base-dev
+    - liblapack-dev
+    - libblas-dev
+    - libhdf5-dev
+    - libnetcdf-dev
+
+# Configuration
+config:
+  shell:
+    default: zsh
+    theme: agnoster
+    
+  git:
+    setup_credentials: true
+    lfs: true  # Configure Git LFS
+    
+  vscode:
+    install_extensions: true
+    extensions:
+      - ms-python.python
+      - ms-toolsai.jupyter
+      - ms-python.vscode-pylance
+      - mechatroner.rainbow-csv
+      - GrapeCity.gc-excelviewer
+      
+  python:
+    create_venvs: true
+    install_packages:
+      - numpy
+      - pandas
+      - matplotlib
+      - seaborn
+      - scikit-learn
+      - jupyter
+      - notebook
+      - jupyterlab
+      - ipython
+
+# Post-install actions
+post_install:
+  - message: "📊 Data Science environment ready!"
+  - show_versions: true
+  - create_projects_folder: ~/DataScience
+  - create_projects_folder: ~/Datasets
+  - run_command: "jupyter notebook --generate-config"
+
+# System requirements
+requirements:
+  min_ram: 8GB
+  recommended_ram: 16GB
+  disk_space: 30GB
+  gpu: optional  # For deep learning
