@@ -1,0 +1,70 @@
+# Product-Focused Git Attributes
+# This file is automatically applied to all new git repositories
+
+# AI Tooling and Methods - Mark as generated/documentation
+.github/AI_TOOLKIT/** linguist-generated=true
+.github/METHODS/** linguist-documentation=true
+.github/PROJECT_DOCS/** linguist-documentation=true
+
+# Reduce diff noise for AI tooling
+.github/AI_TOOLKIT/** -diff
+.github/METHODS/** -diff
+
+# Ensure text files use LF (cross-platform compatibility)
+*.md text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Common config files
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+
+# Source code (maintain LF for consistency)
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.py text eol=lf
+*.rb text eol=lf
+*.go text eol=lf
+*.rs text eol=lf
+*.java text eol=lf
+*.c text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Vendor/Dependencies (if any)
+vendor/** linguist-vendored=true
+node_modules/** linguist-vendored=true
+.yarn/** linguist-vendored=true
+target/** linguist-generated=true
+dist/** linguist-generated=true
+build/** linguist-generated=true
