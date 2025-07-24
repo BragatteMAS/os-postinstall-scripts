@@ -105,7 +105,9 @@ show_menu() {
     echo "  6) 📁 Sincronizar dotfiles"
     echo "  7) 🏃 Setup rápido (essenciais)"
     echo "  8) 🔍 Verificar ferramentas instaladas"
-    echo "  9) ❌ Sair"
+    echo "  9) 🤖 Instalar ferramentas de IA (MCPs + BMAD)"
+    echo "  10) 🎯 Configurar Git para desenvolvimento focado no produto"
+    echo "  0) ❌ Sair"
     
     echo -e "\n${YELLOW}Digite o número da opção:${NC} "
 }
@@ -310,6 +312,38 @@ install_python_uv() {
     echo "Para ativar: source ~/.venv/default/bin/activate"
 }
 
+# Instalar ferramentas de IA (MCPs + BMAD)
+install_ai_tools() {
+    echo -e "${YELLOW}🤖 Instalando ferramentas de IA...${NC}"
+    
+    # Verificar se o script existe localmente
+    if [[ -f "$REPO_DIR/install_ai_tools.sh" ]]; then
+        bash "$REPO_DIR/install_ai_tools.sh"
+    elif [[ -f "./install_ai_tools.sh" ]]; then
+        bash "./install_ai_tools.sh"
+    else
+        # Fallback: baixar direto do repositório
+        echo -e "${BLUE}Baixando script de instalação de AI tools...${NC}"
+        curl -sSL "$REPO_URL/raw/main/install_ai_tools.sh" | bash
+    fi
+}
+
+# Configurar Git para desenvolvimento focado no produto
+install_product_focused_git() {
+    echo -e "${YELLOW}🎯 Configurando Git para desenvolvimento focado no produto...${NC}"
+    
+    # Verificar se o script existe localmente
+    if [[ -f "$REPO_DIR/install_product_focused_git.sh" ]]; then
+        bash "$REPO_DIR/install_product_focused_git.sh"
+    elif [[ -f "./install_product_focused_git.sh" ]]; then
+        bash "./install_product_focused_git.sh"
+    else
+        # Fallback: baixar direto do repositório
+        echo -e "${BLUE}Baixando script de configuração...${NC}"
+        curl -sSL "$REPO_URL/raw/main/install_product_focused_git.sh" | bash
+    fi
+}
+
 # Main
 main() {
     show_banner
@@ -339,7 +373,9 @@ main() {
             6) sync_dotfiles ;;
             7) quick_setup ;;
             8) check_tools ;;
-            9) 
+            9) install_ai_tools ;;
+            10) install_product_focused_git ;;
+            0) 
                 echo -e "${GREEN}👋 Até logo!${NC}"
                 break
                 ;;
