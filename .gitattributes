@@ -1,0 +1,56 @@
+# Git attributes for OS Post-Install Scripts
+# Keep commits focused on the product, not the tooling
+
+# AI Tooling and Methods - Mark as generated/documentation
+.github/AI_TOOLKIT/** linguist-generated=true
+.github/METHODS/** linguist-documentation=true
+.github/PROJECT_DOCS/** linguist-documentation=true
+
+# Reduce diff noise for AI tooling
+.github/AI_TOOLKIT/** -diff
+.github/METHODS/** -diff
+
+# Mark certain files as documentation
+*.md linguist-documentation=true
+docs/** linguist-documentation=true
+
+# Shell scripts are the main product - ensure they're tracked
+*.sh linguist-detectable=true
+*.bash linguist-detectable=true
+*.zsh linguist-detectable=true
+
+# Ensure consistent line endings
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+
+# Config files
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+
+# Vendor/Generated files (if any)
+vendor/** linguist-vendored=true
+node_modules/** linguist-vendored=true
+
+# Test fixtures
+tests/fixtures/** linguist-vendored=true
+tests/data/** linguist-vendored=true
