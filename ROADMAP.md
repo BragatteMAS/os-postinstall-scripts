@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-23 | **Current Version:** v2.4.0-alpha.1
+> **Last Updated:** 2025-07-24 | **Current Version:** v2.5.0
 
 ## 🎯 Vision
 
@@ -17,16 +17,16 @@ gantt
         v2.1.0 Test Framework          :done, 2025-07-01, 2025-07-10
         v2.2.0 Interactive System      :done, 2025-07-10, 2025-07-10
         v2.3.0 CLAUDE.md Integration   :done, 2025-07-23, 2025-07-23
-    section In Progress
         v2.3.1 Security Hotfix         :done, 2025-07-23, 2025-07-23
-        v2.4.0 Profile System          :active, 2025-07-23, 2025-07-30
+        v2.4.0 Profile System          :done, 2025-07-23, 2025-07-23
+        v2.5.0 AI Tools + Git Focus    :done, 2025-07-24, 2025-07-24
     section Planned
-        v2.5.0 Real Testing            :2025-08-01, 2025-08-15
-        v2.5.0 Core/Adapters          :2025-08-16, 2025-09-01
+        v2.6.0 Core/Adapters          :2025-08-01, 2025-08-15
+        v2.7.0 Real Testing           :2025-08-16, 2025-09-01
         v3.0.0 Platform Parity        :2025-09-02, 2025-09-30
 ```
 
-## 🎯 Current Sprint: v2.4.0 Profile System Enhancement
+## ✅ Completed: v2.5.0 AI-Assisted Development & Product-Focused Git
 
 ### ✅ v2.3.1 Security Hotfix - COMPLETED!
 - [x] Safe APT lock handling module (`utils/package-manager-safety.sh`)
@@ -38,30 +38,45 @@ gantt
 - [x] Documentation of security best practices
 
 ### ✅ v2.4.0-alpha.1 Features - COMPLETED!
+- [x] Profile system implementation
+- [x] 5 pre-configured profiles
+- [x] YAML-based configuration
+- [x] Interactive profile selection
+- [x] Comprehensive documentation
+
+### ✅ v2.5.0 AI & Product Focus - COMPLETED!
+- [x] AI Development Tools Integration
+  - [x] MCPs configuration (context7, fetch, sequential-thinking, serena)
+  - [x] BMAD Method v4.31.0 integration
+  - [x] Cross-platform installers
+  - [x] Diagnostic tools
+- [x] Product-Focused Git Configuration
+  - [x] Global git templates
+  - [x] Smart git hooks
+  - [x] Product-focused aliases
+  - [x] Shell functions (gnew, ginit, gcheck)
+- [x] Context Engineering Documentation
+  - [x] CLAUDE.md v2.3.0
+  - [x] CLAUDE-EXTENDED.md
+- [x] Author attribution updates
 - [x] Profile-based installation system
 - [x] 5 pre-configured profiles
 - [x] Comprehensive user documentation overhaul
 - [x] Clear versioning strategy
 - [x] Repository cleanup and organization
 
-### 🚧 v2.4.0 Remaining Work
-- [ ] Gather user feedback on profiles
-- [ ] Add more profiles based on requests
-- [ ] Polish documentation
-- [ ] Update CI/CD to run security tests
-
 ## 📅 Upcoming Releases
 
-### v2.4.0 - Profile System & Documentation (July 2025)
-**Theme:** User Experience
+### v2.6.0 - Core/Adapters Architecture (August 2025)
+**Theme:** Architectural Improvements
 
-- [x] Profile-based installation system
-- [x] User documentation overhaul
-- [ ] Additional profiles (mobile dev, security researcher)
-- [ ] Profile inheritance system
-- [ ] Online profile repository
+- [ ] Separate core from platform adapters
+- [ ] Plugin architecture
+- [ ] Improved testability
+- [ ] Performance optimizations
+- [ ] Architecture documentation
 
-### v2.5.0 - Real Testing Framework (August 2025)
+### v2.7.0 - Real Testing Framework (September 2025)
 **Theme:** Quality and Trust
 
 - [ ] Implement bats-core testing framework
@@ -71,15 +86,6 @@ gantt
 - [ ] Update CI/CD with comprehensive test runs
 - [ ] Remove all false coverage claims
 
-### v2.6.0 - Core/Adapters Architecture (September 2025)
-**Theme:** Architectural Excellence
-
-- [ ] Design and implement core interfaces
-- [ ] Create adapters for all package managers
-- [ ] Migrate all scripts to use adapters
-- [ ] Full adapter test coverage
-- [ ] Architecture documentation
-- [ ] Contributor migration guide
 
 ### v3.0.0 - Full Platform Parity (September 2025)
 **Theme:** Universal Compatibility
