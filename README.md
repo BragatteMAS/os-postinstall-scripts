@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Shell Script](https://img.shields.io/badge/Shell-Bash%20%26%20Zsh-4EAA25.svg?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://www.linux.org/)
 [![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
@@ -87,6 +87,22 @@ Install all Rust tools: `./install_rust_tools.sh`
 
 </details>
 
+<details>
+<summary><b>🤖 AI Development Tools</b></summary>
+
+- **MCPs (Model Context Protocol)**:
+  - context7 - Always up-to-date documentation
+  - fetch - Intelligent web requests
+  - sequential-thinking - Structured reasoning
+  - serena - Semantic code search
+- **BMAD Method** - Complete project management
+- **Auto-configuration** for Claude Desktop
+- **Slash commands** in Claude (/generate-prp, /execute-prp)
+
+Install: `./install_ai_tools.sh` or choose option 9 in menu
+
+</details>
+
 ---
 
 ## 🖥️ Supported Systems
@@ -106,6 +122,7 @@ Install all Rust tools: `./install_rust_tools.sh`
 - 📝 **Well documented** - Clear guides and examples
 - 🛠️ **Modular** - Install only what you need
 - 🔄 **Idempotent** - Safe to run multiple times
+- 🤖 **AI-Powered Development** - MCPs + BMAD Method integration
 
 ---
 
@@ -113,6 +130,7 @@ Install all Rust tools: `./install_rust_tools.sh`
 
 - 📖 [**User Guide**](docs/user-guide.md) - Detailed instructions
 - 🏗️ [**Architecture**](docs/core-architecture.md) - How it works
+- 🤖 [**AI Tools Setup**](docs/ai-tools-setup.md) - MCPs + BMAD configuration
 - 🤝 [**Contributing**](CONTRIBUTING.md) - Help us improve
 - 📋 [**Changelog**](CHANGELOG.md) - What's new
 - 🗺️ [**Roadmap**](ROADMAP.md) - Where we're going
@@ -154,7 +172,7 @@ We love contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-GPL v3 - see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 

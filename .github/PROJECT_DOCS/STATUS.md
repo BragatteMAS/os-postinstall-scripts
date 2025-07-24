@@ -11,7 +11,7 @@
 | README.md | ✅ Active | 2.2.0 | 2025-07-10 | 🟢 | Comprehensive, up-to-date |
 | CHANGELOG.md | ✅ Active | 2.2.0 | 2025-07-23 | 🟢 | Updated with CLAUDE.md global changes |
 | CONTRIBUTING.md | ✅ Active | 1.0.0 | 2024-12-15 | 🟢 | Good guidelines |
-| LICENSE | ✅ Active | - | 2024-01-01 | 🟢 | GPL v3 |
+| LICENSE | ✅ Active | - | 2025-07-23 | 🟢 | MIT License |
 | **PRD.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | Created with project objectives |
 | **STORIES.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | User journeys and filtering decisions |
 | **STATUS.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | This document |
@@ -32,7 +32,7 @@
 | BMAD Integration | ✅ Active | v4.30 | Updated successfully |
 | CI/CD | ✅ Active | 100% | GitHub Actions working |
 | Documentation | ✅ Enhanced | 100%+ | User docs completely overhauled! |
-| ADRs | ✅ Active | 8 ADRs | 3 critical issues + v3.0.0 postponement |
+| **ADRs** | ✅ Active | 8 ADRs | 7 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003) |
 | **Security** | ✅ Fixed | 100% | APT lock vulnerability fixed (v2.3.1) |
 | **Profiles** | ✅ New | 5 profiles | Profile system implemented (v2.4.0) |
 
@@ -47,8 +47,8 @@
    - [x] Create initial ADRs
    - [x] Update README with CLAUDE.md section
 
-2. **Epic 0: Critical Fixes** 🚨 80% COMPLETE
-   - [🟢] Fix APT lock security vulnerability (ADR-005) - 80% complete
+2. **Epic 0: Critical Fixes** 🚨 100% COMPLETE
+   - [✅] Fix APT lock security vulnerability (ADR-005) - 100% complete
      - [x] Created utils/package-manager-safety.sh
      - [x] Created utils/logging.sh
      - [x] Updated linux/install/apt.sh
@@ -59,16 +59,20 @@
      - [x] Created integration tests for timeout scenarios
      - [x] Made logging.sh Bash 3 compatible
      - [x] All tests passing
-     - [ ] Update CI/CD to run security tests
+     - [x] Update CI/CD to run security tests
+   
+3. **v2.4.0 Profile System** ✅ IMPLEMENTED (Alpha)
+   - [x] 5 pre-configured profiles (developer, devops, data-scientist, student)
+   - [x] setup-with-profile.sh for interactive selection
+   - [x] YAML-based configuration
+   - [x] Comprehensive documentation
+   - [ ] Final testing and release
+
+4. **Next Sprint: v2.5.0 Planning**
    - [ ] Implement real testing framework (ADR-006)
    - [ ] Implement core/adapters architecture (ADR-007)
-   - [ ] Update documentation with transparency
-   
-3. **Next Sprint: Implementation** (After Epic 0)
    - [ ] Create examples/ directory with approved patterns
    - [ ] Expand macOS support to 80%
-   - [ ] Create ARCHITECTURE.md
-   - [ ] Create MAINTENANCE.md
 
 ## 📊 Key Metrics
 
@@ -95,11 +99,14 @@
 3. ~~Update CLAUDE.md to v2.3.0~~
 4. ~~Create TESTING.md with Testing Trophy~~
 5. ~~Create initial ADRs~~
+6. ~~Update LICENSE from GPL v3 to MIT~~
+7. ~~Fix README.md license badges~~
 
 ### 🟡 Important (Next Sprint)
 1. Implement Testing Trophy tests based on TESTING.md
 2. Create examples/ directory with patterns
 3. Expand macOS script coverage to 80%
+4. Finalizar ADR-003 (Cross-Platform Strategy) - requer decisão de stakeholders
 
 ### 🟢 Nice to Have
 7. Create ARCHITECTURE.md
@@ -111,6 +118,10 @@
 - Project is transitioning to CLAUDE.md v2.3.0 Context Engineering approach
 - BMAD Method successfully integrated and updated to v4.30
 - Strong foundation but needs documentation layer to scale effectively
+- **ADRs Status**: 8 ADRs total - 7 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003 - Cross-Platform Strategy)
+- All ADRs include Mermaid status flow diagrams as required by CLAUDE.md
+- ADR-005, ADR-006, ADR-007 document critical issues that were addressed
+- **⚠️ Mermaid Rendering**: Diagramas podem não renderizar no GitHub - ver MERMAID-RENDERING.md
 
 ---
 
