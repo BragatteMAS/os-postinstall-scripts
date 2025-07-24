@@ -39,6 +39,14 @@ packages:
     - sqlite3
     - redis-tools
     
+  # AI Development Tools
+  ai_tools:
+    - context7     # Up-to-date documentation MCP
+    - fetch        # Web requests MCP
+    - sequential-thinking  # Structured reasoning MCP
+    - serena       # Semantic code search MCP
+    - bmad-method  # Project management methodology
+    
   # Editors & IDEs
   editors:
     - vscode

@@ -73,6 +73,14 @@ packages:
     - timeshift  # backups
     - htop       # process monitor
     - ncdu       # disk usage
+    
+  # AI Development Tools
+  ai_tools:
+    - context7     # Up-to-date documentation MCP
+    - fetch        # Web requests MCP
+    - sequential-thinking  # Structured reasoning MCP
+    - serena       # Semantic code search MCP
+    - bmad-method  # Project management methodology
 
 # Configuration
 config:
@@ -96,6 +104,12 @@ config:
   docker:
     add_user_to_group: true
     install_compose: true
+    
+  ai_tools:
+    install_mcps: true
+    install_bmad: true
+    bmad_ide: cursor  # or vscode
+    auto_configure_claude: true
 
 # Post-install actions
 post_install:
