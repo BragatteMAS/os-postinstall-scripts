@@ -1921,6 +1921,105 @@ claude-code() {
 alias cc='claude-code'  ## Short alias for convenience
 
 # ──────────────────────────────────────────────────────────────────────────────
+# AI Tools Setup Functions (MCPs + BMAD)
+# ──────────────────────────────────────────────────────────────────────────────
+## Check AI tools installation status
+ai-check() {
+    local check_script="$HOME/Documents/GitHub/os-postinstall-scripts/check_ai_tools.sh"
+    
+    if [[ -x "$check_script" ]]; then
+        "$check_script"
+    else
+        echo "❌ AI tools check script not found at: $check_script"
+        echo "💡 Clone the repo: git clone https://github.com/BragatteMAS/os-postinstall-scripts"
+        return 1
+    fi
+}
+
+## Install BMAD in current project
+ai-setup() {
+    echo "🤖 Setting up AI tools for current project..."
+    
+    # Check if in a git repository
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        echo "⚠️  Warning: Not in a git repository. Initialize with 'git init' first? (recommended)"
+        echo -n "Continue anyway? (y/N): "
+        read -r response
+        if [[ ! "$response" =~ ^[Yy]$ ]]; then
+            echo "❌ Setup cancelled"
+            return 1
+        fi
+    fi
+    
+    # Install BMAD Method
+    echo "📦 Installing BMAD Method..."
+    if command -v pnpm &> /dev/null; then
+        pnpm dlx bmad-method@latest install --full --ide cursor
+    else
+        npx bmad-method@latest install --full --ide cursor
+    fi
+    
+    # Check result
+    if [[ -d ".claude" ]]; then
+        echo "✅ BMAD Method installed successfully!"
+        echo "💡 Available commands in Claude:"
+        echo "   /generate-prp - Generate detailed specifications"
+        echo "   /execute-prp - Execute with validation"
+        echo "   /validate-patterns - Check project patterns"
+    else
+        echo "❌ BMAD installation may have failed. Check the output above."
+    fi
+}
+
+## Quick install MCPs globally (one time only)
+ai-install-mcps() {
+    local install_script="$HOME/Documents/GitHub/os-postinstall-scripts/install_ai_tools.sh"
+    
+    if [[ -x "$install_script" ]]; then
+        echo "🚀 Installing AI tools (MCPs + BMAD)..."
+        "$install_script"
+    else
+        echo "📥 Downloading and running AI tools installer..."
+        curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/install_ai_tools.sh | bash
+    fi
+}
+
+## Update BMAD in current project
+ai-update() {
+    if [[ ! -d ".claude" ]]; then
+        echo "❌ No BMAD installation found in current directory"
+        echo "💡 Run 'ai-setup' first to install BMAD"
+        return 1
+    fi
+    
+    echo "🔄 Updating BMAD Method..."
+    if command -v pnpm &> /dev/null; then
+        pnpm dlx bmad-method@latest update
+    else
+        npx bmad-method@latest update
+    fi
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Product-Focused Git Aliases
+# ──────────────────────────────────────────────────────────────────────────────
+## Keep commits focused on product, not tooling
+alias glogp="git log --oneline -- ':!.github'"        ## Git log excluding .github
+alias gdiffp="git diff -- ':!.github'"                ## Git diff excluding .github
+alias gstatusp="git status -- ':!.github'"            ## Git status excluding .github
+alias gaddp="git add -- ':!.github'"                  ## Git add excluding .github
+alias gshowp="git show -- ':!.github'"                ## Git show excluding .github
+
+## Conventional commit aliases for clean history
+alias gcfeat="git commit -m 'feat: '"                 ## Commit new feature
+alias gcfix="git commit -m 'fix: '"                   ## Commit bug fix
+alias gcdocs="git commit -m 'docs: '"                 ## Commit documentation
+alias gcstyle="git commit -m 'style: '"               ## Commit formatting
+alias gcrefactor="git commit -m 'refactor: '"         ## Commit refactoring
+alias gctest="git commit -m 'test: '"                 ## Commit tests
+alias gcchore="git commit -m 'chore(.github): '"      ## Commit tooling/methods
+
+# ──────────────────────────────────────────────────────────────────────────────
 # CLAUDE.md - Configuração Global para IA
 # ──────────────────────────────────────────────────────────────────────────────
 claude_init() {
