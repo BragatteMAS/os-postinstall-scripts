@@ -2,6 +2,7 @@
 # ==============================================================================
 # Rust-First Development Environment Setup
 # Agnóstico: macOS e Linux
+# Author: Bragatte, M.A.S
 # ==============================================================================
 
 set -euo pipefail

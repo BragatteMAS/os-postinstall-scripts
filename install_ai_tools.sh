@@ -4,7 +4,7 @@
 #######################################
 # install_ai_tools.sh
 # Purpose: Install and configure AI development tools (MCPs + BMAD Method)
-# Author: BragatteMAS
+# Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
 # 
@@ -359,6 +359,7 @@ main() {
     show_post_install_instructions
     
     log_success "AI Tools installation completed!"
+    echo -e "${BLUE}Built with ❤️ by Bragatte, M.A.S${NC}"
 }
 
 # Run main function

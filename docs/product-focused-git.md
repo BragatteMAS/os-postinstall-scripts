@@ -393,3 +393,5 @@ The structure is designed to work with:
 ---
 
 > 💡 **Remember**: The goal is a commit history that reads like a changelog, focused entirely on what matters to your users - the product itself.
+>
+> **Built with ❤️ by Bragatte, M.A.S**
