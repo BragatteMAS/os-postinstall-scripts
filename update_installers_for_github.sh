@@ -4,7 +4,7 @@
 #######################################
 # update_installers_for_github.sh
 # Purpose: Update installer scripts to use .github/AI_TOOLKIT structure
-# Author: BragatteMAS
+# Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
 #######################################

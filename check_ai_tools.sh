@@ -4,7 +4,7 @@
 #######################################
 # check_ai_tools.sh
 # Purpose: Verify AI tools installation status (MCPs + BMAD)
-# Author: BragatteMAS
+# Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
 #######################################

@@ -177,5 +177,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 <div align="center">
-<sub>Built with ❤️ by developers, for developers</sub>
+<sub>Built with ❤️ by Bragatte, M.A.S</sub>
 </div>

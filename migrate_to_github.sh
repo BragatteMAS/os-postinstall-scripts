@@ -4,7 +4,7 @@
 #######################################
 # migrate_to_github.sh
 # Purpose: Reorganize project structure to centralize AI tools in .github/
-# Author: BragatteMAS
+# Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
 #

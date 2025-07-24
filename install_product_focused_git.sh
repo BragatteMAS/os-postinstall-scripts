@@ -4,7 +4,7 @@
 #######################################
 # install_product_focused_git.sh
 # Purpose: Configure git globally for product-focused development
-# Author: BragatteMAS
+# Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
 #
@@ -394,6 +394,8 @@ main() {
     
     # Show summary
     show_summary
+    
+    echo -e "\n${BLUE}Built with ❤️ by Bragatte, M.A.S${NC}"
 }
 
 # Run main

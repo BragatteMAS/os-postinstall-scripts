@@ -2,6 +2,7 @@
 # ==============================================================================
 # Setup Universal - Ponto de entrada único para todos os sistemas
 # Compatível com: macOS, Linux, WSL, e até Windows (via Git Bash)
+# Author: Bragatte, M.A.S
 # ==============================================================================
 
 set -euo pipefail
@@ -391,3 +392,5 @@ main() {
 
 # Executar
 main "$@"
+
+# Built with ❤️ by Bragatte, M.A.S

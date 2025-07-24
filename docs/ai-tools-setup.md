@@ -1,72 +1,57 @@
-# 🤖 AI Tools Setup Guide
+# 🤖 AI Development Tools Setup Guide
 
-> Setup completo para ferramentas de desenvolvimento assistido por IA, incluindo MCPs (Model Context Protocol) e BMAD Method.
+Este guia detalha a instalação e configuração das ferramentas de desenvolvimento assistido por IA para o projeto os-postinstall-scripts.
 
-## 📋 Visão Geral
+## 📋 Índice
 
-Este guia explica como instalar e configurar as ferramentas de IA que potencializam o desenvolvimento com Claude Code e outros assistentes de IA.
+- [Visão Geral](#visão-geral)
+- [MCPs (Model Context Protocol)](#mcps-model-context-protocol)
+- [BMAD Method](#bmad-method)
+- [Instalação](#instalação)
+- [Verificação](#verificação)
+- [Uso](#uso)
+- [Troubleshooting](#troubleshooting)
 
-### Componentes Instalados
+## 🎯 Visão Geral
 
-1. **4 MCPs Essenciais**
-   - **context7** - Documentação sempre atualizada
-   - **fetch** - Requisições web inteligentes
-   - **sequential-thinking** - Raciocínio estruturado
-   - **serena** - Busca semântica em codebases
+O sistema integra duas tecnologias principais:
 
-2. **BMAD Method**
-   - Sistema completo de gerenciamento de projetos
-   - Comandos slash customizados para Claude
-   - Templates e estrutura otimizada
+1. **MCPs (Model Context Protocol)**: Ferramentas que estendem as capacidades do Claude
+2. **BMAD Method**: Sistema de gerenciamento de projetos otimizado para IA
 
-## 🚀 Instalação Rápida
+## 🔌 MCPs (Model Context Protocol)
 
-### Opção 1: Via Menu Principal
+### O que são MCPs?
 
-```bash
-./setup.sh
-# Escolha opção 9: 🤖 Instalar ferramentas de IA (MCPs + BMAD)
-```
+MCPs são servidores locais que fornecem funcionalidades extras ao Claude, permitindo:
+- Acesso a documentação sempre atualizada
+- Busca semântica em codebases
+- Raciocínio estruturado
+- Requisições web inteligentes
 
-### Opção 2: Instalação Direta
+### MCPs Incluídos
 
-```bash
-./install_ai_tools.sh
-```
+#### 1. **context7** - Documentação Sempre Atualizada
+- Acessa documentação oficial de qualquer biblioteca
+- Evita código baseado em dados desatualizados
+- Uso: Adicione `use context7` ao seu prompt
 
-### Opção 3: One-liner
+#### 2. **fetch** - Requisições Web Inteligentes
+- Busca e analisa conteúdo web
+- Converte HTML em markdown estruturado
+- Processa informações de sites
 
-```bash
-curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/install_ai_tools.sh | bash
-```
+#### 3. **sequential-thinking** - Raciocínio Estruturado
+- Decomposição de problemas complexos
+- Auto-correção durante o raciocínio
+- Revisão de decisões anteriores
 
-## 📁 Estrutura de Arquivos
+#### 4. **serena** - Busca Semântica em Código
+- Economia massiva de tokens
+- Compreensão contextual do código
+- Navegação eficiente em projetos grandes
 
-Após a instalação, os seguintes arquivos serão criados/modificados:
-
-```
-~/
-├── Library/Application Support/Claude/     # macOS
-│   └── claude_desktop_config.json         # Configuração dos MCPs
-├── .config/Claude/                        # Linux
-│   └── claude_desktop_config.json
-├── Documents/GitHub/serena/               # Repositório do serena MCP
-└── .claude/                               # Comandos BMAD (no projeto)
-    └── commands/
-        ├── generate-prp.md
-        ├── execute-prp.md
-        └── validate-patterns.md
-```
-
-## 🔧 Configuração Manual (se necessário)
-
-### Localização do arquivo de configuração
-
-- **macOS**: `~/Library/Application Support/Claude/claude.json`
-- **Linux**: `~/.config/Claude/claude.json`
-- **Windows**: `%APPDATA%\Claude\claude.json`
-
-### Exemplo de configuração
+### Configuração do claude.json
 
 ```json
 {
@@ -84,129 +69,138 @@ Após a instalação, os seguintes arquivos serão criados/modificados:
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "serena": {
-      "command": "/Users/seu-usuario/.local/bin/uv",
-      "args": ["run", "--directory", "/Users/seu-usuario/Documents/GitHub/serena", "serena-mcp-server"]
+      "command": "/Users/[seu-usuario]/.local/bin/uv",
+      "args": ["run", "--directory", "/Users/[seu-usuario]/Documents/GitHub/serena", "serena-mcp-server"]
     }
   }
 }
 ```
 
-## 🔍 Verificação da Instalação
+## 📚 BMAD Method
 
-### 1. Verificar MCPs no Claude
+### O que é BMAD?
 
-1. Reinicie o Claude Desktop completamente
-2. Em qualquer conversa, você deve ver ferramentas com prefixo `mcp__`
-3. Exemplos:
-   - `mcp__context7__resolve-library-id`
-   - `mcp__sequential-thinking__sequentialthinking`
-   - `mcp__fetch__fetch`
+BMAD Method v4.31.0 é um sistema de gerenciamento de projetos que:
+- Estrutura projetos para colaboração efetiva com IA
+- Define padrões de documentação (PRD, STORIES, STATUS)
+- Fornece agentes especializados para diferentes tarefas
 
-### 2. Verificar BMAD Method
+### Estrutura BMAD
 
-No diretório do seu projeto:
+```
+projeto/
+├── .github/
+│   └── AI_TOOLKIT/
+│       ├── agents/          # Agentes especializados
+│       ├── commands/        # Comandos personalizados
+│       └── config/          # Configurações
+├── PRD.md                   # Product Requirements Document
+├── STORIES.md               # User Stories
+└── STATUS.md                # Status do projeto
+```
+
+### Agentes Disponíveis
+
+- **dev.md**: Desenvolvimento geral
+- **test.md**: Criação de testes
+- **doc.md**: Documentação
+- **review.md**: Revisão de código
+
+## 🚀 Instalação
+
+### Método 1: Via Setup Principal
 
 ```bash
-ls -la .claude/commands/
-# Deve mostrar os arquivos de comando
+./setup.sh
+# Escolha opção 9: 🤖 Instalar ferramentas de IA (MCPs + BMAD)
 ```
 
-### 3. Testar Comandos Slash
+### Método 2: Instalação Direta
 
-No Claude, digite:
-- `/generate-prp` - Para gerar PRPs
-- `/execute-prp` - Para executar implementações
-- `/validate-patterns` - Para validar padrões
-
-## 💡 Como Usar
-
-### Context7 - Documentação Atualizada
-
-```
-# Em seus prompts, adicione:
-"use context7 para React hooks"
-"use context7 para Next.js 14"
+```bash
+./install_ai_tools.sh
 ```
 
-### Sequential Thinking - Problemas Complexos
+### Método 3: One-liner
 
-O MCP será ativado automaticamente para:
-- Decomposição de problemas complexos
-- Análise multi-etapas
-- Revisão de raciocínio
+```bash
+curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/install_ai_tools.sh | bash
+```
 
-### Serena - Busca em Codebases
+## ✅ Verificação
 
-Ideal para:
-- Busca semântica em projetos grandes
-- Encontrar implementações similares
-- Navegação eficiente por código
+### Verificar Instalação Completa
 
-### BMAD Method - Gestão de Projetos
+```bash
+./check_ai_tools.sh
+```
 
-1. No diretório do projeto: `bmad-method install --full`
-2. Use comandos slash no Claude
-3. Siga a estrutura de documentação BMAD
+### Verificação Manual
 
-## 🐛 Troubleshooting
+1. **MCPs**: Verifique se aparecem ferramentas com prefixo `mcp__` no Claude
+2. **BMAD**: Verifique se existe `.github/AI_TOOLKIT/` em novos projetos
+3. **UV**: Execute `uv --version`
+
+## 💡 Uso
+
+### Usando MCPs no Claude
+
+1. **Context7 para documentação**:
+   ```
+   Como usar React hooks? use context7
+   ```
+
+2. **Sequential Thinking para problemas complexos**:
+   ```
+   use sequential-thinking para resolver este algoritmo complexo
+   ```
+
+3. **Serena para buscar código**:
+   ```
+   use serena para encontrar implementações de autenticação
+   ```
+
+### Usando BMAD em Projetos
+
+1. **Inicializar projeto**:
+   ```bash
+   bmad init
+   ```
+
+2. **Usar agentes**:
+   ```
+   @agent:dev implemente a feature X
+   ```
+
+## 🔧 Troubleshooting
 
 ### MCPs não aparecem no Claude
 
-1. **Verifique se o Claude foi reiniciado completamente**
-   - No macOS: Cmd+Q, não apenas fechar a janela
-   - No Windows/Linux: Feche todas as instâncias
+1. Reinicie o Claude completamente
+2. Verifique o arquivo claude.json
+3. Execute `./check_ai_tools.sh` para diagnóstico
 
-2. **Verifique o arquivo de configuração**
-   ```bash
-   # macOS
-   cat ~/Library/Application\ Support/Claude/claude_desktop_config.json
-   
-   # Linux
-   cat ~/.config/Claude/claude_desktop_config.json
-   ```
+### BMAD não funciona
 
-3. **Verifique logs de erro**
-   - Abra o Console do Desenvolvedor no Claude (Cmd/Ctrl+Shift+I)
-   - Procure por erros relacionados a MCP
+1. Verifique se npm está instalado
+2. Confirme a versão: `bmad --version`
+3. Reinstale: `npm install -g bmad-method@latest`
 
-### Erro ao instalar serena
+### Serena não conecta
 
-Se o UV não for encontrado:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-source ~/.cargo/env
-```
+1. Verifique se UV está instalado: `uv --version`
+2. Confirme o clone do repositório serena
+3. Teste manualmente: `uv run --directory ~/Documents/GitHub/serena serena-mcp-server`
 
-### BMAD não cria pasta .claude
+## 📍 Localização dos Arquivos
 
-Execute no diretório do projeto:
-```bash
-pnpm dlx bmad-method@latest install --full --ide cursor
-# ou
-npx bmad-method@latest install --full --ide cursor
-```
+- **claude.json**: 
+  - macOS: `~/Library/Application Support/Claude/claude.json`
+  - Linux: `~/.config/Claude/claude.json`
+  - Windows: `%APPDATA%\Claude\claude.json`
 
-## 📚 Recursos Adicionais
-
-- [Documentação do MCP](https://modelcontextprotocol.io)
-- [BMAD Method](https://github.com/bmadcode/BMAD-METHOD)
-- [Context7](https://context7.io)
-- [UV - Python Package Manager](https://astral.sh/uv)
-
-## 🔄 Atualizações
-
-Para atualizar as ferramentas:
-
-```bash
-# Atualizar MCPs (automático via npx)
-# Apenas reinicie o Claude
-
-# Atualizar BMAD
-pnpm dlx bmad-method@latest update
-
-# Atualizar este script
-git pull origin main
-```
+- **Serena**: `~/Documents/GitHub/serena`
+- **BMAD**: Instalado globalmente via npm
 
 ## 🤝 Suporte
 
@@ -215,4 +209,6 @@ git pull origin main
 
 ---
 
-> **Nota:** Este setup segue as diretrizes do CLAUDE.md v2.3.0 para Context Engineering otimizado.
+> 💡 Esta documentação é parte do projeto os-postinstall-scripts.
+>
+> **Built with ❤️ by Bragatte, M.A.S**
