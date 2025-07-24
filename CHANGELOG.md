@@ -7,20 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Upcoming
+- **v2.6.0**: Core/Adapters architecture refactor
+- **v2.7.0**: bats-core testing framework
+- **v3.0.0**: Full platform parity (breaking changes)
+
+## [2.5.0] - 2025-07-24
+
 ### Added
-- AI context reorganization (.ai/ → .github/AI_CONTEXT/)
-- Multi-AI support documentation (Claude, Gemini, Codex, etc.)
+- 🤖 **AI Development Tools Integration**
+  - MCPs (Model Context Protocol) configuration support
+  - 4 essential MCPs: context7, fetch, sequential-thinking, serena
+  - BMAD Method v4.31.0 agent-based integration
+  - Cross-platform installer for AI tools (`install_ai_tools.sh`)
+  - Diagnostic script to verify installations (`check_ai_tools.sh`)
+  - Quick start guide for AI-powered development
+- 🎯 **Product-Focused Git Configuration System**
+  - Global git template system for automatic .github/ structure
+  - Smart git hooks for automatic commit prefixing
+  - Product-focused git aliases (logp, diffp, statusp)
+  - Shell functions for project management (gnew, ginit, gcheck)
+  - Migration tools for existing projects
+  - Comprehensive documentation (`docs/product-focused-git.md`)
+- 📚 **Context Engineering Documentation**
+  - CLAUDE.md v2.3.0 - AI collaboration guidelines
+  - CLAUDE-EXTENDED.md - Detailed implementation guides
+  - Integration with BMAD methodology
 
 ### Changed
-- Updated LICENSE copyright to "Bragatte"
-- Repository structure cleanup (removed unnecessary directories)
-- Improved .gitignore for local AI directories
+- Updated LICENSE copyright to "Bragatte, M.A.S"
+- Repository structure reorganization (AI tools → .github/)
+- Improved .gitignore for .github/AI_TOOLKIT directories
+- Enhanced setup.sh with AI tools and product-focused git options
 
-### Upcoming
-- **v2.4.0** (current): Profile system enhancements
-- **v2.5.0**: Core/Adapters architecture refactor
-- **v2.6.0**: bats-core testing framework
-- **v3.0.0**: Full platform parity (breaking changes)
+### Fixed
+- Corrected claude.json filename references (was claude_desktop_config.json)
+- Fixed profile configurations to use correct MCP config filename
 
 ## [2.4.0-alpha.1] - 2025-07-23
 ### Added
