@@ -1,26 +1,22 @@
 name: Dependency and License Check
 
 on:
-  push:
-    paths:
-      - 'requirements*.txt'
-      - 'package*.json'
-      - 'Cargo.toml'
-      - 'go.mod'
-      - 'Gemfile'
-      - 'composer.json'
-  pull_request:
-    paths:
-      - 'requirements*.txt'
-      - 'package*.json'
-      - 'Cargo.toml'
-      - 'go.mod'
-      - 'Gemfile'
-      - 'composer.json'
-  schedule:
-    # Run weekly on Mondays at 9 AM UTC
-    - cron: '0 9 * * 1'
   workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running dependency check'
+        required: true
+        default: 'Security and license verification'
+        type: string
+      check_type:
+        description: 'Type of check to perform'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - 'all'
+          - 'security-only'
+          - 'license-only'
 
 jobs:
   dependency-check:
