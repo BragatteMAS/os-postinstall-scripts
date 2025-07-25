@@ -1,13 +1,21 @@
 name: Test Scripts
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    # Run tests weekly on Monday at 00:00 UTC
-    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running tests'
+        required: true
+        default: 'Manual testing'
+        type: string
+      confirm_major_change:
+        description: 'Is this for a major version change?'
+        required: false
+        default: 'no'
+        type: choice
+        options:
+          - 'yes'
+          - 'no'
 
 jobs:
   test-ubuntu:

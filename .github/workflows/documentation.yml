@@ -1,16 +1,13 @@
 name: Documentation Check
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - '**.md'
-      - '.ai/**'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - '**.md'
-      - '.ai/**'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running documentation check'
+        required: true
+        default: 'Documentation validation'
+        type: string
 
 jobs:
   markdown-lint:
