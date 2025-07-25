@@ -8,9 +8,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Upcoming
-- **v2.6.0**: Core/Adapters architecture refactor
-- **v2.7.0**: bats-core testing framework
+- **v2.7.0**: Core/Adapters architecture refactor
+- **v2.8.0**: bats-core testing framework
 - **v3.0.0**: Full platform parity (breaking changes)
+
+## [2.6.0] - 2025-01-25
+
+### Changed
+- 🔄 **CI/CD Workflows converted to manual execution only**
+  - All workflows now use `workflow_dispatch` instead of automatic triggers
+  - Removed automatic execution on push, pull_request, and schedule
+  - Added required `reason` input field for audit trail
+  - Added `confirm_major_change` option in test-scripts workflow
+  - Added `check_type` selector in dependency-check workflow
+  - **BREAKING CHANGE**: Workflows no longer run automatically
+
+### Added
+- 📋 **Testing Guidelines Documentation**
+  - Created `.github/TESTING_GUIDELINES.md` with comprehensive testing strategy
+  - Defined when tests are mandatory vs optional
+  - Instructions for running tests via GitHub UI and CLI
+  - Local testing recommendations to save CI/CD resources
+
+### Security
+- 🔒 Reduced attack surface by eliminating automatic workflow execution
+- 🛡️ All CI/CD operations now require explicit human approval
 
 ## [2.5.0] - 2025-07-24
 
