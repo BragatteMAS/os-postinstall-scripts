@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-24 | **Current Version:** v2.5.0
+> **Last Updated:** 2025-07-26 | **Current Version:** v2.6.0
 
 ## 🎯 Vision
 
@@ -20,13 +20,25 @@ gantt
         v2.3.1 Security Hotfix         :done, 2025-07-23, 2025-07-23
         v2.4.0 Profile System          :done, 2025-07-23, 2025-07-23
         v2.5.0 AI Tools + Git Focus    :done, 2025-07-24, 2025-07-24
+        v2.6.0 BMAD v4.31.0 Update     :done, 2025-07-26, 2025-07-26
     section Planned
-        v2.6.0 Core/Adapters          :2025-08-01, 2025-08-15
-        v2.7.0 Real Testing           :2025-08-16, 2025-09-01
+        v2.7.0 Core/Adapters          :2025-08-01, 2025-08-15
+        v2.8.0 Real Testing           :2025-08-16, 2025-09-01
         v3.0.0 Platform Parity        :2025-09-02, 2025-09-30
 ```
 
-## ✅ Completed: v2.5.0 AI-Assisted Development & Product-Focused Git
+## ✅ Completed: v2.6.0 BMAD Method Update
+
+### ✅ v2.6.0 BMAD Method Update - COMPLETED!
+- [x] Updated BMAD Method from v4.25.0 to v4.31.0
+- [x] Created `update_bmad_github.sh` script for easy updates
+- [x] Automatic version checking and comparison
+- [x] Backup creation before updates
+- [x] Preservation of custom content (expansion packs)
+- [x] New templates and workflows included
+- [x] Enhanced brainstorming and elicitation features
+
+## 📚 Previous Releases
 
 ### ✅ v2.3.1 Security Hotfix - COMPLETED!
 - [x] Safe APT lock handling module (`utils/package-manager-safety.sh`)
@@ -67,7 +79,7 @@ gantt
 
 ## 📅 Upcoming Releases
 
-### v2.6.0 - Core/Adapters Architecture (August 2025)
+### v2.7.0 - Core/Adapters Architecture (August 2025)
 **Theme:** Architectural Improvements
 
 - [ ] Separate core from platform adapters
@@ -76,7 +88,7 @@ gantt
 - [ ] Performance optimizations
 - [ ] Architecture documentation
 
-### v2.7.0 - Real Testing Framework (September 2025)
+### v2.8.0 - Real Testing Framework (September 2025)
 **Theme:** Quality and Trust
 
 - [ ] Implement bats-core testing framework

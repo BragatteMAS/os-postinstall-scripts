@@ -1365,6 +1365,7 @@ show_welcome() {
     fi
     
     echo "💡 Type 'halp' for categories | 'ac rust' for Rust tools | 'qm' for menu"
+    echo "🚀 BMAD: 'bmad-install' to setup | 'bmad-update' to update | 'bmad-status' to check"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 

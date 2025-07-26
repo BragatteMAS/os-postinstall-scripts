@@ -95,7 +95,10 @@ Install all Rust tools: `./install_rust_tools.sh`
   - fetch - Intelligent web requests
   - sequential-thinking - Structured reasoning
   - serena - Semantic code search
-- **BMAD Method** - Complete project management
+- **BMAD Method v4.31.0** - Complete project management
+  - Easy updates with `update_bmad_github.sh`
+  - Automatic backup before updates
+  - Version checking and comparison
 - **Auto-configuration** for Claude Desktop
 - **Slash commands** in Claude (/generate-prp, /execute-prp)
 
