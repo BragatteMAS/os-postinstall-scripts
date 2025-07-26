@@ -12,7 +12,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **v2.8.0**: bats-core testing framework
 - **v3.0.0**: Full platform parity (breaking changes)
 
-## [2.6.0] - 2025-01-25
+## [2.6.0] - 2025-07-26
+
+### Added
+- 🔄 **BMAD Method Update Script**
+  - New `update_bmad_github.sh` script for easy BMAD updates
+  - Automatic version checking and comparison
+  - Backup creation before updates
+  - Preserves custom content (expansion packs, custom agents)
+  - Shows changelog reference after update
+
+### Changed
+- 📦 **BMAD Method updated to v4.31.0**
+  - Updated from v4.25.0 to latest v4.31.0
+  - New templates and workflows included
+  - Enhanced brainstorming and elicitation features
+  - Improved core configuration structure
+  - Better workflow management utilities
+  - New brainstorming and elicitation methods
+
+## [2.5.1] - 2025-07-25
 
 ### Changed
 - 🔄 **CI/CD Workflows converted to manual execution only**

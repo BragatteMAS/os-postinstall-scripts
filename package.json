@@ -1,0 +1,52 @@
+{
+  "name": "os-postinstall-scripts",
+  "version": "2.6.0",
+  "description": "Cross-platform OS post-installation scripts - Development tools",
+  "private": true,
+  "scripts": {
+    "dev:test": "echo '⚠️  Estes scripts são APENAS para desenvolvimento local' && npm run dev:test:current",
+    "dev:test:current": "cross-env TEST_MODE=local ./tools/local-dev/test-current-platform.sh",
+    "dev:test:linux": "cross-env OS_TARGET=linux TEST_MODE=local ./tools/local-dev/test-platform.sh",
+    "dev:test:windows": "cross-env OS_TARGET=windows TEST_MODE=local ./tools/local-dev/test-platform.sh",
+    "dev:test:macos": "cross-env OS_TARGET=darwin TEST_MODE=local ./tools/local-dev/test-platform.sh",
+    "dev:check": "cross-env CHECK_MODE=local node ./tools/local-dev/check-environment.js",
+    "dev:lint": "cross-env LINT_MODE=local ./tools/local-dev/lint-scripts.sh",
+    "dev:profile": "cross-env PROFILE_MODE=local node ./tools/local-dev/test-profile.js",
+    "dev:setup": "npm install && echo '✅ Desenvolvimento local configurado. Use npm run dev:test para testar.'",
+    "help": "echo 'Comandos disponíveis para desenvolvimento local:' && npm run"
+  },
+  "keywords": [
+    "os",
+    "postinstall",
+    "setup",
+    "linux",
+    "macos",
+    "windows",
+    "cross-platform",
+    "development"
+  ],
+  "author": "Bragatte, M.A.S",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bragatte/os-postinstall-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bragatte/os-postinstall-scripts/issues"
+  },
+  "homepage": "https://github.com/bragatte/os-postinstall-scripts#readme",
+  "workspaces": [
+    "tools/local-dev"
+  ],
+  "config": {
+    "no-ci": "true",
+    "local-only": "true"
+  }
+}
