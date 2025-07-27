@@ -8,17 +8,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Upcoming
-- **v2.7.0**: Core/Adapters architecture refactor
-- **v2.8.0**: bats-core testing framework
+- **v2.8.0**: Core/Adapters architecture refactor
+- **v2.9.0**: bats-core testing framework
 - **v3.0.0**: Full platform parity (breaking changes)
+
+## [2.7.0] - 2025-07-27
+
+### Added
+- 🌍 **Internationalization (i18n) - English Translation**
+  - Complete translation of all user-facing content to English
+  - Maintained Portuguese compatibility through aliases (planned)
+  - Structured 4-phase translation approach:
+    - Phase 1: Core documentation (CLAUDE.md, README.md, STATUS.md)
+    - Phase 2: User-facing messages in shell scripts
+    - Phase 3: Code comments and internal documentation
+    - Phase 4: Function names with PT-BR compatibility aliases
+  - Translation progress tracking through todo system
+
+### Changed
+- 📝 **Core Documentation**
+  - CLAUDE.md fully translated to English (v2.3.0)
+  - README.md translated with improved structure
+  - All examples and templates now in English
+  
+- 🔧 **setup.sh**
+  - All user messages translated to English
+  - Menu options and prompts internationalized
+  - Error messages and feedback in English
+  - Maintained all functionality without breaking changes
+
+### Improved
+- 🚀 **User Experience**
+  - More accessible to international users
+  - Consistent language throughout the project
+  - Professional English terminology
 
 ## [2.6.0] - 2025-07-26
 
 ### Added
-- 🔄 **BMAD Method Update Script**
-  - New `update_bmad_github.sh` script for easy BMAD updates
+- 🔄 **BMAD Method Scripts**
+  - New `install_bmad.sh` script for simple BMAD installation
+  - New `update_bmad.sh` script for easy BMAD updates
   - Automatic version checking and comparison
   - Backup creation before updates
+  - Native `.bmad-core/` location (gitignored for clean commits)
   - Preserves custom content (expansion packs, custom agents)
   - Shows changelog reference after update
 
