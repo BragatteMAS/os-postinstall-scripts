@@ -38,41 +38,59 @@
 
 ## 🎯 Current Sprint Focus
 
-1. **Documentation Sprint** ✅ COMPLETED!
-   - [x] Update BMAD to v4.30
-   - [x] Create PRD.md
-   - [x] Create STORIES.md
-   - [x] Update CLAUDE.md to v2.3.0
-   - [x] Create TESTING.md
-   - [x] Create initial ADRs
-   - [x] Update README with CLAUDE.md section
+### Sprint v3.2.0: Intelligent Recommendations (August 1-14, 2025)
 
-2. **Epic 0: Critical Fixes** 🚨 100% COMPLETE
-   - [✅] Fix APT lock security vulnerability (ADR-005) - 100% complete
-     - [x] Created utils/package-manager-safety.sh
-     - [x] Created utils/logging.sh
-     - [x] Updated linux/install/apt.sh
-     - [x] Updated linux/auto/auto_apt.sh
-     - [x] Updated linux/post_install.sh
-     - [x] Removed ALL dangerous lock removal code
-     - [x] Created security tests (6 comprehensive tests)
-     - [x] Created integration tests for timeout scenarios
-     - [x] Made logging.sh Bash 3 compatible
-     - [x] All tests passing
-     - [x] Update CI/CD to run security tests
-   
-3. **v2.4.0 Profile System** ✅ IMPLEMENTED (Alpha)
-   - [x] 5 pre-configured profiles (developer, devops, data-scientist, student)
-   - [x] setup-with-profile.sh for interactive selection
-   - [x] YAML-based configuration
-   - [x] Comprehensive documentation
-   - [ ] Final testing and release
+**Sprint Goal:** Replace profile system with minimal base + intelligent recommendations
 
-4. **Next Sprint: v2.5.0 Planning**
-   - [ ] Implement real testing framework (ADR-006)
-   - [ ] Implement core/adapters architecture (ADR-007)
-   - [ ] Create examples/ directory with approved patterns
-   - [ ] Expand macOS support to 80%
+**Sprint Backlog (38 story points):**
+1. **Story 1.1: Quick Start Installation** (8 pts) 🔴 HIGH
+   - [ ] One-command minimal base installation
+   - [ ] 15-minute installation target
+   - [ ] Parallel execution where safe
+   - [ ] Progress indicators with time remaining
+
+2. **Story 1.6: PRD/STORIES Technology Detection** (13 pts) 🔴 HIGH
+   - [ ] Document parser implementation
+   - [ ] Technology keyword database
+   - [ ] Fuzzy matching algorithm
+   - [ ] Confidence scoring system
+   - [ ] Recommendation generator
+
+3. **Story 4.2: Deprecate Profile System** (5 pts) 🔴 HIGH
+   - [ ] Deprecation warnings added
+   - [ ] Migration guide created
+   - [ ] Profile → recommendation mapping
+   - [ ] Backward compatibility maintained
+
+4. **Story 5.1: BMAD Agent Integration** (8 pts) 🔴 HIGH
+   - [ ] Agent workflow hooks
+   - [ ] Suggestion UI implementation
+   - [ ] Override mechanism
+   - [ ] Educational documentation
+
+5. **Story 1.7: Manual Test Execution** (3 pts) 🟡 MEDIUM
+   - [ ] Test structure created
+   - [ ] Documentation updated
+   - [ ] NO automatic execution
+
+6. **Story 2.1: Mac/Linux Parity Planning** (5 pts) 🟡 MEDIUM
+   - [ ] Platform audit complete
+   - [ ] Core/adapter design documented
+   - [ ] v3.3.0 roadmap created
+
+7. **Story 2.2: Windows Planning** (3 pts) 🟢 LOW
+   - [ ] Winget assessment
+   - [ ] Basic tool list defined
+   - [ ] Limitations documented
+
+**Sprint Documents Created:**
+- ✅ SPRINT_PLAN.md - Comprehensive sprint planning
+- ✅ IMPLEMENTATION_TASKS_v3.2.0.md - Detailed technical tasks
+
+### Previous Sprints ✅ COMPLETED
+1. **Documentation Sprint** ✅
+2. **Epic 0: Critical Fixes** ✅ 
+3. **v2.4.0 Profile System** ✅ (To be deprecated in v3.2.0)
 
 ## 📊 Key Metrics
 

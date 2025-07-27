@@ -1,7 +1,8 @@
 # 🏆 Testing Strategy - OS Post-Install Scripts
 
 > **Testing Trophy Approach** adapted for Shell Scripts  
-> Focus on **Integration Tests** that verify real-world functionality
+> Focus on **Integration Tests** that verify real-world functionality  
+> **v3.2.0 Update:** ALL tests are manual and on-demand - NO automation!
 
 ## 🎯 Testing Philosophy
 
@@ -128,20 +129,29 @@ tests/
 └── test_harness.sh # Main test runner
 ```
 
-### Running Tests
+### Running Tests (v3.2.0 - MANUAL ONLY)
 
 ```bash
-# Run all tests
-make test
+# ⚠️ IMPORTANT: All tests are manual and on-demand
+# NO automatic execution during installation
+# User maintains complete control
+
+# Run all tests manually
+make test-manual
 
 # Run specific category
-make test-static
-make test-unit
-make test-integration
-make test-e2e
+make test-manual-smoke      # 5 minutes
+make test-manual-integration # 15 minutes
+make test-manual-acceptance  # 30 minutes
+make test-manual-security    # 10 minutes
 
-# Run with coverage
-make test-coverage
+# Run with educational output
+TEST_EDUCATION=1 make test-manual
+
+# When to run tests:
+# - Before committing: smoke tests (5 min)
+# - Before PR: integration tests (15 min)
+# - Before release: full suite (90 min)
 ```
 
 ## 🎯 What to Test (Priority Order)
@@ -275,11 +285,11 @@ teardown() {
    [[ $? -eq 0 ]]  # What does success mean here?
    ```
 
-## 🔄 CI/CD Integration
+## 🔄 CI/CD Integration (v3.2.0)
 
-### GitHub Actions Workflow
+### GitHub Actions Workflow - NO TEST AUTOMATION
 ```yaml
-name: Test Scripts
+name: Code Quality Checks
 
 on: [push, pull_request]
 
@@ -288,27 +298,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run ShellCheck
-        run: make test-static
+      - name: Run ShellCheck (linting only)
+        run: make lint
+      # NO automated test execution
 
-  integration-tests:
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run integration tests
-        run: make test-integration
-
-  e2e-tests:
+  documentation:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v3
-      - name: Run E2E tests
-        run: make test-e2e
+      - name: Verify test documentation
+        run: |
+          # Check that manual test guides exist
+          test -f TESTING_STRATEGY_v3.2.0.md
+          test -f tests/guides/WHEN_TO_TEST.md
+          test -f tests/guides/HOW_TO_TEST.md
+      # NO test execution - only verify docs exist
 ```
+
+### Manual Testing Requirements
+
+**Before Release:**
+1. Developer runs full test suite locally (~90 minutes)
+2. Records results in `tests/results/`
+3. Includes test report in PR
+4. Reviewer may run subset of tests
+5. NO automated gates based on tests
 
 ## 📊 Test Metrics
 
@@ -337,24 +351,55 @@ jobs:
 - **kcov** - Code coverage for bash
 - **parallel** - Speed up test execution
 
-## 🎯 Quick Start
+## 🎯 Quick Start (v3.2.0 - Manual Testing)
 
 ```bash
-# Install test dependencies
+# Install test dependencies (optional, for local testing)
 ./tests/install-test-deps.sh
 
-# Run all tests
-./tests/test_harness.sh
+# ⚠️ ALL TESTS ARE MANUAL - Run when YOU choose
 
-# Run specific test file
-bats tests/integration/apt.bats
+# Quick confidence check (5 min)
+./tests/manual/smoke/minimal-base.sh
 
-# Run with verbose output
-./tests/test_harness.sh -v
+# Story-specific tests
+./tests/manual/run-story-tests.sh 1.1  # Test quick start
+./tests/manual/run-story-tests.sh 1.6  # Test parser
 
-# Generate coverage report
-./tests/coverage.sh
+# Full validation (90 min)
+./tests/manual/full-validation.sh
+
+# With educational output
+TEST_EDUCATION=1 ./tests/manual/smoke/minimal-base.sh
+
+# Record your results
+./tests/manual/record-results.sh
 ```
+
+## 📚 v3.2.0 Testing Philosophy
+
+### Why Manual Testing?
+
+1. **User Control**: You decide when to verify
+2. **System Safety**: No automated scripts modifying your system
+3. **Learning Opportunity**: Understand what's being tested
+4. **Flexibility**: Skip tests that don't apply to you
+5. **Trust Building**: See exactly what's happening
+
+### When to Test?
+
+- **Feeling Uncertain?** Run smoke tests (5 min)
+- **Made Big Changes?** Run integration tests (15 min)
+- **Before Release?** Run full suite (90 min)
+- **User Reported Issue?** Run specific test
+- **Just Curious?** Run with education mode
+
+### Testing Guides
+
+- See `TESTING_STRATEGY_v3.2.0.md` for complete v3.2.0 test plans
+- See `tests/guides/WHEN_TO_TEST.md` for decision flowchart
+- See `tests/guides/HOW_TO_TEST.md` for execution instructions
+- See `QA_CHECKLIST.md` for release validation
 
 ## 🔍 Debugging Failed Tests
 
