@@ -9,6 +9,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 echo -e "${BLUE}🚀 Installing BMAD Method...${NC}"
@@ -37,10 +38,11 @@ fi
 
 # Install BMAD using preferred package manager
 echo -e "${BLUE}📦 Installing BMAD Method...${NC}"
+echo -e "${CYAN}Default configuration: Claude-code + Cursor${NC}"
 if command -v pnpm &> /dev/null; then
-    pnpm dlx bmad-method@latest install --full --ide cursor
+    pnpm dlx bmad-method@latest install --full --ide cursor --ide claude-code
 elif command -v npm &> /dev/null; then
-    npx bmad-method@latest install --full --ide cursor
+    npx bmad-method@latest install --full --ide cursor --ide claude-code
 else
     echo -e "${RED}✗ No package manager found. Please install pnpm or npm.${NC}"
     exit 1
