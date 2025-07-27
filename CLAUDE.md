@@ -210,483 +210,480 @@ npx bmad-method@latest install --full --ide cursor
 }
 ```
 
-💡 **Verificação:** Se não vir `mcp__` nas ferramentas, os MCPs não estão ativos!
+💡 **Verification:** If you don't see `mcp__` in the tools, MCPs are not active!
 
-#### 📍 Localização do arquivo de configuração:
+#### 📍 Configuration file location:
 - **macOS**: `~/Library/Application Support/Claude/claude.json`
 - **Windows**: `%APPDATA%\Claude\claude.json`  
 - **Linux**: `~/.config/Claude/claude.json`
 
-💡 **Nota**: O arquivo de configuração dos MCPs é `claude.json`.
+💡 **Note**: The MCP configuration file is `claude.json`.
 
-### 🔨 Comandos Slash Customizados
-Potencialize o Context Engineering com comandos específicos em `.claude/commands/`:
-- `/generate-prp` - Gera PRPs completos a partir de requisitos
-- `/execute-prp` - Executa implementação com validação automática
-- `/validate-patterns` - Verifica aderência aos padrões do projeto
+### 🔨 Custom Slash Commands
+Enhance Context Engineering with specific commands in `.claude/commands/`:
+- `/generate-prp` - Generate complete PRPs from requirements
+- `/execute-prp` - Execute implementation with automatic validation
+- `/validate-patterns` - Verify adherence to project patterns
 
 
 ---
 
-## 🎯 Sistema de Auto-Modulação Contextual
+## 🎯 Contextual Self-Modulation System
 
-### Como o STORIES.md Filtra Este Documento
+### How STORIES.md Filters This Document
 
-O CLAUDE.md não é aplicado monoliticamente. Baseado nas respostas às perguntas focais do STORIES.md, apenas as seções relevantes são ativadas:
+CLAUDE.md is not applied monolithically. Based on responses to focal questions in STORIES.md, only relevant sections are activated:
 
-| Pergunta no STORIES | Resposta | Seções Ativadas | Seções Ignoradas |
+| Question in STORIES | Answer | Activated Sections | Ignored Sections |
 |-------------------|----------|-----------------|------------------|
-| Precisa de testes? | Sim | Testing Trophy, Padrões de Teste | - |
-| Precisa de testes? | Não | - | Testing Trophy, /tests |
-| É análise de dados? | Sim | Padrões Python/R, Comentários ## | React, Frontend |
-| Tem interface visual? | Sim | React/Next, Artifacts HTML | Backend puro |
-| Processa dados genômicos? | Sim | Bioinformática patterns | Web patterns |
+| Need tests? | Yes | Testing Trophy, Test Patterns | - |
+| Need tests? | No | - | Testing Trophy, /tests |
+| Is it data analysis? | Yes | Python/R Patterns, ## Comments | React, Frontend |
+| Has visual interface? | Yes | React/Next, HTML Artifacts | Pure Backend |
+| Processes genomic data? | Yes | Bioinformatics patterns | Web patterns |
 
-### Exemplo Prático: Análise Epidemiológica
+### Practical Example: Epidemiological Analysis
 
 ```markdown
-## STORIES.md (exemplo)
-**Q: Tipo de projeto?** A: Análise de dados epidemiológicos
-**Q: Precisa de testes?** A: Apenas para funções estatísticas críticas  
-**Q: Interface?** A: Dashboard Shiny simples
+## STORIES.md (example)
+**Q: Project type?** A: Epidemiological data analysis
+**Q: Need tests?** A: Only for critical statistical functions  
+**Q: Interface?** A: Simple Shiny dashboard
 **Q: Deploy?** A: Local/RStudio Server
 
-## Resultado: CLAUDE.md filtrado aplica:
-✅ Padrões R com comentários ##
-✅ Estrutura de análise epidemiológica
-✅ Testes focados em cálculos estatísticos
-❌ React/Next.js patterns (ignorado)
-❌ Kubernetes deploy (ignorado)
-❌ E2E testing (ignorado)
+## Result: Filtered CLAUDE.md applies:
+✅ R patterns with ## comments
+✅ Epidemiological analysis structure
+✅ Tests focused on statistical calculations
+❌ React/Next.js patterns (ignored)
+❌ Kubernetes deploy (ignored)
+❌ E2E testing (ignored)
 ```
 
-### Projetos Estruturados: Processo de Revisão
+### Structured Projects: Review Process
 
-Quando aplicado a projetos existentes:
+When applied to existing projects:
 
 ```mermaid
 graph LR
-    A[Projeto Existente] --> B[Instalar BMAD]
-    B --> C[STATUS.md detecta estrutura]
-    C --> D[Revisar PRD com template]
-    D --> E[Questões de alinhamento]
-    E --> F[Adaptar STORIES.md]
-    F --> G[CLAUDE.md contextualizado]
+    A[Existing Project] --> B[Install BMAD]
+    B --> C[STATUS.md detects structure]
+    C --> D[Review PRD with template]
+    D --> E[Alignment questions]
+    E --> F[Adapt STORIES.md]
+    F --> G[Contextualized CLAUDE.md]
     
     style G fill:#c8e6c9
 ```
 
 ---
 
-## 🚦 Protocolo de Início de Sessão (OBRIGATÓRIO)
+## 🚦 Session Startup Protocol (MANDATORY)
 
-### Ao iniciar QUALQUER trabalho em projeto:
+### When starting ANY project work:
 
-1. **Verificar STATUS.md**
+1. **Check STATUS.md**
    ```
-   Claude deve sempre:
-   1. Procurar por STATUS.md no projeto
-   2. Se não existir: "Não encontrei STATUS.md. Vamos criar um para rastrear o projeto?"
-   3. Se existir: Checar tabela de documentação
-   4. Se algum doc estiver ⚠️ ou 🔴: Alertar IMEDIATAMENTE
-   5. Verificar se PRD existe e está alinhado
+   Claude must always:
+   1. Look for STATUS.md in the project
+   2. If it doesn't exist: "I didn't find STATUS.md. Should we create one to track the project?"
+   3. If it exists: Check documentation table
+   4. If any doc is ⚠️ or 🔴: Alert IMMEDIATELY
+   5. Verify if PRD exists and is aligned
    ```
 
-2. **Verificar metodologia do projeto**
-   - Projeto usa BMAD? Use os templates oficiais
-   - Outra metodologia? Adapte as práticas conforme necessário
+2. **Check project methodology**
+   - Project uses BMAD? Use official templates
+   - Other methodology? Adapt practices as needed
 
-3. **Exemplo de primeira interação:**
+3. **Example of first interaction:**
 ```
-Claude: "Verificando STATUS.md... Encontrei 2 documentos que precisam atenção:
-- CLAUDE.md está vencido há 3 dias ⚠️
-- TESTING.md está desatualizado há 15 dias 🔴
-- PRD.md existe e define projeto de análise genômica
+Claude: "Checking STATUS.md... I found 2 documents that need attention:
+- CLAUDE.md is 3 days overdue ⚠️
+- TESTING.md is 15 days outdated 🔴
+- PRD.md exists and defines genomic analysis project
 
-Baseado no PRD, vejo que é um projeto de bioinformática. 
-Sugiro revisar o STORIES.md para confirmar quais módulos do CLAUDE.md aplicar.
-Por onde começamos?"
+Based on the PRD, I see this is a bioinformatics project. 
+I suggest reviewing STORIES.md to confirm which CLAUDE.md modules to apply.
+Where shall we start?"
 ```
 
 ---
 
-## 📋 Documentos Essenciais do Projeto
+## 📋 Essential Project Documents
 
-### 🔴 Obrigatórios (SEMPRE criar e manter):
+### 🔴 Mandatory (ALWAYS create and maintain):
 
 1. **PRD.md (Product Requirements Document)**
-   - Inicie SEMPRE com PRD claro
-   - Objetivos, métricas, premissas, perguntas fundamentais
-   - Critérios de aceitação e contexto completo
-   - **Em bioinformática**: Incluir pipeline esperado, formatos de dados
+   - ALWAYS start with clear PRD
+   - Objectives, metrics, assumptions, fundamental questions
+   - Acceptance criteria and complete context
+   - **In bioinformatics**: Include expected pipeline, data formats
    
 2. **STORIES.md**
-   - Jornada do usuário como guia central
-   - **Perguntas focais na entrega de valor ao usuário**
-   - Critérios de aceitação claros + PRPs para implementação
-   - **Decisões que filtram CLAUDE.md**
+   - User journey as central guide
+   - **Focal questions on user value delivery**
+   - Clear acceptance criteria + PRPs for implementation
+   - **Decisions that filter CLAUDE.md**
 
-3. **README.md** - Visão geral, propósito, instruções
-4. **CHANGELOG.md** - Histórico semver (major.minor.patch)
-5. **STATUS.md** - Progresso atual + tabela de atualização dos docs
-6. **CLAUDE.md** - Este documento, revisado mensalmente
-7. **TESTING.md** - Estratégias de teste + pasta `/tests`
+3. **README.md** - Overview, purpose, instructions
+4. **CHANGELOG.md** - Semver history (major.minor.patch)
+5. **STATUS.md** - Current progress + docs update table
+6. **CLAUDE.md** - This document, reviewed monthly
+7. **TESTING.md** - Test strategies + `/tests` folder
 
-### 🟣 Críticos para Context Engineering:
+### 🟣 Critical for Context Engineering:
 
-8. **examples/** - Padrões de código do projeto (FUNDAMENTAL)
-   - Estrutura de módulos e imports
-   - Padrões de teste e mocking
-   - Integrações e fluxos típicos
-   - Anti-padrões a evitar
-   - **Bioinformática**: Pipelines de análise, validação de dados
+8. **examples/** - Project code patterns (FUNDAMENTAL)
+   - Module and import structure
+   - Test and mocking patterns
+   - Typical integrations and flows
+   - Anti-patterns to avoid
+   - **Bioinformatics**: Analysis pipelines, data validation
 
-### 🟡 Desejáveis (projetos complexos):
+### 🟡 Desirable (complex projects):
 
-9. **ROADMAP.md** - Planejamento e marcos futuros
-10. **ARCHITECTURE.md / ADRs** - Decisões técnicas críticas
-11. **SECURITY.md** - Práticas de segurança + `.env.example`
-12. **DATA_DICTIONARY.md** - Schemas e glossário
-13. **PROMPTS.md** - Biblioteca de prompts bem-sucedidos
-14. **AI_CONTEXT.md** - Contexto para agentes/IA
-15. **DEBUGGING.md** - Logging e troubleshooting
-16. **MAINTENANCE.md** - Rotinas e responsáveis
+9. **ROADMAP.md** - Planning and future milestones
+10. **ARCHITECTURE.md / ADRs** - Critical technical decisions
+11. **SECURITY.md** - Security practices + `.env.example`
+12. **DATA_DICTIONARY.md** - Schemas and glossary
+13. **PROMPTS.md** - Successful prompts library
+14. **AI_CONTEXT.md** - Context for agents/AI
+15. **DEBUGGING.md** - Logging and troubleshooting
+16. **MAINTENANCE.md** - Routines and responsibilities
 
 
 ---
 
-## 🔄 Fluxos de Status Visuais
+## 🔄 Visual Status Flows
 
-### ADRs - Fluxo Obrigatório
-Todo ADR deve ter diagrama Mermaid mostrando estado atual:
+### ADRs - Mandatory Flow
+Every ADR must have a Mermaid diagram showing current state:
 
 ```mermaid
 graph LR
-    A[Proposto] --> B[Em Discussão] --> C[Aceito]
-    B --> D[Rejeitado]
-    C --> E[Obsoleto]
+    A[Proposed] --> B[Under Discussion] --> C[Accepted]
+    B --> D[Rejected]
+    C --> E[Obsolete]
 ```
 
-### README - Fluxo Opcional
-Adicione indicadores visuais quando relevante:
+### README - Optional Flow
+Add visual indicators when relevant:
 
 ```mermaid
 graph TB
     Build --> Tests --> Docs --> Deploy
 ```
 
-**Princípio 80/20:**
-- Foque no estado atual, não no histórico completo
-- Use cores/emojis com moderação (🟢🟡🔴)
-- Sincronize com STATUS.md quando existir
-- Mantenha simples - se precisar explicar, está complexo demais
+**80/20 Principle:**
+- Focus on current state, not complete history
+- Use colors/emojis sparingly (🟢🟡🔴)
+- Sync with STATUS.md when it exists
+- Keep it simple - if you need to explain, it's too complex
 
 ---
 
-## 🎯 Captura de Prompts e Histórias
+## 🎯 Prompt and Story Capture
 
-### STORIES.md é fundamental para:
-- **Capturar jornadas do usuário** que guiam desenvolvimento
-- **Registrar perguntas focais** sobre entrega de valor
-- **Manter contexto** de decisões orientadas ao usuário
-- **Integrar PRPs** para implementação técnica eficiente
-- **Filtrar seções aplicáveis** do CLAUDE.md
+### STORIES.md is fundamental for:
+- **Capturing user journeys** that guide development
+- **Recording focal questions** about value delivery
+- **Maintaining context** of user-oriented decisions
+- **Integrating PRPs** for efficient technical implementation
+- **Filtering applicable sections** of CLAUDE.md
 
-### Evolução: PRPs (Product Requirements Prompts)
-PRPs são specs evoluídas para Context Engineering:
-- **Contexto completo** da implementação
-- **Gates de validação** em cada etapa
-- **Padrões de erro** e recuperação
-- **Critérios mensuráveis** de sucesso
+### Evolution: PRPs (Product Requirements Prompts)
+PRPs are evolved specs for Context Engineering:
+- **Complete context** of implementation
+- **Validation gates** at each stage
+- **Error patterns** and recovery
+- **Measurable criteria** for success
 
-### Formato simplificado:
+### Simplified format:
 ```markdown
-## [YYYY-MM-DD] - [Categoria]: [Título]
-**Contexto:** [Situação que gerou a necessidade]
-**Prompt:** [O que funcionou]
-**Resultado:** [O que foi gerado/alcançado]
-**Métricas:** [Se aplicável: tempo economizado, acurácia, etc.]
-**Decisões CLAUDE.md:** [Quais seções foram aplicadas/ignoradas]
+## [YYYY-MM-DD] - [Category]: [Title]
+**Context:** [Situation that generated the need]
+**Prompt:** [What worked]
+**Result:** [What was generated/achieved]
+**Metrics:** [If applicable: time saved, accuracy, etc.]
+**CLAUDE.md Decisions:** [Which sections were applied/ignored]
 ```
 
-### Gatilho automático:
-- Adicione `[prompt-saved]` ao commit para salvar automaticamente
+### Automatic trigger:
+- Add `[prompt-saved]` to commit to save automatically
 
 
 ---
 
-## 📝 Padrões de Código e Comentários
+## 📝 Code and Comment Patterns
 
-### Padrões de Código por Linguagem:
+### Code Patterns by Language:
 
-#### Python - Padrões Modernos:
-- Use `##` para TODA linha de código significativa
-- **UV para ambientes virtuais** (não pip/conda)
-- **Polars > pandas** para manipulação de dados
-- Imports devem ter comentário explicando o uso
-- Declare encoding UTF-8 explicitamente
-- Use pathlib.Path para caminhos de arquivo
-- Type hints sempre que possível
+#### Python - Modern Patterns:
+- Use `##` for EVERY significant line of code
+- **UV for virtual environments** (not pip/conda)
+- **Polars > pandas** for data manipulation
+- Imports must have comments explaining usage
+- Declare UTF-8 encoding explicitly
+- Use pathlib.Path for file paths
+- Type hints whenever possible
 
-#### R - Análise Estatística:
-- Use `##` para comentários linha a linha
-- Tidyverse para manipulação moderna
-- Encoding UTF-8 explícito
-- here::here() para caminhos relativos
-
-
-#### Rust - Performance e Segurança:
-- Use `//` para comentários de linha, `///` para doc comments
-- **Tipagem explícita sempre** para melhor diagnóstico de erros
-- **Gestão de memória explícita** com lifetimes quando necessário
-- Error handling explícito com Result<T, E> customizado
-- UTF-8 encoding sempre especificado
-- Validação de entrada antes de processamento
-- Zero-cost abstractions quando possível
-- Prefer `&str` sobre `String` quando não precisar ownership
+#### R - Statistical Analysis:
+- Use `##` for line-by-line comments
+- Tidyverse for modern manipulation
+- Explicit UTF-8 encoding
+- here::here() for relative paths
 
 
-#### React com TypeScript - Epic Stack Patterns:
+#### Rust - Performance and Security:
+- Use `//` for line comments, `///` for doc comments
+- **Always explicit typing** for better error diagnostics
+- **Explicit memory management** with lifetimes when necessary
+- Explicit error handling with custom Result<T, E>
+- Always specify UTF-8 encoding
+- Input validation before processing
+- Zero-cost abstractions when possible
+- Prefer `&str` over `String` when ownership isn't needed
+
+
+#### React with TypeScript - Epic Stack Patterns:
 - **Epic Stack patterns** ([epicweb.dev](https://github.com/epicweb-dev/full-stack-foundations))
-- Full-stack TypeScript com Remix
-- Interfaces tipadas para props e state
-- Hooks modernos (useState, useEffect, useMemo)
-- Acessibilidade com aria-labels e roles
-- Performance com memoização quando necessário
-- Componentes funcionais, não classes
+- Full-stack TypeScript with Remix
+- Typed interfaces for props and state
+- Modern hooks (useState, useEffect, useMemo)
+- Accessibility with aria-labels and roles
+- Performance with memoization when necessary
+- Functional components, not classes
 - Database-backed authentication
-- Testing com Vitest e Testing Library
-- Tailwind CSS para styling
-- Conform para forms type-safe
-- Zod para validação de schemas
-- Prisma para ORM type-safe
+- Testing with Vitest and Testing Library
+- Tailwind CSS for styling
+- Conform for type-safe forms
+- Zod for schema validation
+- Prisma for type-safe ORM
 
 
-### Regras gerais:
-- `##` para explicações de linha/função em Python/R
-- `//` para comentários em Rust (use `///` para doc comments)
-- TypeScript: Use tipos explícitos e interfaces
-- Imports no início com explicação
-- Encoding UTF-8 explícito
-- Use `pathlib.Path` (Python) ou `std::path::Path` (Rust)
-- Datas em formato ISO (YYYY-MM-DD)
-- **Bioinformática**: Documentar formatos esperados (FASTA, VCF, etc.)
+### General rules:
+- `##` for line/function explanations in Python/R
+- `//` for comments in Rust (use `///` for doc comments)
+- TypeScript: Use explicit types and interfaces
+- Imports at the beginning with explanation
+- Explicit UTF-8 encoding
+- Use `pathlib.Path` (Python) or `std::path::Path` (Rust)
+- Dates in ISO format (YYYY-MM-DD)
+- **Bioinformatics**: Document expected formats (FASTA, VCF, etc.)
 
 
 ---
 
-## 🚫 Nunca Faça
+## 🚫 Never Do
 
-1. **Implementar sem validar ADRs** - Respeite decisões documentadas
-2. **Código sem comentários** - Em R/Python, SEMPRE comente
-3. **Assumir ambiente/encoding** - Sempre confirme especificações
-4. **Criar testes não solicitados** - Apenas quando pedido no STORIES
-5. **Implementar sem documentação** - PRD e STORIES devem existir primeiro
-6. **Deploy sem limpar cache** - Sempre inicie limpo
-7. **Citar metodologia em commits** - Foque nas mudanças do projeto
-8. **Usar tecnologias defasadas** - Sempre versões modernas
-9. **Hardcode valores/versões** - Seja agnóstico
-10. **ADR sem fluxo de status** - Todo ADR precisa Mermaid
-11. **Testes com data-testid** - Force acessibilidade com queries semânticas
-12. **Testar implementação** - Foque em comportamento observável do usuário
-13. **Over-mocking** - Mock apenas dependências externas (APIs, DBs)
-14. **Aplicar seções irrelevantes** - Se STORIES disse "não precisa", não faça
+1. **Implement without validating ADRs** - Respect documented decisions
+2. **Code without comments** - In R/Python, ALWAYS comment
+3. **Assume environment/encoding** - Always confirm specifications
+4. **Create unsolicited tests** - Only when requested in STORIES
+5. **Implement without documentation** - PRD and STORIES must exist first
+6. **Deploy without clearing cache** - Always start clean
+7. **Cite methodology in commits** - Focus on project changes
+8. **Use outdated technologies** - Always use modern versions
+9. **Hardcode values/versions** - Be agnostic
+10. **ADR without status flow** - Every ADR needs Mermaid
+11. **Tests with data-testid** - Force accessibility with semantic queries
+12. **Test implementation** - Focus on observable user behavior
+13. **Over-mocking** - Mock only external dependencies (APIs, DBs)
+14. **Apply irrelevant sections** - If STORIES said "not needed", don't do it
 
 ---
 
-## 🚀 Mantenha-se Moderno
+## 🚀 Stay Modern
 
-### Versões Recomendadas (sempre verificar sites oficiais):
-- **Python:** 3.13+ ([python.org](https://python.org)) - Análises e pipelines
-  - **UV** para gerenciamento de ambientes ([astral.sh/uv](https://astral.sh/uv))
-  - **Polars** > pandas para processamento de dados
-- **R:** 4.3+ com tidyverse atualizado ([r-project.org](https://r-project.org)) - Estatística e visualização
-- **Rust:** 1.78+ ([rust-lang.org](https://rust-lang.org)) - Performance crítica e ferramentas CLI
-- **TypeScript:** 5.5+ ([typescriptlang.org](https://typescriptlang.org)) - Type safety no frontend
-- **React:** 18.3+ com hooks modernos - Interfaces interativas
-  - **Remix** para full-stack React apps
-  - **Epic Stack** como referência de arquitetura
-- **D3.js:** v7+ ([d3js.org](https://d3js.org)) - Visualizações customizadas
+### Recommended Versions (always check official sites):
+- **Python:** 3.13+ ([python.org](https://python.org)) - Analysis and pipelines
+  - **UV** for environment management ([astral.sh/uv](https://astral.sh/uv))
+  - **Polars** > pandas for data processing
+- **R:** 4.3+ with updated tidyverse ([r-project.org](https://r-project.org)) - Statistics and visualization
+- **Rust:** 1.78+ ([rust-lang.org](https://rust-lang.org)) - Critical performance and CLI tools
+- **TypeScript:** 5.5+ ([typescriptlang.org](https://typescriptlang.org)) - Type safety in frontend
+- **React:** 18.3+ with modern hooks - Interactive interfaces
+  - **Remix** for full-stack React apps
+  - **Epic Stack** as architecture reference
+- **D3.js:** v7+ ([d3js.org](https://d3js.org)) - Custom visualizations
 - **Package Manager:** pnpm > yarn > npm ([pnpm.io](https://pnpm.io))
-- **Java:** 21 LTS (quando necessário para ferramentas específicas)
+- **Java:** 21 LTS (when necessary for specific tools)
 
-### Red Flags de Código Legado:
-🚩 Bibliotecas sem updates há 2+ anos  
-🚩 Callbacks aninhados (use async/await)  
-🚩 jQuery em projetos novos  
+### Legacy Code Red Flags:
+🚩 Libraries without updates for 2+ years  
+🚩 Nested callbacks (use async/await)  
+🚩 jQuery in new projects  
 🚩 Python 2.x syntax  
-🚩 R sem tidyverse em análises modernas
-🚩 React class components em código novo
-🚩 JavaScript puro quando TypeScript é viável
-🚩 Visualizações estáticas quando interatividade agregaria valor
+🚩 R without tidyverse in modern analyses
+🚩 React class components in new code
+🚩 Pure JavaScript when TypeScript is viable
+🚩 Static visualizations when interactivity would add value
 
 
 ---
 
-## ✅ Sempre Faça
+## ✅ Always Do
 
-### 1. Use artifacts para:
-- Código > 20 linhas
-- Documentos estruturados
-- Análises complexas
-- Relatórios e visualizações
-- **Pipelines de bioinformática**
+### 1. Use artifacts for:
+- Code > 20 lines
+- Structured documents
+- Complex analyses
+- Reports and visualizations
+- **Bioinformatics pipelines**
 
-### 2. Código Agnóstico:
-- Detecte ambiente em runtime (platform, sys)
-- Nunca hardcode paths ou versões
-- Use variáveis de ambiente quando apropriado
-- Paths sempre com pathlib.Path
+### 2. Agnostic Code:
+- Detect environment at runtime (platform, sys)
+- Never hardcode paths or versions
+- Use environment variables when appropriate
+- Always use pathlib.Path for paths
 
 
-### 3. Estrutura Why-What-How:
-- **Why:** Por que é importante?
-- **What:** O que exatamente fazer?
-- **How:** Como implementar?
+### 3. Why-What-How Structure:
+- **Why:** Why is it important?
+- **What:** What exactly to do?
+- **How:** How to implement?
 
-### 4. Testes focados em comportamento:
-- **Testing Trophy:** Priorize testes de integração sobre unit tests
-- **Acessibilidade primeiro:** Nunca use `data-testid` - force componentes acessíveis
-- **Comportamento > Implementação:** Teste fluxos de usuário, não detalhes internos
-- **Queries semânticas:** Use `getByRole`, `getByLabelText`, `getByText`
-- **Equilíbrio contextual:** Ajuste tipos de teste conforme complexidade do projeto
-- **Bioinformática:** Teste validação de formatos, não parsing interno
-
----
-
-## 🌐 Compatibilidade Cross-Platform
-
-- Sempre use pathlib.Path (Python) ou std::path::Path (Rust)
-- Evite separadores de path hardcoded (/, \)
-- Detecte OS com platform.system() quando necessário
-- UTF-8 como encoding padrão sempre
-- Considere diferenças de line endings (LF vs CRLF)
-
+### 4. Behavior-focused tests:
+- **Testing Trophy:** Prioritize integration tests over unit tests
+- **Accessibility first:** Never use `data-testid` - force accessible components
+- **Behavior > Implementation:** Test user flows, not internal details
+- **Semantic queries:** Use `getByRole`, `getByLabelText`, `getByText`
+- **Contextual balance:** Adjust test types according to project complexity
+- **Bioinformatics:** Test format validation, not internal parsing
 
 ---
 
-## 🔄 Protocolo para Projetos Existentes
+## 🌐 Cross-Platform Compatibility
 
-Ao adicionar CLAUDE.md a projeto estruturado:
+- Always use pathlib.Path (Python) or std::path::Path (Rust)
+- Avoid hardcoded path separators (/, \)
+- Detect OS with platform.system() when necessary
+- UTF-8 as default encoding always
+- Consider line ending differences (LF vs CRLF)
 
-1. **Análise inicial via STATUS.md**
+
+---
+
+## 🔄 Protocol for Existing Projects
+
+When adding CLAUDE.md to a structured project:
+
+1. **Initial analysis via STATUS.md**
    ```
-   STATUS.md detecta:
-   - Estrutura existente do projeto
-   - Convenções de código em uso
-   - Stack tecnológica atual
+   STATUS.md detects:
+   - Existing project structure
+   - Code conventions in use
+   - Current technology stack
    ```
 
-2. **Revisão e alinhamento do PRD**
-   - Mapear objetivos existentes vs. template BMAD
-   - Identificar gaps e overlaps
-   - Criar PRD unificado
+2. **PRD review and alignment**
+   - Map existing objectives vs. BMAD template
+   - Identify gaps and overlaps
+   - Create unified PRD
 
-3. **STORIES.md adaptativo**
+3. **Adaptive STORIES.md**
    ```markdown
-   ## Perguntas de Alinhamento para Projeto Existente
-   - Manter convenções atuais? [S/N]
-   - Migrar gradualmente para novos padrões? [S/N]
-   - Quais decisões arquiteturais são imutáveis?
-   - Onde podemos introduzir melhorias?
+   ## Alignment Questions for Existing Project
+   - Keep current conventions? [Y/N]
+   - Gradually migrate to new patterns? [Y/N]
+   - Which architectural decisions are immutable?
+   - Where can we introduce improvements?
    ```
 
-4. **Criar ADAPTATIONS.md se necessário**
-   - Documenta desvios necessários do CLAUDE.md padrão
-   - Justifica cada adaptação
-   - Define cronograma de convergência (se aplicável)
+4. **Create ADAPTATIONS.md if necessary**
+   - Documents necessary deviations from standard CLAUDE.md
+   - Justifies each adaptation
+   - Defines convergence timeline (if applicable)
 
-5. **ADR para decisões de integração**
+5. **ADR for integration decisions**
    ```markdown
-   # ADR-XXX: Integração CLAUDE.md em Projeto Legacy
+   # ADR-XXX: CLAUDE.md Integration in Legacy Project
    
    ## Status
-   Aceito
+   Accepted
    
-   ## Contexto
-   Projeto existente com convenções estabelecidas...
+   ## Context
+   Existing project with established conventions...
    
-   ## Decisão
-   Aplicar CLAUDE.md com as seguintes adaptações...
+   ## Decision
+   Apply CLAUDE.md with the following adaptations...
    
-   ## Consequências
-   - Positivas: Padronização gradual, melhor documentação
-   - Negativas: Período de transição com dois padrões
+   ## Consequences
+   - Positive: Gradual standardization, better documentation
+   - Negative: Transition period with two standards
    ```
 
 ---
 
-## 📝 Padrões de Commits
+## 📝 Commit Patterns
 
 ### Use Conventional Commits:
 ```
-feat: adiciona análise de tendências sazonais
-fix: corrige cálculo de taxa de incidência
-docs: atualiza README com exemplos de uso
-test: adiciona testes para validação de dados
-refactor: simplifica lógica de processamento
+feat: add seasonal trend analysis
+fix: fix incidence rate calculation
+docs: update README with usage examples
+test: add tests for data validation
+refactor: simplify processing logic
 ```
 
-**Foque no PROJETO**, não na metodologia ou ferramentas internas.
+**Focus on the PROJECT**, not on methodology or internal tools.
 
 ---
 
-## 💡 Maximizando Valor com Claude
+## 💡 Maximizing Value with Claude
 
-### Sempre comece com:
-- "Vamos checar o STATUS.md primeiro?"
-- "Qual a versão atual do projeto?"
-- "Que metodologia o projeto usa?"
-- "O PRD define que tipo de análise/sistema?"
+### Always start with:
+- "Should we check STATUS.md first?"
+- "What's the current project version?"
+- "What methodology does the project use?"
+- "What type of analysis/system does the PRD define?"
 
-### Seja específico e contextual:
-- ❌ "Análise de dados"
-- ✅ "EDA focada em sazonalidade e outliers para dados COVID-19"
-- ✅✅ "Análise filogenética de sequências SARS-CoV-2 com focus em variantes de preocupação"
+### Be specific and contextual:
 
-### Forneça contexto completo:
-- Tamanho dos dados e formato
-- Ambiente (Mac, Windows, WSL2)
-- Restrições e requisitos
-- Referência ao PRD/STORIES quando existir
+### Provide complete context:
+- Data size and format
+- Environment (Mac, Windows, WSL2)
+- Constraints and requirements
+- Reference to PRD/STORIES when it exists
 
 ---
 
-## ✅ Checklist de Qualidade
+## ✅ Quality Checklist
 
-### Para código:
-- [ ] Comentários apropriados (## em R/Python)
-- [ ] Imports organizados
-- [ ] Encoding UTF-8 declarado
-- [ ] Paths com pathlib.Path
-- [ ] Práticas modernas
-- [ ] Sem hardcode
-- [ ] **Bioinformática**: Validação de formatos de entrada
+### For code:
+- [ ] Appropriate comments (## in R/Python)
+- [ ] Organized imports
+- [ ] UTF-8 encoding declared
+- [ ] Paths with pathlib.Path
+- [ ] Modern practices
+- [ ] No hardcode
+- [ ] **Bioinformatics**: Input format validation
 
-### Para documentação:
-- [ ] STATUS.md atualizado
-- [ ] PRD claro com objetivos
-- [ ] STORIES com jornadas de usuário
-- [ ] CHANGELOG versionado
-- [ ] ADRs com fluxo Mermaid
-- [ ] **Decisões de modulação** documentadas
+### For documentation:
+- [ ] STATUS.md updated
+- [ ] Clear PRD with objectives
+- [ ] STORIES with user journeys
+- [ ] Versioned CHANGELOG
+- [ ] ADRs with Mermaid flow
+- [ ] **Modulation decisions** documented
 
-### Para deploy:
-- [ ] Cache limpo
-- [ ] Variáveis em .env
-- [ ] Tag no repositório
-- [ ] Docs atualizados
-- [ ] Tests passando
-- [ ] **Dados sensíveis**: Conformidade com LGPD/HIPAA
+### For deploy:
+- [ ] Clean cache
+- [ ] Variables in .env
+- [ ] Repository tag
+- [ ] Updated docs
+- [ ] Passing tests
+- [ ] **Sensitive data**: LGPD/HIPAA compliance
 
 ---
 
-## 🔗 Referências Essenciais
+## 🔗 Essential References
 
-- **Exemplos e Detalhes:** [CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md)
+- **Examples and Details:** [CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md)
 - **BMAD Method:** [github.com/bmadcode/BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD)
-- **Context7 para exemplos:** Adicione "use context7" aos prompts
+- **Context7 for examples:** Add "use context7" to prompts
 
 ---
 
-> **Evolução contínua:** Este documento deve ser revisado mensalmente ou a cada release major/minor. Para casos específicos, exemplos detalhados e troubleshooting, consulte [CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md)
+> **Continuous evolution:** This document should be reviewed monthly or at each major/minor release. For specific cases, detailed examples and troubleshooting, see [CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md)

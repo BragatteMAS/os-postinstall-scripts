@@ -96,7 +96,8 @@ Install all Rust tools: `./install_rust_tools.sh`
   - sequential-thinking - Structured reasoning
   - serena - Semantic code search
 - **BMAD Method v4.31.0** - Complete project management
-  - Easy updates with `update_bmad_github.sh`
+  - Easy installation with `./install_bmad.sh`
+  - Easy updates with `./update_bmad.sh`
   - Automatic backup before updates
   - Version checking and comparison
 - **Auto-configuration** for Claude Desktop
