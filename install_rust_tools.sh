@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Rust-First Development Environment Setup
-# Agnóstico: macOS e Linux
+# Agnostic: macOS and Linux
 # Author: Bragatte, M.A.S
 # ==============================================================================
 
 set -euo pipefail
 
-# Cores para output
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-# Detectar SO
+# Detect OS
 detect_os() {
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "macos"
@@ -30,86 +30,86 @@ OS=$(detect_os)
 ARCH=$(uname -m)
 
 echo -e "${BLUE}🦀 Rust-First Development Environment Setup${NC}"
-echo -e "${BLUE}📦 Sistema: $OS | Arquitetura: $ARCH${NC}"
+echo -e "${BLUE}📦 System: $OS | Architecture: $ARCH${NC}"
 echo ""
 
 # ==============================================================================
-# SEÇÃO 1: Instalação do Rust
+# SECTION 1: Rust Installation
 # ==============================================================================
 install_rust() {
     if command -v rustc &> /dev/null; then
-        echo -e "${GREEN}✓ Rust já instalado: $(rustc --version)${NC}"
+        echo -e "${GREEN}✓ Rust already installed: $(rustc --version)${NC}"
     else
-        echo -e "${YELLOW}📦 Instalando Rust...${NC}"
+        echo -e "${YELLOW}📦 Installing Rust...${NC}"
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         source "$HOME/.cargo/env"
     fi
     
-    # Instalar componentes essenciais
+    # Install essential components
     rustup component add rust-analyzer clippy rustfmt
 }
 
 # ==============================================================================
-# SEÇÃO 2: Ferramentas Rust Essenciais
+# SECTION 2: Essential Rust Tools
 # ==============================================================================
 RUST_TOOLS=(
-    # Ferramentas de terminal
-    "bat:cat com syntax highlighting"
-    "eza:ls moderno com ícones"
-    "fd-find:find mais rápido"
-    "ripgrep:grep ultrarrápido"
-    "git-delta:diff melhorado"
-    "dust:du com visualização em árvore"
-    "bottom:monitor de sistema"
-    "procs:ps moderno"
-    "sd:sed mais simples"
-    "tokei:estatísticas de código"
-    "zoxide:cd inteligente"
+    # Terminal tools
+    "bat:cat with syntax highlighting"
+    "eza:modern ls with icons"
+    "fd-find:faster find"
+    "ripgrep:ultrafast grep"
+    "git-delta:improved diff"
+    "dust:du with tree visualization"
+    "bottom:system monitor"
+    "procs:modern ps"
+    "sd:simpler sed"
+    "tokei:code statistics"
+    "zoxide:smart cd"
     "hyperfine:benchmarking"
-    "gitui:interface git no terminal"
-    "lsd:outro ls moderno"
+    "gitui:git interface in terminal"
+    "lsd:another modern ls"
     
-    # Ferramentas de desenvolvimento
-    "cargo-watch:auto-reload para projetos"
-    "cargo-edit:adicionar deps facilmente"
-    "cargo-update:atualizar ferramentas cargo"
-    "cargo-audit:verificar vulnerabilidades"
-    "cargo-expand:expandir macros"
-    "cargo-outdated:verificar deps desatualizadas"
-    "bacon:executor de tarefas Rust"
+    # Development tools
+    "cargo-watch:auto-reload for projects"
+    "cargo-edit:add deps easily"
+    "cargo-update:update cargo tools"
+    "cargo-audit:check vulnerabilities"
+    "cargo-expand:expand macros"
+    "cargo-outdated:check outdated deps"
+    "bacon:Rust task executor"
     
-    # Ferramentas de dados
-    "xsv:manipulação de CSV"
-    "jql:consultas JSON"
-    "htmlq:como jq mas para HTML"
+    # Data tools
+    "xsv:CSV manipulation"
+    "jql:JSON queries"
+    "htmlq:like jq but for HTML"
     
-    # Shell e utilitários
-    "starship:prompt customizável"
-    "nu:shell orientado a dados"
-    "helix:editor modal moderno"
-    "zellij:multiplexador de terminal"
-    "atuin:histórico de shell melhorado"
+    # Shell and utilities
+    "starship:customizable prompt"
+    "nu:data-oriented shell"
+    "helix:modern modal editor"
+    "zellij:terminal multiplexer"
+    "atuin:improved shell history"
 )
 
 install_rust_tools() {
-    echo -e "${YELLOW}📦 Instalando ferramentas Rust...${NC}"
+    echo -e "${YELLOW}📦 Installing Rust tools...${NC}"
     
-    # Tentar usar cargo-binstall primeiro (mais rápido)
+    # Try to use cargo-binstall first (faster)
     if ! command -v cargo-binstall &> /dev/null; then
-        echo -e "${YELLOW}📦 Instalando cargo-binstall para downloads mais rápidos...${NC}"
+        echo -e "${YELLOW}📦 Installing cargo-binstall for faster downloads...${NC}"
         curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
     fi
     
     for tool_info in "${RUST_TOOLS[@]}"; do
         IFS=':' read -r tool description <<< "$tool_info"
         
-        # Verificar se já está instalado
+        # Check if already installed
         if command -v "${tool%%-*}" &> /dev/null || cargo install --list | grep -q "^$tool"; then
-            echo -e "${GREEN}✓ $tool já instalado${NC}"
+            echo -e "${GREEN}✓ $tool already installed${NC}"
         else
-            echo -e "${YELLOW}📦 Instalando $tool - $description${NC}"
+            echo -e "${YELLOW}📦 Installing $tool - $description${NC}"
             
-            # Usar binstall se disponível, senão cargo install
+            # Use binstall if available, otherwise cargo install
             if command -v cargo-binstall &> /dev/null; then
                 cargo binstall -y "$tool" || cargo install "$tool"
             else
@@ -120,20 +120,20 @@ install_rust_tools() {
 }
 
 # ==============================================================================
-# SEÇÃO 3: Instalação Agnóstica de Dependências
+# SECTION 3: Agnostic Dependency Installation
 # ==============================================================================
 install_system_deps() {
-    echo -e "${YELLOW}📦 Instalando dependências do sistema...${NC}"
+    echo -e "${YELLOW}📦 Installing system dependencies...${NC}"
     
     case "$OS" in
         "macos")
-            # Instalar Homebrew se necessário
+            # Install Homebrew if necessary
             if ! command -v brew &> /dev/null; then
-                echo -e "${YELLOW}📦 Instalando Homebrew...${NC}"
+                echo -e "${YELLOW}📦 Installing Homebrew...${NC}"
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             fi
             
-            # Dependências via Homebrew
+            # Dependencies via Homebrew
             brew install git curl wget cmake pkg-config openssl
             ;;
             
@@ -155,36 +155,36 @@ install_system_deps() {
             ;;
             
         *)
-            echo -e "${RED}⚠️  Sistema não reconhecido. Instale manualmente: git, curl, wget, build tools${NC}"
+            echo -e "${RED}⚠️  Unrecognized system. Install manually: git, curl, wget, build tools${NC}"
             ;;
     esac
 }
 
 # ==============================================================================
-# SEÇÃO 4: Python com UV
+# SECTION 4: Python with UV
 # ==============================================================================
 install_uv() {
     if command -v uv &> /dev/null; then
-        echo -e "${GREEN}✓ UV já instalado: $(uv --version)${NC}"
+        echo -e "${GREEN}✓ UV already installed: $(uv --version)${NC}"
     else
-        echo -e "${YELLOW}📦 Instalando UV (gerenciador Python ultrarrápido)...${NC}"
+        echo -e "${YELLOW}📦 Installing UV (ultrafast Python manager)...${NC}"
         curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
 }
 
 # ==============================================================================
-# SEÇÃO 5: Configurações Portáveis
+# SECTION 5: Portable Configurations
 # ==============================================================================
 setup_portable_configs() {
-    echo -e "${YELLOW}📝 Criando configurações portáveis...${NC}"
+    echo -e "${YELLOW}📝 Creating portable configurations...${NC}"
     
-    # Criar diretório de configurações
+    # Create configurations directory
     mkdir -p "$HOME/.config/portable-dev"
     
-    # Arquivo de detecção de ferramentas
+    # Tool detection file
     cat > "$HOME/.config/portable-dev/detect_tools.sh" << 'EOF'
 #!/usr/bin/env bash
-# Detecta ferramentas instaladas e configura aliases apropriados
+# Detects installed tools and configures appropriate aliases
 
 detect_and_alias() {
     local rust_tool="$1"
@@ -198,7 +198,7 @@ detect_and_alias() {
     fi
 }
 
-# Sistema de detecção com fallbacks
+# Detection system with fallbacks
 detect_and_alias "bat" "cat" "cat"
 detect_and_alias "eza" "ls" "ls"
 detect_and_alias "fd" "find" "find"
@@ -209,7 +209,7 @@ detect_and_alias "sd" "sed" "sed"
 detect_and_alias "bottom" "top" "top"
 detect_and_alias "delta" "diff" "diff"
 
-# Exportar variáveis baseadas nas ferramentas disponíveis
+# Export variables based on available tools
 if command -v bat &> /dev/null; then
     export BAT_THEME="gruvbox-dark"
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -228,65 +228,65 @@ EOF
 }
 
 # ==============================================================================
-# SEÇÃO 6: Script de Bootstrap Remoto
+# SECTION 6: Remote Bootstrap Script
 # ==============================================================================
 create_bootstrap_script() {
-    echo -e "${YELLOW}📝 Criando script de bootstrap...${NC}"
+    echo -e "${YELLOW}📝 Creating bootstrap script...${NC}"
     
     cat > "$HOME/.config/portable-dev/bootstrap.sh" << 'EOF'
 #!/usr/bin/env bash
-# Bootstrap rápido para novos ambientes
-# Uso: curl -sSL https://seu-repo/bootstrap.sh | bash
+# Quick bootstrap for new environments
+# Usage: curl -sSL https://your-repo/bootstrap.sh | bash
 
 echo "🚀 Bootstrapping Rust development environment..."
 
-# Clonar repositório de configurações
+# Clone configuration repository
 if [[ -n "$1" ]]; then
     REPO_URL="$1"
 else
-    read -p "Digite a URL do seu repositório de configurações: " REPO_URL
+    read -p "Enter your configuration repository URL: " REPO_URL
 fi
 
-# Criar diretório temporário
+# Create temporary directory
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 
-# Clonar repo
+# Clone repo
 git clone "$REPO_URL" config-repo || {
-    echo "Erro ao clonar repositório"
+    echo "Error cloning repository"
     exit 1
 }
 
-# Executar instalação
+# Execute installation
 cd config-repo
 if [[ -f "install_rust_tools.sh" ]]; then
     bash install_rust_tools.sh
 fi
 
-# Copiar configurações
+# Copy configurations
 [[ -f "zshrc" ]] && cp zshrc "$HOME/.zshrc"
 [[ -f ".gitconfig" ]] && cp .gitconfig "$HOME/.gitconfig"
 
-# Limpar
+# Clean up
 cd /
 rm -rf "$TEMP_DIR"
 
-echo "✅ Bootstrap completo! Reinicie o shell."
+echo "✅ Bootstrap complete! Restart your shell."
 EOF
     
     chmod +x "$HOME/.config/portable-dev/bootstrap.sh"
 }
 
 # ==============================================================================
-# SEÇÃO 7: Aliases Inteligentes para o zshrc
+# SECTION 7: Smart Aliases for zshrc
 # ==============================================================================
 create_smart_aliases() {
-    echo -e "${YELLOW}📝 Criando sistema de aliases inteligentes...${NC}"
+    echo -e "${YELLOW}📝 Creating smart aliases system...${NC}"
     
     cat > "$HOME/.config/portable-dev/smart_aliases.zsh" << 'EOF'
-# Sistema de aliases inteligentes com detecção automática
+# Smart aliases system with automatic detection
 
-# Função helper para criar aliases condicionais
+# Helper function to create conditional aliases
 smart_alias() {
     local name="$1"
     local rust_cmd="$2"
@@ -299,7 +299,7 @@ smart_alias() {
     fi
 }
 
-# Terminal & Navegação
+# Terminal & Navigation
 smart_alias "ls" "eza --icons --group-directories-first" "ls --color=auto"
 smart_alias "ll" "eza -la --icons --git" "ls -la"
 smart_alias "la" "eza -a --icons" "ls -a"
@@ -312,25 +312,25 @@ smart_alias "top" "bottom" "htop"
 smart_alias "du" "dust" "du -h"
 smart_alias "sed" "sd" "sed"
 
-# Git com delta
+# Git with delta
 if command -v delta &> /dev/null; then
     alias gdiff='git diff | delta'
 else
     alias gdiff='git diff --color'
 fi
 
-# Função universal de instalação
+# Universal installation function
 install_tool() {
     local tool="$1"
     
-    # Primeiro tentar via cargo
+    # First try via cargo
     if command -v cargo &> /dev/null; then
-        echo "🦀 Instalando $tool via cargo..."
+        echo "🦀 Installing $tool via cargo..."
         cargo install "$tool"
         return
     fi
     
-    # Detectar gerenciador de pacotes
+    # Detect package manager
     if [[ "$OSTYPE" == "darwin"* ]] && command -v brew &> /dev/null; then
         brew install "$tool"
     elif command -v apt &> /dev/null; then
@@ -340,21 +340,21 @@ install_tool() {
     elif command -v pacman &> /dev/null; then
         sudo pacman -S --noconfirm "$tool"
     else
-        echo "❌ Instale manualmente: $tool"
+        echo "❌ Install manually: $tool"
     fi
 }
 
-# Quick setup em novo ambiente
+# Quick setup in new environment
 quick_setup() {
     echo "🚀 Quick Rust environment setup..."
     
-    # Instalar Rust se necessário
+    # Install Rust if necessary
     if ! command -v cargo &> /dev/null; then
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         source "$HOME/.cargo/env"
     fi
     
-    # Instalar ferramentas essenciais
+    # Install essential tools
     local essential_tools=("bat" "eza" "fd-find" "ripgrep" "zoxide" "starship")
     
     for tool in "${essential_tools[@]}"; do
@@ -363,18 +363,18 @@ quick_setup() {
         fi
     done
     
-    echo "✅ Ambiente básico configurado!"
+    echo "✅ Basic environment configured!"
 }
 EOF
 }
 
 # ==============================================================================
-# EXECUÇÃO PRINCIPAL
+# MAIN EXECUTION
 # ==============================================================================
 main() {
-    echo -e "${BLUE}🦀 Iniciando configuração Rust-first...${NC}"
+    echo -e "${BLUE}🦀 Starting Rust-first configuration...${NC}"
     
-    # Etapas de instalação
+    # Installation steps
     install_system_deps
     install_rust
     install_rust_tools
@@ -383,21 +383,21 @@ main() {
     create_bootstrap_script
     create_smart_aliases
     
-    # Criar comando de instalação rápida
-    echo -e "${YELLOW}📝 Criando comando de instalação rápida...${NC}"
+    # Create quick installation command
+    echo -e "${YELLOW}📝 Creating quick installation command...${NC}"
     cat > "$HOME/.config/portable-dev/quick_install.sh" << 'EOF'
 #!/usr/bin/env bash
-# Instalação rápida via curl
+# Quick installation via curl
 curl -sSL https://raw.githubusercontent.com/BragatteMAS/SEU_REPO/main/install_rust_tools.sh | bash
 EOF
     
-    echo -e "${GREEN}✅ Configuração completa!${NC}"
-    echo -e "${BLUE}📋 Próximos passos:${NC}"
-    echo "1. Source seu .zshrc: source ~/.zshrc"
-    echo "2. Para novo PC: curl -sSL [seu-repo]/install_rust_tools.sh | bash"
-    echo "3. Use 'quick_setup' para instalação mínima"
-    echo "4. Use 'install_tool <nome>' para instalar ferramentas"
+    echo -e "${GREEN}✅ Configuration complete!${NC}"
+    echo -e "${BLUE}📋 Next steps:${NC}"
+    echo "1. Source your .zshrc: source ~/.zshrc"
+    echo "2. For new PC: curl -sSL [your-repo]/install_rust_tools.sh | bash"
+    echo "3. Use 'quick_setup' for minimal installation"
+    echo "4. Use 'install_tool <name>' to install tools"
 }
 
-# Executar
+# Execute
 main "$@"
