@@ -1,6 +1,6 @@
 # 📊 Project Status Dashboard - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-24 | **Project Version:** 2.5.0 | **CLAUDE.md Version:** 2.3.0
+> **Last Updated:** 2025-01-27 | **Project Version:** 3.1.0 | **CLAUDE.md Version:** 2.3.0
 
 ## 📈 Overall Health: 🟢 AI-Assisted Development + Product-Focused Git
 
@@ -8,16 +8,16 @@
 
 | Document | Status | Version | Last Updated | Health | Notes |
 |----------|--------|---------|--------------|--------|-------|
-| README.md | ✅ Active | 2.2.0 | 2025-07-10 | 🟢 | Comprehensive, up-to-date |
-| CHANGELOG.md | ✅ Active | 2.2.0 | 2025-07-23 | 🟢 | Updated with CLAUDE.md global changes |
+| README.md | ✅ Active | 3.1.0 | 2025-01-27 | 🟢 | Updated with new doc links |
+| CHANGELOG.md | ✅ Active | 3.1.0 | 2025-01-27 | 🟢 | Updated with v3.1.0 release |
 | CONTRIBUTING.md | ✅ Active | 1.0.0 | 2024-12-15 | 🟢 | Good guidelines |
 | LICENSE | ✅ Active | - | 2025-07-23 | 🟢 | MIT License |
-| **PRD.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | Created with project objectives |
-| **STORIES.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | User journeys and filtering decisions |
-| **STATUS.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | This document |
+| **PRD.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
+| **STORIES.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
+| **STATUS.md** | ✅ Active | 1.1.0 | 2025-01-27 | 🟢 | Moved to root, updated |
 | **CLAUDE.md** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Updated to v2.3.0 |
 | **CLAUDE-EXTENDED.md** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Reference document |
-| **TESTING.md** | ✅ Active | 1.0.0 | 2025-07-23 | 🟢 | Testing Trophy strategy defined |
+| **TESTING.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **ARCHITECTURE.md** | ❌ Missing | - | - | 🟡 | Optional but recommended |
 | **MAINTENANCE.md** | ❌ Missing | - | - | 🟡 | Optional but recommended |
 
@@ -29,10 +29,10 @@
 | macOS Scripts | ⚠️ Minimal | 20% | Basic structure, needs expansion |
 | Windows Scripts | ✅ Active | 80% | Good Win11 coverage |
 | Tests | 🟢 Improved | ~30 checks | Security tests added + basic checks |
-| BMAD Integration | ✅ Active | v4.30 | Updated successfully |
+| BMAD Integration | ✅ Active | v4.32.0 | Updated to latest version |
 | CI/CD | ✅ Active | 100% | GitHub Actions working |
 | Documentation | ✅ Enhanced | 100%+ | User docs completely overhauled! |
-| **ADRs** | ✅ Active | 8 ADRs | 7 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003) |
+| **ADRs** | ✅ Active | 10 ADRs | 9 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003) |
 | **Security** | ✅ Fixed | 100% | APT lock vulnerability fixed (v2.3.1) |
 | **Profiles** | ✅ New | 5 profiles | Profile system implemented (v2.4.0) |
 
@@ -80,7 +80,7 @@
 - **Platform Support:** Linux (100%), Windows (80%), macOS (20%)
 - **Test Coverage:** ~5% (only basic checks - see ADR-006)
 - **Documentation Coverage:** 100% (all core docs complete)
-- **Last Major Release:** v2.3.0 (2025-07-23)
+- **Last Major Release:** v3.1.0 (2025-01-27)
 
 ## 🔄 Update Schedule
 

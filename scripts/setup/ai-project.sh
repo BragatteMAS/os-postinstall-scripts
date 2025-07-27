@@ -36,7 +36,7 @@ cat > .gitattributes << 'GITATTR'
 GITATTR
 
 # Create initial PRD template
-cat > .github/PROJECT_DOCS/PRD.md << 'PRD'
+cat > PRD.md << 'PRD'
 # Product Requirements Document
 
 ## Project: ${PROJECT_NAME}

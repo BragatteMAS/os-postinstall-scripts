@@ -8,9 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Upcoming
-- **v3.1.0**: bats-core testing framework
 - **v3.2.0**: Enhanced platform detection
 - **v4.0.0**: Full platform parity
+
+## [3.1.0] - 2025-01-27
+
+### Added
+- 📋 **Configuration templates system**
+  - YAML, JSON, TOML templates for various configurations
+  - Template manager (`tools/templates/manager.sh`) for easy selection
+  - Profile-specific templates in `configs/templates/`
+- 🔧 **Unattended installation mode**
+  - `--unattended` flag for automated setups
+  - Configuration via environment variables
+  - Silent mode for CI/CD pipelines
+
+### Changed
+- 📦 **BMAD Method updated to v4.32.0**
+  - Updated from v4.25.0 to latest v4.32.0
+  - New templates and workflows included
+  - Enhanced brainstorming and elicitation features
+- 📍 **Documentation structure alignment**
+  - Critical docs (STATUS.md, PRD.md, STORIES.md, TESTING.md) moved to root
+  - Better alignment with CLAUDE.md requirements
+  - ADRs remain in `.github/PROJECT_DOCS/adrs/`
+
+### Fixed
+- 🐛 Documentation discovery issues in Context Engineering
+- 🔍 Version consistency across all project files
 
 ## [3.0.0] - 2025-01-27
 
@@ -101,8 +126,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Shows changelog reference after update
 
 ### Changed
-- 📦 **BMAD Method updated to v4.31.0**
-  - Updated from v4.25.0 to latest v4.31.0
+- 📦 **BMAD Method updated to v4.32.0**
+  - Updated from v4.25.0 to latest v4.32.0
   - New templates and workflows included
   - Enhanced brainstorming and elicitation features
   - Improved core configuration structure

@@ -90,7 +90,7 @@ glogp -10  # Last 10 product commits
 gcfeat "add payment processing"
 
 # Update tooling separately
-git add .github/PROJECT_DOCS/STATUS.md
+git add STATUS.md
 gcchore "update project status"
 ```
 
