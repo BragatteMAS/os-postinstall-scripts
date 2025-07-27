@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - OS Post-Install Scripts
 
-> **Last Updated:** 2025-01-27 | **Current Version:** v3.1.0
+> **Last Updated:** 2025-07-27 | **Current Version:** v3.1.0
 
 ## 🎯 Vision
 
@@ -25,8 +25,9 @@ gantt
         v3.0.0 Repository Restructure  :done, 2025-01-27, 2025-01-27
         v3.1.0 Templates & BMAD 4.32   :done, 2025-01-27, 2025-01-27
     section Planned
-        v3.2.0 Enhanced Platform       :2025-02-01, 2025-02-15
-        v4.0.0 Full Platform Parity    :2025-03-01, 2025-03-30
+        v3.2.0 BMAD Agents Integration :2025-08-01, 2025-08-15
+        v3.3.0 Cross-Platform Enhanced :2025-09-01, 2025-09-15
+        v4.0.0 Architecture Evolution  :2025-10-01, 2025-10-30
 ```
 
 ## ✅ Current Release: v3.1.0 Configuration Templates & Documentation Alignment
@@ -104,7 +105,7 @@ gantt
 
 ## 📅 Upcoming Releases
 
-### v3.2.0 - BMAD Agents Integration (February 2025)
+### v3.2.0 - BMAD Agents Integration (August 2025)
 **Theme:** Process Excellence with BMAD Method Agents
 
 - [ ] **PM Agent Integration**
@@ -128,7 +129,7 @@ gantt
   - [ ] Agent usage guidelines
   - [ ] Workflow automation templates
 
-### v3.3.0 - Enhanced Platform Detection (March 2025)
+### v3.3.0 - Cross-Platform Enhancement (September 2025)
 **Theme:** Intelligent System Recognition
 
 - [ ] Advanced OS detection
@@ -136,7 +137,7 @@ gantt
 - [ ] Dependency resolution improvements
 - [ ] Platform-specific optimizations
 
-### v4.0.0 - Full Platform Parity (April 2025)
+### v4.0.0 - Architecture Evolution (October 2025)
 **Theme:** Universal Compatibility
 
 - [ ] macOS support expansion to 80%
