@@ -61,7 +61,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Source utilities
-source "$(dirname "$0")/utils/logging.sh"
+source "${SCRIPT_DIR}/../utils/logging.sh""
 
 # Colors
 RED='\033[0;31m'
