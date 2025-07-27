@@ -183,8 +183,11 @@ os-postinstall-scripts/
 
 ### For Developers
 - 🏛️ [Architecture Decisions](.github/PROJECT_DOCS/adrs/) - Why we built it this way
-- 📋 [Project Status](.github/PROJECT_DOCS/STATUS.md) - Current development status
-- 🤖 [AI Context](.github/AI_CONTEXT/CLAUDE.md) - For AI-assisted development
+- 📋 [Project Status](STATUS.md) - Current development status
+- 📖 [Product Requirements](PRD.md) - Project objectives and scope
+- 📚 [User Stories](STORIES.md) - User journeys and requirements
+- 🧪 [Testing Strategy](TESTING.md) - Testing approach and guidelines
+- 🤖 [AI Context](CLAUDE.md) - For AI-assisted development
 
 ---
 

@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-26 | **Current Version:** v2.6.0
+> **Last Updated:** 2025-01-27 | **Current Version:** v3.1.0
 
 ## 🎯 Vision
 
@@ -21,16 +21,41 @@ gantt
         v2.4.0 Profile System          :done, 2025-07-23, 2025-07-23
         v2.5.0 AI Tools + Git Focus    :done, 2025-07-24, 2025-07-24
         v2.6.0 BMAD v4.31.0 Update     :done, 2025-07-26, 2025-07-26
+        v2.7.0 Internationalization   :done, 2025-01-27, 2025-01-27
+        v3.0.0 Repository Restructure  :done, 2025-01-27, 2025-01-27
+        v3.1.0 Templates & BMAD 4.32   :done, 2025-01-27, 2025-01-27
     section Planned
-        v2.7.0 Core/Adapters          :2025-08-01, 2025-08-15
-        v2.8.0 Real Testing           :2025-08-16, 2025-09-01
-        v3.0.0 Platform Parity        :2025-09-02, 2025-09-30
+        v3.2.0 Enhanced Platform       :2025-02-01, 2025-02-15
+        v4.0.0 Full Platform Parity    :2025-03-01, 2025-03-30
 ```
 
-## ✅ Completed: v2.6.0 BMAD Method Update
+## ✅ Current Release: v3.1.0 Configuration Templates & Documentation Alignment
+
+### ✅ v3.1.0 Templates & BMAD Update - COMPLETED!
+- [x] Configuration templates system (YAML, JSON, TOML)
+- [x] Template manager for easy selection
+- [x] Updated BMAD Method to v4.32.0
+- [x] Documentation structure aligned with CLAUDE.md
+- [x] Critical docs moved to repository root
+- [x] Version consistency across all files
+
+## 📚 Previous Releases
+
+### ✅ v3.0.0 Complete Repository Restructure - COMPLETED!
+- [x] Reorganized following Agile Repository Structure Guide
+- [x] Scripts moved to `scripts/` directory
+- [x] Platform-specific code in `platforms/`
+- [x] Configurations centralized in `configs/`
+- [x] Clear separation of concerns
+
+### ✅ v2.7.0 Complete Internationalization - COMPLETED!
+- [x] All content translated to English
+- [x] Code comments in English
+- [x] Documentation in English
+- [x] 4-phase translation approach completed
 
 ### ✅ v2.6.0 BMAD Method Update - COMPLETED!
-- [x] Updated BMAD Method from v4.25.0 to v4.31.0
+- [x] Updated BMAD Method from v4.25.0 to v4.32.0
 - [x] Created `install_bmad.sh` and `update_bmad.sh` scripts for easy management
 - [x] Automatic version checking and comparison
 - [x] Backup creation before updates
@@ -79,19 +104,46 @@ gantt
 
 ## 📅 Upcoming Releases
 
-### v2.7.0 - Core/Adapters Architecture (August 2025)
-**Theme:** Architectural Improvements
+### v3.2.0 - BMAD Agents Integration (February 2025)
+**Theme:** Process Excellence with BMAD Method Agents
 
-- [ ] Separate core from platform adapters
-- [ ] Plugin architecture
-- [ ] Improved testability
-- [ ] Performance optimizations
-- [ ] Architecture documentation
+- [ ] **PM Agent Integration**
+  - [ ] PRD validation and enhancement
+  - [ ] Product strategy alignment
+  - [ ] Feature prioritization framework
+- [ ] **PO Agent Integration**
+  - [ ] Backlog management automation
+  - [ ] Document cohesion validation
+  - [ ] Acceptance criteria standardization
+- [ ] **SM Agent Integration**
+  - [ ] Automated story creation
+  - [ ] Epic management
+  - [ ] Sprint planning assistance
+- [ ] **QA Agent Integration**
+  - [ ] Test strategy definition
+  - [ ] Quality gates implementation
+  - [ ] Code review automation
+- [ ] **Documentation**
+  - [ ] ADR-011: BMAD Agents Integration Strategy
+  - [ ] Agent usage guidelines
+  - [ ] Workflow automation templates
 
-### v2.8.0 - Real Testing Framework (September 2025)
-**Theme:** Quality and Trust
+### v3.3.0 - Enhanced Platform Detection (March 2025)
+**Theme:** Intelligent System Recognition
 
-- [ ] Implement bats-core testing framework
+- [ ] Advanced OS detection
+- [ ] Hardware capability assessment
+- [ ] Dependency resolution improvements
+- [ ] Platform-specific optimizations
+
+### v4.0.0 - Full Platform Parity (April 2025)
+**Theme:** Universal Compatibility
+
+- [ ] macOS support expansion to 80%
+- [ ] Windows PowerShell improvements
+- [ ] Universal installer script
+- [ ] Cross-platform test matrix
+- [ ] Unified documentation
 - [ ] Create 20 critical path integration tests
 - [ ] Add security-focused test suite
 - [ ] Implement real coverage reporting with kcov
