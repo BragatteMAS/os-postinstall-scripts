@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-# Cores
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -15,7 +15,7 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 
-# Configuração
+# Configuration
 REPO_URL="${REPO_URL:-https://github.com/BragatteMAS/os-postinstall-scripts}"
 REPO_DIR="$HOME/.config/linux-postinstall"
 DEFAULT_PROFILE="${DEFAULT_PROFILE:-developer-standard}"
@@ -55,7 +55,7 @@ show_banner() {
 EOF
 }
 
-# Detectar sistema
+# Detect system
 detect_system() {
     local os=""
     local distro=""
@@ -113,7 +113,7 @@ show_menu() {
     echo -e "\n${YELLOW}Enter option number:${NC} "
 }
 
-# Clonar repositório
+# Clone repository
 clone_repo() {
     if [[ ! -d "$REPO_DIR" ]]; then
         echo -e "${BLUE}📥 Cloning configuration repository...${NC}"
@@ -124,7 +124,7 @@ clone_repo() {
     fi
 }
 
-# Instalar Rust tools
+# Install Rust tools
 install_rust_tools() {
     echo -e "${YELLOW}🦀 Installing Rust tools...${NC}"
     
@@ -145,13 +145,13 @@ install_system_tools() {
     
     case "$os" in
         "macos")
-            # Verificar Homebrew
+            # Check Homebrew
             if ! command -v brew &> /dev/null; then
                 echo "Installing Homebrew..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             fi
             
-            # Instalar essenciais
+            # Install essentials
             brew install git curl wget fzf tmux neovim
             ;;
             
@@ -200,7 +200,7 @@ quick_setup() {
         fi
     done
     
-    # 3. Configurar zshrc mínimo
+    # 3. Configure minimal zshrc
     if [[ ! -f "$HOME/.zshrc_rust_configured" ]]; then
         echo -e "\n# Rust tools configuration" >> "$HOME/.zshrc"
         echo 'source "$HOME/.cargo/env"' >> "$HOME/.zshrc"
@@ -228,7 +228,7 @@ sync_dotfiles() {
         fi
     done
     
-    # Adicionar integração Rust ao zshrc
+    # Add Rust integration to zshrc
     if [[ -f "$REPO_DIR/zshrc_rust_integration.zsh" ]]; then
         echo -e "\n# Rust integration" >> "$HOME/.zshrc"
         cat "$REPO_DIR/zshrc_rust_integration.zsh" >> "$HOME/.zshrc"
@@ -285,7 +285,7 @@ install_container_runtime() {
                 sudo dnf install -y podman podman-compose
             fi
             
-            # Criar alias docker -> podman
+            # Create alias docker -> podman
             echo "alias docker='podman'" >> "$HOME/.zshrc"
             echo "alias docker-compose='podman-compose'" >> "$HOME/.zshrc"
             ;;
@@ -296,16 +296,16 @@ install_container_runtime() {
 install_python_uv() {
     echo -e "${YELLOW}🐍 Installing Python with UV...${NC}"
     
-    # Instalar UV
+    # Install UV
     if ! command -v uv &> /dev/null; then
         curl -LsSf https://astral.sh/uv/install.sh | sh
         source "$HOME/.cargo/env"
     fi
     
-    # Criar ambiente Python padrão
+    # Create default Python environment
     uv venv ~/.venv/default
     
-    # Instalar ferramentas essenciais
+    # Install essential tools
     source ~/.venv/default/bin/activate
     uv pip install ipython jupyter pandas numpy matplotlib seaborn
     
@@ -317,7 +317,7 @@ install_python_uv() {
 install_ai_tools() {
     echo -e "${YELLOW}🤖 Installing AI tools...${NC}"
     
-    # Verificar se o script existe localmente
+    # Check if script exists locally
     if [[ -f "$REPO_DIR/install_ai_tools.sh" ]]; then
         bash "$REPO_DIR/install_ai_tools.sh"
     elif [[ -f "./install_ai_tools.sh" ]]; then
@@ -333,7 +333,7 @@ install_ai_tools() {
 install_product_focused_git() {
     echo -e "${YELLOW}🎯 Configuring Git for product-focused development...${NC}"
     
-    # Verificar se o script existe localmente
+    # Check if script exists locally
     if [[ -f "$REPO_DIR/install_product_focused_git.sh" ]]; then
         bash "$REPO_DIR/install_product_focused_git.sh"
     elif [[ -f "./install_product_focused_git.sh" ]]; then
@@ -349,11 +349,11 @@ install_product_focused_git() {
 main() {
     show_banner
     
-    # Detectar sistema
+    # Detect system
     local system_info=$(detect_system)
     IFS='|' read -r os distro version arch <<< "$system_info"
     
-    # Clonar repo
+    # Clone repo
     clone_repo
     
     # Menu loop
