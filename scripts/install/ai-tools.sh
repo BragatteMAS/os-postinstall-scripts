@@ -16,15 +16,30 @@
 
 set -euo pipefail
 
-# Source utility functions
+# Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../utils/logging.sh"" 2>/dev/null || {
-    # Fallback logging functions if logging.sh not available
-    log_info() { echo "[INFO] $*"; }
-    log_warning() { echo "[WARNING] $*"; }
-    log_error() { echo "[ERROR] $*" >&2; }
-    log_success() { echo "[SUCCESS] $*"; }
-}
+
+# Define logging functions early
+log_info() { echo "[INFO] $*"; }
+log_warning() { echo "[WARNING] $*"; }
+log_error() { echo "[ERROR] $*" >&2; }
+log_success() { echo "[SUCCESS] $*"; }
+
+# Source proper logging if available
+if [[ -f "${SCRIPT_DIR}/../utils/logging.sh" ]]; then
+    source "${SCRIPT_DIR}/../utils/logging.sh"
+fi
+
+# Source configuration loader
+source "${SCRIPT_DIR}/../utils/config-loader.sh"
+
+# Load configuration
+CONFIG_FILE="${CONFIG_FILE:-$DEFAULT_CONFIG_FILE}"
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    log_warning "Configuration file not found. Creating default configuration..."
+    create_default_config
+fi
+load_config "$CONFIG_FILE"
 
 # Global variables
 CLAUDE_CONFIG_PATH=""
@@ -38,15 +53,16 @@ UV_COMMAND=""
 detect_claude_config_path() {
     log_info "Detecting operating system and Claude configuration path..."
     
+    # Get path from configuration based on OS
     case "$OSTYPE" in
         darwin*)
-            CLAUDE_CONFIG_PATH="$HOME/Library/Application Support/Claude/claude.json"
+            CLAUDE_CONFIG_PATH=$(get_config "paths.claude_config.macos" "$HOME/Library/Application Support/Claude/claude.json")
             ;;
         linux*)
-            CLAUDE_CONFIG_PATH="$HOME/.config/Claude/claude.json"
+            CLAUDE_CONFIG_PATH=$(get_config "paths.claude_config.linux" "$HOME/.config/Claude/claude.json")
             ;;
         msys*|cygwin*|mingw*)
-            CLAUDE_CONFIG_PATH="$APPDATA/Claude/claude.json"
+            CLAUDE_CONFIG_PATH=$(get_config "paths.claude_config.windows" "${APPDATA:-$HOME/AppData/Roaming}/Claude/claude.json")
             ;;
         *)
             log_error "Unsupported operating system: $OSTYPE"
@@ -154,7 +170,8 @@ setup_uv() {
 setup_serena_repo() {
     log_info "Setting up serena repository..."
     
-    SERENA_REPO_PATH="$HOME/Documents/GitHub/serena"
+    # Get serena repo path from configuration
+    SERENA_REPO_PATH=$(get_config "features.mcps.serena.repo" "$HOME/Documents/GitHub/serena")
     
     if [[ -d "$SERENA_REPO_PATH" ]]; then
         log_info "Serena repository already exists. Updating..."
@@ -201,29 +218,61 @@ configure_mcps() {
     local temp_config
     temp_config=$(mktemp)
     
-    # Build the MCP configuration
-    cat > "$temp_config" << EOF
-{
-  "mcpServers": {
+    # Build the MCP configuration dynamically based on settings
+    echo '{"mcpServers": {' > "$temp_config"
+    
+    local first=true
+    
+    # Add context7 if enabled
+    if [[ "$(get_config 'features.mcps.context7.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
     "context7": {
       "command": "npx",
       "args": ["-y", "@context7/mcp-server"]
-    },
+    }
+EOF
+        first=false
+    fi
+    
+    # Add fetch if enabled
+    if [[ "$(get_config 'features.mcps.fetch.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
     "fetch": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-fetch"]
-    },
+    }
+EOF
+        first=false
+    fi
+    
+    # Add sequential-thinking if enabled
+    if [[ "$(get_config 'features.mcps.sequential_thinking.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
     "sequential-thinking": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    },
+    }
+EOF
+        first=false
+    fi
+    
+    # Add serena if enabled
+    if [[ "$(get_config 'features.mcps.serena.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        local serena_path=$(get_config 'features.mcps.serena.path' "$UV_COMMAND")
+        cat >> "$temp_config" << EOF
     "serena": {
-      "command": "$UV_COMMAND",
+      "command": "$serena_path",
       "args": ["run", "--directory", "$SERENA_REPO_PATH", "serena-mcp-server"]
     }
-  }
-}
 EOF
+        first=false
+    fi
+    
+    echo '}}' >> "$temp_config"
     
     # Merge with existing configuration
     if [[ -f "$CLAUDE_CONFIG_PATH" ]] && [[ -s "$CLAUDE_CONFIG_PATH" ]]; then
@@ -243,6 +292,12 @@ EOF
 # Install BMAD Method
 #######################################
 install_bmad_method() {
+    # Check if BMAD is enabled
+    if ! is_feature_enabled "bmad"; then
+        log_info "BMAD Method is disabled in configuration. Skipping."
+        return 0
+    fi
+    
     log_info "Installing BMAD Method..."
     
     # Check if pnpm is available, otherwise use npx
@@ -253,8 +308,44 @@ install_bmad_method() {
     
     log_info "Using $package_runner to install BMAD Method..."
     
-    # Install BMAD Method with full configuration
-    $package_runner bmad-method@latest install --full --ide cursor || {
+    # Get IDE configuration from settings
+    local ides=$(get_config "features.bmad.ides" "")
+    local ide_args=""
+    
+    # Build IDE arguments
+    if [[ -n "$ides" ]]; then
+        # Parse IDE list - they come as individual config entries
+        local first_ide=""
+        for key in "${!CONFIG_@}"; do
+            if [[ "$key" =~ ^CONFIG_features_bmad_ides_[0-9]+$ ]]; then
+                if [[ -z "$first_ide" ]]; then
+                    first_ide="${!key}"
+                fi
+            fi
+        done
+        
+        # Use first IDE or default to cursor
+        ide_args="--ide ${first_ide:-cursor}"
+    else
+        ide_args="--ide cursor"
+    fi
+    
+    # Check if interactive mode is enabled
+    local interactive=$(get_config "features.bmad.interactive" "false")
+    local install_args="--full $ide_args"
+    
+    if [[ "$interactive" != "true" ]]; then
+        install_args="$install_args --yes"  # Non-interactive mode
+    fi
+    
+    # Get BMAD version
+    local bmad_version=$(get_config "features.bmad.version" "latest")
+    
+    # Install BMAD Method with configuration
+    log_info "Installing BMAD Method version: $bmad_version"
+    log_info "Installation arguments: $install_args"
+    
+    $package_runner bmad-method@$bmad_version install $install_args || {
         log_error "Failed to install BMAD Method"
         return 1
     }
@@ -345,6 +436,29 @@ EOF
 #######################################
 main() {
     log_info "Starting AI Tools installation..."
+    
+    # Check if AI tools are enabled in configuration
+    if ! is_feature_enabled "shell.modules.ai_tools"; then
+        log_warning "AI tools are disabled in configuration. Exiting."
+        return 0
+    fi
+    
+    # Check if MCPs are enabled
+    local mcps_enabled=false
+    for mcp in context7 fetch sequential_thinking serena; do
+        if is_feature_enabled "mcps.$mcp"; then
+            mcps_enabled=true
+            break
+        fi
+    done
+    
+    # Check if BMAD is enabled
+    local bmad_enabled=$(is_feature_enabled "bmad" && echo "true" || echo "false")
+    
+    if [[ "$mcps_enabled" == "false" ]] && [[ "$bmad_enabled" == "false" ]]; then
+        log_warning "No AI tools are enabled in configuration. Nothing to install."
+        return 0
+    fi
     
     # Run installation steps
     detect_claude_config_path || exit 1

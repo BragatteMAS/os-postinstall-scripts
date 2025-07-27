@@ -18,16 +18,24 @@
 
 ## 🎯 Quick Start
 
-### One Command Install (Recommended)
-```bash
-curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
-```
+### Prerequisites
+**Important**: This project requires modern tools. See [REQUIREMENTS.md](REQUIREMENTS.md) for details.
+- Bash 4.0+ (macOS users need to upgrade)
+- Git 2.25+
+- jq 1.6+
 
-### Manual Install
+### Quick Install (Auto-installs requirements)
 ```bash
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
-./setup.sh
+./quick-setup.sh  # Handles requirements automatically
+```
+
+### Manual Install (Requires prerequisites)
+```bash
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+cd os-postinstall-scripts
+./setup.sh  # Will check requirements first
 ```
 
 ### Profile-Based Install
