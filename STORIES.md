@@ -1,23 +1,23 @@
 # User Stories and Journey Mapping - OS Post-Install Scripts
 
-## 🎯 Perguntas Focais para Modulação do CLAUDE.md
+## 🎯 Focal Questions for CLAUDE.md Modulation
 
-### Decisões Críticas que Filtram o CLAUDE.md:
+### Critical Decisions that Filter CLAUDE.md:
 
-| Pergunta | Resposta | Impacto no CLAUDE.md | Seções Ativadas |
+| Question | Answer | Impact on CLAUDE.md | Activated Sections |
 |----------|----------|---------------------|-----------------|
-| **Precisa de testes automatizados?** | ❌ Não (apenas manual) | Guias de teste manual | Sem CI/CD, sem hooks de teste |
-| **É multi-plataforma?** | ✅ Sim (Linux, Windows, macOS) | Cross-platform patterns | Compatibilidade, pathlib, OS detection |
-| **Tem interface visual?** | ❌ Não (CLI/TUI apenas) | Skip frontend patterns | Remove React/Next.js sections |
-| **Usa linguagens compiladas?** | ✅ Parcial (Bash, PowerShell) | Shell scripting patterns | Bash/Shell best practices |
-| **Deploy automático?** | ✅ Sim (GitHub Actions) | CI/CD patterns | GitHub workflows, release automation |
-| **Análise de dados?** | ❌ Não | Skip data science | Remove Python/R analytics |
-| **Precisa de docs interativos?** | ✅ Sim | Documentation patterns | README, guides, examples |
-| **Gestão de estado complexo?** | ❌ Não | Skip state management | Remove Redux/Context patterns |
+| **Need automated tests?** | ❌ No (manual only) | Manual test guides | No CI/CD, no test hooks |
+| **Is it multi-platform?** | ✅ Yes (Linux, Windows, macOS) | Cross-platform patterns | Compatibility, pathlib, OS detection |
+| **Has visual interface?** | ❌ No (CLI/TUI only) | Skip frontend patterns | Remove React/Next.js sections |
+| **Uses compiled languages?** | ✅ Partial (Bash, PowerShell) | Shell scripting patterns | Bash/Shell best practices |
+| **Automatic deploy?** | ✅ Yes (GitHub Actions) | CI/CD patterns | GitHub workflows, release automation |
+| **Data analysis?** | ❌ No | Skip data science | Remove Python/R analytics |
+| **Needs interactive docs?** | ✅ Yes | Documentation patterns | README, guides, examples |
+| **Complex state management?** | ❌ No | Skip state management | Remove Redux/Context patterns |
 
-### Resultado da Filtragem:
-**Módulos CLAUDE.md Ativos:** Shell scripting, Manual Testing Guides, Cross-platform, CI/CD (deploy only), Documentation, Intelligent Recommendations
-**Módulos CLAUDE.md Inativos:** Frontend (React/Next), Data Science (Python/R analytics), State Management, Automated Testing, Profile Systems
+### Filtering Result:
+**Active CLAUDE.md Modules:** Shell scripting, Manual Testing Guides, Cross-platform, CI/CD (deploy only), Documentation, Intelligent Recommendations
+**Inactive CLAUDE.md Modules:** Frontend (React/Next), Data Science (Python/R analytics), State Management, Automated Testing, Profile Systems
 
 ---
 
