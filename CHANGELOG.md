@@ -12,36 +12,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **v2.9.0**: bats-core testing framework
 - **v3.0.0**: Full platform parity (breaking changes)
 
-## [2.7.0] - 2025-07-27
+## [2.7.0] - 2025-01-27
 
 ### Added
-- 🌍 **Internationalization (i18n) - English Translation**
-  - Complete translation of all user-facing content to English
-  - Maintained Portuguese compatibility through aliases (planned)
+- 🌍 **Complete Internationalization (i18n) - English Translation**
+  - All user-facing content translated to English
+  - All code comments translated to English
+  - All documentation translated to English
   - Structured 4-phase translation approach:
     - Phase 1: Core documentation (CLAUDE.md, README.md, STATUS.md)
     - Phase 2: User-facing messages in shell scripts
     - Phase 3: Code comments and internal documentation
-    - Phase 4: Function names with PT-BR compatibility aliases
-  - Translation progress tracking through todo system
+    - Phase 4: Function names (already in English, no changes needed)
+  - New MIGRATION_PT_EN.md guide documenting all changes
+  - Version tags for each phase completion (v2.7.0 through v2.7.3)
 
 ### Changed
-- 📝 **Core Documentation**
-  - CLAUDE.md fully translated to English (v2.3.0)
-  - README.md translated with improved structure
-  - All examples and templates now in English
+- 📝 **Documentation**
+  - docs/ai-tools-setup.md fully translated to English
+  - All inline documentation in scripts translated
+  - README.md and other core docs already in English
   
-- 🔧 **setup.sh**
-  - All user messages translated to English
-  - Menu options and prompts internationalized
-  - Error messages and feedback in English
-  - Maintained all functionality without breaking changes
+- 🔧 **Shell Scripts**
+  - setup.sh: All user messages and comments translated
+  - install_rust_tools.sh: All user messages and comments translated
+  - Other scripts verified/updated as needed
+  
+- 💬 **Code Comments**
+  - zshrc: All comments translated to English
+  - All .sh files: Comments translated to English
+  - Consistent English terminology throughout codebase
 
 ### Improved
 - 🚀 **User Experience**
   - More accessible to international users
   - Consistent language throughout the project
   - Professional English terminology
+  - No breaking changes - full compatibility maintained
 
 ## [2.6.0] - 2025-07-26
 
