@@ -22,6 +22,7 @@ DEFAULT_PROFILE="${DEFAULT_PROFILE:-developer-standard}"
 USE_PROFILE=false
 
 # Parse arguments
+SKIP_REQUIREMENTS=false
 for arg in "$@"; do
     case $arg in
         --profile=*)
@@ -34,12 +35,17 @@ for arg in "$@"; do
             PROFILE="developer-minimal"
             shift
             ;;
+        --skip-requirements)
+            SKIP_REQUIREMENTS=true
+            shift
+            ;;
         --help)
             echo "Usage: $0 [OPTIONS]"
             echo "Options:"
-            echo "  --profile=NAME    Use specific installation profile"
-            echo "  --minimal         Use minimal installation profile"
-            echo "  --help            Show this help"
+            echo "  --profile=NAME       Use specific installation profile"
+            echo "  --minimal            Use minimal installation profile"
+            echo "  --skip-requirements  Skip requirements check"
+            echo "  --help               Show this help"
             exit 0
             ;;
     esac
@@ -357,6 +363,18 @@ install_product_focused_git() {
 # Main
 main() {
     show_banner
+    
+    # Check requirements unless skipped
+    if [[ "$SKIP_REQUIREMENTS" != true ]]; then
+        echo -e "${BLUE}Checking system requirements...${NC}"
+        if ! ./scripts/utils/check-requirements.sh 2>/dev/null; then
+            echo -e "\n${YELLOW}System requirements not met!${NC}"
+            echo -e "${YELLOW}Run with --skip-requirements to bypass this check${NC}"
+            echo -e "${YELLOW}Or run ./scripts/setup/upgrade-bash.sh to upgrade Bash on macOS${NC}"
+            exit 1
+        fi
+        echo ""
+    fi
     
     # Detect system
     local system_info=$(detect_system)
