@@ -2,7 +2,7 @@
 # ==============================================================================
 # .zshrc - Universal configuration for scientific research and development
 # Compatible with macOS and Linux
-# Author: Configuration for epidemiology, genomics and data science
+# Author: Bragatte, M.A.S
 # ==============================================================================
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -599,32 +599,32 @@ if command -v uv &> /dev/null; then
     alias pipr='uv pip install -r requirements.txt'  ## Install from requirements
     alias venv='uv venv'                         ## Create virtual environment with uv
     alias sync='uv pip sync requirements.txt'    ## Sync dependencies
-    
+
     ## Additional uv commands
     alias uvup='uv self update'                  ## Update uv itself
     alias uvlock='uv pip compile requirements.in -o requirements.txt'  ## Generate locked requirements
     alias uvsync='uv pip sync'                   ## Sync without specifying file
     alias uvtree='uv pip tree'                   ## Show dependency tree
     alias uvfreeze='uv pip freeze'               ## List installed packages
-    
+
     ## Python project management with uv
     alias pyinit='uv venv && source .venv/bin/activate && uv pip install -e .'  ## Initialize Python project
     alias pydev='uv pip install -e ".[dev]"'    ## Install dev dependencies
     alias pytest='uv run pytest'                 ## Run pytest with uv
     alias pyruff='uv run ruff check .'          ## Run ruff linter
     alias pyformat='uv run ruff format .'       ## Format code with ruff
-    
+
     ## Function to create Python project with uv
     uv_init_project() {
         local project_name="${1:-my_project}"
         echo "🐍 Creating Python project with uv: $project_name"
-        
+
         mkdir -p "$project_name"
         cd "$project_name"
-        
+
         ## Create virtual environment
         uv venv
-        
+
         ## Create pyproject.toml
         cat > pyproject.toml << 'EOF'
 [project]
@@ -654,18 +654,18 @@ python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 EOF
-        
+
         ## Replace PROJECT_NAME
         if command -v sd &> /dev/null; then
             sd "PROJECT_NAME" "$project_name" pyproject.toml
         else
             sed -i.bak "s/PROJECT_NAME/$project_name/g" pyproject.toml && rm pyproject.toml.bak
         fi
-        
+
         ## Create source directory
         mkdir -p "src/$project_name"
         echo "# $project_name" > "src/$project_name/__init__.py"
-        
+
         ## Create .gitignore
         cat > .gitignore << 'EOF'
 # Python
@@ -716,19 +716,19 @@ htmlcov/
 .dmypy.json
 dmypy.json
 EOF
-        
+
         echo "✅ Project created! Next steps:"
         echo "1. Activate environment: source .venv/bin/activate"
         echo "2. Install dev dependencies: uv pip install -e '.[dev]'"
         echo "3. Start coding in src/$project_name/"
     }
     alias pyproject='uv_init_project'
-    
+
 else
     alias pipi='pip install'                     ## Fallback to regular pip
     alias pipu='pip install --upgrade'
     alias pipr='pip install -r requirements.txt'
-    
+
     ## Suggest uv installation
     alias pip='echo "💡 Install uv for 10-100x faster pip operations: curl -LsSf https://astral.sh/uv/install.sh | sh" && pip'
 fi
@@ -755,7 +755,7 @@ fi
 # ║ SECTION 12: ADVANCED FUNCTIONS FOR RESEARCH                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 
-## Função para criar ambiente conda/mamba para projetos
+## Function to create conda/mamba environment for projects
 create_sci_env() {
     local env_name=${1:-"sci_env"}
     local python_version=${2:-"3.11"}
@@ -788,7 +788,7 @@ create_sci_env() {
     fi
 }
 
-## Função para análise rápida de CSV
+## Function for quick CSV analysis
 quick_csv() {
     if [[ -z "$1" ]]; then
         echo "Uso: quick_csv arquivo.csv"
@@ -804,17 +804,17 @@ quick_csv() {
     head -1 "$1" | tr ',' '\n' | nl
 }
 
-## Função para buscar em arquivos de código
+## Function to search in code files
 code_search() {
     local pattern="$1"
     local file_type="${2:-*}"
 
-    echo "🔍 Buscando '$pattern' em arquivos $file_type:"
+    echo "🔍 Searching '$pattern' in $file_type files:"
     ## Always use rg since it's a required tool
     rg --type "$file_type" "$pattern" --stats
 }
 
-## Busca interativa com ripgrep + fzf
+## Interactive search with ripgrep + fzf
 if command -v rg &> /dev/null && command -v fzf &> /dev/null; then
     rg_fzf() {
         local pattern="${1:-.}"
@@ -826,10 +826,10 @@ if command -v rg &> /dev/null && command -v fzf &> /dev/null; then
             rg --line-number --no-heading --color=always "$pattern" | fzf --ansi
         fi
     }
-    alias rgf='rg_fzf'                       ## Busca interativa em código
+    alias rgf='rg_fzf'                       ## Interactive search in code
 fi
 
-## Função para criar estrutura de projeto científico
+## Function to create scientific project structure
 init_project() {
     local project_name=${1:-"new_project"}
 
@@ -840,11 +840,11 @@ init_project() {
     cat > "$project_name/README.md" << EOF
 # $project_name
 
-## Estrutura do Projeto
-- \`data/\`: Dados do projeto
-  - \`raw/\`: Dados brutos (não modificar)
-  - \`processed/\`: Dados processados
-  - \`external/\`: Dados externos
+## Project Structure
+- \`data/\`: Project data
+  - \`raw/\`: Raw data (do not modify)
+  - \`processed/\`: Processed data
+  - \`external/\`: External data
 - \`notebooks/\`: Jupyter notebooks
 - \`src/\`: Código fonte
 - \`results/\`: Resultados
@@ -900,7 +900,7 @@ results/tables/*
 !results/tables/.gitkeep
 EOF
 
-    # Cria arquivos .gitkeep
+    # Create .gitkeep files
     touch "$project_name"/data/{raw,processed,external}/.gitkeep
     touch "$project_name"/results/{figures,tables}/.gitkeep
 
@@ -908,7 +908,7 @@ EOF
     cd "$project_name"
 }
 
-## Estatísticas do projeto
+## Project statistics
 project_stats() {
     echo "📊 Estatísticas do Projeto:"
     echo "=========================="
@@ -959,7 +959,7 @@ bench() {
     fi
 }
 
-## Preview de arquivos com bat e fzf
+## File preview with bat and fzf
 if command -v fd &> /dev/null && command -v fzf &> /dev/null; then
     fzf_preview() {
         if command -v bat &> /dev/null; then
@@ -971,7 +971,7 @@ if command -v fd &> /dev/null && command -v fzf &> /dev/null; then
     alias fp='fzf_preview'
 fi
 
-## Função para backup rápido de notebooks
+## Function for quick notebook backup
 backup_notebooks() {
     local backup_dir="notebooks_backup_$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$backup_dir"
@@ -983,7 +983,7 @@ backup_notebooks() {
     echo "✅ $count notebooks salvos em $backup_dir"
 }
 
-## Função para limpar outputs de notebooks
+## Function to clean notebook outputs
 clean_notebooks() {
     echo "🧹 Limpando outputs dos notebooks..."
     if command -v jupyter &> /dev/null; then
@@ -1009,7 +1009,7 @@ fi
 # ║ SECTION 14: NUSHELL - DATA ANALYSIS INTEGRATION                           ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 if command -v nu &> /dev/null; then
-    ## Função para abrir arquivos de dados no Nushell com tabela formatada
+    ## Function to open data files in Nushell with formatted table
     nu_open() {
         if [[ -z "$1" ]]; then
             echo "Uso: nu_open arquivo.csv"
@@ -1018,7 +1018,7 @@ if command -v nu &> /dev/null; then
         nu -c "open '$1' | table -e"
     }
 
-    ## Análise estatística rápida de CSV
+    ## Quick statistical analysis of CSV
     nu_csv() {
         if [[ -z "$1" ]]; then
             echo "Uso: nu_csv arquivo.csv"
@@ -1029,7 +1029,7 @@ if command -v nu &> /dev/null; then
         nu -c "open '$1' | describe"
     }
 
-    ## Query SQL-like em arquivos de dados
+    ## SQL-like query on data files
     nu_query() {
         local file="$1"
         local query="$2"
@@ -1042,7 +1042,7 @@ if command -v nu &> /dev/null; then
         nu -c "open '$file' | $query | table -e"
     }
 
-    ## Estatísticas avançadas do projeto usando Nushell
+    ## Advanced project statistics using Nushell
     nu_project_stats() {
         nu -c '
             print "📊 Estatísticas do Projeto (Nushell)"
@@ -1059,11 +1059,11 @@ if command -v nu &> /dev/null; then
         '
     }
 
-    ## Explorador interativo de dados
+    ## Interactive data explorer
     data_explorer() {
         local file="${1:-.}"
 
-        echo "📊 Abrindo explorador de dados..."
+        echo "📊 Opening data explorer..."
         echo "💡 Dica: Use 'q' ou 'Ctrl+C' para sair"
         echo ""
 
@@ -1073,7 +1073,7 @@ if command -v nu &> /dev/null; then
             nu -c "ls '$file' | where type == 'file' and name =~ '\\.(csv|json|xlsx|parquet)$' | explore"
         fi
     }
-    alias explore='data_explorer'             ## Explora dados interativamente
+    alias explore='data_explorer'             ## Explore data interactively
 
     ## Comparar CSVs lado a lado
     nu_compare() {
@@ -1098,10 +1098,10 @@ fi
 # ║ SECTION 15: MINIMALIST ALIAS SEARCH SYSTEM                                ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 
-## Busca simples e direta
+## Simple and direct search
 a() {
     if [[ -z "$1" ]]; then
-        # Sem argumento - mostra ajuda rápida
+        # No argument - show quick help
         echo "📋 Uso: a <termo>"
         echo "Exemplos:"
         echo "  a ls    → comandos de listagem"
@@ -1109,9 +1109,9 @@ a() {
         echo "  a csv   → comandos para CSV"
         echo "  a py    → comandos Python"
         echo ""
-        echo "💡 Dica: af para busca interativa"
+        echo "💡 Tip: af for interactive search"
     else
-        # Com argumento - busca
+        # With argument - search
         local count=$(alias | rg -ci "$1")
         if [[ $count -eq 0 ]]; then
             echo "❌ Nenhum alias com '$1'"
@@ -1126,12 +1126,12 @@ a() {
     fi
 }
 
-## Busca interativa com fzf (mais poderosa)
+## Interactive search with fzf (more powerful)
 if command -v fzf &> /dev/null; then
     alias af='alias | fzf --preview "echo {} | cut -d= -f2-" --preview-window=down:3:wrap'
 fi
 
-## Lista rápida por categoria
+## Quick list by category
 ac() {
     case "$1" in
         "nav"|"ls")
@@ -1147,7 +1147,7 @@ ac() {
             alias | rg "(py|conda|base|jl|jn|uv|pip)" | format_alias_output
             ;;
         "data")
-            echo "📊 Dados:"
+            echo "📊 Data:"
             alias | rg "(csv|data|nu)" | format_alias_output
             ;;
         "rust")
@@ -1166,8 +1166,8 @@ an() {
     alias | cut -d'=' -f1 | sort | column
 }
 
-## Adiciona ao sistema de ajuda existente
-alias ahelp='echo "🔍 Busca de Aliases:"; echo "  a termo → buscar"; echo "  af → interativo"; echo "  ac cat → por categoria"; echo "  an → só nomes"'
+## Add to existing help system
+alias ahelp='echo "🔍 Alias Search:"; echo "  a term → search"; echo "  af → interactive"; echo "  ac cat → by category"; echo "  an → names only"'
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
 # ║ SECTION 16: CONDA INITIALIZATION                                          ║
@@ -1206,7 +1206,7 @@ if [[ -n "$CONDA_PATH" ]] && [[ -f "$CONDA_PATH/bin/mamba" ]]; then
     export MAMBA_EXE="$CONDA_PATH/bin/mamba"
     export MAMBA_ROOT_PREFIX="$CONDA_PATH"
 
-    ## Silencia output do mamba completamente
+    ## Silence mamba output completely
     __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
     if [ $? -eq 0 ]; then
         eval "$__mamba_setup" &>/dev/null 2>&1
@@ -1253,7 +1253,7 @@ if command -v conda &> /dev/null; then
     } &>/dev/null 2>&1 || true
 fi
 
-## CONFIGURAÇÃO PARA MOSTRAR "base" EM VEZ DE "miniconda3"
+## CONFIGURATION TO SHOW "base" INSTEAD OF "miniconda3"
 export CONDA_PROMPT_MODIFIER="(base) "
 export POWERLEVEL9K_ANACONDA_CONTENT_EXPANSION='${CONDA_DEFAULT_ENV}'
 export POWERLEVEL9K_ANACONDA_SHOW_PYTHON_VERSION=false
@@ -1331,12 +1331,12 @@ show_welcome() {
     local current_time=$(date +%H:%M)
     local current_dir=$(basename "$PWD")
     local git_branch=""
-    
+
     ## Get git branch if in a git repo
     if git rev-parse --git-dir > /dev/null 2>&1; then
         git_branch=" | 🌿 $(git branch --show-current 2>/dev/null || echo 'detached')"
     fi
-    
+
     echo ""
     echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
     echo "┃ 🚀 $current_time | 📁 $current_dir$git_branch"
@@ -1352,18 +1352,18 @@ show_welcome() {
     echo ""
     echo "🦀 RUST TOOLS: bat (cat) | fd (find) | rg (grep) | eza (ls) | delta (diff) | z (cd)"
     echo ""
-    
+
     ## Show conda environment if active
     if [[ -n "$CONDA_DEFAULT_ENV" ]] && [[ "$CONDA_DEFAULT_ENV" != "base" ]]; then
         echo "🐍 Active environment: $CONDA_DEFAULT_ENV"
         echo ""
     fi
-    
+
     ## Show if new functions are available
     if [[ -f "$HOME/.env.local" ]]; then
         echo "🔐 Secure environment loaded (.env.local)"
     fi
-    
+
     echo "💡 Type 'halp' for categories | 'ac rust' for Rust tools | 'qm' for menu"
     echo "🚀 BMAD: 'bmad-install' to setup | 'bmad-update' to update | 'bmad-status' to check"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -1381,7 +1381,7 @@ show_welcome_compact() {
     if git rev-parse --git-dir > /dev/null 2>&1; then
         git_info=" | 🌿 $(git branch --show-current 2>/dev/null || echo 'detached')"
     fi
-    
+
     echo "🚀 $(date +%H:%M) | 📁 $(basename "$PWD")$git_info"
     echo "💡 h→help | halp→full help | a→search | qm→menu | zdoc→docs | c→clear"
 }
@@ -1766,7 +1766,7 @@ quick_menu() {
     echo "===================="
     echo ""
     echo "Select an option (enter number):"
-    
+
     local options=(
         "Update System"
         "Check Tools"
@@ -1802,7 +1802,7 @@ quick_menu() {
             "Exit") break ;;
             *) echo "Invalid option" ;;
         esac
-        
+
         if [[ "$opt" != "Exit" ]] && [[ -n "$opt" ]]; then
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -1876,15 +1876,15 @@ install_uv() {
         echo "✅ uv is already installed: $(uv --version)"
         return 0
     fi
-    
+
     echo "🚀 Installing uv - Extremely fast Python package installer..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    
+
     ## Add to PATH if needed
     if [[ -d "$HOME/.cargo/bin" ]] && [[ ":$PATH:" != *":$HOME/.cargo/bin:"* ]]; then
         export PATH="$HOME/.cargo/bin:$PATH"
     fi
-    
+
     echo "✅ uv installed successfully!"
     echo "💡 Restart your shell or run: source ~/.zshrc"
 }
@@ -1940,17 +1940,17 @@ check_and_suggest_rust_tool() {
     local tool="$1"
     local cargo_name="${2:-$1}"
     local description="$3"
-    
+
     if ! command -v "$tool" &> /dev/null; then
-        # Adicionar à lista de ferramentas sugeridas
+        # Add to suggested tools list
         MISSING_RUST_TOOLS+=("$cargo_name:$description")
     fi
 }
 
-# Verificar ferramentas Rust na inicialização
+# Check Rust tools at initialization
 check_rust_tools() {
     local MISSING_RUST_TOOLS=()
-    
+
     # Ferramentas essenciais
     check_and_suggest_rust_tool "bat" "bat" "cat com syntax highlighting"
     check_and_suggest_rust_tool "eza" "eza" "ls moderno com ícones"
@@ -1960,10 +1960,10 @@ check_rust_tools() {
     check_and_suggest_rust_tool "dust" "du-dust" "du com visualização em árvore"
     check_and_suggest_rust_tool "zoxide" "zoxide" "cd inteligente com IA"
     check_and_suggest_rust_tool "starship" "starship" "prompt customizável"
-    
+
     # Se houver ferramentas faltando, sugerir instalação
     if [[ ${#MISSING_RUST_TOOLS[@]} -gt 0 ]]; then
-        # Criar arquivo de sugestões se não existir
+        # Create suggestions file if it doesn't exist
         if [[ ! -f "$HOME/.rust_tools_suggested" ]]; then
             echo "🦀 Ferramentas Rust recomendadas não instaladas:"
             printf "   %s\n" "${MISSING_RUST_TOOLS[@]}" | column -t -s':'
@@ -1975,7 +1975,7 @@ check_rust_tools() {
             for tool in "${MISSING_RUST_TOOLS[@]}"; do
                 echo "   cargo install ${tool%%:*}"
             done
-            
+
             # Marcar como sugerido
             touch "$HOME/.rust_tools_suggested"
         fi
@@ -1983,40 +1983,40 @@ check_rust_tools() {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Função de bootstrap rápido do repositório
+# Quick repository bootstrap function
 # ──────────────────────────────────────────────────────────────────────────────
 rust_env_setup() {
     local repo_url="${1:-https://github.com/SEU_USUARIO/Linux_posintall_script}"
-    
+
     echo "🚀 Configurando ambiente Rust do repositório..."
-    
-    # Criar diretório temporário
+
+    # Create temporary directory
     local temp_dir=$(mktemp -d)
     cd "$temp_dir"
-    
+
     # Clonar apenas o necessário
     git clone --depth 1 --filter=blob:none --sparse "$repo_url" setup_temp
     cd setup_temp
     git sparse-checkout set install_rust_tools.sh zshrc
-    
-    # Executar instalação
+
+    # Execute installation
     if [[ -f "install_rust_tools.sh" ]]; then
         bash install_rust_tools.sh
     fi
-    
-    # Limpar
+
+    # Clean up
     cd "$HOME"
     rm -rf "$temp_dir"
-    
+
     echo "✅ Ambiente configurado! Reinicie o shell."
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Aliases inteligentes com fallback automático
 # ──────────────────────────────────────────────────────────────────────────────
-# Esta função cria aliases que usam Rust tools se disponíveis, senão usa o padrão
+# This function creates aliases that use Rust tools if available, otherwise uses defaults
 setup_smart_rust_aliases() {
-    # Listagem de arquivos
+    # File listing
     if command -v eza &> /dev/null; then
         alias ls='eza --icons --group-directories-first'
         alias ll='eza -la --icons --git --header'
@@ -2026,34 +2026,34 @@ setup_smart_rust_aliases() {
         alias ll='lsd -la --header'
         alias tree='lsd --tree'
     fi
-    
-    # Visualização de arquivos
+
+    # File viewing
     if command -v bat &> /dev/null; then
         alias cat='bat --style=plain'
         alias less='bat --style=plain --paging=always'
         export MANPAGER="sh -c 'col -bx | bat -l man -p'"
     fi
-    
-    # Busca
+
+    # Search
     if command -v rg &> /dev/null; then
         export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
     elif command -v fd &> /dev/null; then
         export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
     fi
-    
+
     # Git
     if command -v delta &> /dev/null; then
         export GIT_PAGER='delta'
         git config --global core.pager delta
         git config --global interactive.diffFilter 'delta --color-only'
     fi
-    
-    # Navegação
+
+    # Navigation
     if command -v zoxide &> /dev/null; then
         eval "$(zoxide init zsh)"
         alias cd='z'  # Sobrescrever cd com zoxide
     fi
-    
+
     # Monitoramento
     if command -v bottom &> /dev/null; then
         alias top='bottom'
@@ -2069,9 +2069,9 @@ setup_smart_rust_aliases() {
 # ──────────────────────────────────────────────────────────────────────────────
 universal_install() {
     local tool="$1"
-    
+
     echo "🔍 Procurando melhor método para instalar $tool..."
-    
+
     # 1. Tentar cargo primeiro (funciona em qualquer lugar)
     if command -v cargo &> /dev/null; then
         # Mapear nomes conhecidos
@@ -2088,8 +2088,8 @@ universal_install() {
         esac
         return $?
     fi
-    
-    # 2. Detectar gerenciador de pacotes do sistema
+
+    # 2. Detect system package manager
     if [[ "$OSTYPE" == "darwin"* ]] && command -v brew &> /dev/null; then
         brew install "$tool"
     elif command -v apt &> /dev/null; then
@@ -2106,17 +2106,17 @@ universal_install() {
 }
 
 alias install='universal_install'
-alias irust='check_rust_tools'  # Verificar ferramentas Rust
+alias irust='check_rust_tools'  # Check Rust tools
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Executar verificações na inicialização
+# Execute checks at initialization
 # ──────────────────────────────────────────────────────────────────────────────
-# Verificar apenas uma vez por sessão
+# Check only once per session
 if [[ -z "$RUST_TOOLS_CHECKED" ]]; then
     setup_smart_rust_aliases
     export RUST_TOOLS_CHECKED=1
-    
-    # Verificar ferramentas apenas se não foi feito hoje
+
+    # Check tools only if not done today
     if [[ ! -f "$HOME/.rust_tools_checked" ]] || [[ $(find "$HOME/.rust_tools_checked" -mtime +1 2>/dev/null) ]]; then
         check_rust_tools
         touch "$HOME/.rust_tools_checked"
@@ -2124,7 +2124,7 @@ if [[ -z "$RUST_TOOLS_CHECKED" ]]; then
 fi
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Comando para setup completo em novo ambiente
+# Command for complete setup in new environment
 # ──────────────────────────────────────────────────────────────────────────────
 new_machine_setup() {
     echo "🚀 Configurando novo ambiente de desenvolvimento..."
@@ -2137,21 +2137,21 @@ new_machine_setup() {
     echo ""
     read -p "Continuar? (s/N) " -n 1 -r
     echo
-    
+
     if [[ $REPLY =~ ^[Ss]$ ]]; then
-        # Baixar e executar o script do seu repo
+        # Download and execute script from your repo
         curl -sSL "https://raw.githubusercontent.com/SEU_USUARIO/Linux_posintall_script/main/install_rust_tools.sh" | bash
-        
+
         # Copiar configurações
         echo "📁 Clonando configurações..."
         git clone https://github.com/SEU_USUARIO/Linux_posintall_script.git "$HOME/.config/dev-setup"
-        
+
         # Aplicar zshrc
         if [[ -f "$HOME/.config/dev-setup/zshrc" ]]; then
             cp "$HOME/.config/dev-setup/zshrc" "$HOME/.zshrc"
             echo "✅ zshrc atualizado"
         fi
-        
+
         echo "✅ Setup completo! Reinicie seu terminal."
     fi
 }
@@ -2160,19 +2160,19 @@ alias newsetup='new_machine_setup'
 alias rustsetup='rust_env_setup'
 
 # ──────────────────────────────────────────────────────────────────────────────
-# CLAUDE.md - Configuração Global para IA
+# CLAUDE.md - Global Configuration for AI
 # ──────────────────────────────────────────────────────────────────────────────
 claude_init() {
-    local claude_global="~/CLAUDE.md"
+    local claude_global="$HOME/CLAUDE.md"
     local claude_local="./CLAUDE.md"
-    
-    # Verificar se o arquivo global existe
+
+    # Check if global file exists
     if [[ ! -f "$claude_global" ]]; then
         echo "❌ CLAUDE.md global não encontrado em: $claude_global"
         return 1
     fi
-    
-    # Verificar se já existe um CLAUDE.md local
+
+    # Check if local CLAUDE.md already exists
     if [[ -e "$claude_local" ]]; then
         echo "⚠️  CLAUDE.md já existe neste diretório!"
         echo -n "Deseja substituir? (s/N): "
@@ -2183,17 +2183,17 @@ claude_init() {
         fi
         rm -f "$claude_local"
     fi
-    
-    # Criar symlink
+
+    # Create symlink
     ln -s "$claude_global" "$claude_local"
-    
-    # Verificar se foi criado com sucesso
+
+    # Check if created successfully
     if [[ -L "$claude_local" ]]; then
         echo "✅ CLAUDE.md linkado com sucesso!"
         echo "📍 Fonte: $claude_global"
         echo "🔗 Link: $claude_local"
-        
-        # Mostrar versão atual
+
+        # Show current version
         local version=$(grep "Versão:" "$claude_local" | head -1)
         [[ -n "$version" ]] && echo "📋 $version"
     else
@@ -2206,7 +2206,7 @@ claude_init() {
 alias claude-init='claude_init'
 alias ci='claude_init'
 
-# Função para verificar status do CLAUDE.md no diretório atual
+# Function to check CLAUDE.md status in current directory
 claude_status() {
     if [[ -L "./CLAUDE.md" ]]; then
         echo "✅ CLAUDE.md está linkado"
@@ -2236,16 +2236,16 @@ alias cs='claude_status'
 [[ -f "$HOME/.bmad-config" ]] && source "$HOME/.bmad-config"
 
 # BMAD Method aliases
-alias bmad-install='pnpm dlx bmad-method@latest install --full --ide cursor'
+alias bmad-install='pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor'
 alias bmad-update='pnpm dlx bmad-method@latest update'
 alias bmad-check='bmad_check_updates'
 alias bmad-list='bmad_list_projects'
 alias bmad-status='bmad_status'
 
 # Quick install for different project types
-alias bmad-react='pnpm dlx bmad-method@latest install --full --ide cursor --template react'
-alias bmad-python='pnpm dlx bmad-method@latest install --full --ide cursor --template python'
-alias bmad-rust='pnpm dlx bmad-method@latest install --full --ide cursor --template rust'
+alias bmad-react='pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor --template react'
+alias bmad-python='pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor --template python'
+alias bmad-rust='pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor --template rust'
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
 # ║ QUICK RELOAD ALIAS                                                        ║
@@ -2254,3 +2254,42 @@ alias bmad-rust='pnpm dlx bmad-method@latest install --full --ide cursor --templ
 # Reload zsh configuration
 alias sz='source ~/.zshrc && echo "✅ Configuração recarregada!"'
 alias reload='source ~/.zshrc && echo "✅ Configuração recarregada!"'
+
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║ BMAD STATUS FUNCTION                                                      ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+
+# Enhanced bmad_status function that checks both locations
+bmad_status() {
+    local bmad_found=false
+    local bmad_location=""
+    local bmad_version=""
+
+    # Check standard location
+    if [[ -f ".bmad-core/install-manifest.yaml" ]]; then
+        bmad_found=true
+        bmad_location=".bmad-core"
+        bmad_version=$(grep "^version:" .bmad-core/install-manifest.yaml 2>/dev/null | cut -d' ' -f2)
+    # Check GitHub structure
+    elif [[ -f ".github/BMAD/bmad-core/install-manifest.yaml" ]]; then
+        bmad_found=true
+        bmad_location=".github/BMAD/bmad-core"
+        bmad_version=$(grep "^version:" .github/BMAD/bmad-core/install-manifest.yaml 2>/dev/null | cut -d' ' -f2)
+    fi
+
+    if $bmad_found; then
+        echo "✅ BMAD v${bmad_version} instalado"
+        echo "📍 Local: ${bmad_location}"
+
+        # Check IDE configuration
+        local ide_setup=$(grep -A5 "ides_setup:" "${bmad_location}/install-manifest.yaml" 2>/dev/null | grep "  - " | sed 's/  - //')
+        [[ -n "$ide_setup" ]] && echo "🛠️  IDE: ${ide_setup}"
+
+        # Check for expansion packs
+        local expansions=$(grep -A10 "expansion_packs:" "${bmad_location}/install-manifest.yaml" 2>/dev/null | grep "  - " | wc -l)
+        [[ $expansions -gt 0 ]] && echo "📦 Expansion packs: ${expansions}"
+    else
+        echo "❌ BMAD não instalado neste projeto"
+        echo "💡 Use 'bmad-install' para instalar"
+    fi
+}
