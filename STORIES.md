@@ -95,7 +95,7 @@
 
 **Acceptance Criteria:**
 1. One-command minimal base installation
-2. Essential tools only: modern shell (zsh/oh-my-zsh), CLI tools (bat, eza, fd, ripgrep), git, AI infrastructure
+2. Essential tools only: modern shell (zsh/oh-my-zsh), CLI tools (bat, eza, fd, ripgrep), git, AI infrastructure, Rust toolchain, Polars (NOT pandas)
 3. Process completes in < 15 minutes for minimal base
 4. Option to add recommendations after (additional 15 minutes)
 5. Clear progress indicators with time remaining
@@ -193,12 +193,16 @@
 5. Generate technology confidence scores
 6. Handle ambiguous mentions gracefully
 7. Extensible detection rules in YAML
+8. Use Polars for data processing (NOT pandas)
+9. Parse large files efficiently (<1 second)
 
 **Technical Notes (PRP):**
 - Keyword mapping database in configs/
 - Fuzzy matching for variations
 - Context-aware detection
 - No external API calls
+- Rust backend with Polars for 5-10x performance
+- DuckDB for complex analytics queries
 
 #### Story 1.7: Manual Test Execution
 **As a** developer who completed installation,  

@@ -132,7 +132,8 @@ The project underwent rapid evolution during July 2025:
 
 5. **Development Tools Installation**
    - Programming languages (Python, Node.js, Rust, Go, etc.)
-   - Version managers (nvm, pyenv, rbenv)
+   - Version managers (nvm, pyenv, rbenv, rustup)
+   - Data tools: Polars (Python/Rust), DuckDB, NOT pandas
    - Container tools (Docker, Podman)
    - IDEs and text editors
    - Git and version control tools
@@ -402,6 +403,7 @@ The project underwent rapid evolution during July 2025:
 - **Package Managers**: APT, Homebrew, winget, Snap, Flatpak
 - **AI/Agents**: BMAD Method v4.32.0, MCPs
 - **Languages**: Python, Node.js, Rust, Go, Java
+- **Data Processing**: Polars (NOT pandas), DuckDB, Rust for performance
 - **Documentation**: Markdown, YAML
 
 ### User Base

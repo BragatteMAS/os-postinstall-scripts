@@ -31,7 +31,50 @@ set -euo pipefail
 - [ ] Returns structured data (JSON or associative array)
 - [ ] Includes debug mode for troubleshooting
 
-#### Task 1.6.2: Technology Keyword Database
+#### Task 1.6.2: High-Performance Parser Implementation (Rust/Polars)
+**Estimate:** 6 hours  
+**Dependencies:** Rust toolchain  
+**Technical Stack:** Rust for performance, Polars for data processing
+
+```rust
+// modules/parser/src/lib.rs
+use polars::prelude::*;
+use std::collections::HashMap;
+
+pub struct TechDetector {
+    keywords: HashMap<String, Vec<String>>,
+}
+
+impl TechDetector {
+    pub fn parse_prd(&self, content: &str) -> Result<DataFrame> {
+        // Use Polars for efficient text processing
+        // NOT pandas - Polars is 5-10x faster
+    }
+}
+```
+
+```python
+# modules/parser/python_wrapper.py
+import polars as pl
+# NEVER: import pandas as pd
+from rust_parser import TechDetector
+
+def analyze_project_files(prd_path: str, stories_path: str) -> pl.DataFrame:
+    """Uses Polars for data processing - NOT pandas"""
+    detector = TechDetector()
+    return pl.concat([
+        detector.parse_file(prd_path),
+        detector.parse_file(stories_path)
+    ])
+```
+
+**Why Polars over pandas:**
+- 5-10x faster for text processing
+- Lower memory usage (critical for large PRDs)
+- Better integration with Rust backend
+- Lazy evaluation for efficiency
+
+#### Task 1.6.3: Technology Keyword Database
 **Estimate:** 3 hours  
 **Dependencies:** None  
 **Location:** `configs/tech-keywords.yaml`
@@ -40,9 +83,9 @@ set -euo pipefail
 # Example structure
 languages:
   python:
-    keywords: ["python", "pip", "django", "flask", "pandas", "numpy"]
-    confidence_boost: ["import", "def", "__init__", "requirements.txt"]
-    tools: ["python3", "pip", "pyenv", "poetry", "uv"]
+    keywords: ["python", "pip", "django", "flask", "polars", "duckdb", "numpy"]
+    confidence_boost: ["import", "def", "__init__", "requirements.txt", "import polars"]
+    tools: ["python3", "pip", "pyenv", "poetry", "uv", "rust", "cargo"]
     
   javascript:
     keywords: ["javascript", "node", "npm", "react", "vue", "angular"]
@@ -96,7 +139,7 @@ databases:
 - API testing tools (Postman, HTTPie)
 
 ## Low Confidence (30-59%)
-- Data science tools (Jupyter, pandas) - mentioned but not primary
+- Data science tools (Jupyter, polars, duckdb) - mentioned but not primary
 ```
 
 #### Task 1.6.6: Manual Test Suite
