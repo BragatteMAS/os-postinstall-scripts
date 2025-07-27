@@ -49,8 +49,8 @@ done
 show_banner() {
     cat << 'EOF'
     ╔═══════════════════════════════════════════════════════════════╗
-    ║          🚀 Setup Universal de Desenvolvimento 🚀             ║
-    ║                    Rust-First & Agnóstico                     ║
+    ║          🚀 Universal Development Setup 🚀                    ║
+    ║                    Rust-First & Agnostic                      ║
     ╚═══════════════════════════════════════════════════════════════╝
 EOF
 }
@@ -92,46 +92,46 @@ show_menu() {
     local system_info="$1"
     IFS='|' read -r os distro version arch <<< "$system_info"
     
-    echo -e "\n${BLUE}Sistema Detectado:${NC}"
+    echo -e "\n${BLUE}Detected System:${NC}"
     echo -e "  OS: ${GREEN}$os${NC}"
     [[ -n "$distro" ]] && echo -e "  Distro: ${GREEN}$distro $version${NC}"
     echo -e "  Arch: ${GREEN}$arch${NC}"
     
-    echo -e "\n${PURPLE}Opções de Instalação:${NC}"
-    echo "  1) 🦀 Instalar apenas ferramentas Rust"
-    echo "  2) 📦 Instalar ferramentas do sistema (apt/brew/etc)"
-    echo "  3) 🔧 Configuração completa (Rust + Sistema + Configs)"
-    echo "  4) 🐍 Instalar Python com UV"
-    echo "  5) 🐳 Instalar Docker/Podman"
-    echo "  6) 📁 Sincronizar dotfiles"
-    echo "  7) 🏃 Setup rápido (essenciais)"
-    echo "  8) 🔍 Verificar ferramentas instaladas"
-    echo "  9) 🤖 Instalar ferramentas de IA (MCPs + BMAD)"
-    echo "  10) 🎯 Configurar Git para desenvolvimento focado no produto"
-    echo "  0) ❌ Sair"
+    echo -e "\n${PURPLE}Installation Options:${NC}"
+    echo "  1) 🦀 Install Rust tools only"
+    echo "  2) 📦 Install system tools (apt/brew/etc)"
+    echo "  3) 🔧 Complete setup (Rust + System + Configs)"
+    echo "  4) 🐍 Install Python with UV"
+    echo "  5) 🐳 Install Docker/Podman"
+    echo "  6) 📁 Sync dotfiles"
+    echo "  7) 🏃 Quick setup (essentials)"
+    echo "  8) 🔍 Check installed tools"
+    echo "  9) 🤖 Install AI tools (MCPs + BMAD)"
+    echo "  10) 🎯 Configure Git for product-focused development"
+    echo "  0) ❌ Exit"
     
-    echo -e "\n${YELLOW}Digite o número da opção:${NC} "
+    echo -e "\n${YELLOW}Enter option number:${NC} "
 }
 
 # Clonar repositório
 clone_repo() {
     if [[ ! -d "$REPO_DIR" ]]; then
-        echo -e "${BLUE}📥 Clonando repositório de configurações...${NC}"
+        echo -e "${BLUE}📥 Cloning configuration repository...${NC}"
         git clone --depth 1 "$REPO_URL" "$REPO_DIR"
     else
-        echo -e "${BLUE}📥 Atualizando repositório...${NC}"
+        echo -e "${BLUE}📥 Updating repository...${NC}"
         cd "$REPO_DIR" && git pull
     fi
 }
 
 # Instalar Rust tools
 install_rust_tools() {
-    echo -e "${YELLOW}🦀 Instalando ferramentas Rust...${NC}"
+    echo -e "${YELLOW}🦀 Installing Rust tools...${NC}"
     
     if [[ -f "$REPO_DIR/install_rust_tools.sh" ]]; then
         bash "$REPO_DIR/install_rust_tools.sh"
     else
-        # Fallback: baixar direto
+        # Fallback: download directly
         curl -sSL "$REPO_URL/raw/main/install_rust_tools.sh" | bash
     fi
 }
@@ -242,7 +242,7 @@ check_tools() {
     
     # Rust tools
     local rust_tools=("rustc" "cargo" "bat" "eza" "fd" "rg" "delta" "dust" "bottom" "zoxide")
-    echo -e "${YELLOW}Ferramentas Rust:${NC}"
+    echo -e "${YELLOW}Rust Tools:${NC}"
     for tool in "${rust_tools[@]}"; do
         if command -v "$tool" &> /dev/null; then
             echo -e "  ${GREEN}✓${NC} $tool $(command -v $tool)"
@@ -255,7 +255,7 @@ check_tools() {
     
     # System tools
     local sys_tools=("git" "curl" "wget" "tmux" "fzf" "docker" "python3" "node")
-    echo -e "${YELLOW}Ferramentas do Sistema:${NC}"
+    echo -e "${YELLOW}System Tools:${NC}"
     for tool in "${sys_tools[@]}"; do
         if command -v "$tool" &> /dev/null; then
             echo -e "  ${GREEN}✓${NC} $tool"
@@ -323,7 +323,7 @@ install_ai_tools() {
     elif [[ -f "./install_ai_tools.sh" ]]; then
         bash "./install_ai_tools.sh"
     else
-        # Fallback: baixar direto do repositório
+        # Fallback: download directly do repositório
         echo -e "${BLUE}Baixando script de instalação de AI tools...${NC}"
         curl -sSL "$REPO_URL/raw/main/install_ai_tools.sh" | bash
     fi
@@ -339,7 +339,7 @@ install_product_focused_git() {
     elif [[ -f "./install_product_focused_git.sh" ]]; then
         bash "./install_product_focused_git.sh"
     else
-        # Fallback: baixar direto do repositório
+        # Fallback: download directly do repositório
         echo -e "${BLUE}Baixando script de configuração...${NC}"
         curl -sSL "$REPO_URL/raw/main/install_product_focused_git.sh" | bash
     fi
@@ -377,15 +377,15 @@ main() {
             9) install_ai_tools ;;
             10) install_product_focused_git ;;
             0) 
-                echo -e "${GREEN}👋 Até logo!${NC}"
+                echo -e "${GREEN}👋 Goodbye!${NC}"
                 break
                 ;;
             *)
-                echo -e "${RED}Opção inválida!${NC}"
+                echo -e "${RED}Invalid option!${NC}"
                 ;;
         esac
         
-        echo -e "\n${YELLOW}Pressione Enter para continuar...${NC}"
+        echo -e "\n${YELLOW}Press Enter to continue...${NC}"
         read -r
     done
 }
