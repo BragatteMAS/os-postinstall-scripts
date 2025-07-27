@@ -7,11 +7,90 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Upcoming
-- **v3.2.0**: Enhanced platform detection
-- **v4.0.0**: Full platform parity
+### Planned for v3.2.0 (August 2025)
+- 🤖 **Full BMAD agents integration**
+  - SM agent for structured story creation
+  - QA agent for test strategy definition
+  - Complete agent-assisted workflow
+- 🎯 **Intelligent recommendation system**
+  - PRD/STORIES parsing engine
+  - Technology detection and mapping
+  - Context-aware suggestions
+- ⚡ **15-minute minimal base installation**
+  - Optimized package installation
+  - Parallel execution where safe
+  - Progress tracking improvements
 
-## [3.1.0] - 2025-01-27
+### Planned for v3.3.0 (September 2025)
+- 🌍 **Cross-platform enhancement**
+  - Mac support to 45% (from 20%)
+  - Windows support to 10% (from 0%)
+  - Platform-specific optimizations
+- 🏗️ **Core/adapter architecture**
+  - Clean abstraction layers
+  - Platform adapters implementation
+  - Reduced code duplication
+
+### Planned for v4.0.0 (October 2025)
+- 🚀 **Architecture evolution**
+  - Complete profile system removal
+  - Full parallel execution
+  - Enterprise deployment features
+
+## [3.1.3] - 2025-07-27
+
+### Fixed
+- 🌐 **Translated Portuguese sections to English**
+  - STORIES.md focal questions and headers
+  - Maintained English consistency across repository
+  - Fixed language mixing in documentation
+
+## [3.1.2] - 2025-07-27
+
+### Fixed
+- 📅 **Corrected timeline dates**
+  - Fixed dates from past (February-April 2025) to future (August-October 2025)
+  - Updated ROADMAP.md, PRD.md, and STORIES.md with correct timelines
+  - Aligned all phases with current date (July 2025)
+
+## [3.1.1] - 2025-07-27
+
+### Added
+- 📊 **Comprehensive PRD v2.0.0 with brownfield analysis**
+  - Merged brownfield assessment into main PRD
+  - Current state analysis and technical debt assessment
+  - Migration strategy for v3.2.0, v3.3.0, and v4.0.0
+  - Risk assessment and success metrics
+  
+- 📝 **STORIES.md alignment with PRD promises**
+  - 7 new user stories for intelligent recommendations
+  - Platform parity stories (Mac/Linux 45%, Windows 10%)
+  - Manual testing philosophy stories
+  - BMAD agent integration stories
+  
+- 🔍 **PO validation deliverables**
+  - GAP_REMEDIATION_PLAN.md - comprehensive gap analysis
+  - STORIES_UPDATE_TASKS.md - PRD sharded into 12 tasks
+  - NEW_STORIES_DRAFT.md - 9 new stories template
+
+### Changed
+- 🎯 **Testing philosophy to manual-only**
+  - Removed all automated testing references
+  - Added manual test execution guides
+  - Emphasized user control over test execution
+  
+- 🔄 **Profile system deprecation**
+  - Shifted from 5 rigid profiles to intelligent recommendations
+  - PRD/STORIES parsing for technology detection
+  - Context-aware tool suggestions
+
+### Updated
+- 📋 **BMAD agent workflow**
+  - PM agent brownfield PRD creation completed
+  - PO agent validation and gap analysis completed
+  - Clear agent activation order: PM → PO → QA → SM
+
+## [3.1.0] - 2025-07-27
 
 ### Added
 - 📋 **Configuration templates system**
