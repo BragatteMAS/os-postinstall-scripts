@@ -6,18 +6,18 @@
 
 | Pergunta | Resposta | Impacto no CLAUDE.md | Seções Ativadas |
 |----------|----------|---------------------|-----------------|
-| **Precisa de testes automatizados?** | ✅ Sim | Testing Trophy ativado | Testing patterns, /tests, TESTING.md |
+| **Precisa de testes automatizados?** | ❌ Não (apenas manual) | Guias de teste manual | Sem CI/CD, sem hooks de teste |
 | **É multi-plataforma?** | ✅ Sim (Linux, Windows, macOS) | Cross-platform patterns | Compatibilidade, pathlib, OS detection |
 | **Tem interface visual?** | ❌ Não (CLI/TUI apenas) | Skip frontend patterns | Remove React/Next.js sections |
 | **Usa linguagens compiladas?** | ✅ Parcial (Bash, PowerShell) | Shell scripting patterns | Bash/Shell best practices |
-| **Deploy automático?** | ✅ Sim (GitHub Actions) | CI/CD patterns | GitHub workflows, automated testing |
+| **Deploy automático?** | ✅ Sim (GitHub Actions) | CI/CD patterns | GitHub workflows, release automation |
 | **Análise de dados?** | ❌ Não | Skip data science | Remove Python/R analytics |
 | **Precisa de docs interativos?** | ✅ Sim | Documentation patterns | README, guides, examples |
 | **Gestão de estado complexo?** | ❌ Não | Skip state management | Remove Redux/Context patterns |
 
 ### Resultado da Filtragem:
-**Módulos CLAUDE.md Ativos:** Shell scripting, Testing Trophy, Cross-platform, CI/CD, Documentation
-**Módulos CLAUDE.md Inativos:** Frontend (React/Next), Data Science (Python/R analytics), State Management
+**Módulos CLAUDE.md Ativos:** Shell scripting, Manual Testing Guides, Cross-platform, CI/CD (deploy only), Documentation, Intelligent Recommendations
+**Módulos CLAUDE.md Inativos:** Frontend (React/Next), Data Science (Python/R analytics), State Management, Automated Testing, Profile Systems
 
 ---
 
@@ -72,8 +72,9 @@
 3. Initial 10 integration tests for critical paths
 4. 5 security-focused tests
 5. Coverage reporting with kcov
-6. CI/CD running all tests
-7. README badge with real coverage
+6. Manual test execution guides
+7. Clear documentation of when/how to run tests
+8. NO automatic test execution
 
 **Technical Notes (PRP):**
 - Implement as per ADR-006
@@ -88,16 +89,17 @@
 ### Epic 1: Developer Setting Up New Machine
 
 #### Story 1.1: Quick Start Installation
-**As a** developer new to a Linux machine,  
-**I want** to run a single command that sets up my entire development environment,  
-**So that** I can start coding immediately without manual configuration.
+**As a** developer new to a machine,  
+**I want** to run a single command that sets up a minimal base environment,  
+**So that** I can start coding in under 15 minutes.
 
 **Acceptance Criteria:**
-1. One-command installation process
-2. All essential dev tools installed (Git, Docker, Node.js, Python, etc.)
-3. Shell configured with productivity features
-4. Process completes in < 30 minutes
-5. Clear progress indicators throughout
+1. One-command minimal base installation
+2. Essential tools only: modern shell (zsh/oh-my-zsh), CLI tools (bat, eza, fd, ripgrep), git, AI infrastructure
+3. Process completes in < 15 minutes for minimal base
+4. Option to add recommendations after (additional 15 minutes)
+5. Clear progress indicators with time remaining
+6. Parallel installation where safe
 
 **Technical Notes (PRP):**
 - Entry point: `setup.sh` or `main.sh`
@@ -105,19 +107,19 @@
 - Error handling and rollback capability
 - Logging to track installation progress
 
-#### Story 1.2: Custom Tool Selection
-**As a** specialized developer (e.g., Rust developer),  
-**I want** to select specific tools and skip others,  
-**So that** I only install what I need for my workflow.
+#### Story 1.2: Intelligent Tool Recommendations
+**As a** developer with existing projects,  
+**I want** to provide my PRD/STORIES files for intelligent recommendations,  
+**So that** I get contextual tool suggestions based on my actual needs.
 
 **Acceptance Criteria:**
-1. Interactive TUI menu with arrow key navigation
-2. Preset profiles: Web Dev, Data Science, DevOps, Mobile, Embedded
-3. Custom profile saved to ~/.config/os-postinstall/profiles/
-4. Skip detection completes in < 10 seconds
-5. Dependency graph resolution with conflict warnings
-6. Installation time estimate before confirmation
-7. Dry-run mode to preview changes
+1. Option to upload or point to PRD.md/STORIES.md files
+2. System parses files for technology keywords and patterns
+3. Generates grouped recommendations (not profiles)
+4. Shows why each tool is recommended
+5. User can approve/modify recommendations
+6. Falls back to minimal base if no files provided
+7. Secure in-memory processing only
 
 **Technical Notes (PRP):**
 - Use whiptail or dialog for TUI
@@ -178,11 +180,94 @@
 - Create timestamped backups
 - Interactive merge conflicts
 
+#### Story 1.6: PRD/STORIES Technology Detection
+**As a** developer providing context files,  
+**I want** the system to automatically detect my technology stack,  
+**So that** recommendations are accurate and relevant.
+
+**Acceptance Criteria:**
+1. Detect programming languages mentioned (Python, JavaScript, Rust, etc.)
+2. Identify frameworks (React, Django, Express, etc.)
+3. Recognize build tools (npm, cargo, make, etc.)
+4. Find database mentions (PostgreSQL, MongoDB, etc.)
+5. Generate technology confidence scores
+6. Handle ambiguous mentions gracefully
+7. Extensible detection rules in YAML
+
+**Technical Notes (PRP):**
+- Keyword mapping database in configs/
+- Fuzzy matching for variations
+- Context-aware detection
+- No external API calls
+
+#### Story 1.7: Manual Test Execution
+**As a** developer who completed installation,  
+**I want** clear instructions for running tests manually,  
+**So that** I can verify my setup when I choose.
+
+**Acceptance Criteria:**
+1. Test commands documented in README and TESTING.md
+2. Separate commands for different test types
+3. NO automatic execution during or after install
+4. Expected output examples provided
+5. Troubleshooting guide for failures
+6. Platform-specific test variations
+7. User explicitly runs tests on demand
+
+**Technical Notes (PRP):**
+- Test scripts in tests/manual/
+- Clear "WHEN to test" guidelines
+- Never hook into installation flow
+- Emphasize user control
+
 ---
 
-### Epic 2: IT Professional Mass Deployment
+### Epic 2: Platform Parity and Optimization
 
-#### Story 2.1: Standardized Workstation Setup
+#### Story 2.1: Mac/Linux Feature Parity
+**As a** developer using both Mac and Linux,  
+**I want** equivalent functionality on both platforms,  
+**So that** my workflow remains consistent.
+
+**Acceptance Criteria:**
+1. Same CLI tools available (via Homebrew/apt)
+2. Equivalent shell configurations
+3. Similar performance (±20%)
+4. Platform-specific optimizations documented
+5. Feature comparison matrix maintained
+6. Migration guide between platforms
+7. 45% development effort each
+
+**Technical Notes (PRP):**
+- Core/adapter pattern implementation
+- Homebrew vs apt abstraction layer
+- Functional equivalence over identical tools
+
+#### Story 2.2: Windows Basic Support
+**As a** Windows developer needing essential tools,  
+**I want** basic development programs installed via winget,  
+**So that** I have fundamental capabilities.
+
+**Acceptance Criteria:**
+1. Winget installer for common tools only
+2. NO automated testing on Windows
+3. Clear limitations documented
+4. Manual verification steps provided
+5. 10% development effort maximum
+6. Focus on: Git, VS Code, Node.js, Python
+7. WSL2 recommendation prominent
+
+**Technical Notes (PRP):**
+- Minimal Windows-specific code
+- Leverage winget manifests
+- No complex scripting
+- Safety over features
+
+---
+
+### Epic 3: IT Professional Mass Deployment
+
+#### Story 3.1: Standardized Workstation Setup
 **As an** IT administrator,  
 **I want** to deploy consistent configurations across multiple machines,  
 **So that** all team members have identical development environments.
@@ -194,7 +279,7 @@
 4. Deployment reporting
 5. Rollback capabilities
 
-#### Story 2.2: Compliance and Security
+#### Story 3.2: Compliance and Security
 **As a** security-conscious IT professional,  
 **I want** installation scripts that follow security best practices,  
 **So that** deployed systems are secure by default.
@@ -236,9 +321,77 @@
 
 ---
 
-### Epic 4: Linux Enthusiast / Distro Hopper
+### Epic 4: Simplified User Experience
 
-#### Story 4.1: Distribution Agnostic Scripts
+#### Story 4.1: Minimal Base Quick Install
+**As a** developer wanting immediate productivity,  
+**I want** essential tools installed in under 15 minutes,  
+**So that** I can start working quickly.
+
+**Acceptance Criteria:**
+1. 15-minute installation target for minimal base
+2. Only truly essential tools included
+3. No prompts during minimal install
+4. Clear "what's included" list shown upfront
+5. Option to add recommendations later
+6. Progress bar with time remaining
+7. Parallel installation where safe
+
+**Technical Notes (PRP):**
+- Define "minimal base" precisely in docs
+- Optimize download/install order
+- Cache frequently used packages
+- Background prep for recommendations
+
+#### Story 4.2: Deprecate Profile System
+**As a** developer confused by rigid profiles,  
+**I want** the old profile system gracefully removed,  
+**So that** I'm guided to the new intelligent approach.
+
+**Acceptance Criteria:**
+1. Old profile commands show deprecation notice
+2. Migration path to new system clear
+3. Existing profile configs still work (v3.x compatibility)
+4. Documentation updated completely
+5. No profile references in new code
+6. User data preserved if upgrading
+7. Clear benefits of new system explained
+
+**Technical Notes (PRP):**
+- Deprecation warnings in v3.2.0
+- Full removal in v4.0.0
+- Profile → Recommendation mapping
+- Gentle user education approach
+
+---
+
+### Epic 5: BMAD Agent Integration
+
+#### Story 5.1: Agent-Assisted Development Workflow
+**As a** developer using BMAD Method,  
+**I want** agents to help validate my installation choices,  
+**So that** I follow best practices automatically.
+
+**Acceptance Criteria:**
+1. PM agent reviews PRD completeness
+2. PO agent validates story consistency
+3. QA agent suggests test strategies (manual only)
+4. SM agent helps create implementation tasks
+5. Agents provide recommendations only
+6. User maintains final decision control
+7. Agent rationale always visible
+
+**Technical Notes (PRP):**
+- Agents already in minimal base install
+- Integration hooks in recommendation engine
+- Agent suggestions clearly marked
+- Educational, not prescriptive
+
+---
+
+### Epic 6: Linux Enthusiast / Distro Hopper
+
+#### Story 6.1: Distribution Agnostic Scripts
 **As a** Linux enthusiast who frequently changes distributions,  
 **I want** scripts that work across different distros,  
 **So that** I can quickly set up any new system.
@@ -250,7 +403,7 @@
 4. Desktop environment flexibility
 5. Preserve user customizations
 
-#### Story 4.2: Desktop Environment Setup
+#### Story 6.2: Desktop Environment Setup
 **As a** user who likes to experiment with different DEs,  
 **I want** to easily install and configure various desktop environments,  
 **So that** I can choose the best one for my needs.
@@ -298,10 +451,13 @@ Plan → Create Config → Test on Single Machine → Deploy to Fleet → Monito
 
 | User Type | Primary Metric | Target | Current |
 |-----------|---------------|--------|---------|
-| Developer | Setup time | < 30 min | ✅ 25 min |
+| Developer | Minimal base setup time | < 15 min | 🔄 25 min |
+| Developer | Full setup with recommendations | < 30 min | ✅ 25 min |
 | IT Admin | Deployment success rate | > 95% | 🔄 Measuring |
 | Distro Hopper | Distro compatibility | 10+ distros | ✅ 12 distros |
-| Cross-Platform Dev | Feature parity | > 90% | 🟡 70% |
+| Cross-Platform Dev | Mac/Linux feature parity | > 90% | 🟡 20% |
+| Windows Dev | Basic tool availability | 100% | 🔴 0% |
+| All Users | Manual test documentation | 100% | 🟡 5% |
 
 ---
 
@@ -312,23 +468,26 @@ Plan → Create Config → Test on Single Machine → Deploy to Fleet → Monito
 2. 🚨 Story 0.2: Implement Core/Adapters Architecture
 3. 🚨 Story 0.3: Implement Real Testing Framework
 
-### Phase 1 (Current Sprint - After Critical Fixes)
-1. ✅ Core modular architecture
-2. ✅ Linux platform support
-3. ✅ Documentation and CLAUDE.md integration
-4. 🔄 Enhanced developer stories (1.3, 1.4, 1.5)
+### Phase 1 (v3.2.0 - February 2025)
+1. 🔄 Minimal base + intelligent recommendations (Stories 1.1, 1.2, 1.6)
+2. 🔄 Deprecate profile system (Story 4.2)
+3. 🔄 Manual test documentation (Story 1.7)
+4. 🔄 BMAD agent integration (Story 5.1)
+5. 🔄 PRD/STORIES parsing engine (Story 1.6)
 
-### Phase 2 (Next Sprint)
-1. 📋 Enhanced Windows support
-2. 📋 macOS feature parity
-3. 📋 Configuration management system
-4. 📋 Profile system
+### Phase 2 (v3.3.0 - March 2025)
+1. 📋 Mac/Linux feature parity (Story 2.1)
+2. 📋 Windows basic support (Story 2.2)
+3. 📋 Platform-specific optimizations
+4. 📋 Core/adapter architecture implementation
+5. 📋 30% manual test coverage
 
-### Phase 3 (Future)
-1. 📋 Cloud configuration sync
-2. 📋 Enterprise features
-3. 📋 GUI configuration tool
-4. 📋 Mobile companion app
+### Phase 3 (v4.0.0 - April 2025)
+1. 📋 Complete profile system removal
+2. 📋 Full core/adapter pattern
+3. 📋 Parallel execution optimization
+4. 📋 Enterprise deployment features
+5. 📋 15-minute installation achieved
 
 ---
 
@@ -336,13 +495,15 @@ Plan → Create Config → Test on Single Machine → Deploy to Fleet → Monito
 
 Based on the answers above, when working on this project:
 
-1. **Always include shell script best practices** - ShellCheck compliance, error handling
+1. **Shell script best practices** - ShellCheck compliance, error handling, parallel execution
 2. **Skip frontend frameworks** - No React, Vue, or web UI code needed
 3. **Focus on CLI/TUI patterns** - Command line interfaces, not graphical
-4. **Emphasize cross-platform compatibility** - Test on Linux, macOS, Windows
-5. **Include Testing Trophy approach** - But adapted for shell scripts
-6. **Documentation is critical** - Clear examples, guides, and inline comments
-7. **Security first** - Never expose credentials, always validate input
-8. **Performance matters** - Scripts should be fast and efficient
+4. **Platform optimization** - Mac/Linux 45% each, Windows 10% effort
+5. **Manual testing only** - NO automated tests, clear documentation for manual execution
+6. **Intelligent recommendations** - Parse PRD/STORIES for context, no rigid profiles
+7. **Documentation is critical** - Clear examples, guides, and inline comments
+8. **Security first** - Never expose credentials, always validate input, safe package handling
+9. **Performance targets** - 15-minute minimal base, 30-minute full setup
+10. **BMAD agents assist** - Suggest and educate, don't automate decisions
 
 This modular approach ensures CLAUDE.md provides relevant guidance without overwhelming with irrelevant patterns.
