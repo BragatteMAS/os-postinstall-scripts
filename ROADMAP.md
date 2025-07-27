@@ -31,7 +31,7 @@ gantt
 
 ### ✅ v2.6.0 BMAD Method Update - COMPLETED!
 - [x] Updated BMAD Method from v4.25.0 to v4.31.0
-- [x] Created `update_bmad_github.sh` script for easy updates
+- [x] Created `install_bmad.sh` and `update_bmad.sh` scripts for easy management
 - [x] Automatic version checking and comparison
 - [x] Backup creation before updates
 - [x] Preservation of custom content (expansion packs)
