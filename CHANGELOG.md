@@ -8,9 +8,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Upcoming
-- **v2.8.0**: Core/Adapters architecture refactor
-- **v2.9.0**: bats-core testing framework
-- **v3.0.0**: Full platform parity (breaking changes)
+- **v3.1.0**: bats-core testing framework
+- **v3.2.0**: Enhanced platform detection
+- **v4.0.0**: Full platform parity
+
+## [3.0.0] - 2025-01-27
+
+### Changed - BREAKING
+- 🏗️ **Complete repository restructure** following Agile Repository Structure Guide
+  - All scripts moved to organized `scripts/` directory
+  - Platform-specific code consolidated in `platforms/`
+  - Configuration files centralized in `configs/`
+  - Documentation reorganized in `docs/`
+  - Created clear separation of concerns
+  
+### Added
+- 📁 **New directory structure**:
+  - `scripts/install/` - All installation scripts
+  - `scripts/setup/` - Setup and configuration scripts
+  - `scripts/utils/` - Shared utilities
+  - `platforms/` - OS-specific implementations
+  - `configs/` - All configuration files
+  - `tools/` - Development and maintenance tools
+  - `share/` - Examples and exports
+- 🔗 **Compatibility symlinks** for backward compatibility
+- 📝 **README files** in each major directory
+- 🔧 **Migration tools**:
+  - `migrate-structure.sh` - Automated migration script
+  - `verify-migration.sh` - Migration verification
+
+### Improved
+- 🧹 **Cleaner root directory** - Only essential files remain
+- 📊 **Better organization** - Logical grouping by function
+- 🔍 **Easier navigation** - Self-explanatory structure
+- ♻️ **Eliminated duplicates** - Consolidated utils directories
+- 📈 **Scalability** - Easy to add new features without clutter
+
+### Migration Guide
+1. Run `./migrate-structure.sh` to reorganize existing installation
+2. Verify with `./verify-migration.sh`
+3. Update any custom scripts to use new paths
+4. Symlinks maintain backward compatibility
 
 ## [2.7.0] - 2025-01-27
 

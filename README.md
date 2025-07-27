@@ -30,9 +30,10 @@ cd os-postinstall-scripts
 ./setup.sh
 ```
 
-### Interactive Mode
+### Profile-Based Install
 ```bash
-./linux/main.sh  # Menu-driven installation
+./setup.sh --profile=developer-minimal  # Minimal setup
+./setup.sh --profile=data-scientist     # Data science tools
 ```
 
 ---
@@ -61,7 +62,7 @@ cd os-postinstall-scripts
 | `grep` | `ripgrep` | Blazing fast |
 | `cd` | `zoxide` | Smart navigation |
 
-Install all Rust tools: `./install_rust_tools.sh`
+Install all Rust tools: `./scripts/install/rust-tools.sh`
 
 </details>
 
@@ -96,14 +97,14 @@ Install all Rust tools: `./install_rust_tools.sh`
   - sequential-thinking - Structured reasoning
   - serena - Semantic code search
 - **BMAD Method v4.31.0** - Complete project management
-  - Easy installation with `./install_bmad.sh`
-  - Easy updates with `./update_bmad.sh`
+  - Easy installation with `./scripts/install/bmad.sh`
+  - Easy updates with `./tools/update/bmad.sh`
   - Automatic backup before updates
   - Version checking and comparison
 - **Auto-configuration** for Claude Desktop
 - **Slash commands** in Claude (/generate-prp, /execute-prp)
 
-Install: `./install_ai_tools.sh` or choose option 9 in menu
+Install: `./scripts/install/ai-tools.sh` or choose option 9 in setup menu
 
 </details>
 
@@ -127,6 +128,39 @@ Install: `./install_ai_tools.sh` or choose option 9 in menu
 - 🛠️ **Modular** - Install only what you need
 - 🔄 **Idempotent** - Safe to run multiple times
 - 🤖 **AI-Powered Development** - MCPs + BMAD Method integration
+
+---
+
+## 📁 Project Structure
+
+```
+os-postinstall-scripts/
+├── scripts/                    # All executable scripts
+│   ├── install/               # Installation scripts
+│   │   ├── ai-tools.sh       # AI development tools
+│   │   ├── bmad.sh           # BMAD Method installer
+│   │   ├── rust-tools.sh     # Modern Rust CLI tools
+│   │   └── git-focused.sh    # Git configuration
+│   ├── setup/                 # Setup and configuration
+│   │   ├── main.sh           # Main setup script
+│   │   ├── with-profile.sh   # Profile-based setup
+│   │   └── ai-project.sh     # AI project setup
+│   └── utils/                 # Shared utilities
+│       └── logging.sh         # Logging functions
+├── platforms/                  # Platform-specific code
+│   ├── linux/                 # Linux distributions
+│   ├── macos/                 # macOS support
+│   └── windows/               # Windows PowerShell
+├── configs/                    # Configuration files
+│   ├── profiles/              # Installation profiles
+│   ├── templates/             # Reusable templates
+│   └── shell/                 # Shell configurations
+├── docs/                       # Documentation
+│   ├── guides/                # User guides
+│   └── architecture/          # Technical decisions
+├── tests/                      # Test suite
+└── tools/                      # Development tools
+```
 
 ---
 
