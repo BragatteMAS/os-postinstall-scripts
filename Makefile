@@ -56,10 +56,59 @@ install-zsh:
 	@echo "✅ Installed new .zshrc"
 	@echo "🔄 Run 'source ~/.zshrc' to reload"
 
-# Run tests (placeholder)
-test:
-	@echo "🧪 Running tests..."
-	@echo "⚠️  No tests implemented yet"
+# Run tests - v3.2.0 MANUAL TESTING ONLY
+test: test-manual
+
+# Manual test targets - NO AUTOMATION
+test-manual:
+	@echo "🧪 Manual Testing - OS Post-Install Scripts v3.2.0"
+	@echo "================================================="
+	@echo "⚠️  ALL tests are manual and on-demand"
+	@echo ""
+	@echo "Available test suites:"
+	@echo "  make test-manual-smoke       # Quick confidence check (5 min)"
+	@echo "  make test-manual-integration # Component tests (15 min)"
+	@echo "  make test-manual-acceptance  # User scenarios (30 min)"
+	@echo "  make test-manual-security    # Security checks (10 min)"
+	@echo "  make test-manual-full        # Complete validation (90 min)"
+	@echo ""
+	@echo "Story-specific tests:"
+	@echo "  make test-story-1.1         # Quick start installation"
+	@echo "  make test-story-1.6         # Technology detection"
+	@echo ""
+	@echo "Run with education mode:"
+	@echo "  TEST_EDUCATION=1 make test-manual-smoke"
+	@echo ""
+	@echo "See tests/guides/WHEN_TO_TEST.md for guidance"
+
+test-manual-smoke:
+	@echo "🚀 Running smoke tests (5 minutes)..."
+	@./tests/manual/smoke/minimal-base.sh
+
+test-manual-integration:
+	@echo "🔧 Running integration tests (15 minutes)..."
+	@./tests/manual/integration/run-all.sh
+
+test-manual-acceptance:
+	@echo "👤 Running acceptance tests (30 minutes)..."
+	@./tests/manual/acceptance/run-all.sh
+
+test-manual-security:
+	@echo "🔒 Running security tests (10 minutes)..."
+	@./tests/manual/security/run-all.sh
+
+test-manual-full:
+	@echo "📊 Running full validation suite (90 minutes)..."
+	@./tests/manual/full-validation.sh
+
+test-story-%:
+	@echo "📖 Running tests for Story $*..."
+	@./tests/manual/run-story-tests.sh $*
+
+# Linting only - no test execution
+lint:
+	@echo "🔍 Running ShellCheck on all scripts..."
+	@find . -name "*.sh" -type f -exec shellcheck {} \;
 
 # Setup directories
 setup-dirs:
