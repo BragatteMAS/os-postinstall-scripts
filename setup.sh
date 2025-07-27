@@ -136,18 +136,18 @@ install_rust_tools() {
     fi
 }
 
-# Instalar ferramentas do sistema
+# Install system tools
 install_system_tools() {
     local os="$1"
     local distro="$2"
     
-    echo -e "${YELLOW}📦 Instalando ferramentas do sistema...${NC}"
+    echo -e "${YELLOW}📦 Installing system tools...${NC}"
     
     case "$os" in
         "macos")
             # Verificar Homebrew
             if ! command -v brew &> /dev/null; then
-                echo "Instalando Homebrew..."
+                echo "Installing Homebrew..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             fi
             
@@ -175,15 +175,15 @@ install_system_tools() {
             ;;
             
         "windows")
-            echo -e "${YELLOW}Para Windows, use o PowerShell como Admin:${NC}"
+            echo -e "${YELLOW}For Windows, use PowerShell as Admin:${NC}"
             echo "  irm $REPO_URL/raw/main/windows/win11.ps1 | iex"
             ;;
     esac
 }
 
-# Setup rápido
+# Quick setup
 quick_setup() {
-    echo -e "${YELLOW}🏃 Executando setup rápido...${NC}"
+    echo -e "${YELLOW}🏃 Running quick setup...${NC}"
     
     # 1. Instalar Rust se não existir
     if ! command -v rustc &> /dev/null; then
@@ -191,7 +191,7 @@ quick_setup() {
         source "$HOME/.cargo/env"
     fi
     
-    # 2. Ferramentas essenciais via cargo
+    # 2. Essential tools via cargo
     local essential_tools=("bat" "eza" "fd-find" "ripgrep" "zoxide")
     
     for tool in "${essential_tools[@]}"; do
@@ -208,12 +208,12 @@ quick_setup() {
         touch "$HOME/.zshrc_rust_configured"
     fi
     
-    echo -e "${GREEN}✅ Setup rápido completo!${NC}"
+    echo -e "${GREEN}✅ Quick setup complete!${NC}"
 }
 
-# Sincronizar dotfiles
+# Sync dotfiles
 sync_dotfiles() {
-    echo -e "${YELLOW}📁 Sincronizando dotfiles...${NC}"
+    echo -e "${YELLOW}📁 Syncing dotfiles...${NC}"
     
     local files=("zshrc" ".gitconfig" ".tmux.conf")
     
@@ -224,7 +224,7 @@ sync_dotfiles() {
             
             # Copiar novo
             cp "$REPO_DIR/$file" "$HOME/.$file"
-            echo -e "${GREEN}✓${NC} $file sincronizado"
+            echo -e "${GREEN}✓${NC} $file synced"
         fi
     done
     
@@ -235,9 +235,9 @@ sync_dotfiles() {
     fi
 }
 
-# Verificar ferramentas
+# Check tools
 check_tools() {
-    echo -e "${BLUE}🔍 Verificando ferramentas instaladas...${NC}"
+    echo -e "${BLUE}🔍 Checking installed tools...${NC}"
     echo ""
     
     # Rust tools
@@ -265,16 +265,16 @@ check_tools() {
     done
 }
 
-# Instalar Docker/Podman
+# Install Docker/Podman
 install_container_runtime() {
     local os="$1"
     
-    echo -e "${YELLOW}🐳 Instalando runtime de containers...${NC}"
+    echo -e "${YELLOW}🐳 Installing container runtime...${NC}"
     
     case "$os" in
         "macos")
             brew install --cask docker
-            echo "Docker Desktop instalado. Abra o aplicativo para iniciar."
+            echo "Docker Desktop installed. Open the application to start."
             ;;
         "linux"|"wsl")
             # Preferir Podman em Linux
@@ -292,9 +292,9 @@ install_container_runtime() {
     esac
 }
 
-# Instalar Python com UV
+# Install Python with UV
 install_python_uv() {
-    echo -e "${YELLOW}🐍 Instalando Python com UV...${NC}"
+    echo -e "${YELLOW}🐍 Installing Python with UV...${NC}"
     
     # Instalar UV
     if ! command -v uv &> /dev/null; then
@@ -309,13 +309,13 @@ install_python_uv() {
     source ~/.venv/default/bin/activate
     uv pip install ipython jupyter pandas numpy matplotlib seaborn
     
-    echo -e "${GREEN}✅ Python configurado com UV!${NC}"
-    echo "Para ativar: source ~/.venv/default/bin/activate"
+    echo -e "${GREEN}✅ Python configured with UV!${NC}"
+    echo "To activate: source ~/.venv/default/bin/activate"
 }
 
-# Instalar ferramentas de IA (MCPs + BMAD)
+# Install AI tools (MCPs + BMAD)
 install_ai_tools() {
-    echo -e "${YELLOW}🤖 Instalando ferramentas de IA...${NC}"
+    echo -e "${YELLOW}🤖 Installing AI tools...${NC}"
     
     # Verificar se o script existe localmente
     if [[ -f "$REPO_DIR/install_ai_tools.sh" ]]; then
@@ -323,15 +323,15 @@ install_ai_tools() {
     elif [[ -f "./install_ai_tools.sh" ]]; then
         bash "./install_ai_tools.sh"
     else
-        # Fallback: download directly do repositório
-        echo -e "${BLUE}Baixando script de instalação de AI tools...${NC}"
+        # Fallback: download directly from repository
+        echo -e "${BLUE}Downloading AI tools installation script...${NC}"
         curl -sSL "$REPO_URL/raw/main/install_ai_tools.sh" | bash
     fi
 }
 
-# Configurar Git para desenvolvimento focado no produto
+# Configure Git for product-focused development
 install_product_focused_git() {
-    echo -e "${YELLOW}🎯 Configurando Git para desenvolvimento focado no produto...${NC}"
+    echo -e "${YELLOW}🎯 Configuring Git for product-focused development...${NC}"
     
     # Verificar se o script existe localmente
     if [[ -f "$REPO_DIR/install_product_focused_git.sh" ]]; then
@@ -339,8 +339,8 @@ install_product_focused_git() {
     elif [[ -f "./install_product_focused_git.sh" ]]; then
         bash "./install_product_focused_git.sh"
     else
-        # Fallback: download directly do repositório
-        echo -e "${BLUE}Baixando script de configuração...${NC}"
+        # Fallback: download directly from repository
+        echo -e "${BLUE}Downloading configuration script...${NC}"
         curl -sSL "$REPO_URL/raw/main/install_product_focused_git.sh" | bash
     fi
 }

@@ -1,57 +1,57 @@
 # 🤖 AI Development Tools Setup Guide
 
-Este guia detalha a instalação e configuração das ferramentas de desenvolvimento assistido por IA para o projeto os-postinstall-scripts.
+This guide details the installation and configuration of AI-assisted development tools for the os-postinstall-scripts project.
 
-## 📋 Índice
+## 📋 Table of Contents
 
-- [Visão Geral](#visão-geral)
+- [Overview](#overview)
 - [MCPs (Model Context Protocol)](#mcps-model-context-protocol)
 - [BMAD Method](#bmad-method)
-- [Instalação](#instalação)
-- [Verificação](#verificação)
-- [Uso](#uso)
+- [Installation](#installation)
+- [Verification](#verification)
+- [Usage](#usage)
 - [Troubleshooting](#troubleshooting)
 
-## 🎯 Visão Geral
+## 🎯 Overview
 
-O sistema integra duas tecnologias principais:
+The system integrates two main technologies:
 
-1. **MCPs (Model Context Protocol)**: Ferramentas que estendem as capacidades do Claude
-2. **BMAD Method**: Sistema de gerenciamento de projetos otimizado para IA
+1. **MCPs (Model Context Protocol)**: Tools that extend Claude's capabilities
+2. **BMAD Method**: AI-optimized project management system
 
 ## 🔌 MCPs (Model Context Protocol)
 
-### O que são MCPs?
+### What are MCPs?
 
-MCPs são servidores locais que fornecem funcionalidades extras ao Claude, permitindo:
-- Acesso a documentação sempre atualizada
-- Busca semântica em codebases
-- Raciocínio estruturado
-- Requisições web inteligentes
+MCPs are local servers that provide extra functionality to Claude, enabling:
+- Access to always-updated documentation
+- Semantic search in codebases
+- Structured reasoning
+- Intelligent web requests
 
-### MCPs Incluídos
+### Included MCPs
 
-#### 1. **context7** - Documentação Sempre Atualizada
-- Acessa documentação oficial de qualquer biblioteca
-- Evita código baseado em dados desatualizados
-- Uso: Adicione `use context7` ao seu prompt
+#### 1. **context7** - Always-Updated Documentation
+- Accesses official documentation for any library
+- Avoids code based on outdated data
+- Usage: Add `use context7` to your prompt
 
-#### 2. **fetch** - Requisições Web Inteligentes
-- Busca e analisa conteúdo web
-- Converte HTML em markdown estruturado
-- Processa informações de sites
+#### 2. **fetch** - Intelligent Web Requests
+- Searches and analyzes web content
+- Converts HTML to structured markdown
+- Processes site information
 
-#### 3. **sequential-thinking** - Raciocínio Estruturado
-- Decomposição de problemas complexos
-- Auto-correção durante o raciocínio
-- Revisão de decisões anteriores
+#### 3. **sequential-thinking** - Structured Reasoning
+- Decomposition of complex problems
+- Self-correction during reasoning
+- Review of previous decisions
 
-#### 4. **serena** - Busca Semântica em Código
-- Economia massiva de tokens
-- Compreensão contextual do código
-- Navegação eficiente em projetos grandes
+#### 4. **serena** - Semantic Code Search
+- Massive token savings
+- Contextual code understanding
+- Efficient navigation in large projects
 
-### Configuração do claude.json
+### claude.json Configuration
 
 ```json
 {
@@ -70,7 +70,7 @@ MCPs são servidores locais que fornecem funcionalidades extras ao Claude, permi
     },
     "serena": {
       "command": "/Users/[seu-usuario]/.local/bin/uv",
-      "args": ["run", "--directory", "/Users/[seu-usuario]/Documents/GitHub/serena", "serena-mcp-server"]
+      "args": ["run", "--directory", "/Users/[your-username]/Documents/GitHub/serena", "serena-mcp-server"]
     }
   }
 }
@@ -78,121 +78,122 @@ MCPs são servidores locais que fornecem funcionalidades extras ao Claude, permi
 
 ## 📚 BMAD Method
 
-### O que é BMAD?
+### What is BMAD?
 
-BMAD Method v4.31.0 é um sistema de gerenciamento de projetos que:
-- Estrutura projetos para colaboração efetiva com IA
-- Define padrões de documentação (PRD, STORIES, STATUS)
-- Fornece agentes especializados para diferentes tarefas
+BMAD Method v4.31.0 is a project management system that:
+- Structures projects for effective AI collaboration
+- Defines documentation standards (PRD, STORIES, STATUS)
+- Provides specialized agents for different tasks
 
-### Estrutura BMAD
+### BMAD Structure
 
 ```
-projeto/
-├── .github/
-│   └── AI_TOOLKIT/
-│       ├── agents/          # Agentes especializados
-│       ├── commands/        # Comandos personalizados
-│       └── config/          # Configurações
+project/
+├── .bmad-core/              # Native BMAD (git ignored)
+│   ├── agents/              # Specialized agents
+│   ├── templates/           # Reusable templates
+│   ├── workflows/           # Defined workflows
+│   └── config/              # Configurations
 ├── PRD.md                   # Product Requirements Document
 ├── STORIES.md               # User Stories
-└── STATUS.md                # Status do projeto
+├── STATUS.md                # Project status
+└── CLAUDE.md                # Context guide for AI
 ```
 
-### Agentes Disponíveis
+### Available Agents
 
-- **dev.md**: Desenvolvimento geral
-- **test.md**: Criação de testes
-- **doc.md**: Documentação
-- **review.md**: Revisão de código
+- **dev.md**: General development
+- **test.md**: Test creation
+- **doc.md**: Documentation
+- **review.md**: Code review
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### Método 1: Via Setup Principal
+### Method 1: Via Main Setup
 
 ```bash
 ./setup.sh
-# Escolha opção 9: 🤖 Instalar ferramentas de IA (MCPs + BMAD)
+# Choose option 9: 🤖 Install AI tools (MCPs + BMAD)
 ```
 
-### Método 2: Instalação Direta
+### Method 2: Direct Installation
 
 ```bash
 ./install_ai_tools.sh
 ```
 
-### Método 3: One-liner
+### Method 3: One-liner
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/install_ai_tools.sh | bash
 ```
 
-## ✅ Verificação
+## ✅ Verification
 
-### Verificar Instalação Completa
+### Verify Complete Installation
 
 ```bash
 ./check_ai_tools.sh
 ```
 
-### Verificação Manual
+### Manual Verification
 
-1. **MCPs**: Verifique se aparecem ferramentas com prefixo `mcp__` no Claude
-2. **BMAD**: Verifique se existe `.github/AI_TOOLKIT/` em novos projetos
-3. **UV**: Execute `uv --version`
+1. **MCPs**: Check if tools with `mcp__` prefix appear in Claude
+2. **BMAD**: Check if `.github/AI_TOOLKIT/` exists in new projects
+3. **UV**: Run `uv --version`
 
-## 💡 Uso
+## 💡 Usage
 
-### Usando MCPs no Claude
+### Using MCPs in Claude
 
-1. **Context7 para documentação**:
+1. **Context7 for documentation**:
    ```
-   Como usar React hooks? use context7
-   ```
-
-2. **Sequential Thinking para problemas complexos**:
-   ```
-   use sequential-thinking para resolver este algoritmo complexo
+   How to use React hooks? use context7
    ```
 
-3. **Serena para buscar código**:
+2. **Sequential Thinking for complex problems**:
    ```
-   use serena para encontrar implementações de autenticação
+   use sequential-thinking to solve this complex algorithm
    ```
 
-### Usando BMAD em Projetos
+3. **Serena for code search**:
+   ```
+   use serena to find authentication implementations
+   ```
 
-1. **Inicializar projeto**:
+### Using BMAD in Projects
+
+1. **Initialize project**:
    ```bash
    bmad init
    ```
 
-2. **Usar agentes**:
+2. **Use agents**:
    ```
-   @agent:dev implemente a feature X
+   @agent:dev implement feature X
    ```
 
 ## 🔧 Troubleshooting
 
-### MCPs não aparecem no Claude
+### MCPs don't appear in Claude
 
-1. Reinicie o Claude completamente
-2. Verifique o arquivo claude.json
-3. Execute `./check_ai_tools.sh` para diagnóstico
+1. Restart Claude completely
+2. Check the claude.json file
+3. Run `./check_ai_tools.sh` for diagnostics
 
-### BMAD não funciona
+### BMAD doesn't work
 
-1. Verifique se npm está instalado
-2. Confirme a versão: `bmad --version`
-3. Reinstale: `npm install -g bmad-method@latest`
+1. Check if npm is installed
+2. Confirm version: `bmad --version`
+3. Reinstall: `npm install -g bmad-method@latest`
 
-### Serena não conecta
+### Serena doesn't connect
 
-1. Verifique se UV está instalado: `uv --version`
-2. Confirme o clone do repositório serena
-3. Teste manualmente: `uv run --directory ~/Documents/GitHub/serena serena-mcp-server`
+1. Check if UV is installed: `uv --version`
+2. Confirm the serena repository clone
+3. Test manually: `uv run --directory ~/Documents/GitHub/serena serena-mcp-server`
 
-## 📍 Localização dos Arquivos
+## 📍 File Locations
 
 - **claude.json**: 
   - macOS: `~/Library/Application Support/Claude/claude.json`
@@ -200,15 +201,15 @@ curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/m
   - Windows: `%APPDATA%\Claude\claude.json`
 
 - **Serena**: `~/Documents/GitHub/serena`
-- **BMAD**: Instalado globalmente via npm
+- **BMAD**: Globally installed via npm
 
-## 🤝 Suporte
+## 🤝 Support
 
 - Issues: [GitHub Issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-- Discussões: [GitHub Discussions](https://github.com/BragatteMAS/os-postinstall-scripts/discussions)
+- Discussions: [GitHub Discussions](https://github.com/BragatteMAS/os-postinstall-scripts/discussions)
 
 ---
 
-> 💡 Esta documentação é parte do projeto os-postinstall-scripts.
+> 💡 This documentation is part of the os-postinstall-scripts project.
 >
 > **Built with ❤️ by Bragatte, M.A.S**
