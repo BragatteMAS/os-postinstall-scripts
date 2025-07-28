@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.4] - 2025-07-28
+
+### Added
+- 📚 **Enhanced documentation structure**
+  - Integrated CLAUDE.md v2.3.0 with extended philosophy and patterns
+  - Added CLAUDE-EXTENDED.md for detailed implementation guidance
+  - Created comprehensive Context Engineering documentation
+
+### Changed
+- 🔧 **Updated .zshrc configuration**
+  - Synchronized latest shell configurations
+  - Enhanced environment setup for development
+
+### Fixed
+- 📋 **Documentation consistency**
+  - Aligned all project documentation with global standards
+  - Fixed version synchronization between local and global configs
+
 ### Planned for v3.2.0 (August 2025)
 - 🤖 **Full BMAD agents integration**
   - SM agent for structured story creation
