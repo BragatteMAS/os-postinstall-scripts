@@ -15,7 +15,7 @@
 | **PRD.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **STORIES.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **STATUS.md** | ✅ Active | 1.1.0 | 2025-01-27 | 🟢 | Moved to root, updated |
-| **CLAUDE.md** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Updated to v2.3.0 |
+| **CLAUDE.md** | ✅ Active | 2.3.1 | 2025-07-01 | 🟢 | Updated to v2.3.1 with new MCPs + claude-code IDE |
 | **CLAUDE-EXTENDED.md** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Reference document |
 | **TESTING.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **ARCHITECTURE.md** | ❌ Missing | - | - | 🟡 | Optional but recommended |
@@ -89,7 +89,7 @@
 
 ### Previous Sprints ✅ COMPLETED
 1. **Documentation Sprint** ✅
-2. **Epic 0: Critical Fixes** ✅ 
+2. **Epic 0: Critical Fixes** ✅
 3. **v2.4.0 Profile System** ✅ (To be deprecated in v3.2.0)
 
 ## 📊 Key Metrics

@@ -99,13 +99,17 @@ Install all Rust tools: `./scripts/install/rust-tools.sh`
 <details>
 <summary><b>🤖 AI Development Tools</b></summary>
 
-- **MCPs (Model Context Protocol)**:
-  - context7 - Always up-to-date documentation
-  - fetch - Intelligent web requests
-  - sequential-thinking - Structured reasoning
-  - serena - Semantic code search
+- **MCPs (Model Context Protocol)** - 7 essential tools:
+      - context7 - Always up-to-date documentation
+    - fetch - Intelligent web requests
+    - sequential-thinking - Structured reasoning
+    - serena - Semantic code search
+    - fastapi - FastAPI documentation and examples
+    - A2A - Google A2A (AI to AI) tools
+    - system-prompts-and-models-of-ai - Optimized prompts library
 - **BMAD Method v4.31.0** - Complete project management
   - Easy installation with `./scripts/install/bmad.sh`
+  - Supports Claude Code and Cursor IDEs
   - Easy updates with `./tools/update/bmad.sh`
   - Automatic backup before updates
   - Version checking and comparison

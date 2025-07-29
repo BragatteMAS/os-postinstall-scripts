@@ -1,8 +1,8 @@
 # Claude.md - Guia Global para Interação com Claude.code
 
-> **Versão:** 2.3.0 | **Atualizado:** 2025-01-23 | **Mantenedor:** Bragatte  
-> **Método Base:** [BMAD Method](https://github.com/bmadcode/BMAD-METHOD) (recomendado, mas adaptável)  
-> **Propósito:** Maximizar qualidade e eficiência na colaboração humano-IA através de práticas estruturadas  
+> **Versão:** 2.3.1 | **Atualizado:** 2025-07-28 | **Mantenedor:** Bragatte
+> **Método Base:** [BMAD Method](https://github.com/bmadcode/BMAD-METHOD) (recomendado, mas adaptável)
+> **Propósito:** Maximizar qualidade e eficiência na colaboração humano-IA através de práticas estruturadas
 > **📚 Detalhes:** Ver [CLAUDE-EXTENDED.md](./CLAUDE-EXTENDED.md) | **📋 Histórico:** Ver [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -12,13 +12,16 @@
 ### Setup Inicial (faça uma vez):
 ```bash
 # Instalar BMAD Method
-pnpm dlx bmad-method@latest install --full --ide cursor
+pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor
 
-# Ativar os 4 MCPs essenciais no seu claude.json:
+# Ativar os 7 MCPs essenciais no seu claude.json:
 # - context7: Docs sempre atualizados
-# - fetch: Requisições web inteligentes  
+# - fetch: Requisições web inteligentes
 # - sequential-thinking: Raciocínio estruturado
 # - serena: Busca semântica eficiente
+# - fastapi: Documentação FastAPI sempre atualizada
+# - A2A: Google A2A (AI to AI) tools
+# - system-prompts-and-models-of-ai: Sistema de prompts e modelos
 ```
 
 ### Fluxo de Trabalho:
@@ -54,34 +57,34 @@ graph TD
     B -->|Sim| D{PRD.md existe?}
     D -->|Não| E[Criar PRD.md]
     D -->|Sim| F[Revisar PRD com template]
-    
+
     C --> E
     E --> G[Definir objetivos e contexto]
     F --> G
-    
+
     G --> H[STORIES.md: Perguntas focais]
     H --> I{Precisa de testes?}
     H --> J{É análise de dados?}
     H --> K{Tem frontend?}
-    
+
     I -->|Sim| L[Ativar Testing Trophy]
     I -->|Não| M[Pular seção de testes]
-    
+
     J -->|Sim| N[Ativar padrões R/Python]
     J -->|Não| O[Focar em outras linguagens]
-    
+
     K -->|Sim| P[Ativar React/Next patterns]
     K -->|Não| Q[Backend/API focus]
-    
+
     L --> R[CLAUDE.md filtrado]
     M --> R
     N --> R
     O --> R
     P --> R
     Q --> R
-    
+
     R --> S[Desenvolvimento com contexto apropriado]
-    
+
     style A fill:#e1f5fe
     style R fill:#c8e6c9
     style S fill:#fff9c4
@@ -116,7 +119,7 @@ graph TD
 
 ## 🎨 Filosofia de Simplicidade e Elegância
 
-> "Simplicidade é a sofisticação suprema" - *Leonardo da Vinci*  
+> "Simplicidade é a sofisticação suprema" - *Leonardo da Vinci*
 > "A perfeição é atingida não quando não há mais nada para adicionar, mas quando não há mais nada para remover" - *Antoine de Saint-Exupéry*
 
 ### Princípios de Design Simples:
@@ -157,16 +160,16 @@ Por padrão, recomendamos o **BMAD Method** para estruturação de projetos:
 
 ```bash
 # Instalação rápida do BMAD (usando pnpm quando disponível)
-pnpm dlx bmad-method@latest install --full --ide cursor
+pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor
 # ou com npx se pnpm não estiver disponível
-npx bmad-method@latest install --full --ide cursor
+npx bmad-method@latest install --full --ide claude-code --ide cursor
 ```
 
 **Usando outra metodologia?** Sem problemas! Adapte as diretrizes para Scrum, Kanban, XP ou sua metodologia preferida.
 
 ### 🔌 MCP (Model Context Protocol) - OBRIGATÓRIO
 
-#### ⚠️ Os 4 MCPs devem estar SEMPRE ativos:
+#### ⚠️ Os 7 MCPs devem estar SEMPRE ativos:
 
 1. **Context7** - Documentação sempre atualizada
    - ✅ Elimina código baseado em dados de treinamento antigos
@@ -185,6 +188,21 @@ npx bmad-method@latest install --full --ide cursor
    - ✅ Economia massiva de tokens em buscas
    - ✅ Compreensão contextual do código
    - ✅ Navegação eficiente por projetos grandes
+
+5. **fastapi** - Documentação FastAPI sempre atualizada
+   - ✅ Acesso à documentação oficial do FastAPI
+   - ✅ Exemplos de código atualizados
+   - ✅ Busca semântica na documentação
+
+6. **A2A** - Google A2A (AI to AI) tools
+   - ✅ Ferramentas de IA para IA
+   - ✅ Integração com ecossistema Google AI
+   - ✅ Recursos avançados de colaboração
+
+7. **system-prompts-and-models-of-ai** - Sistema de prompts e modelos
+   - ✅ Biblioteca de prompts otimizados
+   - ✅ Modelos de IA documentados
+   - ✅ Melhores práticas para prompts
 
 #### Configuração no claude.json:
 ```json
@@ -205,6 +223,18 @@ npx bmad-method@latest install --full --ide cursor
     "serena": {
       "command": "~/.local/bin/uv",
       "args": ["run", "--directory", "~/Documents/GitHub/serena", "serena-mcp-server"]
+    },
+    "fastapi": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fastapi"]
+    },
+    "A2A": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-a2a"]
+    },
+    "system-prompts-and-models-of-ai": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-system-prompts-and-models-of-ai"]
     }
   }
 }
@@ -214,7 +244,7 @@ npx bmad-method@latest install --full --ide cursor
 
 #### 📍 Configuration file location:
 - **macOS**: `~/Library/Application Support/Claude/claude.json`
-- **Windows**: `%APPDATA%\Claude\claude.json`  
+- **Windows**: `%APPDATA%\Claude\claude.json`
 - **Linux**: `~/.config/Claude/claude.json`
 
 💡 **Note**: The MCP configuration file is `claude.json`.
@@ -247,7 +277,7 @@ CLAUDE.md is not applied monolithically. Based on responses to focal questions i
 ```markdown
 ## STORIES.md (example)
 **Q: Project type?** A: Epidemiological data analysis
-**Q: Need tests?** A: Only for critical statistical functions  
+**Q: Need tests?** A: Only for critical statistical functions
 **Q: Interface?** A: Simple Shiny dashboard
 **Q: Deploy?** A: Local/RStudio Server
 
@@ -272,7 +302,7 @@ graph LR
     D --> E[Alignment questions]
     E --> F[Adapt STORIES.md]
     F --> G[Contextualized CLAUDE.md]
-    
+
     style G fill:#c8e6c9
 ```
 
@@ -303,7 +333,7 @@ Claude: "Checking STATUS.md... I found 2 documents that need attention:
 - TESTING.md is 15 days outdated 🔴
 - PRD.md exists and defines genomic analysis project
 
-Based on the PRD, I see this is a bioinformatics project. 
+Based on the PRD, I see this is a bioinformatics project.
 I suggest reviewing STORIES.md to confirm which CLAUDE.md modules to apply.
 Where shall we start?"
 ```
@@ -319,7 +349,7 @@ Where shall we start?"
    - Objectives, metrics, assumptions, fundamental questions
    - Acceptance criteria and complete context
    - **In bioinformatics**: Include expected pipeline, data formats
-   
+
 2. **STORIES.md**
    - User journey as central guide
    - **Focal questions on user value delivery**
@@ -511,10 +541,10 @@ PRPs are evolved specs for Context Engineering:
 - **Java:** 21 LTS (when necessary for specific tools)
 
 ### Legacy Code Red Flags:
-🚩 Libraries without updates for 2+ years  
-🚩 Nested callbacks (use async/await)  
-🚩 jQuery in new projects  
-🚩 Python 2.x syntax  
+🚩 Libraries without updates for 2+ years
+🚩 Nested callbacks (use async/await)
+🚩 jQuery in new projects
+🚩 Python 2.x syntax
 🚩 R without tidyverse in modern analyses
 🚩 React class components in new code
 🚩 Pure JavaScript when TypeScript is viable
@@ -599,16 +629,16 @@ When adding CLAUDE.md to a structured project:
 5. **ADR for integration decisions**
    ```markdown
    # ADR-XXX: CLAUDE.md Integration in Legacy Project
-   
+
    ## Status
    Accepted
-   
+
    ## Context
    Existing project with established conventions...
-   
+
    ## Decision
    Apply CLAUDE.md with the following adaptations...
-   
+
    ## Consequences
    - Positive: Gradual standardization, better documentation
    - Negative: Transition period with two standards

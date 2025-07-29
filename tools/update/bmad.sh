@@ -54,9 +54,9 @@ echo -e "${GREEN}✅ Backup created: $BACKUP_DIR${NC}"
 echo -e "${BLUE}🚀 Updating BMAD Method...${NC}"
 echo -e "${CYAN}Note: 'update' command is deprecated. Using 'install' which auto-detects updates.${NC}"
 if command -v pnpm &> /dev/null; then
-    pnpm dlx bmad-method@latest install --full --ide cursor --ide claude-code
+    pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor
 elif command -v npm &> /dev/null; then
-    npx bmad-method@latest install --full --ide cursor --ide claude-code
+    npx bmad-method@latest install --full --ide claude-code --ide cursor
 else
     echo -e "${RED}✗ No package manager found${NC}"
     rm -rf "$BACKUP_DIR"

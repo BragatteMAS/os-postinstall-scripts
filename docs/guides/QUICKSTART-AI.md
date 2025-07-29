@@ -24,7 +24,7 @@ cd os-postinstall-scripts
 cd /caminho/do/seu/projeto
 
 # Instale BMAD
-npx bmad-method@latest install --full --ide cursor
+npx bmad-method@latest install --full --ide claude-code --ide cursor
 
 # Pronto! Digite / no Claude para ver comandos
 ```
@@ -72,7 +72,7 @@ mkdir meu-projeto && cd meu-projeto
 git init
 
 # 3. Instalar BMAD
-npx bmad-method@latest install --full
+npx bmad-method@latest install --full --ide claude-code --ide cursor
 
 # 4. Abrir no Claude e começar!
 # Os MCPs já estão ativos globalmente
