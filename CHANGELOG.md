@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.5] - 2025-07-01
+
+### Added
+- 🔌 **Updated MCP configuration with new global MCPs**
+  - Added FastAPI documentation MCP for up-to-date API docs
+  - Added Google A2A (AI to AI) tools MCP
+  - Added system-prompts-and-models-of-ai MCP for optimized prompts
+  - Updated CLAUDE.md to v2.3.1 with 7 essential MCPs
+
+### Changed
+- 📚 **CLAUDE.md version bump to 2.3.1**
+  - Updated from 4 MCPs to 7 MCPs configuration
+  - Enhanced MCP descriptions and usage examples
+  - Improved configuration examples in claude.json
+- 🔧 **BMAD Method IDE configuration updated**
+  - Added claude-code as primary IDE in all installation commands
+  - Updated all scripts to use `--ide claude-code --ide cursor`
+  - Improved IDE support for Claude Code users
+
 ## [3.1.4] - 2025-07-28
 
 ### Added
@@ -79,13 +98,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Current state analysis and technical debt assessment
   - Migration strategy for v3.2.0, v3.3.0, and v4.0.0
   - Risk assessment and success metrics
-  
+
 - 📝 **STORIES.md alignment with PRD promises**
   - 7 new user stories for intelligent recommendations
   - Platform parity stories (Mac/Linux 45%, Windows 10%)
   - Manual testing philosophy stories
   - BMAD agent integration stories
-  
+
 - 🔍 **PO validation deliverables**
   - GAP_REMEDIATION_PLAN.md - comprehensive gap analysis
   - STORIES_UPDATE_TASKS.md - PRD sharded into 12 tasks
@@ -96,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed all automated testing references
   - Added manual test execution guides
   - Emphasized user control over test execution
-  
+
 - 🔄 **Profile system deprecation**
   - Shifted from 5 rigid profiles to intelligent recommendations
   - PRD/STORIES parsing for technology detection
@@ -143,7 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configuration files centralized in `configs/`
   - Documentation reorganized in `docs/`
   - Created clear separation of concerns
-  
+
 ### Added
 - 📁 **New directory structure**:
   - `scripts/install/` - All installation scripts
@@ -192,12 +211,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - docs/ai-tools-setup.md fully translated to English
   - All inline documentation in scripts translated
   - README.md and other core docs already in English
-  
+
 - 🔧 **Shell Scripts**
   - setup.sh: All user messages and comments translated
   - install_rust_tools.sh: All user messages and comments translated
   - Other scripts verified/updated as needed
-  
+
 - 💬 **Code Comments**
   - zshrc: All comments translated to English
   - All .sh files: Comments translated to English
@@ -347,7 +366,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repository reorganized for user focus
 - Moved docs to appropriate directories
 
-### [2.3.1-alpha.2] - 2025-07-23  
+### [2.3.1-alpha.2] - 2025-07-23
 - Completed migration of ALL APT scripts
 - Added safe wrapper functions
 

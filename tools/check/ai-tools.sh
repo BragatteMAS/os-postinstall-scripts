@@ -70,17 +70,17 @@ detect_claude_config() {
 #######################################
 check_mcps() {
     echo -e "\n${PURPLE}=== MCP Configuration Status ===${NC}\n"
-    
+
     if [[ ! -f "$CLAUDE_CONFIG_PATH" ]]; then
         echo -e "${RED}${CROSS} Claude config not found at: $CLAUDE_CONFIG_PATH${NC}"
         echo -e "${YELLOW}${INFO} Run: ./install_ai_tools.sh to configure MCPs${NC}"
         return 1
     fi
-    
+
     # Check for required MCPs
-    local mcps=("context7" "fetch" "sequential-thinking" "serena")
+    local mcps=("context7" "fetch" "sequential-thinking" "serena" "fastapi" "A2A" "system-prompts-and-models-of-ai")
     local all_found=true
-    
+
     for mcp in "${mcps[@]}"; do
         if grep -q "\"$mcp\"" "$CLAUDE_CONFIG_PATH" 2>/dev/null; then
             echo -e "${GREEN}${CHECK} $mcp${NC} - Configured"
@@ -89,7 +89,7 @@ check_mcps() {
             all_found=false
         fi
     done
-    
+
     if $all_found; then
         MCPS_CONFIGURED=true
         echo -e "\n${GREEN}${CHECK} All MCPs are configured!${NC}"
@@ -105,12 +105,12 @@ check_mcps() {
 #######################################
 check_bmad() {
     echo -e "\n${PURPLE}=== BMAD Method Status ===${NC}\n"
-    
+
     # Check current project
     if [[ -d ".claude" ]]; then
         echo -e "${GREEN}${CHECK} BMAD installed in current directory${NC}"
         BMAD_FOUND=true
-        
+
         # List available commands
         if [[ -d ".claude/commands" ]]; then
             echo -e "\n${BLUE}Available slash commands:${NC}"
@@ -120,7 +120,7 @@ check_bmad() {
                 fi
             done
         fi
-        
+
         # Check for project docs
         echo -e "\n${BLUE}Project documentation:${NC}"
         local docs=("CLAUDE.md" "PRD.md" "STORIES.md" "STATUS.md")
@@ -135,7 +135,7 @@ check_bmad() {
         echo -e "${RED}${CROSS} BMAD not installed in current directory${NC}"
         echo -e "${YELLOW}${INFO} Run: bmad-method install --full${NC}"
     fi
-    
+
     # Check global BMAD installation
     if command -v bmad-method &> /dev/null; then
         echo -e "\n${GREEN}${CHECK} BMAD CLI available globally${NC}"
@@ -150,7 +150,7 @@ check_bmad() {
 #######################################
 check_dependencies() {
     echo -e "\n${PURPLE}=== Dependencies Status ===${NC}\n"
-    
+
     local deps=(
         "node:Node.js"
         "npm:NPM"
@@ -159,7 +159,7 @@ check_dependencies() {
         "python3:Python 3"
         "uv:UV package manager"
     )
-    
+
     for dep in "${deps[@]}"; do
         IFS=':' read -r cmd name <<< "$dep"
         if command -v "$cmd" &> /dev/null; then
@@ -176,19 +176,19 @@ check_dependencies() {
 #######################################
 show_quick_setup() {
     echo -e "\n${PURPLE}=== Quick Setup Commands ===${NC}\n"
-    
+
     if ! $MCPS_CONFIGURED; then
         echo -e "${BLUE}1. Install MCPs (one time only):${NC}"
         echo -e "   ${YELLOW}./install_ai_tools.sh${NC}"
         echo -e "   Then restart Claude Desktop\n"
     fi
-    
+
     if ! $BMAD_FOUND; then
         echo -e "${BLUE}2. Install BMAD in this project:${NC}"
         echo -e "   ${YELLOW}npx bmad-method@latest install --full --ide cursor${NC}"
         echo -e "   Or with pnpm: ${YELLOW}pnpm dlx bmad-method@latest install --full${NC}\n"
     fi
-    
+
     if $MCPS_CONFIGURED && $BMAD_FOUND; then
         echo -e "${GREEN}${CHECK} Everything is configured! You're ready to go!${NC}\n"
         echo -e "${BLUE}Tips:${NC}"
@@ -204,27 +204,27 @@ show_quick_setup() {
 main() {
     show_banner
     detect_claude_config
-    
+
     # Run all checks
     check_dependencies
     check_mcps
     check_bmad
-    
+
     # Show summary and next steps
     echo -e "\n${PURPLE}=== Summary ===${NC}\n"
-    
+
     if $MCPS_CONFIGURED; then
         echo -e "${GREEN}${CHECK} MCPs: Configured${NC}"
     else
         echo -e "${RED}${CROSS} MCPs: Not configured${NC}"
     fi
-    
+
     if $BMAD_FOUND; then
         echo -e "${GREEN}${CHECK} BMAD: Installed in project${NC}"
     else
         echo -e "${YELLOW}${WARNING} BMAD: Not in current project${NC}"
     fi
-    
+
     show_quick_setup
 }
 

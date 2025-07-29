@@ -40,9 +40,9 @@ fi
 echo -e "${BLUE}📦 Installing BMAD Method...${NC}"
 echo -e "${CYAN}Default configuration: Claude-code + Cursor${NC}"
 if command -v pnpm &> /dev/null; then
-    pnpm dlx bmad-method@latest install --full --ide cursor --ide claude-code
+    pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor
 elif command -v npm &> /dev/null; then
-    npx bmad-method@latest install --full --ide cursor --ide claude-code
+    npx bmad-method@latest install --full --ide claude-code --ide cursor
 else
     echo -e "${RED}✗ No package manager found. Please install pnpm or npm.${NC}"
     exit 1

@@ -7,7 +7,7 @@
 # Author: Bragatte, M.A.S
 # License: MIT
 # Version: 1.0.0
-# 
+#
 # This script automates the installation and configuration of:
 # - 4 Essential MCPs (context7, fetch, sequential-thinking, serena)
 # - BMAD Method for project management
@@ -52,7 +52,7 @@ UV_COMMAND=""
 #######################################
 detect_claude_config_path() {
     log_info "Detecting operating system and Claude configuration path..."
-    
+
     # Get path from configuration based on OS
     case "$OSTYPE" in
         darwin*)
@@ -69,7 +69,7 @@ detect_claude_config_path() {
             return 1
             ;;
     esac
-    
+
     # Create directory if it doesn't exist
     local config_dir
     config_dir=$(dirname "$CLAUDE_CONFIG_PATH")
@@ -77,7 +77,7 @@ detect_claude_config_path() {
         log_info "Creating Claude configuration directory: $config_dir"
         mkdir -p "$config_dir"
     fi
-    
+
     log_success "Claude config path: $CLAUDE_CONFIG_PATH"
 }
 
@@ -86,35 +86,35 @@ detect_claude_config_path() {
 #######################################
 check_dependencies() {
     log_info "Checking required dependencies..."
-    
+
     local missing_deps=()
-    
+
     # Check for Node.js/npm
     if ! command -v npm &> /dev/null; then
         missing_deps+=("npm (Node.js)")
     fi
-    
+
     # Check for Python
     if ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
         missing_deps+=("python3")
     fi
-    
+
     # Check for git
     if ! command -v git &> /dev/null; then
         missing_deps+=("git")
     fi
-    
+
     # Check for jq (for JSON manipulation)
     if ! command -v jq &> /dev/null; then
         missing_deps+=("jq")
     fi
-    
+
     if [[ ${#missing_deps[@]} -gt 0 ]]; then
         log_error "Missing required dependencies: ${missing_deps[*]}"
         log_info "Please install them first using your package manager or the main setup.sh script"
         return 1
     fi
-    
+
     log_success "All required dependencies are installed"
 }
 
@@ -123,21 +123,21 @@ check_dependencies() {
 #######################################
 setup_uv() {
     log_info "Setting up UV for Python package management..."
-    
+
     # Check if UV is already installed
     if command -v uv &> /dev/null; then
         UV_COMMAND="uv"
         log_success "UV is already installed: $(which uv)"
         return 0
     fi
-    
+
     # Check common UV installation paths
     local uv_paths=(
         "$HOME/.local/bin/uv"
         "$HOME/.cargo/bin/uv"
         "/usr/local/bin/uv"
     )
-    
+
     for path in "${uv_paths[@]}"; do
         if [[ -x "$path" ]]; then
             UV_COMMAND="$path"
@@ -145,7 +145,7 @@ setup_uv() {
             return 0
         fi
     done
-    
+
     # Install UV if not found
     log_info "UV not found. Installing UV..."
     if command -v curl &> /dev/null; then
@@ -156,11 +156,11 @@ setup_uv() {
         log_error "Neither curl nor wget found. Cannot install UV."
         return 1
     fi
-    
+
     # Add UV to PATH for current session
     export PATH="$HOME/.local/bin:$PATH"
     UV_COMMAND="$HOME/.local/bin/uv"
-    
+
     log_success "UV installed successfully"
 }
 
@@ -169,10 +169,10 @@ setup_uv() {
 #######################################
 setup_serena_repo() {
     log_info "Setting up serena repository..."
-    
+
     # Get serena repo path from configuration
     SERENA_REPO_PATH=$(get_config "features.mcps.serena.repo" "$HOME/Documents/GitHub/serena")
-    
+
     if [[ -d "$SERENA_REPO_PATH" ]]; then
         log_info "Serena repository already exists. Updating..."
         (
@@ -187,7 +187,7 @@ setup_serena_repo() {
             return 1
         }
     fi
-    
+
     log_success "Serena repository is ready at: $SERENA_REPO_PATH"
 }
 
@@ -207,22 +207,22 @@ backup_claude_config() {
 #######################################
 configure_mcps() {
     log_info "Configuring MCPs in Claude..."
-    
+
     # Create base configuration if file doesn't exist
     if [[ ! -f "$CLAUDE_CONFIG_PATH" ]]; then
         log_info "Creating new Claude configuration file..."
         echo '{"mcpServers": {}}' > "$CLAUDE_CONFIG_PATH"
     fi
-    
+
     # Create temporary file for the new configuration
     local temp_config
     temp_config=$(mktemp)
-    
+
     # Build the MCP configuration dynamically based on settings
     echo '{"mcpServers": {' > "$temp_config"
-    
+
     local first=true
-    
+
     # Add context7 if enabled
     if [[ "$(get_config 'features.mcps.context7.enabled' 'true')" == "true" ]]; then
         [[ "$first" != true ]] && echo ',' >> "$temp_config"
@@ -234,7 +234,7 @@ configure_mcps() {
 EOF
         first=false
     fi
-    
+
     # Add fetch if enabled
     if [[ "$(get_config 'features.mcps.fetch.enabled' 'true')" == "true" ]]; then
         [[ "$first" != true ]] && echo ',' >> "$temp_config"
@@ -246,7 +246,7 @@ EOF
 EOF
         first=false
     fi
-    
+
     # Add sequential-thinking if enabled
     if [[ "$(get_config 'features.mcps.sequential_thinking.enabled' 'true')" == "true" ]]; then
         [[ "$first" != true ]] && echo ',' >> "$temp_config"
@@ -258,7 +258,7 @@ EOF
 EOF
         first=false
     fi
-    
+
     # Add serena if enabled
     if [[ "$(get_config 'features.mcps.serena.enabled' 'true')" == "true" ]]; then
         [[ "$first" != true ]] && echo ',' >> "$temp_config"
@@ -271,9 +271,45 @@ EOF
 EOF
         first=false
     fi
-    
+
+    # Add fastapi if enabled
+    if [[ "$(get_config 'features.mcps.fastapi.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
+    "fastapi": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fastapi"]
+    }
+EOF
+        first=false
+    fi
+
+    # Add A2A if enabled
+    if [[ "$(get_config 'features.mcps.a2a.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
+    "A2A": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-a2a"]
+    }
+EOF
+        first=false
+    fi
+
+    # Add system-prompts-and-models-of-ai if enabled
+    if [[ "$(get_config 'features.mcps.system_prompts.enabled' 'true')" == "true" ]]; then
+        [[ "$first" != true ]] && echo ',' >> "$temp_config"
+        cat >> "$temp_config" << EOF
+    "system-prompts-and-models-of-ai": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-system-prompts-and-models-of-ai"]
+    }
+EOF
+        first=false
+    fi
+
     echo '}}' >> "$temp_config"
-    
+
     # Merge with existing configuration
     if [[ -f "$CLAUDE_CONFIG_PATH" ]] && [[ -s "$CLAUDE_CONFIG_PATH" ]]; then
         # Merge configurations, preserving existing non-MCP settings
@@ -282,9 +318,9 @@ EOF
     else
         mv "$temp_config" "$CLAUDE_CONFIG_PATH"
     fi
-    
+
     rm -f "$temp_config"
-    
+
     log_success "MCPs configured successfully in Claude"
 }
 
@@ -297,22 +333,22 @@ install_bmad_method() {
         log_info "BMAD Method is disabled in configuration. Skipping."
         return 0
     fi
-    
+
     log_info "Installing BMAD Method..."
-    
+
     # Check if pnpm is available, otherwise use npx
     local package_runner="npx"
     if command -v pnpm &> /dev/null; then
         package_runner="pnpm dlx"
     fi
-    
+
     log_info "Using $package_runner to install BMAD Method..."
-    
+
     # Get IDE configuration from settings
-    local ides=$(get_config "features.bmad.ides" "")
+    local ides=$(get_config "features.bmad.ides" "claude-code cursor")
     local ide_args=""
-    
-    # Build IDE arguments
+
+    # Build IDE arguments - default to claude-code and cursor
     if [[ -n "$ides" ]]; then
         # Parse IDE list - they come as individual config entries
         local first_ide=""
@@ -323,33 +359,33 @@ install_bmad_method() {
                 fi
             fi
         done
-        
+
         # Use first IDE or default to cursor
         ide_args="--ide ${first_ide:-cursor}"
     else
         ide_args="--ide cursor"
     fi
-    
+
     # Check if interactive mode is enabled
     local interactive=$(get_config "features.bmad.interactive" "false")
     local install_args="--full $ide_args"
-    
+
     if [[ "$interactive" != "true" ]]; then
         install_args="$install_args --yes"  # Non-interactive mode
     fi
-    
+
     # Get BMAD version
     local bmad_version=$(get_config "features.bmad.version" "latest")
-    
+
     # Install BMAD Method with configuration
     log_info "Installing BMAD Method version: $bmad_version"
     log_info "Installation arguments: $install_args"
-    
+
     $package_runner bmad-method@$bmad_version install $install_args || {
         log_error "Failed to install BMAD Method"
         return 1
     }
-    
+
     # Check if .claude directory was created
     if [[ -d ".claude" ]]; then
         log_success "BMAD Method installed successfully!"
@@ -368,7 +404,7 @@ install_bmad_method() {
 #######################################
 test_mcp_configuration() {
     log_info "Testing MCP configuration..."
-    
+
     # Test if npx commands work
     log_info "Testing npm/npx availability..."
     if npx --version &> /dev/null; then
@@ -376,7 +412,7 @@ test_mcp_configuration() {
     else
         log_warning "npx test failed - MCPs may not work properly"
     fi
-    
+
     # Test UV command
     log_info "Testing UV command..."
     if $UV_COMMAND --version &> /dev/null; then
@@ -384,7 +420,7 @@ test_mcp_configuration() {
     else
         log_warning "UV test failed - serena MCP may not work properly"
     fi
-    
+
     log_info "Note: Full MCP testing requires restarting Claude Desktop"
 }
 
@@ -399,7 +435,7 @@ show_post_install_instructions() {
 ╚═══════════════════════════════════════════════════════════════════╝
 
 ✅ Installed Components:
-   - 4 Essential MCPs (context7, fetch, sequential-thinking, serena)
+   - 7 Essential MCPs (context7, fetch, sequential-thinking, serena, fastapi, A2A, system-prompts-and-models-of-ai)
    - BMAD Method for project management
    - Claude configuration updated
 
@@ -415,6 +451,9 @@ show_post_install_instructions() {
    - Add "use context7" to prompts for up-to-date documentation
    - Use sequential-thinking for complex problem decomposition
    - Use serena for efficient codebase searches
+   - Use fastapi for FastAPI documentation and examples
+   - Use A2A for Google AI collaboration tools
+   - Use system-prompts-and-models-of-ai for optimized prompts
    - Access BMAD commands with / in Claude (e.g., /generate-prp)
 
 📚 Documentation:
@@ -436,30 +475,30 @@ EOF
 #######################################
 main() {
     log_info "Starting AI Tools installation..."
-    
+
     # Check if AI tools are enabled in configuration
     if ! is_feature_enabled "shell.modules.ai_tools"; then
         log_warning "AI tools are disabled in configuration. Exiting."
         return 0
     fi
-    
+
     # Check if MCPs are enabled
     local mcps_enabled=false
-    for mcp in context7 fetch sequential_thinking serena; do
+    for mcp in context7 fetch sequential_thinking serena fastapi a2a system_prompts; do
         if is_feature_enabled "mcps.$mcp"; then
             mcps_enabled=true
             break
         fi
     done
-    
+
     # Check if BMAD is enabled
     local bmad_enabled=$(is_feature_enabled "bmad" && echo "true" || echo "false")
-    
+
     if [[ "$mcps_enabled" == "false" ]] && [[ "$bmad_enabled" == "false" ]]; then
         log_warning "No AI tools are enabled in configuration. Nothing to install."
         return 0
     fi
-    
+
     # Run installation steps
     detect_claude_config_path || exit 1
     check_dependencies || exit 1
@@ -469,9 +508,9 @@ main() {
     configure_mcps || exit 1
     install_bmad_method || log_warning "BMAD Method installation failed, but MCPs are configured"
     test_mcp_configuration
-    
+
     show_post_install_instructions
-    
+
     log_success "AI Tools installation completed!"
     echo -e "${BLUE}Built with ❤️ by Bragatte, M.A.S${NC}"
 }

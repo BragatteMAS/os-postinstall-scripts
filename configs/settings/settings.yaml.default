@@ -6,12 +6,12 @@
 user:
   name: "${USER}"  # Will be replaced with actual username
   email: "user@example.com"
-  
+
 # Path Configuration
 paths:
   # Base directories
   repo_cache: "${HOME}/.config/os-postinstall"
-  
+
   # Tool-specific paths
   serena_uv: "${HOME}/.local/bin/uv"
   bmad_core: ".bmad-core"
@@ -39,17 +39,26 @@ features:
       custom_path: true
       path: "${HOME}/.local/bin/uv"
       repo: "${HOME}/Documents/GitHub/serena"
-  
+    fastapi:
+      enabled: true
+      description: "FastAPI documentation and examples"
+    a2a:
+      enabled: true
+      description: "Google A2A (AI to AI) tools"
+    system_prompts:
+      enabled: true
+      description: "System prompts and AI models library"
+
   # BMAD Method configuration
   bmad:
     enabled: true
     version: "latest"
-    ides: 
+    ides:
       - "claude-code"
       - "cursor"
     auto_install: true
     interactive: false  # Set to true for interactive installation
-    
+
   # Shell configuration
   shell:
     profile: "standard"  # Options: minimal, standard, full
@@ -61,7 +70,7 @@ features:
         - docker
         - kubectl
         - zoxide
-    
+
     # Feature modules to load
     modules:
       base: true           # Core aliases and functions
@@ -70,7 +79,7 @@ features:
       git_advanced: true   # Advanced git aliases
       ai_tools: true       # AI development tools
       docker: true         # Docker/Podman aliases
-      
+
   # Development tools
   tools:
     rust:
@@ -88,7 +97,7 @@ features:
         - sd          # Better sed
         - hyperfine   # Benchmarking
         - gitui       # Terminal git UI
-    
+
     python:
       install: true
       manager: "uv"  # Options: uv, conda, pyenv
@@ -99,7 +108,7 @@ features:
         - pandas
         - numpy
         - matplotlib
-    
+
     node:
       install: true
       version: "lts"
@@ -127,11 +136,11 @@ profiles:
             - fd-find
             - ripgrep
             - zoxide
-  
+
   standard:
     description: "Balanced setup for most developers"
     inherits: "default"  # Uses settings above
-  
+
   full:
     description: "Everything including experimental features"
     features:
@@ -149,14 +158,14 @@ platforms:
     additional_tools:
       - rectangle  # Window manager
       - stats      # System monitor
-  
+
   linux:
     package_manager: "auto"  # Detects apt, dnf, pacman, etc.
     additional_tools:
       - build-essential
       - curl
       - wget
-  
+
   windows:
     package_manager: "winget"
     shell: "git-bash"  # or "powershell"
@@ -169,12 +178,12 @@ behavior:
     skip_confirmations: false
     backup_existing: true
     verbose: true
-  
+
   # Update behavior
   updates:
     check_on_start: true
     auto_update_tools: false
-    
+
   # Error handling
   errors:
     stop_on_error: true

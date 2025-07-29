@@ -17,7 +17,7 @@ alias mcp-status='echo "Checking MCP status..."; cat "$CLAUDE_CONFIG_PATH" 2>/de
 
 ## BMAD Method helpers
 alias bmad='pnpm dlx bmad-method@latest'
-alias bmad-install='bmad install --full --ide cursor'
+alias bmad-install='bmad install --full --ide claude-code --ide cursor'
 alias bmad-update='bmad update'
 alias bmad-init='bmad init'
 
@@ -28,22 +28,22 @@ alias claude-check='[[ -f CLAUDE.md ]] && echo "✅ CLAUDE.md exists" || echo "�
 ## AI project initialization
 ai-init() {
     echo "🤖 Initializing AI-enabled project..."
-    
+
     # Check for CLAUDE.md
     if [[ ! -f "CLAUDE.md" ]]; then
         echo "Creating CLAUDE.md..."
         curl -sL https://raw.githubusercontent.com/bragatte/os-postinstall-scripts/main/CLAUDE.md -o CLAUDE.md
     fi
-    
+
     # Install BMAD if .bmad directory doesn't exist
     if [[ ! -d ".bmad" ]]; then
         echo "Installing BMAD Method..."
-        pnpm dlx bmad-method@latest install --full --ide cursor
+        pnpm dlx bmad-method@latest install --full --ide claude-code --ide cursor
     fi
-    
+
     # Create basic project structure
     mkdir -p docs .github/workflows tests
-    
+
     echo "✅ AI project initialized!"
 }
 
@@ -51,7 +51,7 @@ ai-init() {
 project-status() {
     echo "📊 Project Status Check"
     echo "======================"
-    
+
     # Check for key files
     local files=(
         "CLAUDE.md:Claude configuration"
@@ -61,7 +61,7 @@ project-status() {
         "CHANGELOG.md:Version history"
         ".bmad:BMAD Method"
     )
-    
+
     for file_desc in "${files[@]}"; do
         local file="${file_desc%%:*}"
         local desc="${file_desc#*:}"
@@ -85,18 +85,21 @@ test-mcps() {
     echo "  - mcp__fetch__* (web requests)"
     echo "  - mcp__sequential-thinking__* (reasoning)"
     echo "  - mcp__serena__* (code search)"
+    echo "  - mcp__fastapi__* (FastAPI docs)"
+    echo "  - mcp__A2A__* (Google A2A tools)"
+    echo "  - mcp__system-prompts-and-models-of-ai__* (prompts library)"
 }
 
 ## Update all AI tools
 ai-update() {
     echo "🔄 Updating AI tools..."
-    
+
     # Update BMAD
     if command -v bmad &> /dev/null; then
         echo "Updating BMAD Method..."
         bmad update
     fi
-    
+
     # Update CLAUDE.md
     if [[ -f "CLAUDE.md" ]]; then
         echo "Checking for CLAUDE.md updates..."
