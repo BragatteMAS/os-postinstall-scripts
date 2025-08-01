@@ -17,6 +17,42 @@ else
 fi
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║ SECTION 1.5: TERMINAL DETECTION AND CONFIGURATION                        ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+## Detect terminal type and configure accordingly
+if [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
+    IS_WARP=true
+
+    ## Only configure Warp on first run to avoid conflicts
+    if [[ -z "$WARP_CONFIGURED" ]]; then
+        ## Minimal fix for Warp initialization conflicts
+        export WARP_DISABLE_AUTO_INIT=true
+        export WARP_HONOR_PS1=1
+        export WARP_CONFIGURED=1
+
+        ## Set session ID if not already set
+        if [[ -z "$WARP_SESSION_ID" ]]; then
+            export WARP_SESSION_ID="$(date +%s)$RANDOM"
+        fi
+    fi
+else
+    IS_WARP=false
+fi
+
+## Detect other terminals
+if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    IS_ITERM=true
+else
+    IS_ITERM=false
+fi
+
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+    IS_APPLE_TERMINAL=true
+else
+    IS_APPLE_TERMINAL=false
+fi
+
+# ╔═══════════════════════════════════════════════════════════════════════════╗
 # ║ SECTION 2: DEPENDENCY VERIFICATION AND SUGGESTIONS                        ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 check_dependencies() {
@@ -2227,6 +2263,8 @@ alias claude-status='claude_status'
 alias cs='claude_status'
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
 # ║ BMAD METHOD CONFIGURATION                                                 ║
