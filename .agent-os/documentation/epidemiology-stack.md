@@ -246,13 +246,13 @@ monorepo/
 - [Echarts Documentation](https://echarts.apache.org)
 - [MCP Protocol](https://modelcontextprotocol.io)
 
-## Suporte
+## Support
 
-Para dúvidas sobre implementação ou decisões arquiteturais, consultar:
-1. Este documento (sempre a versão mais recente)
-2. Exemplos de referência no monorepo
-3. Equipe de arquitetura via email
+For questions about implementation or architectural decisions, consult:
+1. This document (always the latest version)
+2. Reference examples in the monorepo
+3. Architecture team via email
 
 ---
 
-**Nota**: Este documento é vivo e deve ser atualizado conforme a stack evolui. Mudanças significativas requerem nova versão e comunicação à equipe.
+**Note**: This is a living document and should be updated as the stack evolves. Significant changes require a new version and team communication.
