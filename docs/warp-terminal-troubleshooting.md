@@ -30,7 +30,7 @@ if [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
     export WARP_USE_SSH_WRAPPER=0
     export WARP_DISABLE_COMPLETIONS=true
     export WARP_BOOTSTRAPPED=1
-    
+
     if [[ -z "$WARP_SESSION_ID" ]]; then
         export WARP_SESSION_ID="$(date +%s)$RANDOM"
     fi
@@ -157,4 +157,4 @@ Se o problema persistir:
 ---
 
 **Última atualização:** 2025-01-28
-**Versão:** 1.0.0 
+**Versão:** 1.0.0
