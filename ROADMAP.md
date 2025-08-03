@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - OS Post-Install Scripts
 
-> **Last Updated:** 2025-07-27 | **Current Version:** v3.1.0
+> **Last Updated:** 2025-08-03 | **Current Version:** v3.2.0
 
 ## 🎯 Vision
 
@@ -24,8 +24,9 @@ gantt
         v2.7.0 Internationalization   :done, 2025-01-27, 2025-01-27
         v3.0.0 Repository Restructure  :done, 2025-01-27, 2025-01-27
         v3.1.0 Templates & BMAD 4.32   :done, 2025-01-27, 2025-01-27
+    section Current
+        v3.2.0 BMAD v4.34.0 Integration :active, 2025-08-01, 2025-08-15
     section Planned
-        v3.2.0 BMAD Agents Integration :2025-08-01, 2025-08-15
         v3.3.0 Cross-Platform Enhanced :2025-09-01, 2025-09-15
         v4.0.0 Architecture Evolution  :2025-10-01, 2025-10-30
 ```
