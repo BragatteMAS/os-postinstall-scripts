@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.2] - 2025-08-03
+
+### Fixed
+- Standardized all documentation references to use `.mdc` extension for CLAUDE-EXTENDED
+- Updated shell scripts to reference correct global Agent-OS documentation paths
+- Fixed inconsistencies between symlinks and actual file locations
+- Translated all documentation from Portuguese to English for consistency
+
+### Changed
+- Updated `STATUS.md` to reference `CLAUDE-EXTENDED.mdc` instead of `.md`
+- Updated `BMAD_CLAUDE_FLOW_INTEGRATION.md` to use correct symlink path
+- Modified `scripts/install/ai-tools.sh` to reference global documentation location
+- Updated `migrate-structure.sh` to skip CLAUDE-EXTENDED (now globally managed)
+- Removed redundant `docs/guides/CLAUDE-EXTENDED.md` file
+- Created proper symlink structure for backward compatibility
+
+## [3.2.1] - 2025-08-03
+
+### Added
+- Documentation symlinks and Agent-OS integration
+- Global documentation structure in `~/.agent-os/documentation/`
+
 ## [3.2.0] - 2025-08-03
 
 ### Added

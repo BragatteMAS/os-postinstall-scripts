@@ -458,7 +458,7 @@ show_post_install_instructions() {
 
 📚 Documentation:
    - CLAUDE.md - Complete Context Engineering guide
-   - CLAUDE-EXTENDED.md - Detailed examples and patterns
+   - ~/.agent-os/documentation/CLAUDE-EXTENDED.mdc - Detailed examples and patterns (MDC format)
    - docs/ai-tools-setup.md - This setup guide
 
 ⚠️  Important:

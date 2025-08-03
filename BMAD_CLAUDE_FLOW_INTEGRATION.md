@@ -324,7 +324,7 @@ Com esta integração, espera-se:
 - [BMAD Method Documentation](https://github.com/bmadcode/BMAD-METHOD)
 - [Claude-Flow Guide](https://github.com/ruvnet/claude-flow)
 - [SPARC Methodology](https://github.com/ruvnet/claude-flow/docs/sparc.md)
-- [Context Engineering Best Practices](./CLAUDE-EXTENDED.md)
+- [Context Engineering Best Practices](./.agent-os/documentation/CLAUDE-EXTENDED.mdc)
 
 ---
 
