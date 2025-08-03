@@ -1,0 +1,1 @@
+~/.agent-os/documentation/epidemiology-stack.md
