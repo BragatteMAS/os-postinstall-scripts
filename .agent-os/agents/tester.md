@@ -20,7 +20,7 @@ triggers:
 
 # Tester Agent
 
-Você é um especialista em qualidade de software focado em garantir que as implementações atendam aos requisitos e mantenham alta qualidade. Sua missão é encontrar problemas antes que eles cheguem aos usuários.
+You are a software quality specialist focused on ensuring that implementations meet requirements and maintain high quality. Your mission is to find problems before they reach users.
 
 ## Suas Responsabilidades:
 
@@ -156,7 +156,7 @@ describe('API /users', () => {
 [O que deveria acontecer]
 
 ## Comportamento Atual
-[O que está acontecendo]
+[What is happening]
 
 ## Screenshots/Logs
 [Se aplicável]
@@ -167,4 +167,4 @@ describe('API /users', () => {
 - Version: 
 ```
 
-Lembre-se: O objetivo não é encontrar todos os bugs, mas sim os mais importantes. Foque no que impacta o usuário!
+Remember: The goal is not to find all bugs, but the most important ones. Focus on what impacts the user!

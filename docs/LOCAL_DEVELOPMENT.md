@@ -1,78 +1,78 @@
 # Local Development Guide
 
-> **⚠️ IMPORTANTE**: Este guia é para desenvolvimento LOCAL apenas. NENHUM comando aqui dispara CI/CD automático.
+> **⚠️ IMPORTANT**: This guide is for LOCAL development only. NO command here triggers automatic CI/CD.
 
-## 🎯 Filosofia
+## 🎯 Philosophy
 
-Este projeto adota uma abordagem de **CI/CD 100% manual** para conservar recursos. O `cross-env` é usado APENAS para facilitar o desenvolvimento local multi-plataforma.
+This project adopts a **100% manual CI/CD** approach to conserve resources. The `cross-env` is used ONLY to facilitate cross-platform local development.
 
 ## 🚀 Quick Start
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repository
 git clone https://github.com/bragatte/os-postinstall-scripts.git
 cd os-postinstall-scripts
 
-# 2. Instale as ferramentas de desenvolvimento local
+# 2. Install local development tools
 npm install
 
-# 3. Verifique seu ambiente
+# 3. Check your environment
 npm run dev:check
 
-# 4. Execute testes locais
+# 4. Run local tests
 npm run dev:test
 ```
 
-## 📋 Comandos Disponíveis
+## 📋 Available Commands
 
-### Verificação de Ambiente
+### Environment Check
 ```bash
 npm run dev:check
 ```
-Verifica se seu ambiente local tem as ferramentas necessárias para desenvolvimento.
+Checks if your local environment has the necessary tools for development.
 
-### Testes Locais
+### Local Tests
 
-#### Testar na plataforma atual:
+#### Test on current platform:
 ```bash
 npm run dev:test
 ```
 
-#### Simular teste para plataforma específica:
+#### Simulate test for specific platform:
 ```bash
-npm run dev:test:linux    # Simula ambiente Linux
-npm run dev:test:windows  # Simula ambiente Windows  
-npm run dev:test:macos    # Simula ambiente macOS
+npm run dev:test:linux    # Simulates Linux environment
+npm run dev:test:windows  # Simulates Windows environment  
+npm run dev:test:macos    # Simulates macOS environment
 ```
 
-> **Nota**: Estas são SIMULAÇÕES locais. Para testes reais, use o sistema operacional correspondente.
+> **Note**: These are local SIMULATIONS. For real tests, use the corresponding operating system.
 
 ### Linting Local
 ```bash
 npm run dev:lint
 ```
-Executa ShellCheck em todos os scripts shell do projeto.
+Runs ShellCheck on all shell scripts in the project.
 
-### Ver todos os comandos
+### View all commands
 ```bash
 npm run help
 ```
 
-## 🔧 Estrutura do Projeto
+## 🔧 Project Structure
 
 ```
 os-postinstall-scripts/
-├── package.json           # Scripts NPM para dev local apenas
+├── package.json           # NPM scripts for local dev only
 ├── tools/
-│   └── local-dev/        # Ferramentas de desenvolvimento local
+│   └── local-dev/        # Local development tools
 │       ├── check-environment.js
 │       ├── test-current-platform.sh
 │       ├── test-platform.sh
 │       └── lint-scripts.sh
-├── linux/                # Scripts para Linux
-├── mac/                  # Scripts para macOS
-├── windows/              # Scripts para Windows
-└── profiles/             # Perfis de instalação
+├── linux/                # Scripts for Linux
+├── mac/                  # Scripts for macOS
+├── windows/              # Scripts for Windows
+└── profiles/             # Installation profiles
 ```
 
 ## 🌍 Cross-Platform com cross-env
@@ -87,57 +87,57 @@ O `cross-env` permite definir variáveis de ambiente de forma consistente:
 }
 ```
 
-### Por que usar cross-env?
+### Why use cross-env?
 
-1. **Sintaxe unificada**: Funciona igual em Windows, Linux e macOS
-2. **Desenvolvimento ágil**: Teste localmente antes de acionar CI/CD
-3. **Economia de recursos**: Evita executar CI/CD para testes simples
+1. **Unified syntax**: Works the same on Windows, Linux and macOS
+2. **Agile development**: Test locally before triggering CI/CD
+3. **Resource savings**: Avoids running CI/CD for simple tests
 
-### Variáveis de ambiente disponíveis:
+### Available environment variables:
 
-- `TEST_MODE`: Define o modo de teste (sempre "local" para dev)
-- `OS_TARGET`: Plataforma alvo para simulação (linux/windows/darwin)
-- `LINT_MODE`: Modo de linting (local)
-- `CHECK_MODE`: Modo de verificação (local)
+- `TEST_MODE`: Defines test mode (always "local" for dev)
+- `OS_TARGET`: Target platform for simulation (linux/windows/darwin)
+- `LINT_MODE`: Linting mode (local)
+- `CHECK_MODE`: Check mode (local)
 
-## 🚫 O que NÃO fazer
+## 🚫 What NOT to do
 
-1. **NÃO** espere que estes comandos disparem CI/CD
-2. **NÃO** use npm scripts em produção (são apenas para desenvolvimento)
-3. **NÃO** confunda simulação com teste real de plataforma
+1. **DO NOT** expect these commands to trigger CI/CD
+2. **DO NOT** use npm scripts in production (they are for development only)
+3. **DO NOT** confuse simulation with real platform testing
 
-## ✅ Fluxo de Trabalho Recomendado
+## ✅ Recommended Workflow
 
-1. **Desenvolva localmente**
+1. **Develop locally**
    ```bash
-   # Faça suas mudanças
-   vim linux/install/novo-script.sh
+   # Make your changes
+   vim linux/install/new-script.sh
    
-   # Teste localmente
+   # Test locally
    npm run dev:test
    npm run dev:lint
    ```
 
-2. **Commit suas mudanças**
+2. **Commit your changes**
    ```bash
    git add .
    git commit -m "feat: add new installation script"
    ```
 
-3. **Push para o repositório**
+3. **Push to repository**
    ```bash
-   git push origin feature/minha-feature
+   git push origin feature/my-feature
    ```
 
-4. **Solicite CI/CD manual** (quando necessário)
-   - Vá para GitHub Actions
-   - Selecione o workflow desejado
-   - Clique em "Run workflow"
-   - Preencha o motivo da execução
+4. **Request manual CI/CD** (when necessary)
+   - Go to GitHub Actions
+   - Select the desired workflow
+   - Click "Run workflow"
+   - Fill in the execution reason
 
 ## 🐛 Troubleshooting
 
-### "ShellCheck não está instalado"
+### "ShellCheck is not installed"
 ```bash
 # macOS
 brew install shellcheck
@@ -145,31 +145,31 @@ brew install shellcheck
 # Ubuntu/Debian
 sudo apt-get install shellcheck
 
-# Outros
-# Visite: https://github.com/koalaman/shellcheck
+# Others
+# Visit: https://github.com/koalaman/shellcheck
 ```
 
 ### "npm: command not found"
-Instale o Node.js: https://nodejs.org/
+Install Node.js: https://nodejs.org/
 
-### "Permission denied" ao executar scripts
+### "Permission denied" when running scripts
 ```bash
 chmod +x tools/local-dev/*.sh
 ```
 
-## 📚 Recursos Adicionais
+## 📚 Additional Resources
 
-- [Documentação do cross-env](https://www.npmjs.com/package/cross-env)
-- [Guia de CI/CD manual](.github/TESTING_GUIDELINES.md)
-- [Contribuindo para o projeto](../CONTRIBUTING.md)
+- [cross-env documentation](https://www.npmjs.com/package/cross-env)
+- [Manual CI/CD Guide](.github/TESTING_GUIDELINES.md)
+- [Contributing to the project](../CONTRIBUTING.md)
 
-## 💡 Dicas Pro
+## 💡 Pro Tips
 
-1. **Use .env.local** para configurações pessoais (não commitado)
-2. **Rode `dev:lint` antes de todo commit**
-3. **Teste em múltiplas plataformas** usando VMs ou containers
-4. **Documente** quando e por que você solicitou CI/CD
+1. **Use .env.local** for personal settings (not committed)
+2. **Run `dev:lint` before every commit**
+3. **Test on multiple platforms** using VMs or containers
+4. **Document** when and why you requested CI/CD
 
 ---
 
-> **Lembre-se**: Desenvolvimento local eficiente economiza recursos de CI/CD! 🌱
+> **Remember**: Efficient local development saves CI/CD resources! 🌱

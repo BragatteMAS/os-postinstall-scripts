@@ -32,7 +32,7 @@
 | BMAD Integration | ✅ Active | v4.34.0 | Updated to latest version |
 | CI/CD | ✅ Active | 100% | GitHub Actions working |
 | Documentation | ✅ Enhanced | 100%+ | User docs completely overhauled! |
-| **ADRs** | ✅ Active | 10 ADRs | 9 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003) |
+| **ADRs** | ✅ Active | 10 ADRs | 9 Accepted ✅, 1 Under Discussion 🟨 (ADR-003) |
 | **Security** | ✅ Fixed | 100% | APT lock vulnerability fixed (v2.3.1) |
 | **Profiles** | ✅ New | 5 profiles | Profile system implemented (v2.4.0) |
 
@@ -124,7 +124,7 @@
 1. Implement Testing Trophy tests based on TESTING.md
 2. Create examples/ directory with patterns
 3. Expand macOS script coverage to 80%
-4. Finalizar ADR-003 (Cross-Platform Strategy) - requer decisão de stakeholders
+4. Finalize ADR-003 (Cross-Platform Strategy) - requires stakeholder decision
 
 ### 🟢 Nice to Have
 7. Create ARCHITECTURE.md
