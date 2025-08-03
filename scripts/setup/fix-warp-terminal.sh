@@ -46,7 +46,7 @@ check_warp_terminal() {
 # Function to backup current .zshrc
 backup_zshrc() {
     local backup_file="$HOME/.zshrc.backup.$(date +%Y%m%d_%H%M%S)"
-    
+
     if [[ -f "$HOME/.zshrc" ]]; then
         cp "$HOME/.zshrc" "$backup_file"
         print_success "Backup created: $backup_file"
@@ -58,9 +58,9 @@ backup_zshrc() {
 # Function to create minimal Warp-compatible .zshrc
 create_minimal_zshrc() {
     local zshrc_file="$HOME/.zshrc"
-    
+
     print_status "Creating minimal Warp-compatible .zshrc..."
-    
+
     cat > "$zshrc_file" << 'EOF'
 #!/bin/zsh
 # ==============================================================================
@@ -169,7 +169,7 @@ install_full_configuration() {
     local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local project_root="$(dirname "$(dirname "$script_dir")")"
     local config_file="$project_root/configs/shell/zshrc"
-    
+
     if [[ -f "$config_file" ]]; then
         print_status "Installing full configuration..."
         cp "$config_file" "$HOME/.zshrc"
@@ -185,16 +185,16 @@ install_warp_compatibility() {
     local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local project_root="$(dirname "$(dirname "$script_dir")")"
     local compatibility_file="$project_root/configs/shell/warp-compatibility.zsh"
-    
+
     if [[ -f "$compatibility_file" ]]; then
         print_status "Installing Warp compatibility file..."
         cp "$compatibility_file" "$HOME/.warp-compatibility.zsh"
-        
+
         # Add source line to .zshrc if not already present
         if ! grep -q "warp-compatibility.zsh" "$HOME/.zshrc" 2>/dev/null; then
             echo "source ~/.warp-compatibility.zsh" >> "$HOME/.zshrc"
         fi
-        
+
         print_success "Warp compatibility file installed"
     else
         print_error "Warp compatibility file not found: $compatibility_file"
@@ -240,10 +240,10 @@ show_status() {
 main() {
     print_status "Warp Terminal Configuration Fixer"
     print_status "=================================="
-    
+
     # Check if running in Warp Terminal
     check_warp_terminal
-    
+
     # Parse command line arguments
     case "${1:-}" in
         --minimal)
@@ -281,9 +281,9 @@ main() {
             exit 1
             ;;
     esac
-    
+
     print_status "Done!"
 }
 
 # Run main function
-main "$@" 
+main "$@"

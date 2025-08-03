@@ -12,31 +12,31 @@
 ## Detect if running in Warp Terminal
 if [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
     echo "🔧 Configurando compatibilidade com Warp Terminal..."
-    
+
     ## Disable Warp's automatic initialization to prevent conflicts
     export WARP_DISABLE_AUTO_INIT=true
     export WARP_DISABLE_AUTO_TITLE=true
     export WARP_HONOR_PS1=1
     export WARP_USE_SSH_WRAPPER=0
     export WARP_DISABLE_COMPLETIONS=true
-    
+
     ## Prevent Warp from executing its bootstrap code
     export WARP_BOOTSTRAPPED=1
-    
+
     ## Set a proper session ID if not already set
     if [[ -z "$WARP_SESSION_ID" ]]; then
         export WARP_SESSION_ID="$(date +%s)$RANDOM"
     fi
-    
+
     ## Disable Warp's built-in functions that conflict with our configuration
     unset -f warp_precmd 2>/dev/null || true
     unset -f warp_preexec 2>/dev/null || true
     unset -f warp_update_prompt_vars 2>/dev/null || true
-    
+
     ## Clear any existing Warp-related variables that might cause issues
     unset WARP_BOOTSTRAP_VAR 2>/dev/null || true
     unset WARP_INITIAL_WORKING_DIR 2>/dev/null || true
-    
+
     echo "✅ Warp Terminal configurado para compatibilidade"
 fi
 
@@ -49,16 +49,16 @@ fi
 
 # if [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
 #     echo "🔧 Usando configuração nativa do Warp Terminal..."
-#     
+#
 #     ## Let Warp handle its own initialization
 #     export WARP_HONOR_PS1=0
 #     export WARP_DISABLE_AUTO_INIT=false
 #     export WARP_DISABLE_AUTO_TITLE=false
-#     
+#
 #     ## Enable Warp's native features
 #     export WARP_USE_SSH_WRAPPER=1
 #     export WARP_DISABLE_COMPLETIONS=false
-#     
+#
 #     echo "✅ Usando recursos nativos do Warp Terminal"
 # fi
 
@@ -117,4 +117,4 @@ warp_disable_native() {
 alias warp-status='warp_status'
 alias warp-reset='warp_reset'
 alias warp-enable='warp_enable_native'
-alias warp-disable='warp_disable_native' 
+alias warp-disable='warp_disable_native'
