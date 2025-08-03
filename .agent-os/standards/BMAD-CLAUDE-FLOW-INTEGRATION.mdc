@@ -1,0 +1,519 @@
+# BMAD Method + Claude-Flow Integration Guide
+
+> **Version:** 2.0.0 | **Date:** 2025-08-03 | **Type:** Universal Reference  
+> **Purpose:** Agnostic integration guide for BMAD discovery and Claude-Flow execution  
+> **Philosophy:** Plan First, Ask Always, Implement Incrementally
+
+---
+
+## 🔄 Version Control & Updates
+
+### Check Current Versions
+```bash
+# Check latest available versions
+check-versions() {
+  echo "🔍 Checking versions..."
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "📦 Latest Available:"
+  echo "  BMAD Method: $(npm view bmad-method version)"
+  echo "  Claude-Flow: $(npm view claude-flow@alpha version)"
+  echo ""
+  echo "💻 Currently Installed:"
+  if [ -f ".bmad-core/install-manifest.yaml" ]; then
+    echo "  Your BMAD: $(grep 'version:' .bmad-core/install-manifest.yaml | head -1 | awk '{print $2}')"
+  else
+    echo "  Your BMAD: Not installed in this project"
+  fi
+  echo "  Your Claude-Flow: $(npx claude-flow@alpha --version 2>/dev/null || echo 'Not installed')"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+}
+
+# Update to latest versions
+update-integration-tools() {
+  echo "📦 Updating BMAD Method and Claude-Flow..."
+  npx bmad-method@latest install --full --ide claude-code --ide cursor
+  npm update claude-flow@alpha
+  echo "✅ Tools updated to latest versions"
+}
+```
+
+### Version Compatibility Matrix
+| BMAD Version | Claude-Flow Version | Status |
+|--------------|-------------------|---------|
+| 4.34.0+      | 2.0.0-alpha.84+  | ✅ Stable |
+| 4.29.0-4.33.0| 2.0.0-alpha.70+  | ⚠️ Works with limitations |
+| < 4.29.0     | Any              | ❌ Update required |
+
+---
+
+## 🚫 Planning-First Methodology
+
+### NEVER Start Without These Steps:
+
+1. **Document Check** ✓
+   ```bash
+   pre-flight-check() {
+     echo "✈️ Pre-flight Checklist:"
+     echo "━━━━━━━━━━━━━━━━━━━━━━"
+     
+     # Check essential documents
+     [[ -f "STATUS.md" ]] && echo "✅ STATUS.md found" || echo "❌ STATUS.md missing"
+     [[ -f "PRD.md" ]] && echo "✅ PRD.md found" || echo "❌ PRD.md missing"
+     [[ -f "STORIES.md" ]] && echo "✅ STORIES.md found" || echo "❌ STORIES.md missing"
+     [[ -f "ARCHITECTURE.md" ]] && echo "✅ ARCHITECTURE.md found" || echo "⚠️ ARCHITECTURE.md optional"
+     
+     echo ""
+     echo "📋 Next Steps:"
+     echo "1. Read PRD.md for objectives"
+     echo "2. Check STORIES.md for current story"
+     echo "3. Review STATUS.md for progress"
+     echo "4. Create task breakdown"
+     echo "5. Get user approval before coding"
+   }
+   ```
+
+2. **Task Breakdown Template**
+   ```markdown
+   ## Story: [US-XXX] Story Title
+   
+   ### Acceptance Criteria (from STORIES.md):
+   - [ ] Criteria 1
+   - [ ] Criteria 2
+   
+   ### Technical Tasks:
+   1. **Setup/Configuration** (30 min)
+      - [ ] Verify stack matches PRD
+      - [ ] Check dependencies
+   
+   2. **Core Implementation** (2 hrs)
+      - [ ] Subtask 2.1: Data model
+      - [ ] Subtask 2.2: Business logic
+      - [ ] Subtask 2.3: Integration
+   
+   3. **Validation** (30 min)
+      - [ ] Unit tests pass
+      - [ ] Acceptance criteria met
+      - [ ] Update STATUS.md
+   
+   ⏱️ Total Estimate: 3 hours
+   ```
+
+3. **Always Ask Before Acting**
+   ```markdown
+   ## Questions to Ask User:
+   - "I've read the PRD. Should I focus on [specific objective]?"
+   - "Story US-XXX has 3 tasks. Should I start with [task 1]?"
+   - "The PRD specifies [technology]. Should I proceed with that?"
+   - "I've created a task breakdown. May I proceed?"
+   ```
+
+---
+
+## 📖 Story-Driven Development
+
+### Workflow: Story → Tasks → Implementation
+
+```mermaid
+graph LR
+    A[Read STORIES.md] --> B[Select Story]
+    B --> C[Break into Tasks]
+    C --> D[Get Approval]
+    D --> E[Implement Task 1]
+    E --> F[Validate]
+    F --> G{More Tasks?}
+    G -->|Yes| E
+    G -->|No| H[Update STATUS.md]
+```
+
+### Story Implementation Protocol
+
+```yaml
+story_workflow:
+  1_analyze:
+    inputs:
+      - story_id: "US-XXX from STORIES.md"
+      - acceptance_criteria: "Clear pass/fail conditions"
+      - priority: "From PRD.md"
+    outputs:
+      - technical_requirements: "What needs to be built"
+      - dependencies: "What's needed first"
+    
+  2_plan:
+    approach: "Break into digestible chunks"
+    rules:
+      - max_tasks_per_story: 5
+      - max_hours_per_task: 2
+      - each_task_independently_testable: true
+    output: "TodoWrite with all tasks"
+    
+  3_confirm:
+    show_user:
+      - task_breakdown: "Numbered list with estimates"
+      - implementation_order: "Based on dependencies"
+      - validation_plan: "How we'll know it works"
+    wait_for: "Explicit approval"
+    
+  4_execute:
+    style: "One task at a time"
+    after_each_task:
+      - run_tests: "If applicable"
+      - update_status: "Mark task complete"
+      - check_criteria: "Still meeting requirements"
+```
+
+---
+
+## 🏗️ Stack-Aware Implementation
+
+### Respect PRD/Architecture Decisions
+
+```bash
+# Validate stack before implementation
+validate-stack() {
+  echo "🔍 Validating project stack..."
+  
+  # Extract stack from PRD or ARCHITECTURE.md
+  if [ -f "ARCHITECTURE.md" ]; then
+    echo "📚 Stack from ARCHITECTURE.md:"
+    grep -A 5 -i "stack\|technolog" ARCHITECTURE.md | head -10
+  elif [ -f "PRD.md" ]; then
+    echo "📚 Stack from PRD.md:"
+    grep -A 5 -i "stack\|technolog" PRD.md | head -10
+  else
+    echo "⚠️ No stack documentation found. Ask user for clarification."
+  fi
+  
+  echo ""
+  echo "✅ Checklist before coding:"
+  echo "- [ ] Language/framework matches PRD?"
+  echo "- [ ] Database choice aligned?"
+  echo "- [ ] No unauthorized dependencies?"
+  echo "- [ ] Patterns match /examples folder?"
+}
+```
+
+### Stack Compliance Rules
+1. **Never introduce new technologies** without ADR
+2. **Use approved packages only** (check package.json/requirements.txt)
+3. **Follow existing patterns** (check /examples folder)
+4. **Respect architectural decisions** (read ADRs/)
+
+---
+
+## 🎯 Integration Patterns
+
+### Pattern Selection by Project Context
+
+```yaml
+integration_patterns:
+  minimal_mvp:
+    description: "Quick prototype or proof of concept"
+    bmad_agents: [po]  # Just Product Owner for requirements
+    claude_flow_topology: "linear"
+    planning_depth: "shallow"
+    documentation: "minimal"
+    approach: "Implement one critical path"
+    
+  standard_project:
+    description: "Typical application development"
+    bmad_agents: [po, ux, dev, architect]
+    claude_flow_topology: "hierarchical"
+    planning_depth: "moderate"
+    documentation: "comprehensive"
+    approach: "Story-by-story with validation"
+    
+  enterprise_system:
+    description: "Complex system with multiple stakeholders"
+    bmad_agents: [po, ux, architect, qa, dev, sm]
+    claude_flow_topology: "swarm"
+    planning_depth: "detailed"
+    documentation: "exhaustive"
+    approach: "Epic planning with parallel execution"
+    
+  data_analysis:
+    description: "Research or analytics project"
+    bmad_agents: [analyst, architect]
+    claude_flow_topology: "pipeline"
+    planning_depth: "iterative"
+    documentation: "notebook-style"
+    approach: "Exploratory with checkpoints"
+```
+
+### Selecting the Right Pattern
+```bash
+select-integration-pattern() {
+  echo "🎯 Selecting integration pattern..."
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "1. Minimal MVP - Quick prototype"
+  echo "2. Standard Project - Regular development"
+  echo "3. Enterprise System - Complex requirements"
+  echo "4. Data Analysis - Research/analytics"
+  echo ""
+  echo "Check PRD.md for project type indicators:"
+  echo "- Timeline urgency → MVP"
+  echo "- Multiple user types → Standard/Enterprise"
+  echo "- Compliance needs → Enterprise"
+  echo "- Exploration focus → Data Analysis"
+}
+```
+
+---
+
+## 🚀 BMAD Discovery Phase
+
+### Using BMAD Agents Effectively
+
+```markdown
+## Agent Usage by Phase
+
+### 1. Requirements Gathering
+/po (Product Owner)
+- Clarify business objectives
+- Define success metrics
+- Prioritize features
+
+### 2. User Experience Design  
+/ux (UX Expert)
+- Map user journeys
+- Define interaction patterns
+- Create acceptance criteria
+
+### 3. Technical Architecture
+/architect
+- Technology selection
+- System design
+- Integration planning
+
+### 4. Development Planning
+/dev
+- Task breakdown
+- Implementation approach
+- Code structure
+
+## ⚠️ ALWAYS ASK, NEVER ASSUME
+Before using any agent:
+1. Explain what you're about to do
+2. Ask if user wants this analysis
+3. Share findings before proceeding
+```
+
+---
+
+## ⚡ Claude-Flow Execution Phase
+
+### Spawning Agents Based on Context
+
+```javascript
+// Initialize Claude-Flow with BMAD context
+function initializeClaudeFlow() {
+  // 1. Read BMAD artifacts
+  const context = {
+    prd: readFile("PRD.md"),
+    stories: readFile("STORIES.md"),
+    status: readFile("STATUS.md"),
+    architecture: readFile("ARCHITECTURE.md") || null
+  };
+  
+  // 2. Determine topology from project pattern
+  const topology = determineTopology(context);
+  
+  // 3. Create task list from stories
+  const tasks = parseStoriesToTasks(context.stories);
+  
+  // 4. Initialize swarm
+  return {
+    topology: topology,
+    maxAgents: topology === "swarm" ? 8 : 4,
+    tasks: tasks,
+    validation: "continuous"
+  };
+}
+
+// Execution with validation gates
+async function executeWithValidation(story) {
+  // Never execute without plan
+  const plan = await createPlan(story);
+  await getUserApproval(plan);
+  
+  // Execute incrementally
+  for (const task of plan.tasks) {
+    await executeTask(task);
+    await validateAgainstCriteria(task, story.acceptanceCriteria);
+    updateStatus(task);
+  }
+}
+```
+
+---
+
+## 🎨 Simplicity Rules
+
+### KISS Principles in Action
+
+```markdown
+## Complexity Decision Tree
+
+Is this feature in STORIES.md?
+├─ No → Don't implement
+└─ Yes → Is simplest solution sufficient?
+    ├─ Yes → Implement simple solution
+    └─ No → Can we use existing library?
+        ├─ Yes → Use library
+        └─ No → Document why complexity needed
+
+## Code Simplicity Checklist
+- [ ] Solution fits in one screen?
+- [ ] Junior dev understands in 10 min?
+- [ ] Tests are straightforward?
+- [ ] No premature optimization?
+- [ ] No over-engineering?
+
+## Red Flags 🚩
+- Abstract base classes before need
+- Generic solutions for specific problems  
+- Framework when library suffices
+- Custom when standard works
+- Complex when simple suffices
+```
+
+---
+
+## 🛠️ Universal Helper Commands
+
+### Bash Functions for Any Project
+
+```bash
+# Add to ~/.zshrc or ~/.bashrc
+
+# Initialize BMAD + Claude-Flow in new project
+bmad-flow-init() {
+  echo "🚀 Initializing BMAD + Claude-Flow Integration"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  # Check if already initialized
+  if [ -d ".bmad-core" ]; then
+    echo "⚠️  BMAD already initialized"
+  else
+    echo "📦 Installing BMAD Method..."
+    npx bmad-method@latest install --full --ide claude-code --ide cursor
+  fi
+  
+  # Create essential documents if missing
+  [ ! -f "STATUS.md" ] && echo "📄 Creating STATUS.md..." && create-status-template
+  [ ! -f "PRD.md" ] && echo "📄 Creating PRD.md template..." && create-prd-template
+  [ ! -f "STORIES.md" ] && echo "📄 Creating STORIES.md template..." && create-stories-template
+  
+  echo ""
+  echo "✅ Setup complete! Next steps:"
+  echo "1. Edit PRD.md with your project objectives"
+  echo "2. Define user stories in STORIES.md"
+  echo "3. Run: pre-flight-check"
+}
+
+# Quick status check
+bmad-status() {
+  echo "📊 BMAD + Claude-Flow Status"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━"
+  check-versions
+  echo ""
+  pre-flight-check
+}
+
+# Start planning session
+bmad-plan() {
+  echo "📋 Starting Planning Session"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "1. Opening PRD.md for context..."
+  echo "2. Opening STORIES.md for current work..."
+  echo "3. Checking STATUS.md for progress..."
+  echo ""
+  echo "📝 Planning Questions:"
+  echo "- What story are we implementing? (US-XXX)"
+  echo "- What are the acceptance criteria?"
+  echo "- What's the implementation priority?"
+  echo "- Any technical constraints from PRD?"
+}
+
+# Validate before execution
+bmad-validate() {
+  echo "✅ Validation Checklist"
+  echo "━━━━━━━━━━━━━━━━━━━━━"
+  validate-stack
+  echo ""
+  echo "📋 Story Validation:"
+  echo "- [ ] Story clearly defined?"
+  echo "- [ ] Acceptance criteria measurable?"
+  echo "- [ ] Tasks broken down?"
+  echo "- [ ] Dependencies identified?"
+  echo "- [ ] User approved plan?"
+}
+```
+
+---
+
+## 📚 Best Practices Summary
+
+### The Golden Rules
+
+1. **📖 Read First, Code Later**
+   - Always start with STATUS.md
+   - Understand PRD.md completely
+   - Follow STORIES.md strictly
+
+2. **❓ Ask, Don't Assume**
+   - Clarify ambiguity before acting
+   - Get approval for task breakdown
+   - Confirm stack choices
+
+3. **📐 Plan, Don't Improvise**
+   - Break stories into tasks
+   - Estimate honestly
+   - Document decisions
+
+4. **🎯 Simple, Not Clever**
+   - Start with minimal solution
+   - Add complexity only when proven necessary
+   - Prefer standard over custom
+
+5. **✅ Validate Continuously**
+   - After each task
+   - Against acceptance criteria
+   - Update STATUS.md
+
+---
+
+## 🔄 Continuous Improvement
+
+### Keeping This Guide Current
+
+```bash
+# Update this guide when:
+# - New BMAD version released
+# - Claude-Flow updates
+# - New patterns discovered
+# - Lessons learned from projects
+
+update-integration-guide() {
+  echo "📝 Updating integration guide..."
+  echo "Current version: 2.0.0"
+  echo "Last updated: 2025-08-03"
+  echo ""
+  echo "Check for updates:"
+  echo "- BMAD Method changelog"
+  echo "- Claude-Flow releases"
+  echo "- Community best practices"
+}
+```
+
+---
+
+## 🔗 Resources
+
+- [BMAD Method Documentation](https://github.com/bmadcode/BMAD-METHOD)
+- [Claude-Flow Documentation](https://github.com/ruvnet/claude-flow)
+- [SPARC Methodology](https://github.com/ruvnet/claude-flow/docs/sparc.md)
+- [Context Engineering Guide](~/.agent-os/documentation/CLAUDE-EXTENDED.mdc)
+
+---
+
+> **Remember:** This guide is agnostic and adaptive. Use what fits your project, ignore what doesn't. The goal is organized, planned, and validated development - not rigid process.

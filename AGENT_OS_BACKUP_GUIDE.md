@@ -1,6 +1,7 @@
 # 📦 Agent-OS Backup Guide
 
-> **Important:** This guide helps you backup essential Agent-OS files for new OS installations
+> **Important:** All essential Agent-OS files are now included in this repository!
+> When you clone this repo, you'll have everything needed to restore Agent-OS on a new system.
 
 ## 🎯 Essential Files for Backup
 
@@ -50,36 +51,46 @@ These can be regenerated or are project-specific:
 ~/.agent-os/hooks/           # Git hooks (can be recreated)
 ```
 
-## 🚀 Quick Backup Command
+## 🚀 Files Already in This Repository
 
-To backup all essential Agent-OS files:
+All essential Agent-OS files are stored in `.agent-os/` directory in this repository:
 
 ```bash
-# Create backup directory
-mkdir -p ~/agent-os-backup
-
-# Copy essential files
-cp -r ~/.agent-os/documentation ~/agent-os-backup/
-cp -r ~/.agent-os/standards ~/agent-os-backup/
-cp -r ~/.agent-os/templates ~/agent-os-backup/
-cp -r ~/.agent-os/agents ~/agent-os-backup/
-cp ~/.agent-os/config.yaml ~/agent-os-backup/
-
-# Create tarball
-tar -czf ~/agent-os-backup-$(date +%Y%m%d).tar.gz ~/agent-os-backup
+.agent-os/
+├── documentation/        # Complete documentation including CLAUDE-EXTENDED.mdc
+├── standards/           # Tech stack, coding standards, best practices
+├── templates/           # ADR, Agent templates, and more
+├── agents/             # All agent definitions
+├── instructions/       # Workflow instructions
+└── config.yaml        # Main Agent-OS configuration
 ```
 
 ## 📥 Restore on New OS
 
-```bash
-# Extract backup
-tar -xzf agent-os-backup-YYYYMMDD.tar.gz
+After cloning this repository:
 
-# Copy to .agent-os directory
-cp -r ~/agent-os-backup/* ~/.agent-os/
+```bash
+# Clone the repository
+git clone https://github.com/BragatteMAS/os-postinstall-scripts.git
+cd os-postinstall-scripts
+
+# Copy Agent-OS files to home directory
+cp -r .agent-os ~/
 
 # Verify installation
 ls -la ~/.agent-os/
+```
+
+## 🔄 Alternative: Direct Backup from System
+
+If you need to backup your current system's Agent-OS:
+
+```bash
+# Create backup from your system
+cp -r ~/.agent-os ./agent-os-backup-$(date +%Y%m%d)
+
+# Or create tarball
+tar -czf agent-os-backup-$(date +%Y%m%d).tar.gz ~/.agent-os
 ```
 
 ## 💡 Best Practices
