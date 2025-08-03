@@ -120,17 +120,17 @@ projeto/
 
 ```bash
 # Adicionar Claude-Flow MCP
-claude mcp add claude-flow npx claude-flow@alpha mcp start
+claude mcp add claude-flow npx claude-flow@latest mcp start
 
 # Verificar instalação
-npx claude-flow@alpha --version
+npx claude-flow@latest --version
 ```
 
 ### 2.2 Transição BMAD → Claude-Flow
 
 ```bash
 # Claude-Flow lê contexto BMAD e prepara execução
-npx claude-flow@alpha init --from-bmad
+npx claude-flow@latest init --from-bmad
 
 # Isso irá:
 # 1. Ler todos documentos BMAD (PRD, STORIES, etc.)
@@ -178,7 +178,7 @@ npx claude-flow@alpha init --from-bmad
 
 ```bash
 # Usar SPARC com contexto BMAD
-npx claude-flow@alpha sparc tdd "implement user authentication" \
+npx claude-flow@latest sparc tdd "implement user authentication" \
   --use-bmad-context \
   --validate-against-prd
 
@@ -196,7 +196,7 @@ npx claude-flow@alpha sparc tdd "implement user authentication" \
 
 ```bash
 # Validar implementação contra documentação BMAD
-npx claude-flow@alpha validate \
+npx claude-flow@latest validate \
   --check-prd \
   --check-stories \
   --check-architecture
@@ -214,7 +214,7 @@ npx claude-flow@alpha validate \
 bmad update-status --from-claude-flow
 
 # Sincronizar learnings
-npx claude-flow@alpha export-learnings | bmad import-feedback
+npx claude-flow@latest export-learnings | bmad import-feedback
 ```
 
 ## 📁 Estrutura Completa do Projeto
@@ -263,13 +263,13 @@ cd novo-projeto
 
 # 2. Instalar ferramentas
 pnpm dlx bmad-method@latest install --full --ide claude-code
-claude mcp add claude-flow npx claude-flow@alpha mcp start
+claude mcp add claude-flow npx claude-flow@latest mcp start
 
 # 3. Iniciar discovery
 bmad start-discovery --interactive
 
 # 4. Executar com contexto
-npx claude-flow@alpha swarm init --from-bmad
+npx claude-flow@latest swarm init --from-bmad
 ```
 
 ### Comandos Frequentes
@@ -280,13 +280,13 @@ bmad ux map-user-journeys        # Jornadas com UX
 bmad architect design-system     # Arquitetura
 
 # Execução
-npx claude-flow@alpha sparc tdd  # TDD com SPARC
-npx claude-flow@alpha validate   # Validar contra docs
-npx claude-flow@alpha monitor    # Monitorar swarm
+npx claude-flow@latest sparc tdd  # TDD com SPARC
+npx claude-flow@latest validate   # Validar contra docs
+npx claude-flow@latest monitor    # Monitorar swarm
 
 # Feedback
 bmad update-from-execution       # Atualizar docs
-npx claude-flow@alpha learnings  # Exportar aprendizados
+npx claude-flow@latest learnings  # Exportar aprendizados
 ```
 
 ## 💡 Melhores Práticas
