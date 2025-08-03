@@ -1,6 +1,6 @@
 # 📊 Project Status Dashboard - OS Post-Install Scripts
 
-> **Last Updated:** 2025-01-27 | **Project Version:** 3.1.0 | **CLAUDE.md Version:** 2.3.0
+> **Last Updated:** 2025-08-03 | **Project Version:** 3.2.0 | **CLAUDE.md Version:** 2.3.1
 
 ## 📈 Overall Health: 🟢 AI-Assisted Development + Product-Focused Git
 
@@ -29,7 +29,7 @@
 | macOS Scripts | ⚠️ Minimal | 20% | Basic structure, needs expansion |
 | Windows Scripts | ✅ Active | 80% | Good Win11 coverage |
 | Tests | 🟢 Improved | ~30 checks | Security tests added + basic checks |
-| BMAD Integration | ✅ Active | v4.32.0 | Updated to latest version |
+| BMAD Integration | ✅ Active | v4.34.0 | Updated to latest version |
 | CI/CD | ✅ Active | 100% | GitHub Actions working |
 | Documentation | ✅ Enhanced | 100%+ | User docs completely overhauled! |
 | **ADRs** | ✅ Active | 10 ADRs | 9 Aceitos ✅, 1 Em Discussão 🟨 (ADR-003) |
@@ -38,16 +38,16 @@
 
 ## 🎯 Current Sprint Focus
 
-### Sprint v3.2.0: Intelligent Recommendations (August 1-14, 2025)
+### Sprint v3.2.0: BMAD v4.34.0 Integration (August 1-14, 2025) - IN PROGRESS
 
-**Sprint Goal:** Replace profile system with minimal base + intelligent recommendations
+**Sprint Goal:** Integrate BMAD v4.34.0 and organize project documentation
 
-**Sprint Backlog (38 story points):**
-1. **Story 1.1: Quick Start Installation** (8 pts) 🔴 HIGH
-   - [ ] One-command minimal base installation
-   - [ ] 15-minute installation target
-   - [ ] Parallel execution where safe
-   - [ ] Progress indicators with time remaining
+**Sprint Progress:**
+1. **Documentation Organization** ✅ COMPLETED
+   - [x] BMAD updated to v4.34.0
+   - [x] Sprint documents archived in sprint-archives/v3.2.0
+   - [x] ROADMAP.md updated
+   - [x] STATUS.md updated
 
 2. **Story 1.6: PRD/STORIES Technology Detection** (13 pts) 🔴 HIGH
    - [ ] Document parser implementation

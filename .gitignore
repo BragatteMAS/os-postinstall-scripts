@@ -7,6 +7,14 @@
 ehthumbs.db
 Thumbs.db
 
+# Sprint and temporary documentation
+*_DRAFT.md
+*_TASKS.md
+*_SUMMARY.md
+SPRINT_*.md
+QA_CHECKLIST.md
+GAP_*.md
+
 # IDE files
 .vscode/
 .idea/
