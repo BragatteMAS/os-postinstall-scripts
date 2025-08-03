@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2025-08-03
+
+### Added
+- 🤖 **Agent-OS Integration**: Lightweight agent orchestration system
+  - Created `.agent-os/` directory structure for agent management
+  - Added agent templates and configuration system
+  - Integrated with native Claude agents
+  - SQLite-based memory persistence for agents
+  - Automatic hooks system for pre/post task execution
+  
+- 📚 **Documentation Agent**: Automated documentation maintenance
+  - Auto-updates README, CHANGELOG, and STATUS files
+  - Maintains version consistency across all docs
+  - Tracks documentation staleness automatically
+
+- 🔗 **Symlink Structure**: Improved project organization
+  - Created symlink from root to `.agent-os/` for easier access
+  - Better integration with Claude Code workflow
+
+### Changed
+- 📦 **Updated Dependencies**:
+  - BMAD Method: v4.33.0 → v4.34.0
+  - claude-flow: Installed v2.0.0-alpha.84 (latest)
+  
+- 📝 **BMAD_CLAUDE_FLOW_INTEGRATION.md**: 
+  - Updated all references from `claude-flow@alpha` to `claude-flow@latest`
+  - Ensures always using the most recent version
+  - Better maintainability without hardcoded versions
+
+### Fixed
+- 🧹 **Code Cleanup**:
+  - Removed trailing whitespace from Warp Terminal configuration files
+  - Improved code formatting consistency across shell scripts
+
 ## [3.1.5] - 2025-07-01
 
 ### Added
