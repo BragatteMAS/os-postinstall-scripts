@@ -1,6 +1,6 @@
 {
   "name": "os-postinstall-scripts",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Cross-platform OS post-installation scripts - Development tools",
   "private": true,
   "scripts": {
