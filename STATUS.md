@@ -16,7 +16,7 @@
 | **STORIES.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **STATUS.md** | ✅ Active | 1.1.0 | 2025-01-27 | 🟢 | Moved to root, updated |
 | **CLAUDE.md** | ✅ Active | 2.3.1 | 2025-07-01 | 🟢 | Updated to v2.3.1 with new MCPs + claude-code IDE |
-| **CLAUDE-EXTENDED.md** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Reference document |
+| **CLAUDE-EXTENDED.mdc** | ✅ Active | 2.3.0 | 2025-07-23 | 🟢 | Reference document (MDC format) |
 | **TESTING.md** | ✅ Active | 1.0.0 | 2025-01-27 | 🟢 | Moved to root directory |
 | **ARCHITECTURE.md** | ❌ Missing | - | - | 🟡 | Optional but recommended |
 | **MAINTENANCE.md** | ❌ Missing | - | - | 🟡 | Optional but recommended |

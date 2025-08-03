@@ -201,7 +201,8 @@ fi
 
 echo -e "\n${BLUE}📦 Reorganizing documentation...${NC}"
 # Move non-essential markdown files from root to docs
-for file in QUICKSTART-AI.md PRODUCT_FOCUSED_COMMITS.md MIGRATION_PT_EN.md CLAUDE-EXTENDED.md; do
+# Note: CLAUDE-EXTENDED.mdc is now managed globally in ~/.agent-os/documentation/
+for file in QUICKSTART-AI.md PRODUCT_FOCUSED_COMMITS.md MIGRATION_PT_EN.md; do
     if [[ -f "$file" ]]; then
         move_safely "$file" "docs/guides/$file"
     fi
