@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 3 - Testing Foundation (Phase 2 complete)
+**Current focus:** Phase 2 - Consolidation & Data Migration (Gap closure in progress)
 
 ## Current Position
 
-Phase: 2 of 8 (Consolidation & Data Migration) - COMPLETE
-Plan: 5 of 5 in current phase - COMPLETE
-Status: Phase complete
-Last activity: 2026-02-05 - Completed 02-05-PLAN.md (Migration Verification and Cleanup)
+Phase: 2 of 8 (Consolidation & Data Migration)
+Plan: 6 of 7 in current phase
+Status: In progress (gap closure)
+Last activity: 2026-02-05 - Completed 02-06-PLAN.md (Legacy Directory Cleanup)
 
-Progress: [████████░░] 32%
+Progress: [████████░░] 36%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 2.8 min
-- Total execution time: 22 min
+- Total plans completed: 9
+- Average duration: 2.7 min
+- Total execution time: 24 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
-| 02-consolidation-data-migration | 5/5 | 16 min | 3.2 min |
+| 02-consolidation-data-migration | 6/7 | 18 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (3 min), 02-02 (5 min), 02-03 (4 min), 02-04 (2 min), 02-05 (2 min)
-- Trend: Stable at ~3.2 min for Phase 2 plans
+- Last 5 plans: 02-02 (5 min), 02-03 (4 min), 02-04 (2 min), 02-05 (2 min), 02-06 (2 min)
+- Trend: Stable at ~3 min for Phase 2 plans
 
 *Updated after each plan completion*
 
@@ -67,6 +67,9 @@ Recent decisions affecting current work:
 - [02-04]: Config.sh only sets SCRIPT_DIR if not already defined by caller
 - [02-05]: scripts/utils/ retained (application-level scripts, not duplicates)
 - [02-05]: platforms/linux/install/ retained for Phase 5 (flatpak/snap logic)
+- [02-06]: Bash dotfiles migrated to data/dotfiles/bash/ for consistent topic-based organization
+- [02-06]: Legacy empty directories removed without backup (no content to preserve)
+- [02-06]: check-installation.sh and post_install_new.sh removed (superseded)
 
 ### Patterns Established
 
@@ -89,6 +92,8 @@ Recent decisions affecting current work:
 - SCRIPT_DIR conditional: `if [[ -z "${SCRIPT_DIR:-}" ]]`
 - Cleanup verification: rg check before deletion
 - Legacy removal: one-time migration helpers deleted after phase
+- Topic-centric dotfiles: data/dotfiles/{topic}/ structure
+- platforms/linux/ reserved for platform-specific installers only
 
 ### Pending Todos
 
@@ -106,20 +111,28 @@ None.
 - src/core/: logging.sh, platform.sh, idempotent.sh, errors.sh, packages.sh
 - src/platforms/: linux/, macos/, windows/
 - data/packages/: apt.txt, brew.txt, brew-cask.txt, cargo.txt, npm.txt, winget.txt, flatpak.txt, snap.txt, ai-tools.txt, profiles/
-- data/dotfiles/: git/, zsh/, bash/
+- data/dotfiles/: git/, zsh/, bash/ (bash/ now has real content)
 - Entry points: setup.sh, config.sh
 
 **Removed:**
 - scripts/common/ (deprecated)
 - platforms/linux/auto/ (packages extracted)
 - platforms/linux/utils/ (empty)
+- platforms/linux/bash/ (migrated to data/dotfiles/bash/)
+- platforms/linux/config/ (empty, removed)
+- platforms/linux/distros/ (empty, removed)
+- platforms/linux/verify/ (legacy, removed)
+- platforms/linux/post_install_new.sh (stub, removed)
 - Legacy migration scripts (5 files)
+
+**Remaining in platforms/linux/:**
+- install/ (flatpak.sh, snap.sh, desktop-environments.sh) - deferred to Phase 5
 
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 02-05-PLAN.md (Migration Verification and Cleanup)
+Stopped at: Completed 02-06-PLAN.md (Legacy Directory Cleanup)
 Resume file: None
 
 ---
-*Next action: Begin Phase 3 (Testing Foundation)*
+*Next action: Execute 02-07-PLAN.md (remaining gaps) or begin Phase 3*
