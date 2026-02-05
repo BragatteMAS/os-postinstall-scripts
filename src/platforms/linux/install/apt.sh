@@ -1,18 +1,46 @@
-#!/usr/bin/env bash 
-set -euo pipefail
-IFS=$'\n\t'
+#!/usr/bin/env bash
+#######################################
+# Script: apt.sh
+# Description: Install APT packages for Linux (data-driven)
+# Author: Bragatte
+# Date: 2026-02-05
+#######################################
 
-# Source safe package manager operations
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# NOTE: No set -e (per Phase 1 decision - conflicts with "continue on failure" strategy)
 
-# Source safety module
-if [[ -f "${ROOT_DIR}/utils/package-manager-safety.sh" ]]; then
-    source "${ROOT_DIR}/utils/package-manager-safety.sh"
-else
-    echo "[ERROR] Required safety module not found: ${ROOT_DIR}/utils/package-manager-safety.sh" >&2
+# Constants
+SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+
+# Source core utilities from src/core/
+source "${SCRIPT_DIR}/../../../core/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
     exit 1
-fi
+}
+
+source "${SCRIPT_DIR}/../../../core/idempotent.sh" || {
+    log_error "Failed to load idempotent.sh"
+    exit 1
+}
+
+source "${SCRIPT_DIR}/../../../core/errors.sh" || {
+    log_error "Failed to load errors.sh"
+    exit 1
+}
+
+source "${SCRIPT_DIR}/../../../core/packages.sh" || {
+    log_error "Failed to load packages.sh"
+    exit 1
+}
+
+# Cleanup function
+cleanup() {
+    local exit_code=$?
+    log "Cleaning up ${SCRIPT_NAME}..."
+    exit $exit_code
+}
+trap cleanup EXIT INT TERM
 
 log_section "Auto install programs with APT-get"
 

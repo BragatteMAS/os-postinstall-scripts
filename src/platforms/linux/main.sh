@@ -1,17 +1,36 @@
 #!/usr/bin/env bash
-# Main orchestrator for Linux post-installation
-set -euo pipefail
-IFS=$'\n\t'
+#######################################
+# Script: main.sh
+# Description: Main orchestrator for Linux post-installation
+# Author: Bragatte
+# Date: 2026-02-05
+#######################################
 
-# Source utilities
-source "$(dirname "$0")/utils/logging.sh"
+# NOTE: No set -e (per Phase 1 decision - conflicts with "continue on failure" strategy)
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
+# Constants
+SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+
+# Source core utilities from src/core/
+source "${SCRIPT_DIR}/../../core/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
+    exit 1
+}
+
+source "${SCRIPT_DIR}/../../core/platform.sh" || {
+    log_error "Failed to load platform.sh"
+    exit 1
+}
+
+# Cleanup function
+cleanup() {
+    local exit_code=$?
+    [[ $exit_code -ne 0 ]] && log "Exiting ${SCRIPT_NAME} with code $exit_code"
+    exit $exit_code
+}
+trap cleanup EXIT INT TERM
 
 # Show menu
 show_menu() {
