@@ -24,6 +24,11 @@ source "${SCRIPT_DIR}/../../core/platform.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../core/packages.sh" || {
+    log_error "Failed to load packages.sh"
+    exit 1
+}
+
 # Cleanup function
 cleanup() {
     local exit_code=$?
@@ -39,11 +44,11 @@ show_menu() {
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo "Select installation type:"
-    echo "1. Full installation (APT + Snap + Flatpak)"
+    echo "1. Full installation (APT + Cargo)"
     echo "2. APT packages only"
-    echo "3. Snap packages only"
-    echo "4. Flatpak packages only"
-    echo "5. Anaconda/Python setup"
+    echo "3. Cargo (Rust) packages only"
+    echo "4. Snap packages only"
+    echo "5. Flatpak packages only"
     echo "6. Desktop environments"
     echo "7. Verify installation"
     echo "0. Exit"
@@ -57,39 +62,37 @@ while true; do
     
     case $choice in
         1)
-            log "Starting full installation..."
-            bash "$(dirname "$0")/install/apt.sh"
-            bash "$(dirname "$0")/install/snap.sh"
-            bash "$(dirname "$0")/install/flatpak.sh"
+            log_info "Starting full installation..."
+            bash "${SCRIPT_DIR}/install/apt.sh"
+            bash "${SCRIPT_DIR}/install/cargo.sh"
             ;;
         2)
-            bash "$(dirname "$0")/install/apt.sh"
+            bash "${SCRIPT_DIR}/install/apt.sh"
             ;;
         3)
-            bash "$(dirname "$0")/install/snap.sh"
+            bash "${SCRIPT_DIR}/install/cargo.sh"
             ;;
         4)
-            bash "$(dirname "$0")/install/flatpak.sh"
+            # TODO: Migrate snap.sh to data-driven in Phase 5
+            log_warn "Snap installer not yet migrated to new structure"
             ;;
         5)
-            bash "$(dirname "$0")/install/anaconda.sh"
+            # TODO: Migrate flatpak.sh to data-driven in Phase 5
+            log_warn "Flatpak installer not yet migrated to new structure"
             ;;
         6)
-            bash "$(dirname "$0")/install/desktop-environments.sh"
+            # TODO: Migrate desktop-environments.sh in Phase 5
+            log_warn "Desktop environments installer not yet migrated"
             ;;
         7)
-            if [[ -f "$(dirname "$0")/verify/check-installation.sh" ]]; then
-                bash "$(dirname "$0")/verify/check-installation.sh"
-            else
-                echo "Verification script not yet implemented"
-            fi
+            log_info "Verification not yet implemented"
             ;;
         0)
-            log "Exiting..."
+            log_info "Exiting..."
             exit 0
             ;;
         *)
-            echo -e "${RED}Invalid choice${NC}"
+            log_warn "Invalid choice"
             ;;
     esac
     
