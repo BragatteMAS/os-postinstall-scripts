@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 2 of 8 (Consolidation & Data Migration)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-05 - Completed 02-03-PLAN.md (Migrate Linux Platform)
+Last activity: 2026-02-05 - Completed 02-04-PLAN.md (Entry Point and Configuration)
 
-Progress: [██████░░░░] 24%
+Progress: [███████░░░] 28%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 3.0 min
-- Total execution time: 18 min
+- Total plans completed: 7
+- Average duration: 2.9 min
+- Total execution time: 20 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
-| 02-consolidation-data-migration | 3/5 | 12 min | 4 min |
+| 02-consolidation-data-migration | 4/5 | 14 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (2 min), 02-01 (3 min), 02-02 (5 min), 02-03 (4 min)
-- Trend: Stable at ~4 min for Phase 2 plans
+- Last 5 plans: 02-01 (3 min), 02-02 (5 min), 02-03 (4 min), 02-04 (2 min)
+- Trend: Stable at ~3.5 min for Phase 2 plans
 
 *Updated after each plan completion*
 
@@ -63,6 +63,8 @@ Recent decisions affecting current work:
 - [02-03]: Created new cargo.sh instead of migrating rust-tools.sh
 - [02-03]: Deferred post_install.sh refactoring to Phase 5 cleanup
 - [02-03]: Added cargo-binstall support for faster Rust tool installation
+- [02-04]: Use 'macos' (not 'darwin') in case statement to match platform.sh output
+- [02-04]: Config.sh only sets SCRIPT_DIR if not already defined by caller
 
 ### Patterns Established
 
@@ -81,6 +83,8 @@ Recent decisions affecting current work:
 - Profile composition: list of package file names (apt.txt, cargo.txt, etc.)
 - Data-driven installer: `load_packages("file.txt")` then iterate `PACKAGES[@]`
 - Idempotent check pattern: `is_*_installed()` before installing
+- Entry point pattern: setup.sh sources config.sh then core utilities
+- SCRIPT_DIR conditional: `if [[ -z "${SCRIPT_DIR:-}" ]]`
 
 ### Pending Todos
 
@@ -95,8 +99,8 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 02-03-PLAN.md (Migrate Linux Platform)
+Stopped at: Completed 02-04-PLAN.md (Entry Point and Configuration)
 Resume file: None
 
 ---
-*Next action: Execute 02-04-PLAN.md (Migrate platforms/macos/ to src/platforms/macos/)*
+*Next action: Execute 02-05-PLAN.md (Migration Verification and Cleanup)*
