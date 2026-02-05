@@ -40,8 +40,10 @@ SKIP_PACKAGES=()
 #===============================================
 # PATHS (usually no need to change)
 #===============================================
-# Base directory (auto-detected)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+# Base directory (auto-detected if not already set by caller)
+if [[ -z "${SCRIPT_DIR:-}" ]]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+fi
 readonly PROJECT_ROOT="${SCRIPT_DIR}"
 readonly SRC_DIR="${PROJECT_ROOT}/src"
 readonly DATA_DIR="${PROJECT_ROOT}/data"
