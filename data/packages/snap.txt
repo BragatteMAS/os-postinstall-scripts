@@ -1,0 +1,48 @@
+# Snap Package List
+# Source: platforms/linux/auto/auto_snap.sh
+# One package per line, comments start with #
+
+# System
+bitwarden
+bpytop
+
+# Sound
+audacity
+spotify
+
+# Image
+photogimp
+inkscape
+gifcurry
+
+# Video
+obs-studio
+kdenlive
+
+# Communication
+discord
+telegram-desktop
+rambox
+
+# Productivity - Browser
+chromium
+
+# Productivity - Task Management
+todoist
+
+# Productivity - Reading
+foliate
+feedreader
+
+# Productivity - References
+zotero-snap
+
+# Productivity - Utilities
+homeserver
+nextcloud
+
+# Productivity - Development
+docker
+
+# Research
+pymol-oss

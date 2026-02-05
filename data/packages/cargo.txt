@@ -1,0 +1,59 @@
+# Cargo (Rust) Package List
+# Source: scripts/install/rust-tools.sh
+# One package per line, comments start with #
+
+# Terminal - File Navigation
+bat
+eza
+fd-find
+lsd
+
+# Terminal - Search
+ripgrep
+
+# Terminal - System Info
+dust
+bottom
+procs
+tokei
+hyperfine
+
+# Terminal - Text Processing
+sd
+
+# Terminal - Navigation
+zoxide
+
+# Terminal - Git
+git-delta
+gitui
+
+# Development - Cargo Extensions
+cargo-watch
+cargo-edit
+cargo-update
+cargo-audit
+cargo-expand
+cargo-outdated
+cargo-binstall
+bacon
+
+# Data Tools
+xsv
+jql
+htmlq
+
+# Shell - Prompt
+starship
+
+# Shell - Alternative Shells
+nu
+
+# Editor
+helix
+
+# Terminal Multiplexer
+zellij
+
+# Shell History
+atuin

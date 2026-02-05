@@ -1,0 +1,21 @@
+# NPM Global Package List
+# Source: Common development tools
+# One package per line, comments start with #
+
+# Development Tools
+typescript
+ts-node
+
+# Package Runners
+pnpm
+
+# Build Tools
+vite
+
+# Linting
+eslint
+prettier
+
+# AI/MCP Tools
+bmad-method
+license-checker
