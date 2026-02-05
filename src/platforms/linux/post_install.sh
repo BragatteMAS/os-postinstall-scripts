@@ -29,6 +29,11 @@ source "${SCRIPT_DIR}/../../core/idempotent.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../core/packages.sh" || {
+    log_error "Failed to load packages.sh"
+    exit 1
+}
+
 # TODO: Package safety module needs migration to src/core/
 # For now, define minimal stubs for safe_apt_* functions
 safe_apt_update() {
@@ -91,123 +96,12 @@ trap cleanup EXIT INT TERM
 echo -e '\n Starting OS Post-Install Script... \n'
 
 # -------------------------------------------------------------------------- #
-#APT command line package used to install programs Debian/Ubuntu distros stores
-# -----------------------------VARIABLES APT-------------------------------- #
-APT_INSTALL=(
-synaptic              		#System|program manager
-neofetch              		#System|verify info term
-gufw                  		#System|firewall for linux
-git git-lfs           		#System|control modifications
-stacer                		#System|clean and monitor programs
-alacritty             		#System|GPU enhanced terminal
-timeshift             		#System|backup
-virtualbox-qt         		#System|emulate OS	'sudo adduser $USER vboxusers'
-nemo                   		#System|file manager
-
-flameshot             		#Image|capture screen with shortcut system -> easir to manager with .deb
-zsh                    		#Terminal|alternative option for bash in terminal
-terminator            		#Terminal|high configurtion term
-gnome-sushi            		#Image|previsualize files pressing space Nautilus
-folder-color              #Image|visual productivity for management folders structures
-ffmpeg                		#Image|extension
-
-simplescreenrecorder  		#Video|capture and film screen
-
-lutris piper ratbagd wine      	#Games|systems
-
-openssh-server                  #System|remotely controlling & transferring
-tigervnc-viewer                 #System|VNC
-
-openconnect network-manager-openconnect network-manager-openconnect-gnome      		  #System|VPN
-openvpn network-manager-openvpn network-manager-openvpn-gnome                   	  #System|ProtonVPN
-gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs chrome-gnome-shell	#Gnome|desktop utilities
-
-pspp #Research|Stats
-)
+# Package lists are now in data/packages/ directory:
+# - apt-post.txt: APT packages for post-install
+# - snap-post.txt: Snap packages for post-install
+# - flatpak-post.txt: Flatpak packages for post-install
 # -------------------------------------------------------------------------- #
-#Programs select from SNAP store <https://snapcraft.io/store>
-# -----------------------------VARIABLES SNAP------------------------------- #
-SNAP_INSTALL=(
-#bing-wall            #Image|Wallpapers automatically generated | change for gnome extension
-photogimp          	#Image|patch 'Adobe' for GIMP
 
-bpytop	          	#System|memory verify
-authy               #System|backup two steps factors
-
-homeserver	        #Productivity|Share folders in urls
-docker             	#Productivity|container environmental 'sudo groupadd docker' && 'sudo usermod -aG docker $USER'
-qsnapstore         	#Productivity|Snap store improved
-
-weka-james-carroll 	#Research|ML
-)
-# --------------------------------------------------------------------------- #
-#Programs select from Flathub store <https://flathuby.org/home>
-# -----------------------------VARIABLES FLAT-------------------------------- #
-FLAT_INSTALL=(
-com.bitwarden.desktop	  	#System|password manager
-flatseal              		#System|permissions
-filezilla              		#System|SQL manager
-gpuviewer		            	#System|GPU easy info
-OnionShare            		#System|transfer files safety
-org.gnome.Boxes       		#System|virtualization
-de.haeckerfelix.Fragments #System|bitTorrent client for gnome
-fr.romainvigier.MetadataCleaner #System|clean metadata imgs before upload to internet
-
-pavucontrol	      	    	#Sound|Control
-com.spotify.Client	    	#Sound|digital music service
-org.audacityteam.Audacity #Sound|Record and edit audio files
-io.github.seadve.Mousai   #Sound|discover songs
-
-com.uploadedlobster.peek	      #Image|gif creator
-org.inkscape.Inkscape	          #Image|vector graphics software
-#org.flozz.yoga-image-optimizer  #Image|converter
-
-org.kde.kdenlive	        #Video|Edition
-obsproject.Studio      		#Video|streaming software
-org.videolan.VLC      		#Video|media player open-source
-org.blender.Blender    		#Video|3D pipeline—model,animation,simulation,rendering
-
-com.valvesoftware.Steam		#Games|systems
-
-zoom                  		#Comunication|webinars
-slack                  		#Comunication|team chat
-org.telegram.desktop	  	#Comunication|popular messaging protocol
-com.discordapp.Discord		#Comunication|messaging electron framework
-
-com.google.Chrome             #Productivity|browser 
-org.chromium.Chromium		      #Productivity|browser
-io.gitlab.librewolf-community	#Productivity|browser
-
-dropbox               		#Productivity|online files manager storage
-nz.mega.MEGAsync       		#Productivity|online files manager storage
-
-org.kde.okular                  #Productivity|pdf-editor
-calibre                	      	#Productivity|reader kindle types
-openboard              		      #Productivity|educational software interactive board
-com.github.johnfactotum.Foliate	#Productivity|ebook viewer
-fontfinder             	      	 #Productivity|design
-org.gustavoperedo.FontDownloader #Productivity|design
-io.github.lainsce.Colorway      #Productivity|design
-io.github.lainsce.Emulsion      #Productivity|design
-
-com.visualstudio.code		  #Productivity|Best IDE
-rest.insomnia.Insomnia    #Productivity|open source rest api tester
-meld                   		#Productivity|diif across files
-#gitkraken              		#Productivity|code commit
-
-com.toggl.TogglDesktop 	    	#Productivity|design
-org.texstudio.TeXstudio       #Productivity|writing
-blanket	                    	#Productivity|back environmental sounds to work
-organizer              	    	#Productivity|shifts files according to their filetype
-com.gitlab.cunidev.Workflow 	#Productivity|timecontrol
-
-md.obsidian.Obsidian		  #Research|Link your thinking
-org.zotero.Zotero      		#Research|References
-org.pymol.PyMOL			      #Research|3D viewer
-org.jaspstats.JASP     		#Research|real-time, statisticial spreadsheet
-geogebra               		#Research|dynamic geometry program
-)
-# ---------------------------------------------------------------------- #
 #Deb packages
 ##Alternative for Flathub from Chrome released 2022
 #URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
@@ -235,34 +129,60 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 # ---------------------------------------------------------------------- #
 ## Install programs APT
-log_section "Installing APT packages" "-" 40
-
-total_packages=${#APT_INSTALL[@]}
-current_package=0
-
-for apt_program in "${APT_INSTALL[@]}"; do
-    current_package=$((current_package + 1))
-    log_progress $current_package $total_packages "Installing APT packages"
-    
-    # Use safe installation function
-    if ! safe_apt_install "$apt_program"; then
-        log_warning "Failed to install $apt_program, continuing with other packages..."
-    fi
-done
+log_section "Installing APT packages"
+if load_packages "apt-post.txt"; then
+    total_packages=${#PACKAGES[@]}
+    current_package=0
+    for apt_program in "${PACKAGES[@]}"; do
+        current_package=$((current_package + 1))
+        log_progress $current_package $total_packages "Installing APT packages"
+        if ! safe_apt_install "$apt_program"; then
+            log_warning "Failed to install $apt_program, continuing..."
+        fi
+    done
+else
+    log_warning "Could not load apt-post.txt, skipping APT packages"
+fi
 
 ## Install programs SNAP
-for snap_program in ${SNAP_INSTALL[@]}; do
-  if ! dpkg -l | grep -q $snap_program; then # Just install if not exist
-    snap install "$snap_program" 
-  fi
-done
+log_section "Installing Snap packages"
+if load_packages "snap-post.txt"; then
+    total_packages=${#PACKAGES[@]}
+    current_package=0
+    for snap_program in "${PACKAGES[@]}"; do
+        current_package=$((current_package + 1))
+        log_progress $current_package $total_packages "Installing Snap packages"
+        if ! snap list "$snap_program" &>/dev/null; then
+            if ! sudo snap install "$snap_program"; then
+                log_warning "Failed to install $snap_program, continuing..."
+            fi
+        else
+            log_info "Already installed: $snap_program"
+        fi
+    done
+else
+    log_warning "Could not load snap-post.txt, skipping Snap packages"
+fi
 
 ## Install programs FLATPAK
-for flat_program in ${FLAT_INSTALL[@]}; do
-  if ! dpkg -l | grep -q $flat_program; then # Just install if not exist
-    flatpak install flathub "$flat_program" -y
-  fi
-done
+log_section "Installing Flatpak packages"
+if load_packages "flatpak-post.txt"; then
+    total_packages=${#PACKAGES[@]}
+    current_package=0
+    for flat_program in "${PACKAGES[@]}"; do
+        current_package=$((current_package + 1))
+        log_progress $current_package $total_packages "Installing Flatpak packages"
+        if ! flatpak list --app | grep -q "$flat_program"; then
+            if ! flatpak install flathub "$flat_program" -y; then
+                log_warning "Failed to install $flat_program, continuing..."
+            fi
+        else
+            log_info "Already installed: $flat_program"
+        fi
+    done
+else
+    log_warning "Could not load flatpak-post.txt, skipping Flatpak packages"
+fi
 
 ### --------------------------- Exceptions----------------------------- ###
 ## Brave Browser
