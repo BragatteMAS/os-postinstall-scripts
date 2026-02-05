@@ -1,0 +1,2 @@
+# Minimal profile - essential system packages only
+apt.txt

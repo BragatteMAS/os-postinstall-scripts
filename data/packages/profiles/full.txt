@@ -1,0 +1,5 @@
+# Full profile - all packages including AI tools
+apt.txt
+cargo.txt
+npm.txt
+ai-tools.txt
