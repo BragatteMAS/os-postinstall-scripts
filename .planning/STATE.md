@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 2 - Consolidation & Data Migration (Gap closure in progress)
+**Current focus:** Phase 3 - Testing Foundation (Phase 2 complete)
 
 ## Current Position
 
-Phase: 2 of 8 (Consolidation & Data Migration)
-Plan: 6 of 7 in current phase
-Status: In progress (gap closure)
-Last activity: 2026-02-05 - Completed 02-06-PLAN.md (Legacy Directory Cleanup)
+Phase: 2 of 8 (Consolidation & Data Migration) - COMPLETE
+Plan: 7 of 7 in current phase - COMPLETE
+Status: Phase complete
+Last activity: 2026-02-05 - Completed 02-07-PLAN.md (Post-install Data Separation)
 
-Progress: [████████░░] 36%
+Progress: [████████░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 2.7 min
-- Total execution time: 24 min
+- Total plans completed: 10
+- Average duration: 2.6 min
+- Total execution time: 26 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
-| 02-consolidation-data-migration | 6/7 | 18 min | 3 min |
+| 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (5 min), 02-03 (4 min), 02-04 (2 min), 02-05 (2 min), 02-06 (2 min)
-- Trend: Stable at ~3 min for Phase 2 plans
+- Last 5 plans: 02-03 (4 min), 02-04 (2 min), 02-05 (2 min), 02-06 (2 min), 02-07 (2 min)
+- Trend: Stable at ~2.6 min for recent plans
 
 *Updated after each plan completion*
 
@@ -61,7 +61,7 @@ Recent decisions affecting current work:
 - [02-02]: Profile composition: profiles list package files, not packages directly
 - [02-02]: Preserved auto/ packages in flatpak.txt and snap.txt before removal
 - [02-03]: Created new cargo.sh instead of migrating rust-tools.sh
-- [02-03]: Deferred post_install.sh refactoring to Phase 5 cleanup
+- [02-03]: Deferred post_install.sh refactoring to gap closure plan
 - [02-03]: Added cargo-binstall support for faster Rust tool installation
 - [02-04]: Use 'macos' (not 'darwin') in case statement to match platform.sh output
 - [02-04]: Config.sh only sets SCRIPT_DIR if not already defined by caller
@@ -70,6 +70,8 @@ Recent decisions affecting current work:
 - [02-06]: Bash dotfiles migrated to data/dotfiles/bash/ for consistent topic-based organization
 - [02-06]: Legacy empty directories removed without backup (no content to preserve)
 - [02-06]: check-installation.sh and post_install_new.sh removed (superseded)
+- [02-07]: Consistent load_packages() pattern across all installer scripts
+- [02-07]: Improved idempotency checks for Snap (snap list) and Flatpak (flatpak list --app)
 
 ### Patterns Established
 
@@ -94,6 +96,8 @@ Recent decisions affecting current work:
 - Legacy removal: one-time migration helpers deleted after phase
 - Topic-centric dotfiles: data/dotfiles/{topic}/ structure
 - platforms/linux/ reserved for platform-specific installers only
+- Idempotent snap check: `snap list pkg &>/dev/null`
+- Idempotent flatpak check: `flatpak list --app | grep pkg`
 
 ### Pending Todos
 
@@ -102,7 +106,6 @@ None.
 ### Blockers/Concerns
 
 - macOS ships Bash 3.2; project requires 4.0+ (address in Phase 4)
-- post_install.sh still has hardcoded arrays (deferred to Phase 5 cleanup)
 - scripts/utils/ application-level scripts not yet consolidated (Phase 5)
 
 ## Phase 2 Deliverables
@@ -110,8 +113,8 @@ None.
 **Structure:**
 - src/core/: logging.sh, platform.sh, idempotent.sh, errors.sh, packages.sh
 - src/platforms/: linux/, macos/, windows/
-- data/packages/: apt.txt, brew.txt, brew-cask.txt, cargo.txt, npm.txt, winget.txt, flatpak.txt, snap.txt, ai-tools.txt, profiles/
-- data/dotfiles/: git/, zsh/, bash/ (bash/ now has real content)
+- data/packages/: apt.txt, apt-post.txt, brew.txt, brew-cask.txt, cargo.txt, npm.txt, winget.txt, flatpak.txt, flatpak-post.txt, snap.txt, snap-post.txt, ai-tools.txt, profiles/
+- data/dotfiles/: git/, zsh/, bash/
 - Entry points: setup.sh, config.sh
 
 **Removed:**
@@ -124,15 +127,22 @@ None.
 - platforms/linux/verify/ (legacy, removed)
 - platforms/linux/post_install_new.sh (stub, removed)
 - Legacy migration scripts (5 files)
+- Hardcoded arrays from post_install.sh (extracted to data files)
 
 **Remaining in platforms/linux/:**
 - install/ (flatpak.sh, snap.sh, desktop-environments.sh) - deferred to Phase 5
 
+## Gap Closures Complete
+
+- Gap 1: Missing error handling functions - CLOSED (01-03)
+- Gap 2: post_install.sh hardcoded arrays - CLOSED (02-07)
+- All PKG-04 violations resolved
+
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 02-06-PLAN.md (Legacy Directory Cleanup)
+Stopped at: Completed 02-07-PLAN.md (Post-install Data Separation)
 Resume file: None
 
 ---
-*Next action: Execute 02-07-PLAN.md (remaining gaps) or begin Phase 3*
+*Next action: Begin Phase 3 (Testing Foundation)*
