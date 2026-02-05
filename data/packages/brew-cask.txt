@@ -1,0 +1,31 @@
+# Homebrew Cask List
+# Source: Common macOS GUI applications
+# One package per line, comments start with #
+
+# Terminal
+iterm2
+warp
+
+# Editors
+visual-studio-code
+
+# Browsers
+firefox
+brave-browser
+
+# Communication
+slack
+zoom
+discord
+
+# Productivity
+obsidian
+notion
+
+# Development
+docker
+github
+
+# Utilities
+rectangle
+raycast

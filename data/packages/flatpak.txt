@@ -1,0 +1,50 @@
+# Flatpak Package List
+# Source: platforms/linux/auto/auto_flat.sh
+# One package per line, comments start with #
+# Use full app IDs where applicable
+
+# System
+flatseal
+filezilla
+org.gnome.Boxes
+
+# Terminal
+vim.vim
+
+# Sound
+pavucontrol
+
+# Video
+obsproject.Studio
+org.blender.Blender
+org.videolan.VLC
+zoom
+
+# Communication
+slack
+skype
+
+# Productivity - File Management
+dropbox
+
+# Productivity - Documents
+masterpdf
+com.wps.Office
+calibre
+
+# Productivity - Learning
+ankiweb
+geogebra
+openboard
+
+# Productivity - Utilities
+blanket
+organizer
+meld
+gitkraken
+
+# Productivity - Stats
+jamovi
+
+# Browser
+Epiphany

@@ -1,0 +1,77 @@
+# APT Package List
+# Source: platforms/linux/install/apt.sh
+# One package per line, comments start with #
+
+# System - Package Managers
+synaptic
+gdebi
+make
+rpm
+
+# System - Utilities
+gufw
+stacer
+htop
+timeshift
+openssh-server
+
+# System - File Managers
+nemo
+dolphin
+
+# System - Virtualization
+virtualbox-qt
+
+# System - VNC/Remote
+tigervnc-viewer
+
+# System - VPN
+openconnect
+network-manager-openconnect
+network-manager-openconnect-gnome
+openvpn
+network-manager-openvpn
+network-manager-openvpn-gnome
+
+# Development - Version Control
+git
+git-lfs
+
+# Development - Build Tools
+build-essential
+cmake
+pkg-config
+libssl-dev
+
+# Terminal
+zsh
+terminator
+tilix
+
+# Media - Image
+gnome-sushi
+flameshot
+ffmpeg
+
+# Media - Video
+arandr
+simplescreenrecorder
+winff
+winff-gtk2
+winff-qt
+
+# Productivity
+xpad
+
+# Games
+steam
+lutris
+piper
+ratbagd
+wine
+
+# Gnome Desktop
+gnome-tweaks
+gnome-shell-extensions
+gnome-shell-extension-prefs
+chrome-gnome-shell

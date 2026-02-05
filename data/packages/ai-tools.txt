@@ -1,0 +1,21 @@
+# AI Tools Package List
+# Source: scripts/install/ai-tools.sh
+# One package per line, comments start with #
+# Format: package-name or npm:package-name for npm packages
+
+# MCP Servers (via npx)
+npx:@context7/mcp-server
+npx:@modelcontextprotocol/server-fetch
+npx:@modelcontextprotocol/server-sequential-thinking
+npx:@modelcontextprotocol/server-fastapi
+npx:@modelcontextprotocol/server-a2a
+npx:@modelcontextprotocol/server-system-prompts-and-models-of-ai
+
+# Python Tools (via uv)
+uv:serena-mcp-server
+
+# Project Management
+npm:bmad-method
+
+# Development Utilities
+uv

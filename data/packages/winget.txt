@@ -1,0 +1,67 @@
+# Winget Package List
+# Source: platforms/windows/win11.ps1
+# One package per line, comments start with #
+
+# Terminal
+Microsoft.WindowsTerminal
+
+# Editors
+JackieLiu.NotepadsApp
+Microsoft.VisualStudioCode
+
+# Development - BI
+Microsoft.PowerBI
+
+# Development - Git
+Git.Git
+GitHub.GitHubDesktop
+GitHub.cli
+
+# Development - WSL
+Canonical.Ubuntu
+
+# Development - Data Science
+Anaconda.Anaconda3
+RStudio.RStudio
+
+# Cloud Storage
+Dropbox.Dropbox
+Mega.MEGASync
+
+# Browsers
+BraveSoftware.BraveBrowser
+Mozilla.Firefox
+Google.Chrome
+
+# Productivity - Knowledge
+Zotero.Zotero
+Obsidian.Obsidian
+Notion.Notion
+ClickUp.ClickUp
+
+# Productivity - Data
+UniversityOfWaikato.Weka
+kite.kite
+
+# Productivity - Utilities
+Microsoft.PowerToys
+Toggl.TogglDesktop
+Skillbrains.lightshot
+Balena.Etcher
+
+# Media - Video
+OBSProject.OBSStudio
+Iriun.IriunWebcam
+HandBrake.HandBrake
+VideoLAN.VLC
+
+# Communication
+SlackTechnologies.Slack
+Zoom.Zoom
+Telegram.TelegramDesktop.Beta
+Spotify.Spotify
+
+# Gaming
+EpicGames.EpicGamesLauncher
+Valve.Steam
+Nvidia.GeForceExperience

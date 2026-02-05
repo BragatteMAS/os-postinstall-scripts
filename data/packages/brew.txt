@@ -1,0 +1,32 @@
+# Homebrew Formulae List
+# Source: Common macOS development tools
+# One package per line, comments start with #
+
+# System - Utilities
+git
+curl
+wget
+htop
+tree
+
+# Development - Build Tools
+cmake
+pkg-config
+openssl
+
+# Terminal - Rust Tools (also available via cargo)
+bat
+eza
+fd
+ripgrep
+zoxide
+git-delta
+starship
+
+# Shell
+zsh
+bash
+
+# Development - Languages
+python
+node
