@@ -1,0 +1,24 @@
+# Snap Post-Install Package List
+# Source: src/platforms/linux/post_install.sh
+# One package per line, comments start with #
+
+# Image - GIMP Plugin
+photogimp
+
+# System - Monitoring
+bpytop
+
+# System - 2FA Backup
+authy
+
+# Productivity - File Sharing
+homeserver
+
+# Productivity - Containers
+docker
+
+# Productivity - Snap Store UI
+qsnapstore
+
+# Research - Machine Learning
+weka-james-carroll
