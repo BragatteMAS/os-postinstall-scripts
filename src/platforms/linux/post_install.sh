@@ -1,18 +1,75 @@
-#!/usr/bin/env bash 
-set -euo pipefail
-IFS=$'\n\t'
+#!/usr/bin/env bash
+#######################################
+# Script: post_install.sh
+# Description: Full post-installation script for Linux
+# Author: Bragatte
+# Date: 2026-02-05
+#######################################
 
-# Source safe package manager operations
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# NOTE: No set -e (per Phase 1 decision - conflicts with "continue on failure" strategy)
 
-# Source safety module
-if [[ -f "${ROOT_DIR}/utils/package-manager-safety.sh" ]]; then
-    source "${ROOT_DIR}/utils/package-manager-safety.sh"
-else
-    echo "[ERROR] Required safety module not found: ${ROOT_DIR}/utils/package-manager-safety.sh" >&2
+# Constants
+SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+
+# Source core utilities from src/core/
+source "${SCRIPT_DIR}/../../core/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
     exit 1
-fi
+}
+
+source "${SCRIPT_DIR}/../../core/platform.sh" || {
+    log_error "Failed to load platform.sh"
+    exit 1
+}
+
+source "${SCRIPT_DIR}/../../core/idempotent.sh" || {
+    log_error "Failed to load idempotent.sh"
+    exit 1
+}
+
+# TODO: Package safety module needs migration to src/core/
+# For now, define minimal stubs for safe_apt_* functions
+safe_apt_update() {
+    sudo apt-get update -y
+}
+
+safe_apt_install() {
+    local pkg="$1"
+    sudo apt-get install -y "$pkg"
+}
+
+wait_for_apt() {
+    # Wait for apt lock to be free
+    while sudo fuser /var/lib/dpkg/lock-frontend &>/dev/null 2>&1; do
+        log_info "Waiting for apt lock..."
+        sleep 2
+    done
+    return 0
+}
+
+log_section() {
+    local title="$1"
+    echo ""
+    log_info "=== $title ==="
+}
+
+log_progress() {
+    local current="$1"
+    local total="$2"
+    local msg="${3:-}"
+    log_info "[$current/$total] $msg"
+}
+
+# Cleanup function
+cleanup() {
+    local exit_code=$?
+    log "Cleaning up ${SCRIPT_NAME}..."
+    # Release any apt locks if we have them
+    exit $exit_code
+}
+trap cleanup EXIT INT TERM
 
 ##	+-----------------------------------+-----------------------------------+
 ##	|                                                                       |
@@ -31,7 +88,7 @@ fi
 ##  | POP-OS 22.04 version 	- Tested 20220426				                        |
 ##	+-----------------------------------------------------------------------+
 
-echo ' \n Auto install Bragatte_mode!!!! \n	'
+echo -e '\n Starting OS Post-Install Script... \n'
 
 # -------------------------------------------------------------------------- #
 #APT command line package used to install programs Debian/Ubuntu distros stores
