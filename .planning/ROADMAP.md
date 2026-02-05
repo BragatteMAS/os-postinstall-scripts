@@ -10,7 +10,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - Integer phases (1, 2, 3...): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Core Infrastructure** - Foundation utilities for all platform code
+- [x] **Phase 1: Core Infrastructure** - Foundation utilities for all platform code
 - [ ] **Phase 2: Consolidation & Data Migration** - DRY the codebase, extract data
 - [ ] **Phase 3: Dotfiles Management** - Symlink and shell configuration system
 - [ ] **Phase 4: macOS Platform** - Homebrew integration and system setup
@@ -33,9 +33,9 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Platform detection module (DETECTED_* exports, verification sequence)
-- [ ] 01-02-PLAN.md — Idempotency utilities (is_installed, ensure_*, PATH guards)
-- [ ] 01-03-PLAN.md — Error handling and logging system (trap, failure tracking, colors)
+- [x] 01-01-PLAN.md — Platform detection module (DETECTED_* exports, verification sequence)
+- [x] 01-02-PLAN.md — Idempotency utilities (is_installed, ensure_*, PATH guards)
+- [x] 01-03-PLAN.md — Error handling and logging system (trap, failure tracking, colors)
 
 ### Phase 2: Consolidation & Data Migration
 **Goal**: Eliminate code duplication and separate code from data following DRY principle
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Infrastructure | 0/3 | Planned | - |
+| 1. Core Infrastructure | 3/3 | Complete | 2026-02-05 |
 | 2. Consolidation & Data Migration | 0/4 | Not started | - |
 | 3. Dotfiles Management | 0/3 | Not started | - |
 | 4. macOS Platform | 0/3 | Not started | - |
@@ -168,6 +168,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 ---
 *Roadmap created: 2026-02-04*
-*Phase 1 planned: 2026-02-05*
+*Phase 1 completed: 2026-02-05*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*

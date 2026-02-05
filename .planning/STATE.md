@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 1 - Core Infrastructure
+**Current focus:** Phase 2 - Consolidation & Data Migration
 
 ## Current Position
 
