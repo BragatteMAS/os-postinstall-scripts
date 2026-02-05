@@ -1,0 +1,124 @@
+# Flatpak Post-Install Package List
+# Source: src/platforms/linux/post_install.sh
+# One package per line, comments start with #
+
+# System - Password Manager
+com.bitwarden.desktop
+
+# System - Permissions Manager
+flatseal
+
+# System - FTP/SQL Manager
+filezilla
+
+# System - GPU Info
+gpuviewer
+
+# System - Secure File Transfer
+OnionShare
+
+# System - Virtualization
+org.gnome.Boxes
+
+# System - BitTorrent
+de.haeckerfelix.Fragments
+
+# System - Metadata Cleaner
+fr.romainvigier.MetadataCleaner
+
+# Sound - Volume Control
+pavucontrol
+
+# Sound - Music Streaming
+com.spotify.Client
+
+# Sound - Audio Editor
+org.audacityteam.Audacity
+
+# Sound - Song Discovery
+io.github.seadve.Mousai
+
+# Image - GIF Creator
+com.uploadedlobster.peek
+
+# Image - Vector Graphics
+org.inkscape.Inkscape
+
+# Video - Editor
+org.kde.kdenlive
+
+# Video - Streaming
+obsproject.Studio
+
+# Video - Media Player
+org.videolan.VLC
+
+# Video - 3D Animation
+org.blender.Blender
+
+# Games
+com.valvesoftware.Steam
+
+# Communication - Video Conferencing
+zoom
+
+# Communication - Team Chat
+slack
+
+# Communication - Messaging
+org.telegram.desktop
+com.discordapp.Discord
+
+# Productivity - Browsers
+com.google.Chrome
+org.chromium.Chromium
+io.gitlab.librewolf-community
+
+# Productivity - Cloud Storage
+dropbox
+nz.mega.MEGAsync
+
+# Productivity - PDF/Documents
+org.kde.okular
+calibre
+openboard
+com.github.johnfactotum.Foliate
+
+# Productivity - Design/Fonts
+fontfinder
+org.gustavoperedo.FontDownloader
+io.github.lainsce.Colorway
+io.github.lainsce.Emulsion
+
+# Productivity - Development
+com.visualstudio.code
+rest.insomnia.Insomnia
+meld
+
+# Productivity - Time Management
+com.toggl.TogglDesktop
+com.gitlab.cunidev.Workflow
+
+# Productivity - Writing
+org.texstudio.TeXstudio
+
+# Productivity - Focus/Audio
+blanket
+
+# Productivity - File Organization
+organizer
+
+# Research - Note Taking
+md.obsidian.Obsidian
+
+# Research - References
+org.zotero.Zotero
+
+# Research - 3D Viewer
+org.pymol.PyMOL
+
+# Research - Statistics
+org.jaspstats.JASP
+
+# Research - Mathematics
+geogebra

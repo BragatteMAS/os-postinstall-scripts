@@ -1,0 +1,73 @@
+# APT Post-Install Package List
+# Source: src/platforms/linux/post_install.sh
+# One package per line, comments start with #
+
+# System - Package Manager
+synaptic
+
+# System - Info/Monitoring
+neofetch
+stacer
+
+# System - Firewall
+gufw
+
+# System - Version Control
+git
+git-lfs
+
+# System - Terminal
+alacritty
+zsh
+terminator
+
+# System - Backup
+timeshift
+
+# System - Virtualization
+virtualbox-qt
+
+# System - File Manager
+nemo
+
+# System - SSH/Remote
+openssh-server
+tigervnc-viewer
+
+# System - VPN
+openconnect
+network-manager-openconnect
+network-manager-openconnect-gnome
+openvpn
+network-manager-openvpn
+network-manager-openvpn-gnome
+
+# Image - Screen Capture
+flameshot
+
+# Image - File Preview
+gnome-sushi
+
+# Image - Folder Customization
+folder-color
+
+# Image - Video Codec
+ffmpeg
+
+# Video - Screen Recording
+simplescreenrecorder
+
+# Games
+lutris
+piper
+ratbagd
+wine
+
+# Gnome - Desktop Utilities
+gnome-tweaks
+gnome-shell-extensions
+gnome-shell-extension-prefs
+chrome-gnome-shell
+
+# Research - Statistics
+pspp
