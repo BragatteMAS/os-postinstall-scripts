@@ -46,14 +46,16 @@ Plans:
   2. No duplicate implementation exists between `scripts/` and `platforms/` directories (old structure removed)
   3. Package lists are in separate `.sh` or `.txt` files under `data/packages/`, not hardcoded in scripts
   4. Deprecated code (`scripts/common/`) is removed from codebase
-**Plans**: 5 plans
+**Plans**: 7 plans (5 original + 2 gap closure)
 
 Plans:
-- [ ] 02-01-PLAN.md — Create directory structure and migrate core utilities to src/core/
-- [ ] 02-02-PLAN.md — Extract package lists to data/packages/*.txt files
-- [ ] 02-03-PLAN.md — Migrate Linux platform code to src/platforms/linux/
-- [ ] 02-04-PLAN.md — Create setup.sh entry point and config.sh
-- [ ] 02-05-PLAN.md — Remove deprecated code and clean up old directories
+- [x] 02-01-PLAN.md — Create directory structure and migrate core utilities to src/core/
+- [x] 02-02-PLAN.md — Extract package lists to data/packages/*.txt files
+- [x] 02-03-PLAN.md — Migrate Linux platform code to src/platforms/linux/
+- [x] 02-04-PLAN.md — Create setup.sh entry point and config.sh
+- [x] 02-05-PLAN.md — Remove deprecated code and clean up old directories
+- [ ] 02-06-PLAN.md — [GAP CLOSURE] Remove remaining legacy platforms/linux/ content
+- [ ] 02-07-PLAN.md — [GAP CLOSURE] Refactor post_install.sh to use load_packages()
 
 ### Phase 3: Dotfiles Management
 **Goal**: Implement topic-centric dotfiles system with safe symlink management
@@ -159,7 +161,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Infrastructure | 3/3 | Complete | 2026-02-05 |
-| 2. Consolidation & Data Migration | 0/5 | Not started | - |
+| 2. Consolidation & Data Migration | 5/7 | Gap closure needed | - |
 | 3. Dotfiles Management | 0/3 | Not started | - |
 | 4. macOS Platform | 0/3 | Not started | - |
 | 5. Linux Enhancements | 0/4 | Not started | - |
@@ -170,5 +172,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 ---
 *Roadmap created: 2026-02-04*
 *Phase 1 completed: 2026-02-05*
+*Phase 2 gap closure plans added: 2026-02-05*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*
