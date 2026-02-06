@@ -92,21 +92,23 @@ Plans:
 - [x] 04-03-PLAN.md — macOS main orchestrator with profile selection menu
 
 ### Phase 5: Linux Enhancements
-**Goal**: Add feature-specific packages and enhance existing Linux support
+**Goal**: Add feature-specific packages and enhance existing Linux support with hardened installers, cross-platform dev tools, and profile-based orchestration
 **Depends on**: Phase 4
 **Requirements**: PKG-02, FEAT-01, FEAT-02, FEAT-03
 **Success Criteria** (what must be TRUE):
   1. APT package installation works reliably (proper lock handling, retries)
   2. AI/MCP integration tools are installed in developer/full profile
-  3. Rust CLI tools (bat, eza, fd, rg, zoxide) are installed and working in developer/full profile
-  4. Development environment (Node via nvm, Python via uv) is configured in developer/full profile
-**Plans**: TBD
+  3. Rust CLI tools (bat, eza, fd, rg, zoxide, delta) are installed and working in developer/full profile
+  4. Development environment (Node via fnm, Python via uv) is configured in developer/full profile
+**Plans**: 6 plans
 
 Plans:
-- [ ] 05-01: Enhanced APT integration
-- [ ] 05-02: AI/MCP tools installation
-- [ ] 05-03: Rust CLI tools installation
-- [ ] 05-04: Development environment setup
+- [ ] 05-01-PLAN.md — APT hardening (lock timeout, retry backoff, two-pass install, DEBIAN_FRONTEND)
+- [ ] 05-02-PLAN.md — Flatpak/Snap data-driven rewrite (retry, idempotency, legacy removal)
+- [ ] 05-03-PLAN.md — Rust CLI tools installer (apt/brew + symlinks + dotfile integration)
+- [ ] 05-04-PLAN.md — Dev environment setup (fnm + uv + Node LTS + pnpm + bun + SSH)
+- [ ] 05-05-PLAN.md — AI coding tools installer (claude-code, codex, gemini-cli, ollama + profiles)
+- [ ] 05-06-PLAN.md — Linux main.sh orchestrator with profile dispatch and tests
 
 ### Phase 6: Windows Foundation
 **Goal**: Establish basic Windows support via PowerShell and WinGet
@@ -165,7 +167,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Consolidation & Data Migration | 7/7 | Complete | 2026-02-05 |
 | 3. Dotfiles Management | 4/4 | Complete | 2026-02-06 |
 | 4. macOS Platform | 3/3 | Complete | 2026-02-06 |
-| 5. Linux Enhancements | 0/4 | Not started | - |
+| 5. Linux Enhancements | 0/6 | Planned | - |
 | 6. Windows Foundation | 0/2 | Not started | - |
 | 7. User Experience Polish | 0/3 | Not started | - |
 | 8. Documentation | 0/2 | Not started | - |
@@ -176,5 +178,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 2 completed: 2026-02-05*
 *Phase 3 completed: 2026-02-06*
 *Phase 4 completed: 2026-02-06*
+*Phase 5 planned: 2026-02-06*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*
