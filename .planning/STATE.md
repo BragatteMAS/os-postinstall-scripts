@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 3 - Testing Foundation (Phase 2 complete)
+**Current focus:** Phase 3 - Dotfiles Management (in progress)
 
 ## Current Position
 
-Phase: 2 of 8 (Consolidation & Data Migration) - COMPLETE
-Plan: 7 of 7 in current phase - COMPLETE
-Status: Phase complete
-Last activity: 2026-02-05 - Completed 02-07-PLAN.md (Post-install Data Separation)
+Phase: 3 of 8 (Dotfiles Management)
+Plan: 1 of 4 in current phase - COMPLETE
+Status: In progress
+Last activity: 2026-02-06 - Completed 03-01-PLAN.md (Dotfiles Core Utility)
 
-Progress: [████████░░] 40%
+Progress: [████████░░] 44%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: 2.6 min
-- Total execution time: 26 min
+- Total execution time: 29 min
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████████░░] 40%
 |-------|-------|-------|----------|
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
+| 03-dotfiles-management | 1/4 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (4 min), 02-04 (2 min), 02-05 (2 min), 02-06 (2 min), 02-07 (2 min)
-- Trend: Stable at ~2.6 min for recent plans
+- Last 5 plans: 02-04 (2 min), 02-05 (2 min), 02-06 (2 min), 02-07 (2 min), 03-01 (3 min)
+- Trend: Stable at ~2.5 min for recent plans
 
 *Updated after each plan completion*
 
@@ -72,6 +73,9 @@ Recent decisions affecting current work:
 - [02-06]: check-installation.sh and post_install_new.sh removed (superseded)
 - [02-07]: Consistent load_packages() pattern across all installer scripts
 - [02-07]: Improved idempotency checks for Snap (snap list) and Flatpak (flatpak list --app)
+- [03-01]: Flat backup naming: ~/.config/git/ignore -> config-git-ignore.bak.DATE
+- [03-01]: Manifest format: TIMESTAMP | original -> backup
+- [03-01]: Session tracking via array for show_backup_summary()
 
 ### Patterns Established
 
@@ -98,6 +102,9 @@ Recent decisions affecting current work:
 - platforms/linux/ reserved for platform-specific installers only
 - Idempotent snap check: `snap list pkg &>/dev/null`
 - Idempotent flatpak check: `flatpak list --app | grep pkg`
+- Dotfiles backup naming: `path_to_backup_name()` for flat path prefix names
+- Symlink with backup: backup non-symlinks, replace symlinks without backup
+- Parent directory creation: `mkdir -p "$(dirname "$target")"` before symlink
 
 ### Pending Todos
 
@@ -138,11 +145,21 @@ None.
 - Gap 2: post_install.sh hardcoded arrays - CLOSED (02-07)
 - All PKG-04 violations resolved
 
+## Phase 3 Deliverables
+
+**Structure:**
+- src/core/: dotfiles.sh (new)
+- tests/: test-dotfiles.sh (new)
+
+**Created:**
+- src/core/dotfiles.sh - Dotfiles symlink manager utility
+- tests/test-dotfiles.sh - Integration tests
+
 ## Session Continuity
 
-Last session: 2026-02-05
-Stopped at: Completed 02-07-PLAN.md (Post-install Data Separation)
+Last session: 2026-02-06
+Stopped at: Completed 03-01-PLAN.md (Dotfiles Core Utility)
 Resume file: None
 
 ---
-*Next action: Begin Phase 3 (Testing Foundation)*
+*Next action: Continue with 03-02-PLAN.md (Git Configuration)*
