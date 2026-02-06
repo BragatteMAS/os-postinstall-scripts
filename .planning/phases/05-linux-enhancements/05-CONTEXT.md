@@ -17,7 +17,7 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 
 ### APT Hardening
 - Use `apt-get` (not `apt`) for scripting stability — apt warns about unstable CLI interface
-- dpkg lock handling: wait and retry with 60s timeout, checking every 5s (`-o DPkg::Lock::Timeout=60`)
+- dpkg lock handling: safe_apt_update() already exists with ~60s timeout — refine and add `-o DPkg::Lock::Timeout=60` as complement
 - Network failure retry: 3 attempts with exponential backoff (5s, 15s, 30s)
 - Log each retry attempt: `[WARN] Retry 2/3 para pacote X (falha de rede)...`
 - Always run `apt-get update` before installing (silencioso: `[INFO] Atualizando cache APT...`)
@@ -29,6 +29,7 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 - Verify sudo before attempting install (reuse `verify_sudo()` from core)
 - Install with recommended packages (no `--no-install-recommends` — workstation setup, not Docker)
 - No cleanup (no autoremove/clean) — setup script, not maintenance tool
+- Note: existing apt.sh lines 137-139 DO run autoclean+autoremove — REMOVE these intentionally
 - No proxy support code — apt already respects `http_proxy`/`https_proxy` natively
 - Two-pass install: `apt.txt` first, then `apt-post.txt` (consistent with flatpak-post/snap-post pattern)
 - Use `--force-confold` for non-interactive: `DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confold" install`
@@ -37,17 +38,26 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 - No apt pinning (contradicts decision [01-02]: no version checking)
 - Improve existing apt.sh (not create new)
 
-### Flatpak/Snap Hardening
-- Apply same hardening pattern as APT: retry logic, idempotency, consistent logging
-- Follow established `-post.txt` pattern (flatpak-post.txt, snap-post.txt already exist)
+### Flatpak/Snap Rewrite
+- Legacy scripts exist at `platforms/linux/install/` (old path, not `src/`) with hardcoded arrays and `set -e`
+- Rewrite as data-driven scripts in `src/platforms/linux/install/` following apt.sh pattern:
+  - Source core utilities (logging, idempotent, errors, packages)
+  - Use `load_packages("flatpak.txt")` / `load_packages("snap.txt")`
+  - Idempotent checks: `flatpak list --app | grep` for flatpak, `snap list | grep` for snap
+  - Retry logic and consistent logging (same as APT)
+  - Follow `-post.txt` pattern (flatpak-post.txt, snap-post.txt already exist in `data/packages/`)
+  - Remove legacy scripts from `platforms/linux/install/` after migration
 
 ### AI/MCP Tools
 - Tools: claude-code, codex (OpenAI), gemini-cli (Google), ollama (local LLM)
 - All npm-based tools via `npm install -g` (consistent method: Claude, Codex, Gemini)
 - Ollama via official curl script (`curl -fsSL https://ollama.com/install.sh | sh`)
 - Dedicated `ai-tools.sh` installer with case-based logic per tool
-- ai-tools.txt format: one name per line (consistent with project pattern)
-- No MCP server installation — MCP config is per-user Claude Code config, not system setup
+- ai-tools.txt: extend existing file (already has `npx:`/`uv:`/`npm:` prefixes for MCP tools)
+- AI CLI entries use `npm:` prefix: `npm:@anthropic-ai/claude-code`, `npm:@openai/codex`, `npm:@google/gemini-cli`
+- Ollama entry uses `curl:` prefix (new): `curl:ollama`
+- Existing MCP server entries in ai-tools.txt are preserved
+- No additional MCP server installation — MCP config is per-user Claude Code config, not system setup
 - No aider — 4 tools from the big 3 providers + local LLM is sufficient
 - Profiles: developer + full (not minimal)
 - No separate update mechanism — re-running script installs latest (npm install -g is idempotent)
@@ -65,13 +75,16 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 - Tools (6): bat, eza, fd-find, ripgrep, zoxide, delta
 - Installation via apt (Linux) / brew (macOS) — no Rust/cargo dependency required
 - Symlinks for Ubuntu name divergences: `ln -sf /usr/bin/batcat /usr/local/bin/bat`, `fd-find` -> `fd`
-- No automatic aliases — Rust tools aliases already live in `data/dotfiles/shared/aliases.sh` (Phase 3)
+- Aliases already exist in `data/dotfiles/shared/aliases.sh` (Phase 3 deliverable)
+- Existing: bat→cat, fd→find, rg→grep, delta→diff, eza→ls (all with `command -v` guard)
+- Adjustment needed: eza aliases to add `--group-directories-first` flag
+- Current `ll="eza -la --git"` should become `ll="eza -la --git --group-directories-first"`
+- Keep `--icons` excluded (requires Nerd Font not installed by this setup)
+- Existing `lt='eza --tree --level=2'` already present — no change needed
 - Educational message in summary showing Rust tool equivalents (bat>cat, eza>ls, etc.)
 - zoxide shell integration in dotfiles: `command -v zoxide &>/dev/null && eval "$(zoxide init bash)"`
 - delta config directly in `data/dotfiles/git/gitconfig` (no guard needed — git falls back to `less` if delta missing)
 - bat theme: leave default (auto-detects light/dark)
-- eza aliases: minimal (`--group-directories-first`) — no `--icons` (requires Nerd Font)
-- Additional aliases: `ll='eza -la --group-directories-first'`, `lt='eza --tree --level=2'`
 - Profiles: developer + full
 - Selection model: grupo+custom (same as AI tools)
 - No cargo install alternative — apt/brew is the method. Power users know `cargo install`.
@@ -113,10 +126,15 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 - apt.txt packages only + dotfiles (shell config, git, starship)
 - No AI tools, no Rust CLI tools, no dev environment
 
+### Profile Updates Required
+- developer.txt: add ai-tools.txt (currently missing — only full.txt has it)
+- developer.txt and full.txt: add references to new cross-platform installers
+- Profiles list filenames; orchestrator dispatches to correct installer per platform
+
 ### Cross-Platform
 - fnm, uv, ai-tools installers work on both Linux and macOS
-- Shared installers in `src/install/` (new directory)
-- Platform-specific remain in `src/platforms/{linux,macos}/install/`
+- Shared installers in `src/install/` (new directory — cross-platform, identical on Linux+macOS)
+- Platform-specific remain in `src/platforms/{linux,macos}/install/` (apt, brew, flatpak, snap)
 - Rust CLI tools: apt on Linux, brew on macOS (add to brew.txt if not present)
 
 ### Plan Structure
@@ -164,7 +182,6 @@ Desktop environments are OUT of scope (deferred). Docker is OUT of scope (deferr
 - desktop-environments.sh integration — DE install is high-risk, highly opinionated, out of Phase 5 scope
 - Rust toolchain (rustup) — offered as optional choice in grupo+custom but not installed by default
 - aider coding assistant — 4 AI tools already cover the market; aider via pip can be added later if demand
-- Git config improvements (defaultBranch=main, pull.rebase) — belongs to Phase 3 dotfiles revision
 - Nerd Font installation — required for eza --icons, but font management is separate concern
 
 </deferred>
