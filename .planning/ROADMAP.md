@@ -133,12 +133,12 @@ Plans:
   2. Running with `--dry-run` shows what would be installed without making changes
   3. After completion, user sees summary of what was installed/configured
   4. Single command `./setup.sh` starts the entire process with sensible defaults
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: Progress feedback system
-- [ ] 07-02: Dry-run mode implementation
-- [ ] 07-03: Completion summary
+- [ ] 07-01-PLAN.md — Progress feedback system (step counters in orchestrators, DRY_RUN banner, progress.sh module)
+- [ ] 07-02-PLAN.md — Dry-run mode (CLI flag parsing in setup.sh, DRY_RUN guards in 9 scripts)
+- [ ] 07-03-PLAN.md — Completion summary and one-command setup (rich summary with duration, SECONDS timer)
 
 ### Phase 8: Documentation
 **Goal**: Comprehensive documentation for users and contributors
@@ -169,7 +169,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 4. macOS Platform | 3/3 | Complete | 2026-02-06 |
 | 5. Linux Enhancements | 6/6 | Complete | 2026-02-06 |
 | 6. Windows Foundation | 2/2 | Complete | 2026-02-06 |
-| 7. User Experience Polish | 0/3 | Not started | - |
+| 7. User Experience Polish | 0/3 | Planned | - |
 | 8. Documentation | 0/2 | Not started | - |
 
 ---
