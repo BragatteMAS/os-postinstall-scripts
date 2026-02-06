@@ -1,0 +1,56 @@
+# Local Git Configuration Template
+# Copy this file to ~/.gitconfig.local and fill in your values
+#
+# This file is included by the global gitconfig for user-specific settings
+# that should not be committed to version control.
+
+# ===== Required: User Identity =====
+[user]
+    name = Your Name
+    email = your.email@example.com
+
+# ===== Optional: GPG Signing =====
+# Uncomment to enable commit signing
+#
+# [user]
+#     signingKey = YOUR_GPG_KEY_ID
+#
+# [commit]
+#     gpgSign = true
+#
+# [tag]
+#     gpgSign = true
+
+# ===== Optional: SSH Signing (Git 2.34+) =====
+# Alternative to GPG - uses SSH keys for signing
+#
+# [user]
+#     signingKey = ~/.ssh/id_ed25519.pub
+#
+# [gpg]
+#     format = ssh
+#
+# [commit]
+#     gpgSign = true
+
+# ===== Optional: Work/Personal Profile Switching =====
+# Use includeIf to automatically switch configs based on directory
+#
+# [includeIf "gitdir:~/work/"]
+#     path = ~/.gitconfig-work
+#
+# [includeIf "gitdir:~/personal/"]
+#     path = ~/.gitconfig-personal
+
+# ===== Optional: Credential Helper =====
+# macOS Keychain
+# [credential]
+#     helper = osxkeychain
+#
+# Windows Credential Manager
+# [credential]
+#     helper = manager-core
+#
+# Linux libsecret
+# [credential]
+#     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
