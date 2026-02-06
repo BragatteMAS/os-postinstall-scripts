@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 5 of 8 (Linux Enhancements)
-Plan: 2 of 6 in current phase
+Plan: 3 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-06 - Completed 05-02-PLAN.md (Flatpak & Snap Installers)
+Last activity: 2026-02-06 - Completed 05-03-PLAN.md (Rust CLI Tools)
 
-Progress: [████████████████████████░░] 83% (19/23 plans)
+Progress: [█████████████████████████░] 87% (20/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: 2.4 min
-- Total execution time: 46 min
+- Total execution time: 48 min
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [███████████████████████
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
-| 05-linux-enhancements | 2/6 | 4 min | 2 min |
+| 05-linux-enhancements | 3/6 | 6 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (2 min), 04-02 (2 min), 04-03 (2 min), 05-01 (2 min), 05-02 (2 min)
+- Last 5 plans: 04-02 (2 min), 04-03 (2 min), 05-01 (2 min), 05-02 (2 min), 05-03 (2 min)
 - Trend: Stable at ~2 min for recent plans
 
 *Updated after each plan completion*
@@ -100,6 +100,10 @@ Recent decisions affecting current work:
 - [05-02]: Snap idempotency uses snap list with trailing space to prevent partial matches
 - [05-02]: Classic confinement declared via classic: prefix in data files (no auto-detect)
 - [05-02]: retry_with_backoff from core/errors.sh, NOT defined locally (DRY)
+- [05-03]: Hardcoded tool list (not data-driven) when tools are tied to dotfile configuration
+- [05-03]: Separate APT/Brew package name arrays for cross-platform installer
+- [05-03]: interactive.sh in src/core/ as shared module for all cross-platform installers
+- [05-03]: src/install/ directory for cross-platform installers (sibling to src/core/)
 
 ### Patterns Established
 
@@ -147,6 +151,10 @@ Recent decisions affecting current work:
 - Non-interactive opts: `APT_NONINTERACTIVE_OPTS` array appended to command
 - Flatpak installer: `ensure_flathub_remote()` with `--if-not-exists` before install loop
 - Snap classic prefix: `classic:pkg-name` convention in data files for classic confinement
+- Cross-platform installer: branch on DETECTED_OS for apt vs brew in src/install/
+- Ubuntu symlink pattern: `/usr/local/bin/` symlinks for binary name divergences (batcat->bat, fdfind->fd)
+- Interactive selection: `show_category_menu()` -> All/Choose/Skip menu
+- Shell integration pattern: `command -v tool && eval "$(tool init shell)"` guard
 
 ### Pending Todos
 
@@ -236,11 +244,21 @@ None.
 - platforms/linux/install/flatpak.sh - Legacy hardcoded script
 - platforms/linux/install/snap.sh - Legacy hardcoded script
 
+**Created (05-03):**
+- src/core/interactive.sh - Shared interactive selection functions
+- src/install/rust-cli.sh - Cross-platform Rust CLI tools installer
+
+**Modified (05-03):**
+- data/dotfiles/shared/aliases.sh - eza alias with --group-directories-first
+- data/dotfiles/git/gitconfig - Delta pager, interactive diffFilter, delta section, zdiff3
+- data/dotfiles/bash/bashrc - zoxide init bash, fnm env
+- data/dotfiles/zsh/zshrc - zoxide init zsh, fnm env
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-02-PLAN.md (Flatpak & Snap Installers)
+Stopped at: Completed 05-03-PLAN.md (Rust CLI Tools)
 Resume file: None
 
 ---
-*Next action: Execute 05-03-PLAN.md*
+*Next action: Execute 05-04-PLAN.md*
