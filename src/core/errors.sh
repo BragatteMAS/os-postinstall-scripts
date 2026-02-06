@@ -25,6 +25,39 @@ if [[ -z "${_LOGGING_SOURCED:-}" ]]; then
 fi
 
 #######################################
+# Retry with Exponential Backoff
+#######################################
+
+# retry_with_backoff - Retry a command with exponential backoff
+# Usage: retry_with_backoff cmd arg1 arg2...
+# Returns: 0 on success, 1 after all attempts exhausted
+retry_with_backoff() {
+    local max_attempts=3
+    local -a delays=(5 15 30)
+    local attempt=1
+
+    while [[ $attempt -le $max_attempts ]]; do
+        if "$@"; then
+            return 0
+        fi
+
+        if [[ $attempt -lt $max_attempts ]]; then
+            local delay="${delays[$((attempt - 1))]}"
+            if type log_warn &>/dev/null; then
+                log_warn "Retry ${attempt}/${max_attempts} in ${delay}s..."
+            else
+                echo "[WARN] Retry ${attempt}/${max_attempts} in ${delay}s..." >&2
+            fi
+            sleep "$delay"
+        fi
+
+        attempt=$((attempt + 1))
+    done
+
+    return 1
+}
+
+#######################################
 # Failure Tracking
 #######################################
 
@@ -259,6 +292,7 @@ brew_install() {
 #######################################
 # Export functions and variables
 #######################################
+export -f retry_with_backoff
 export -f record_failure show_failure_summary get_failure_count clear_failures
 export -f create_temp_dir cleanup_temp_dir cleanup setup_error_handling
 export -f apt_install brew_install
