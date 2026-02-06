@@ -111,4 +111,6 @@ foreach ($pkg in $Packages) {
     Install-WinGetPackage -PackageId $pkg
 }
 
+# Summary (failures tracked in THIS process scope — callers can't see them)
+Show-FailureSummary
 exit 0

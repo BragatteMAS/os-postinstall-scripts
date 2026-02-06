@@ -55,6 +55,8 @@ if (Test-Path -LiteralPath $MainScript -PathType Leaf) {
 }
 
 # Summary and exit
-Show-FailureSummary
+# Note: Show-FailureSummary NOT called here — child scripts (winget.ps1) run in
+# separate process scopes, so $script:FailedItems is invisible to this caller.
+# Each installer calls Show-FailureSummary before its own exit.
 Write-Log -Level BANNER -Message 'Setup Complete'
 exit 0
