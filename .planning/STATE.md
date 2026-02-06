@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 5 - Linux Enhancements (COMPLETE)
+**Current focus:** Phase 6 - Windows Foundation (In Progress)
 
 ## Current Position
 
-Phase: 5 of 8 (Linux Enhancements)
-Plan: 6 of 6 in current phase
-Status: Phase complete
-Last activity: 2026-02-06 - Completed 05-06-PLAN.md (Linux Orchestrator)
+Phase: 6 of 8 (Windows Foundation)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-06 - Completed 06-01-PLAN.md (Windows Core Foundation)
 
-Progress: [██████████████████████████] 100% (23/23 plans)
+Progress: [████████████████████████░░] 96% (24/25 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
+- Total plans completed: 24
 - Average duration: 2.4 min
-- Total execution time: 55 min
+- Total execution time: 57 min
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [███████████████████████
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
+| 06-windows-foundation | 1/2 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (2 min), 05-03 (2 min), 05-04 (2 min), 05-05 (2 min), 05-06 (3 min)
-- Trend: Stable at ~2 min, slight increase for orchestrator plan
+- Last 5 plans: 05-03 (2 min), 05-04 (2 min), 05-05 (2 min), 05-06 (3 min), 06-01 (2 min)
+- Trend: Stable at ~2 min
 
 *Updated after each plan completion*
 
@@ -114,6 +115,11 @@ Recent decisions affecting current work:
 - [05-06]: LINUX_DIR instead of SCRIPT_DIR to avoid packages.sh readonly conflict
 - [05-06]: dev-env + rust-cli run before dispatch loop (structural Node.js guarantee)
 - [05-06]: assert_fail helper for inverted test assertions (! doesn't work in $@ expansion)
+- [06-01]: Single Write-Log function with -Level parameter (PowerShell-idiomatic)
+- [06-01]: No Read-Profile in packages.psm1 (orchestrators dispatch directly, KISS)
+- [06-01]: Simple @() array for failure tracking (KISS over ArrayList/List)
+- [06-01]: No WinGet check in setup.ps1 (each installer checks its own tools)
+- [06-01]: $ErrorActionPreference = 'Continue' in scripts, not modules (inherit from caller)
 
 ### Patterns Established
 
@@ -174,6 +180,11 @@ Recent decisions affecting current work:
 - LINUX_DIR pattern: matches MACOS_DIR, avoids packages.sh SCRIPT_DIR overwrite
 - Orchestrator pre-dispatch: dev-env + rust-cli before profile loop for dependency ordering
 - assert_fail: inverted assertion helper for shell anti-pattern tests
+- PowerShell module pattern: `#Requires -Version 5.1` + `Export-ModuleMember`
+- Write-Log single function: `-Level` parameter replaces 6 Bash functions
+- PS DataDir resolution: `Resolve-Path "$PSScriptRoot/../../../.."` for robust path
+- Import-Module -Force: ensures fresh load on re-import
+- PS always exit 0: matches Bash convention for pragmatic failure handling
 
 ### Pending Todos
 
@@ -291,11 +302,19 @@ None.
 **Created (05-06):**
 - tests/test-linux.sh - Linux platform test suite (24 tests)
 
+## Phase 6 Deliverables (In Progress)
+
+**Created (06-01):**
+- setup.ps1 - Windows entry point with profile parameter and dispatch to main.ps1
+- src/platforms/windows/core/logging.psm1 - Write-Log with OK/ERROR/WARN/INFO/DEBUG/BANNER levels
+- src/platforms/windows/core/packages.psm1 - Read-PackageFile from data/packages/
+- src/platforms/windows/core/errors.psm1 - Add-FailedItem, Show-FailureSummary, Get-FailureCount, Clear-Failures
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-06-PLAN.md (Linux Orchestrator) -- Phase 5 COMPLETE
+Stopped at: Completed 06-01-PLAN.md (Windows Core Foundation)
 Resume file: None
 
 ---
-*Next action: Phase 5 complete. Ready for Phase 6 (Windows/WSL) or Phase 7 (Testing)*
+*Next action: 06-02 (WinGet Installer) to complete Phase 6*
