@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 5 of 8 (Linux Enhancements)
-Plan: 4 of 6 in current phase
+Plan: 5 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-06 - Completed 05-04-PLAN.md (Dev Environment Installers)
+Last activity: 2026-02-06 - Completed 05-05-PLAN.md (AI Tools Installer)
 
-Progress: [█████████████████████████░] 91% (21/23 plans)
+Progress: [█████████████████████████░] 96% (22/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
+- Total plans completed: 22
 - Average duration: 2.4 min
-- Total execution time: 50 min
+- Total execution time: 52 min
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [███████████████████████
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
-| 05-linux-enhancements | 4/6 | 8 min | 2 min |
+| 05-linux-enhancements | 5/6 | 10 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (2 min), 05-01 (2 min), 05-02 (2 min), 05-03 (2 min), 05-04 (2 min)
+- Last 5 plans: 05-01 (2 min), 05-02 (2 min), 05-03 (2 min), 05-04 (2 min), 05-05 (2 min)
 - Trend: Stable at ~2 min for recent plans
 
 *Updated after each plan completion*
@@ -107,6 +107,10 @@ Recent decisions affecting current work:
 - [05-04]: fnm --skip-shell prevents shell config modification (dotfiles handle PATH)
 - [05-04]: SSH key generation default=No, only offered interactively
 - [05-04]: Global npm packages (pnpm, bun) installed via npm install -g after Node LTS
+- [05-05]: Prefix-based dispatch: npm:/curl:/npx:/uv: prefixes route to different install methods
+- [05-05]: Bare words and npx:/uv: entries silently skipped (informational only, not installable)
+- [05-05]: Node.js availability checked before npm install -g (warn + skip if missing)
+- [05-05]: npm list -g for idempotent npm check (scoped packages need npm-level check)
 
 ### Patterns Established
 
@@ -161,6 +165,9 @@ Recent decisions affecting current work:
 - Curl-based installer: idempotent check, curl install, PATH update, verify
 - Orchestrator sources sub-installers: main guard prevents double execution
 - Interactive category menu: group+custom selection for tool categories
+- Prefix dispatch: `case "${entry%%:*}"` for multi-method installer
+- Installable filter: only npm: and curl: entries shown in interactive choose mode
+- API key info summary: `show_ai_summary()` for post-install guidance
 
 ### Pending Todos
 
@@ -265,11 +272,19 @@ None.
 - src/install/uv.sh - Cross-platform uv installer (uv + Python)
 - src/install/dev-env.sh - Dev environment orchestrator with interactive selection and SSH
 
+**Created (05-05):**
+- src/install/ai-tools.sh - Cross-platform AI tools installer with prefix-based dispatch
+
+**Modified (05-05):**
+- data/packages/ai-tools.txt - Added AI CLI entries (npm:claude-code, npm:codex, npm:gemini-cli, curl:ollama)
+- data/packages/profiles/developer.txt - Added apt-post.txt, ai-tools.txt, flatpak.txt, snap.txt
+- data/packages/profiles/full.txt - Added apt-post.txt, flatpak-post.txt, snap-post.txt
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-04-PLAN.md (Dev Environment Installers)
+Stopped at: Completed 05-05-PLAN.md (AI Tools Installer)
 Resume file: None
 
 ---
-*Next action: Execute 05-05-PLAN.md*
+*Next action: Execute 05-06-PLAN.md*
