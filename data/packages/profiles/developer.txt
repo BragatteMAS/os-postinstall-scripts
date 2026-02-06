@@ -1,4 +1,13 @@
 # Developer profile - system + development tools
+# Platform-agnostic: each main.sh filters to relevant files
+
+# Linux
 apt.txt
+
+# macOS
+brew.txt
+brew-cask.txt
+
+# Cross-platform (Phase 5)
 cargo.txt
 npm.txt
