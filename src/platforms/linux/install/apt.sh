@@ -38,18 +38,22 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
 # APT Helper Functions
 #######################################
 
-# is_apt_installed - Check if a package is already installed
-# Args: $1 = package name
-# Returns: 0 if installed, 1 if not
-is_apt_installed() {
-    local pkg="$1"
-    dpkg -l "$pkg" 2>/dev/null | grep -q "^ii"
+# NOTE: is_apt_installed() comes from core/idempotent.sh (already sourced)
+# NOTE: retry_with_backoff() comes from core/errors.sh (already sourced)
+
+# safe_apt_update - Update package lists with lock handling and retry
+# Uses DPkg::Lock::Timeout=60 instead of manual fuser loop
+# Returns: 0 on success, 1 on failure
+safe_apt_update() {
+    log_info "Updating package lists (with dpkg lock timeout)..."
+    retry_with_backoff sudo apt-get update -y -o DPkg::Lock::Timeout=60
 }
 
-# apt_install - Install a single package via apt
+# apt_hardened_install - Install a single package with retry and lock handling
+# Uses DPkg::Lock::Timeout=60, retry_with_backoff, and --force-confold in non-interactive mode
 # Args: $1 = package name
 # Returns: 0 on success, 1 on failure
-apt_install() {
+apt_hardened_install() {
     local pkg="$1"
 
     if is_apt_installed "$pkg"; then
@@ -58,33 +62,24 @@ apt_install() {
     fi
 
     log_info "Installing: $pkg"
-    if sudo apt-get install -y "$pkg" 2>/dev/null; then
+
+    # Build apt command array
+    local apt_cmd=(sudo apt-get install -y -o DPkg::Lock::Timeout=60)
+
+    # Append non-interactive options if set
+    if [[ "${NONINTERACTIVE:-}" == "true" ]]; then
+        apt_cmd+=("${APT_NONINTERACTIVE_OPTS[@]}")
+    fi
+
+    apt_cmd+=("$pkg")
+
+    if retry_with_backoff "${apt_cmd[@]}"; then
         log_ok "Installed: $pkg"
         return 0
     else
-        log_error "Failed to install: $pkg"
+        log_warn "Package not found or install failed: $pkg"
         return 1
     fi
-}
-
-# safe_apt_update - Update package lists with lock handling
-# Returns: 0 on success, 1 on failure
-safe_apt_update() {
-    # Wait for apt lock to be free
-    local wait_count=0
-    while sudo fuser /var/lib/dpkg/lock-frontend &>/dev/null 2>&1; do
-        if [[ $wait_count -eq 0 ]]; then
-            log_info "Waiting for apt lock..."
-        fi
-        sleep 2
-        wait_count=$((wait_count + 1))
-        if [[ $wait_count -gt 30 ]]; then
-            log_error "Timeout waiting for apt lock"
-            return 1
-        fi
-    done
-
-    sudo apt-get update -y
 }
 
 #######################################
@@ -110,6 +105,13 @@ declare -a FAILED_ITEMS=()
 
 log_banner "APT Package Installer"
 
+# Non-interactive mode: keep existing config files on package upgrades
+if [[ "${NONINTERACTIVE:-}" == "true" ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    APT_NONINTERACTIVE_OPTS=(-o Dpkg::Options::="--force-confold")
+    log_info "Non-interactive mode: DEBIAN_FRONTEND=noninteractive, --force-confold"
+fi
+
 # Load packages from data file
 if ! load_packages "apt.txt"; then
     log_error "Failed to load apt packages from data/packages/apt.txt"
@@ -119,7 +121,6 @@ fi
 log_info "Loaded ${#PACKAGES[@]} packages from apt.txt"
 
 # Update package lists
-log_info "Updating package lists..."
 if ! safe_apt_update; then
     log_warn "Failed to update package lists. Continuing with installation..."
 fi
@@ -128,15 +129,12 @@ fi
 log_info "Installing ${#PACKAGES[@]} APT packages..."
 
 for pkg in "${PACKAGES[@]}"; do
-    if ! apt_install "$pkg"; then
+    if ! apt_hardened_install "$pkg"; then
         record_failure "$pkg"
     fi
 done
 
-# Final cleanup
-log_info "Performing system cleanup..."
-sudo apt-get autoclean -y 2>/dev/null || true
-sudo apt-get autoremove -y 2>/dev/null || true
+# No cleanup (setup script, not maintenance tool)
 
 # Summary
 if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
