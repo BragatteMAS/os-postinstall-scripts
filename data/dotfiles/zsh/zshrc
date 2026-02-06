@@ -43,6 +43,12 @@ DOTFILES_ZSH="${DOTFILES_DIR}/zsh"
 # fzf integration (if installed)
 [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh"
 
+# zoxide (smarter cd)
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
+
+# fnm (Fast Node Manager)
+command -v fnm &>/dev/null && eval "$(fnm env --use-on-cd)"
+
 # Starship prompt (if available)
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
