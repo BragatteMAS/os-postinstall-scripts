@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Main bash configuration
+# Symlinked to ~/.bashrc
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# History configuration
+HISTFILE="${HOME}/.bash_history"
+HISTSIZE=50000
+HISTFILESIZE=50000
+HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
+
+# Shell options
+shopt -s checkwinsize  # Update LINES/COLUMNS after each command
+shopt -s globstar      # ** matches all files and subdirectories
+shopt -s cdspell       # Autocorrect typos in cd
+shopt -s dirspell      # Autocorrect typos in directory names
+
+# Determine dotfiles location
+# IMPORTANT: Use readlink to resolve symlink, otherwise paths break
+# when ~/.bashrc is a symlink to data/dotfiles/bash/bashrc
+_bashrc_real="${BASH_SOURCE[0]}"
+if [[ -L "$_bashrc_real" ]]; then
+    # macOS readlink doesn't support -f, use fallback
+    _bashrc_real="$(readlink -f "$_bashrc_real" 2>/dev/null || readlink "$_bashrc_real")"
+fi
+DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "$_bashrc_real")/.." && pwd)}"
+unset _bashrc_real
+DOTFILES_SHARED="${DOTFILES_DIR}/shared"
+
+# Source shared configs (path, env, aliases)
+[[ -f "${DOTFILES_SHARED}/path.sh" ]] && source "${DOTFILES_SHARED}/path.sh"
+[[ -f "${DOTFILES_SHARED}/env.sh" ]] && source "${DOTFILES_SHARED}/env.sh"
+[[ -f "${DOTFILES_SHARED}/aliases.sh" ]] && source "${DOTFILES_SHARED}/aliases.sh"
+
+# Enable programmable completion
+if ! shopt -oq posix; then
+    if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+        source /usr/share/bash-completion/bash_completion
+    elif [[ -f /etc/bash_completion ]]; then
+        source /etc/bash_completion
+    fi
+fi
+
+# fzf integration (if installed)
+[[ -f "${HOME}/.fzf.bash" ]] && source "${HOME}/.fzf.bash"
+
+# Starship prompt (if available)
+command -v starship &>/dev/null && eval "$(starship init bash)"
+
+# Local overrides (last, so user can override anything)
+[[ -f "${HOME}/.bashrc.local" ]] && source "${HOME}/.bashrc.local"
