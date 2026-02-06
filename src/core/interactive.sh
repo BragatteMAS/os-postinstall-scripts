@@ -46,7 +46,7 @@ show_category_menu() {
     echo "  1) All"
     echo "  2) Choose individually"
     echo "  3) Skip"
-    read -rp "Select [1-3]: " choice
+    read -r -t 30 -p "Select [1-3]: " choice || choice=""
 
     case "$choice" in
         1) return 0 ;;
@@ -71,7 +71,7 @@ ask_tool() {
         return 0
     fi
 
-    read -rp "Install ${tool}? [Y/n]: " answer
+    read -r -t 30 -p "Install ${tool}? [Y/n]: " answer || answer=""
 
     case "$answer" in
         [nN]*) return 1 ;;

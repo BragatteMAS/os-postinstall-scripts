@@ -30,6 +30,8 @@
     default = current
 
 # Merge settings
+# ff = only rejects non-fast-forward merges (keeps linear history)
+# Override in ~/.gitconfig.local with: [merge] ff = false
 [merge]
     ff = only
     conflictStyle = zdiff3
