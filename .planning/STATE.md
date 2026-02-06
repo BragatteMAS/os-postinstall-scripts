@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 5 - Linux Enhancements (In progress)
+**Current focus:** Phase 5 - Linux Enhancements (COMPLETE)
 
 ## Current Position
 
 Phase: 5 of 8 (Linux Enhancements)
-Plan: 5 of 6 in current phase
-Status: In progress
-Last activity: 2026-02-06 - Completed 05-05-PLAN.md (AI Tools Installer)
+Plan: 6 of 6 in current phase
+Status: Phase complete
+Last activity: 2026-02-06 - Completed 05-06-PLAN.md (Linux Orchestrator)
 
-Progress: [█████████████████████████░] 96% (22/23 plans)
+Progress: [██████████████████████████] 100% (23/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 22
+- Total plans completed: 23
 - Average duration: 2.4 min
-- Total execution time: 52 min
+- Total execution time: 55 min
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [███████████████████████
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
-| 05-linux-enhancements | 5/6 | 10 min | 2 min |
+| 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (2 min), 05-02 (2 min), 05-03 (2 min), 05-04 (2 min), 05-05 (2 min)
-- Trend: Stable at ~2 min for recent plans
+- Last 5 plans: 05-02 (2 min), 05-03 (2 min), 05-04 (2 min), 05-05 (2 min), 05-06 (3 min)
+- Trend: Stable at ~2 min, slight increase for orchestrator plan
 
 *Updated after each plan completion*
 
@@ -111,6 +111,9 @@ Recent decisions affecting current work:
 - [05-05]: Bare words and npx:/uv: entries silently skipped (informational only, not installable)
 - [05-05]: Node.js availability checked before npm install -g (warn + skip if missing)
 - [05-05]: npm list -g for idempotent npm check (scoped packages need npm-level check)
+- [05-06]: LINUX_DIR instead of SCRIPT_DIR to avoid packages.sh readonly conflict
+- [05-06]: dev-env + rust-cli run before dispatch loop (structural Node.js guarantee)
+- [05-06]: assert_fail helper for inverted test assertions (! doesn't work in $@ expansion)
 
 ### Patterns Established
 
@@ -168,6 +171,9 @@ Recent decisions affecting current work:
 - Prefix dispatch: `case "${entry%%:*}"` for multi-method installer
 - Installable filter: only npm: and curl: entries shown in interactive choose mode
 - API key info summary: `show_ai_summary()` for post-install guidance
+- LINUX_DIR pattern: matches MACOS_DIR, avoids packages.sh SCRIPT_DIR overwrite
+- Orchestrator pre-dispatch: dev-env + rust-cli before profile loop for dependency ordering
+- assert_fail: inverted assertion helper for shell anti-pattern tests
 
 ### Pending Todos
 
@@ -176,8 +182,7 @@ None.
 ### Blockers/Concerns
 
 - macOS ships Bash 3.2; check_bash_upgrade() warns but continues (addressed in Phase 4)
-- scripts/utils/ application-level scripts not yet consolidated (Phase 5)
-- Linux main.sh does not yet use profile-based dispatch (deferred to Phase 5)
+- scripts/utils/ application-level scripts not yet consolidated
 
 ## Phase 2 Deliverables
 
@@ -244,7 +249,7 @@ None.
 - data/packages/profiles/developer.txt - Added brew.txt and brew-cask.txt
 - data/packages/profiles/full.txt - Added brew.txt and brew-cask.txt
 
-## Phase 5 Deliverables (In Progress)
+## Phase 5 Deliverables (COMPLETE)
 
 **Modified:**
 - src/platforms/linux/install/apt.sh - Hardened with dpkg lock timeout, retry, two-pass, non-interactive support
@@ -280,11 +285,17 @@ None.
 - data/packages/profiles/developer.txt - Added apt-post.txt, ai-tools.txt, flatpak.txt, snap.txt
 - data/packages/profiles/full.txt - Added apt-post.txt, flatpak-post.txt, snap-post.txt
 
+**Modified (05-06):**
+- src/platforms/linux/main.sh - Rewritten with profile dispatch, dual-mode, LINUX_DIR
+
+**Created (05-06):**
+- tests/test-linux.sh - Linux platform test suite (24 tests)
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-05-PLAN.md (AI Tools Installer)
+Stopped at: Completed 05-06-PLAN.md (Linux Orchestrator) -- Phase 5 COMPLETE
 Resume file: None
 
 ---
-*Next action: Execute 05-06-PLAN.md*
+*Next action: Phase 5 complete. Ready for Phase 6 (Windows/WSL) or Phase 7 (Testing)*
