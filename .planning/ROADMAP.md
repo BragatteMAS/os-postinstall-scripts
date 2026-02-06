@@ -13,7 +13,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - [x] **Phase 1: Core Infrastructure** - Foundation utilities for all platform code
 - [x] **Phase 2: Consolidation & Data Migration** - DRY the codebase, extract data
 - [x] **Phase 3: Dotfiles Management** - Symlink and shell configuration system
-- [ ] **Phase 4: macOS Platform** - Homebrew integration and system setup
+- [x] **Phase 4: macOS Platform** - Homebrew integration and system setup
 - [ ] **Phase 5: Linux Enhancements** - Feature additions to existing Linux support
 - [ ] **Phase 6: Windows Foundation** - Basic WinGet functionality
 - [ ] **Phase 7: User Experience Polish** - Progress feedback, dry-run, summary
@@ -84,12 +84,12 @@ Plans:
   3. Packages from selected profile are installed via `brew install` and `brew install --cask`
   4. Setup can be re-run on existing macOS installation without breaking anything (idempotent)
   5. Bash 4+ is available after setup completes (upgrade provided if needed)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Homebrew integration
-- [ ] 04-02: Profile system implementation
-- [ ] 04-03: macOS-specific utilities
+- [x] 04-01-PLAN.md — Homebrew installation script (idempotent, NONINTERACTIVE mode, PATH configuration)
+- [x] 04-02-PLAN.md — Brew formula and cask installers (data-driven from brew.txt and brew-cask.txt)
+- [x] 04-03-PLAN.md — macOS main orchestrator with profile selection menu
 
 ### Phase 5: Linux Enhancements
 **Goal**: Add feature-specific packages and enhance existing Linux support
@@ -164,7 +164,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 1. Core Infrastructure | 3/3 | Complete | 2026-02-05 |
 | 2. Consolidation & Data Migration | 7/7 | Complete | 2026-02-05 |
 | 3. Dotfiles Management | 4/4 | Complete | 2026-02-06 |
-| 4. macOS Platform | 0/3 | Not started | - |
+| 4. macOS Platform | 3/3 | Complete | 2026-02-06 |
 | 5. Linux Enhancements | 0/4 | Not started | - |
 | 6. Windows Foundation | 0/2 | Not started | - |
 | 7. User Experience Polish | 0/3 | Not started | - |
@@ -175,5 +175,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 1 completed: 2026-02-05*
 *Phase 2 completed: 2026-02-05*
 *Phase 3 completed: 2026-02-06*
+*Phase 4 completed: 2026-02-06*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*
