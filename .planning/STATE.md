@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 4 - macOS Platform (in progress)
+**Current focus:** Phase 4 - macOS Platform (COMPLETE)
 
 ## Current Position
 
-Phase: 4 of 8 (macOS Platform) - In progress
-Plan: 2 of 3 in current phase - COMPLETE
-Status: In progress
-Last activity: 2026-02-06 - Completed 04-02-PLAN.md (Brew Formula and Cask Installers)
+Phase: 4 of 8 (macOS Platform) - COMPLETE
+Plan: 3 of 3 in current phase - COMPLETE
+Status: Phase complete
+Last activity: 2026-02-06 - Completed 04-03-PLAN.md (macOS Main Orchestrator)
 
-Progress: [████████████████░] 70%
+Progress: [██████████████████████████] 100% (Phases 1-4)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: 2.5 min
-- Total execution time: 40 min
+- Total execution time: 42 min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [████████████████░] 70%
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
-| 04-macos-platform | 2/3 | 4 min | 2 min |
+| 04-macos-platform | 3/3 | 6 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (2 min), 03-03 (2 min), 03-04 (3 min), 04-01 (2 min), 04-02 (2 min)
+- Last 5 plans: 03-03 (2 min), 03-04 (3 min), 04-01 (2 min), 04-02 (2 min), 04-03 (2 min)
 - Trend: Stable at ~2.2 min for recent plans
 
 *Updated after each plan completion*
@@ -88,6 +88,9 @@ Recent decisions affecting current work:
 - [04-01]: Architecture detection: uname -m arm64 -> /opt/homebrew, else /usr/local
 - [04-01]: Xcode CLI Tools: interactive fallback with read -r for GUI installer
 - [04-02]: Cask detection uses `brew list --cask` locally (core is_brew_installed checks formulae only)
+- [04-03]: MACOS_DIR instead of SCRIPT_DIR to avoid packages.sh readonly conflict
+- [04-03]: Platform-agnostic profiles: one file per tier, not per-platform variants
+- [04-03]: check_bash_upgrade warns but continues (user may need brew first to upgrade)
 
 ### Patterns Established
 
@@ -127,6 +130,9 @@ Recent decisions affecting current work:
 - macOS installer pattern: follows apt.sh structure with macOS-specific adaptations
 - Underscore prefix for private helpers: `_brew_formula_install()`, `_brew_cask_install()`
 - HOMEBREW_NO_INSTALL_UPGRADE=1 inline env var to prevent upgrades during install
+- MACOS_DIR pattern: dedicated variable when SCRIPT_DIR is clobbered by sourced modules
+- Profile dispatch: read profile file, case-match on package file names, skip non-platform
+- Dual-mode script: check $1 for unattended, fall through to interactive menu
 
 ### Pending Todos
 
@@ -134,8 +140,9 @@ None.
 
 ### Blockers/Concerns
 
-- macOS ships Bash 3.2; project requires 4.0+ (address in Phase 4)
+- macOS ships Bash 3.2; check_bash_upgrade() warns but continues (addressed in Phase 4)
 - scripts/utils/ application-level scripts not yet consolidated (Phase 5)
+- Linux main.sh does not yet use profile-based dispatch (deferred to Phase 5)
 
 ## Phase 2 Deliverables
 
@@ -189,19 +196,24 @@ None.
 - data/dotfiles/git/gitconfig.local.template - Local config template
 - data/dotfiles/starship/starship.toml - Starship prompt configuration
 
-## Phase 4 Deliverables (in progress)
+## Phase 4 Deliverables (COMPLETE)
 
 **Created:**
 - src/platforms/macos/install/homebrew.sh - Idempotent Homebrew installer
 - src/platforms/macos/install/brew.sh - Data-driven formula installer (brew.txt)
 - src/platforms/macos/install/brew-cask.sh - Data-driven cask installer (brew-cask.txt)
-- src/platforms/macos/install/.gitkeep - Directory placeholder
+- src/platforms/macos/main.sh - Main orchestrator with profile menu and dual-mode operation
+
+**Modified:**
+- data/packages/profiles/minimal.txt - Added brew.txt
+- data/packages/profiles/developer.txt - Added brew.txt and brew-cask.txt
+- data/packages/profiles/full.txt - Added brew.txt and brew-cask.txt
 
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 04-02-PLAN.md (Brew Formula and Cask Installers)
+Stopped at: Completed 04-03-PLAN.md (macOS Main Orchestrator) - Phase 4 COMPLETE
 Resume file: None
 
 ---
-*Next action: Execute 04-03-PLAN.md (macOS Defaults and Integration)*
+*Next action: Phase 5 planning (Linux Enhancements)*
