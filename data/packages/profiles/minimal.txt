@@ -1,2 +1,8 @@
 # Minimal profile - essential system packages only
+# Platform-agnostic: each main.sh filters to relevant files
+
+# Linux
 apt.txt
+
+# macOS
+brew.txt
