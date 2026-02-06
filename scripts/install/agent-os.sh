@@ -1,38 +1,27 @@
-#!/bin/bash
-
-# Agent-OS Installation Script
-# Ultra-lightweight agent orchestration system
+#!/usr/bin/env bash
+#######################################
+# Script: agent-os.sh
+# Description: Agent-OS Installation Script
+# Author: Bragatte
+# Date: 2025-02-05
+#######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# Script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source logging utilities (SSoT)
+source "${SCRIPT_DIR}/../utils/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
+    exit 1
+}
 
 # Configuration
 AGENT_OS_HOME="$HOME/.agent-os"
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 NODE_MIN_VERSION="16.0.0"
-
-# Logging functions
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
-
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-log_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
 
 # Check if command exists
 command_exists() {

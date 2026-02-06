@@ -2,6 +2,7 @@
 # quick-setup.sh - Quick setup with automatic requirements installation
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Colors
 RED='\033[0;31m'

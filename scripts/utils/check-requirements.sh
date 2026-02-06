@@ -2,6 +2,7 @@
 # check-requirements.sh - Verify system meets minimum requirements
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Colors
 RED='\033[0;31m'

@@ -15,20 +15,16 @@
 #######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Define logging functions early
-log_info() { echo "[INFO] $*"; }
-log_warning() { echo "[WARNING] $*"; }
-log_error() { echo "[ERROR] $*" >&2; }
-log_success() { echo "[SUCCESS] $*"; }
-
-# Source proper logging if available
-if [[ -f "${SCRIPT_DIR}/../utils/logging.sh" ]]; then
-    source "${SCRIPT_DIR}/../utils/logging.sh"
-fi
+# Source logging utilities (SSoT)
+source "${SCRIPT_DIR}/../utils/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
+    exit 1
+}
 
 # Source configuration loader
 source "${SCRIPT_DIR}/../utils/config-loader.sh"
