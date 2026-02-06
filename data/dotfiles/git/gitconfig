@@ -1,0 +1,76 @@
+# Global Git Configuration
+# Managed by os-postinstall-scripts
+#
+# User-specific values (name, email, signing) go in ~/.gitconfig.local
+# See gitconfig.local.template for setup instructions
+
+# Include local configuration for user-specific values
+[include]
+    path = ~/.gitconfig.local
+
+# Core settings
+[core]
+    excludesFile = ~/.config/git/ignore
+    editor = vim
+    autocrlf = input
+    whitespace = fix
+
+# Default branch
+[init]
+    defaultBranch = main
+
+# Pull strategy
+[pull]
+    rebase = true
+
+# Push settings
+[push]
+    autoSetupRemote = true
+    default = current
+
+# Merge settings
+[merge]
+    ff = only
+
+# Fetch settings
+[fetch]
+    prune = true
+    pruneTags = true
+
+# Diff settings
+[diff]
+    colorMoved = default
+
+# Essential aliases
+[alias]
+    # Status
+    st = status -sb
+
+    # Checkout
+    co = checkout
+
+    # Branch
+    br = branch -vv
+
+    # Commit
+    cm = commit -m
+    ca = commit --amend
+
+    # Pretty log
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+    # Last commit
+    last = log -1 HEAD --stat
+
+    # Unstage
+    unstage = reset HEAD --
+
+    # Discard changes
+    discard = checkout --
+
+    # List aliases
+    aliases = config --get-regexp alias
+
+# Color settings
+[color]
+    ui = auto
