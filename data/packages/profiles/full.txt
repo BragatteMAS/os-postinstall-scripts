@@ -3,12 +3,19 @@
 
 # Linux
 apt.txt
+apt-post.txt
 
 # macOS
 brew.txt
 brew-cask.txt
 
-# Cross-platform (Phase 5)
+# Cross-platform
 cargo.txt
 npm.txt
 ai-tools.txt
+
+# Linux-only (skipped on macOS)
+flatpak.txt
+flatpak-post.txt
+snap.txt
+snap-post.txt
