@@ -9,6 +9,9 @@ apt-post.txt
 brew.txt
 brew-cask.txt
 
+# Windows
+winget.txt
+
 # Cross-platform
 cargo.txt
 npm.txt
