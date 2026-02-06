@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 4 - macOS Platform (next)
+**Current focus:** Phase 4 - macOS Platform (in progress)
 
 ## Current Position
 
-Phase: 3 of 8 (Dotfiles Management) - COMPLETE
-Plan: 4 of 4 in current phase - COMPLETE
-Status: Ready for Phase 4
-Last activity: 2026-02-06 - Completed Phase 3 (Dotfiles Management)
+Phase: 4 of 8 (macOS Platform) - In progress
+Plan: 1 of 3 in current phase - COMPLETE
+Status: In progress
+Last activity: 2026-02-06 - Completed 04-01-PLAN.md (Homebrew Installer)
 
-Progress: [██████████████░] 62%
+Progress: [███████████████░] 65%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
-- Average duration: 2.6 min
-- Total execution time: 36 min
+- Total plans completed: 15
+- Average duration: 2.5 min
+- Total execution time: 38 min
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [██████████████░] 62%
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
+| 04-macos-platform | 1/3 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-07 (2 min), 03-01 (3 min), 03-02 (2 min), 03-03 (2 min), 03-04 (3 min)
+- Last 5 plans: 03-01 (3 min), 03-02 (2 min), 03-03 (2 min), 03-04 (3 min), 04-01 (2 min)
 - Trend: Stable at ~2.4 min for recent plans
 
 *Updated after each plan completion*
@@ -83,6 +84,9 @@ Recent decisions affecting current work:
 - [03-04]: zsh plugins installed via git clone to ~/.zsh/ (zsh-autosuggestions, zsh-syntax-highlighting)
 - [03-04]: setup_git_user() prompts only in interactive mode, writes to ~/.gitconfig.local
 - [03-04]: DRY_RUN check must use `== "true"` not `-n` (because config.sh sets DRY_RUN=false)
+- [04-01]: Main guard pattern for dual sourceable/executable scripts
+- [04-01]: Architecture detection: uname -m arm64 -> /opt/homebrew, else /usr/local
+- [04-01]: Xcode CLI Tools: interactive fallback with read -r for GUI installer
 
 ### Patterns Established
 
@@ -117,6 +121,9 @@ Recent decisions affecting current work:
 - Symlink resolution: readlink -f with macOS fallback
 - DOTFILES_DIR: derived from resolved script path
 - Shell source order: path, env, aliases, functions, plugins, prompt
+- Architecture detection: `get_brew_prefix()` returns /opt/homebrew (arm64) or /usr/local (x86_64)
+- Main guard: `if [[ "${BASH_SOURCE[0]}" == "$0" ]]` for sourceable + executable scripts
+- macOS installer pattern: follows apt.sh structure with macOS-specific adaptations
 
 ### Pending Todos
 
@@ -179,11 +186,17 @@ None.
 - data/dotfiles/git/gitconfig.local.template - Local config template
 - data/dotfiles/starship/starship.toml - Starship prompt configuration
 
+## Phase 4 Deliverables (in progress)
+
+**Created:**
+- src/platforms/macos/install/homebrew.sh - Idempotent Homebrew installer
+- src/platforms/macos/install/.gitkeep - Directory placeholder
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed Phase 3 (Dotfiles Management)
+Stopped at: Completed 04-01-PLAN.md (Homebrew Installer)
 Resume file: None
 
 ---
-*Next action: Start Phase 4 (macOS Platform) with /gsd:plan-phase 4*
+*Next action: Execute 04-02-PLAN.md (Brew Packages Installer)*
