@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 4 - macOS Platform (COMPLETE)
+**Current focus:** Phase 5 - Linux Enhancements (In progress)
 
 ## Current Position
 
-Phase: 4 of 8 (macOS Platform) - COMPLETE
-Plan: 3 of 3 in current phase - COMPLETE
-Status: Phase complete
-Last activity: 2026-02-06 - Completed 04-03-PLAN.md (macOS Main Orchestrator)
+Phase: 5 of 8 (Linux Enhancements)
+Plan: 1 of 6 in current phase
+Status: In progress
+Last activity: 2026-02-06 - Completed 05-01-PLAN.md (Hardened APT Installer)
 
-Progress: [██████████████████████████] 100% (Phases 1-4)
+Progress: [██████████████████████░░░░] 78% (18/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
-- Average duration: 2.5 min
-- Total execution time: 42 min
+- Total plans completed: 18
+- Average duration: 2.4 min
+- Total execution time: 44 min
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [███████████████████████
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
+| 05-linux-enhancements | 1/6 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (2 min), 03-04 (3 min), 04-01 (2 min), 04-02 (2 min), 04-03 (2 min)
+- Last 5 plans: 03-04 (3 min), 04-01 (2 min), 04-02 (2 min), 04-03 (2 min), 05-01 (2 min)
 - Trend: Stable at ~2.2 min for recent plans
 
 *Updated after each plan completion*
@@ -91,6 +92,10 @@ Recent decisions affecting current work:
 - [04-03]: MACOS_DIR instead of SCRIPT_DIR to avoid packages.sh readonly conflict
 - [04-03]: Platform-agnostic profiles: one file per tier, not per-platform variants
 - [04-03]: check_bash_upgrade warns but continues (user may need brew first to upgrade)
+- [05-01]: DPkg::Lock::Timeout=60 replaces manual fuser loop (simpler, built-in apt feature)
+- [05-01]: retry_with_backoff from core/errors.sh reused in apt.sh (no local redefinition)
+- [05-01]: log_warn on install failure (not log_error) -- script continues
+- [05-01]: No autoclean/autoremove in apt.sh (setup script, not maintenance tool)
 
 ### Patterns Established
 
@@ -133,6 +138,9 @@ Recent decisions affecting current work:
 - MACOS_DIR pattern: dedicated variable when SCRIPT_DIR is clobbered by sourced modules
 - Profile dispatch: read profile file, case-match on package file names, skip non-platform
 - Dual-mode script: check $1 for unattended, fall through to interactive menu
+- APT lock handling: `-o DPkg::Lock::Timeout=60` instead of fuser polling
+- Two-pass install: `--post` flag selects apt-post.txt
+- Non-interactive opts: `APT_NONINTERACTIVE_OPTS` array appended to command
 
 ### Pending Todos
 
@@ -209,11 +217,16 @@ None.
 - data/packages/profiles/developer.txt - Added brew.txt and brew-cask.txt
 - data/packages/profiles/full.txt - Added brew.txt and brew-cask.txt
 
+## Phase 5 Deliverables (In Progress)
+
+**Modified:**
+- src/platforms/linux/install/apt.sh - Hardened with dpkg lock timeout, retry, two-pass, non-interactive support
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 04-03-PLAN.md (macOS Main Orchestrator) - Phase 4 COMPLETE
+Stopped at: Completed 05-01-PLAN.md (Hardened APT Installer)
 Resume file: None
 
 ---
-*Next action: Phase 5 planning (Linux Enhancements)*
+*Next action: Execute 05-02-PLAN.md*
