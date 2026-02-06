@@ -110,6 +110,9 @@ Recent decisions affecting current work:
 - Parent directory creation: `mkdir -p "$(dirname "$target")"` before symlink
 - Dotfiles with local override: main config includes local file
 - Starship minimal: only essential modules enabled
+- Symlink resolution: readlink -f with macOS fallback
+- DOTFILES_DIR: derived from resolved script path
+- Shell source order: path, env, aliases, functions, plugins, prompt
 
 ### Pending Todos
 
@@ -154,12 +157,19 @@ None.
 
 **Structure:**
 - src/core/: dotfiles.sh (new)
-- data/dotfiles/: git/, zsh/, bash/, starship/ (new)
+- data/dotfiles/: git/, zsh/, bash/, shared/, starship/ (new)
 - tests/: test-dotfiles.sh (new)
 
 **Created:**
 - src/core/dotfiles.sh - Dotfiles symlink manager utility
 - tests/test-dotfiles.sh - Integration tests
+- data/dotfiles/shared/path.sh - PATH management with dedup
+- data/dotfiles/shared/env.sh - Environment variables
+- data/dotfiles/shared/aliases.sh - Cross-shell aliases
+- data/dotfiles/zsh/zshrc - Main zsh configuration
+- data/dotfiles/zsh/functions.sh - Zsh functions (mkcd, extract)
+- data/dotfiles/zsh/plugins.sh - Plugin loading
+- data/dotfiles/bash/bashrc - Main bash configuration
 - data/dotfiles/git/gitconfig - Global git configuration
 - data/dotfiles/git/gitignore - Global gitignore patterns
 - data/dotfiles/git/gitconfig.local.template - Local config template
