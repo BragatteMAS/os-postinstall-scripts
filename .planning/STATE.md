@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 6 - Windows Foundation (In Progress)
+**Current focus:** Phase 6 - Windows Foundation (Complete)
 
 ## Current Position
 
 Phase: 6 of 8 (Windows Foundation)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-06 - Completed 06-01-PLAN.md (Windows Core Foundation)
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-02-06 - Completed 06-02-PLAN.md (WinGet Installer + Windows Orchestrator)
 
-Progress: [████████████████████████░░] 96% (24/25 plans)
+Progress: [██████████████████████████] 100% (25/25 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 25
 - Average duration: 2.4 min
-- Total execution time: 57 min
+- Total execution time: 60 min
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [███████████████████████
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
-| 06-windows-foundation | 1/2 | 2 min | 2 min |
+| 06-windows-foundation | 2/2 | 5 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-03 (2 min), 05-04 (2 min), 05-05 (2 min), 05-06 (3 min), 06-01 (2 min)
-- Trend: Stable at ~2 min
+- Last 5 plans: 05-04 (2 min), 05-05 (2 min), 05-06 (3 min), 06-01 (2 min), 06-02 (3 min)
+- Trend: Stable at ~2.4 min
 
 *Updated after each plan completion*
 
@@ -120,6 +120,9 @@ Recent decisions affecting current work:
 - [06-01]: Simple @() array for failure tracking (KISS over ArrayList/List)
 - [06-01]: No WinGet check in setup.ps1 (each installer checks its own tools)
 - [06-01]: $ErrorActionPreference = 'Continue' in scripts, not modules (inherit from caller)
+- [06-02]: winget list --id --exact AND output match for idempotent check (double-check needed)
+- [06-02]: Non-Windows package files skipped with DEBUG log (not WARN), matching macOS pattern
+- [06-02]: Show-FailureSummary in interactive exit only (setup.ps1 calls it in unattended path)
 
 ### Patterns Established
 
@@ -185,6 +188,10 @@ Recent decisions affecting current work:
 - PS DataDir resolution: `Resolve-Path "$PSScriptRoot/../../../.."` for robust path
 - Import-Module -Force: ensures fresh load on re-import
 - PS always exit 0: matches Bash convention for pragmatic failure handling
+- WinGet idempotent: `winget list --id --exact` + output match before install
+- PS dual-mode orchestrator: `-Profile` param for unattended, `do {} while` for interactive
+- PS profile dispatch: `Get-Content` reads profile directly, `switch` dispatches to installers
+- PS platform filtering: `default` case skips non-Windows files with DEBUG log
 
 ### Pending Todos
 
@@ -302,7 +309,7 @@ None.
 **Created (05-06):**
 - tests/test-linux.sh - Linux platform test suite (24 tests)
 
-## Phase 6 Deliverables (In Progress)
+## Phase 6 Deliverables (COMPLETE)
 
 **Created (06-01):**
 - setup.ps1 - Windows entry point with profile parameter and dispatch to main.ps1
@@ -310,11 +317,23 @@ None.
 - src/platforms/windows/core/packages.psm1 - Read-PackageFile from data/packages/
 - src/platforms/windows/core/errors.psm1 - Add-FailedItem, Show-FailureSummary, Get-FailureCount, Clear-Failures
 
+**Created (06-02):**
+- src/platforms/windows/install/winget.ps1 - Data-driven WinGet installer with idempotent checks
+- src/platforms/windows/main.ps1 - Windows orchestrator with interactive menu and unattended mode
+
+**Modified (06-02):**
+- data/packages/profiles/minimal.txt - Added winget.txt
+- data/packages/profiles/developer.txt - Added winget.txt
+- data/packages/profiles/full.txt - Added winget.txt
+
+**Removed (06-02):**
+- platforms/windows/win11.ps1 - Legacy hardcoded script (superseded by data-driven winget.ps1)
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 06-01-PLAN.md (Windows Core Foundation)
+Stopped at: Completed 06-02-PLAN.md (WinGet Installer + Windows Orchestrator)
 Resume file: None
 
 ---
-*Next action: 06-02 (WinGet Installer) to complete Phase 6*
+*Phase 6 complete. All 25 plans across 6 phases executed.*
