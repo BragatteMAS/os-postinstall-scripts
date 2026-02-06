@@ -69,7 +69,7 @@ backup_with_manifest() {
     timestamp=$(date +'%Y-%m-%d %H:%M:%S')
 
     # DRY_RUN mode: log what would happen but don't modify
-    if [[ -n "${DRY_RUN:-}" ]]; then
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
         log_info "[DRY_RUN] Would backup: ${source_file} -> ${backup_path}"
         return 0
     fi
@@ -131,7 +131,7 @@ create_dotfile_symlink() {
     local target_dir
     target_dir=$(dirname "$target")
     if [[ ! -d "$target_dir" ]]; then
-        if [[ -n "${DRY_RUN:-}" ]]; then
+        if [[ "${DRY_RUN:-}" == "true" ]]; then
             log_info "[DRY_RUN] Would create directory: ${target_dir}"
         else
             if ! mkdir -p "$target_dir"; then
@@ -157,7 +157,7 @@ create_dotfile_symlink() {
     fi
 
     # Create symlink
-    if [[ -n "${DRY_RUN:-}" ]]; then
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
         log_info "[DRY_RUN] Would link: ${target} -> ${source}"
         return 0
     fi
@@ -213,7 +213,7 @@ unlink_dotfiles() {
     fi
 
     # Remove symlink
-    if [[ -n "${DRY_RUN:-}" ]]; then
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
         log_info "[DRY_RUN] Would remove symlink: ${target}"
         if [[ -n "$backup_path" && -f "$backup_path" ]]; then
             log_info "[DRY_RUN] Would restore from: ${backup_path}"

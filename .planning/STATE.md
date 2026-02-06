@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 3 - Dotfiles Management (in progress)
+**Current focus:** Phase 4 - macOS Platform (next)
 
 ## Current Position
 
-Phase: 3 of 8 (Dotfiles Management)
-Plan: 3 of 4 in current phase - COMPLETE
-Status: In progress
-Last activity: 2026-02-06 - Completed 03-03-PLAN.md (Git and Starship Configuration)
+Phase: 3 of 8 (Dotfiles Management) - COMPLETE
+Plan: 4 of 4 in current phase - COMPLETE
+Status: Ready for Phase 4
+Last activity: 2026-02-06 - Completed Phase 3 (Dotfiles Management)
 
-Progress: [█████████░] 52%
+Progress: [██████████████░] 62%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 14
 - Average duration: 2.6 min
-- Total execution time: 31 min
+- Total execution time: 36 min
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [█████████░] 52%
 |-------|-------|-------|----------|
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
-| 03-dotfiles-management | 2/4 | 5 min | 2.5 min |
+| 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-05 (2 min), 02-06 (2 min), 02-07 (2 min), 03-01 (3 min), 03-03 (2 min)
-- Trend: Stable at ~2.5 min for recent plans
+- Last 5 plans: 02-07 (2 min), 03-01 (3 min), 03-02 (2 min), 03-03 (2 min), 03-04 (3 min)
+- Trend: Stable at ~2.4 min for recent plans
 
 *Updated after each plan completion*
 
@@ -79,6 +79,10 @@ Recent decisions affecting current work:
 - [03-03]: Git config uses include for ~/.gitconfig.local (user identity separation)
 - [03-03]: Starship disables noisy modules for clean prompt
 - [03-03]: Template provides optional GPG, SSH signing, and includeIf examples
+- [03-04]: setup.sh entry points: dotfiles (install) and unlink (remove with restore)
+- [03-04]: zsh plugins installed via git clone to ~/.zsh/ (zsh-autosuggestions, zsh-syntax-highlighting)
+- [03-04]: setup_git_user() prompts only in interactive mode, writes to ~/.gitconfig.local
+- [03-04]: DRY_RUN check must use `== "true"` not `-n` (because config.sh sets DRY_RUN=false)
 
 ### Patterns Established
 
@@ -178,8 +182,8 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 03-03-PLAN.md (Git and Starship Configuration)
+Stopped at: Completed Phase 3 (Dotfiles Management)
 Resume file: None
 
 ---
-*Next action: Continue with 03-04-PLAN.md (Dotfiles Installer)*
+*Next action: Start Phase 4 (macOS Platform) with /gsd:plan-phase 4*

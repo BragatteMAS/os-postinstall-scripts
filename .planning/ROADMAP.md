@@ -11,8 +11,8 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Core Infrastructure** - Foundation utilities for all platform code
-- [ ] **Phase 2: Consolidation & Data Migration** - DRY the codebase, extract data
-- [ ] **Phase 3: Dotfiles Management** - Symlink and shell configuration system
+- [x] **Phase 2: Consolidation & Data Migration** - DRY the codebase, extract data
+- [x] **Phase 3: Dotfiles Management** - Symlink and shell configuration system
 - [ ] **Phase 4: macOS Platform** - Homebrew integration and system setup
 - [ ] **Phase 5: Linux Enhancements** - Feature additions to existing Linux support
 - [ ] **Phase 6: Windows Foundation** - Basic WinGet functionality
@@ -54,8 +54,8 @@ Plans:
 - [x] 02-03-PLAN.md — Migrate Linux platform code to src/platforms/linux/
 - [x] 02-04-PLAN.md — Create setup.sh entry point and config.sh
 - [x] 02-05-PLAN.md — Remove deprecated code and clean up old directories
-- [ ] 02-06-PLAN.md — [GAP CLOSURE] Remove remaining legacy platforms/linux/ content
-- [ ] 02-07-PLAN.md — [GAP CLOSURE] Refactor post_install.sh to use load_packages()
+- [x] 02-06-PLAN.md — [GAP CLOSURE] Remove remaining legacy platforms/linux/ content
+- [x] 02-07-PLAN.md — [GAP CLOSURE] Refactor post_install.sh to use load_packages()
 
 ### Phase 3: Dotfiles Management
 **Goal**: Implement topic-centric dotfiles system with safe symlink management
@@ -66,12 +66,13 @@ Plans:
   2. Existing user configs are backed up with timestamp before any symlink overwrites them
   3. Shell configuration (zshrc or bashrc) is properly linked and sources required scripts
   4. Git configuration (gitconfig) is properly linked with user-specific values preserved
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: Symlink manager implementation
-- [ ] 03-02: Shell configuration (zsh/bash)
-- [ ] 03-03: Git configuration
+- [x] 03-01-PLAN.md — Core symlink manager with backup functionality (src/core/dotfiles.sh)
+- [x] 03-02-PLAN.md — Shell configurations (shared, zsh, bash)
+- [x] 03-03-PLAN.md — Git and Starship configurations
+- [x] 03-04-PLAN.md — Setup.sh integration and verification
 
 ### Phase 4: macOS Platform
 **Goal**: Bring macOS support from 20% to functional parity with Linux
@@ -161,8 +162,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Infrastructure | 3/3 | Complete | 2026-02-05 |
-| 2. Consolidation & Data Migration | 5/7 | Gap closure needed | - |
-| 3. Dotfiles Management | 0/3 | Not started | - |
+| 2. Consolidation & Data Migration | 7/7 | Complete | 2026-02-05 |
+| 3. Dotfiles Management | 4/4 | Complete | 2026-02-06 |
 | 4. macOS Platform | 0/3 | Not started | - |
 | 5. Linux Enhancements | 0/4 | Not started | - |
 | 6. Windows Foundation | 0/2 | Not started | - |
@@ -172,6 +173,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 ---
 *Roadmap created: 2026-02-04*
 *Phase 1 completed: 2026-02-05*
-*Phase 2 gap closure plans added: 2026-02-05*
+*Phase 2 completed: 2026-02-05*
+*Phase 3 completed: 2026-02-06*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*

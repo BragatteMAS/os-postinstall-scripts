@@ -3,6 +3,7 @@
 # Simple, clean, functional
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Colors
 GREEN='\033[0;32m'

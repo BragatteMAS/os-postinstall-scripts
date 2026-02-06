@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Apply Configuration Template
-# Description: Applies pre-configured templates for specific roles/use cases
-# ==============================================================================
+#######################################
+# Script: apply-template.sh
+# Description: Applies pre-configured templates for roles/use cases
+# Author: Bragatte
+# Date: 2025-02-05
+#######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# Source utilities
-source "$SCRIPT_DIR/../utils/logging.sh" 2>/dev/null || {
-    log_info() { echo "[INFO] $*"; }
-    log_success() { echo "[SUCCESS] $*"; }
-    log_error() { echo "[ERROR] $*" >&2; }
-    log_warning() { echo "[WARNING] $*"; }
+# Source logging utilities (SSoT)
+source "$SCRIPT_DIR/../utils/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
+    exit 1
 }
 
 # Configuration

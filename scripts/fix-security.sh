@@ -71,7 +71,11 @@ fix_placeholder_urls() {
     local file="$1"
     if grep -q "SEU_USUARIO" "$file" 2>/dev/null; then
         sed -i.bak 's/SEU_USUARIO/BragatteMAS/g' "$file"
-        echo "  ✓ Fixed placeholder URLs in $file"
+        echo "  ✓ Fixed SEU_USUARIO placeholder in $file"
+    fi
+    if grep -q "SEU_REPO" "$file" 2>/dev/null; then
+        sed -i.bak 's/SEU_REPO/os-postinstall-scripts/g' "$file"
+        echo "  ✓ Fixed SEU_REPO placeholder in $file"
     fi
 }
 

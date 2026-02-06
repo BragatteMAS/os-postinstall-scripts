@@ -19,7 +19,7 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 - [ ] **PKG-01**: Instalar apps via Homebrew no macOS
 - [ ] **PKG-02**: Instalar apps via APT no Linux (Ubuntu/Debian)
 - [ ] **PKG-03**: Instalar apps via WinGet no Windows
-- [ ] **PKG-04**: Listas de apps em arquivos separados (.sh/.txt), nao hardcoded
+- [x] **PKG-04**: Listas de apps em arquivos separados (.sh/.txt), nao hardcoded
 
 ### Dotfiles
 
@@ -50,9 +50,9 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 
 ### Codebase Modernization
 
-- [ ] **MOD-01**: Reestruturar para src/ + data/ + docs/
-- [ ] **MOD-02**: Consolidar codigo duplicado (scripts/ + platforms/)
-- [ ] **MOD-03**: Remover codigo deprecated e arquivos legados
+- [x] **MOD-01**: Reestruturar para src/ + data/ + docs/
+- [x] **MOD-02**: Consolidar codigo duplicado (scripts/ + platforms/)
+- [x] **MOD-03**: Remover codigo deprecated e arquivos legados
 - [ ] **MOD-04**: Documentacao: README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
 
 ## v2 Requirements
@@ -97,10 +97,10 @@ Mapeamento de requirements para fases do roadmap.
 | CORE-02 | Phase 1: Core Infrastructure | Complete |
 | CORE-03 | Phase 1: Core Infrastructure | Complete |
 | CORE-04 | Phase 1: Core Infrastructure | Complete |
-| MOD-01 | Phase 2: Consolidation | Pending |
-| MOD-02 | Phase 2: Consolidation | Pending |
-| MOD-03 | Phase 2: Consolidation | Pending |
-| PKG-04 | Phase 2: Consolidation | Pending |
+| MOD-01 | Phase 2: Consolidation | Complete |
+| MOD-02 | Phase 2: Consolidation | Complete |
+| MOD-03 | Phase 2: Consolidation | Complete |
+| PKG-04 | Phase 2: Consolidation | Complete |
 | DOT-01 | Phase 3: Dotfiles | Pending |
 | DOT-02 | Phase 3: Dotfiles | Pending |
 | DOT-03 | Phase 3: Dotfiles | Pending |
@@ -128,4 +128,4 @@ Mapeamento de requirements para fases do roadmap.
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-05 after Phase 1 completion*
+*Last updated: 2026-02-05 after Phase 2 completion*

@@ -1,25 +1,23 @@
-#!/bin/bash
-# utils/package-manager-safety.sh
-# Safe APT operations module - implements ADR-005
-# 
-# This module provides safe wrappers for package manager operations
-# to prevent system corruption from forced lock removal
-#
-# Author: OS Post-Install Scripts Team
-# License: GPL v3
+#!/usr/bin/env bash
+#######################################
+# Script: package-safety.sh
+# Description: Safe APT operations module (ADR-005)
+# Author: Bragatte
+# Date: 2025-02-05
+#######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
-# Source logging module if available
+# Source logging module (SSoT)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [[ -f "${SCRIPT_DIR}/logging.sh" ]]; then
-    source "${SCRIPT_DIR}/logging.sh"
-else
-    # Fallback logging functions
+source "${SCRIPT_DIR}/logging.sh" || {
+    # Minimal fallback if logging not available
     log_info() { echo "[INFO] $*" >&2; }
     log_error() { echo "[ERROR] $*" >&2; }
     log_warning() { echo "[WARNING] $*" >&2; }
-fi
+    log_success() { echo "[SUCCESS] $*"; }
+}
 
 # Constants
 readonly APT_LOCK_TIMEOUT=${APT_LOCK_TIMEOUT:-300}  # 5 minutes default

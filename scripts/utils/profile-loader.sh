@@ -1,21 +1,22 @@
-#!/bin/bash
-# Profile loader for OS Post-Install Scripts
-# Loads and parses YAML profile files for customized installations
+#!/usr/bin/env bash
+#######################################
+# Script: profile-loader.sh
+# Description: Loads and parses YAML profile files
+# Author: Bragatte
+# Date: 2025-02-05
+#######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
-# Source logging if available
+# Source logging (SSoT)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [[ -f "${SCRIPT_DIR}/logging.sh" ]]; then
-    # Don't log to file for profile operations
-    export LOG_TO_FILE=false
-    source "${SCRIPT_DIR}/logging.sh"
-else
-    # Fallback logging
+source "${SCRIPT_DIR}/logging.sh" || {
+    # Minimal fallback
     log_info() { echo "[INFO] $*"; }
     log_error() { echo "[ERROR] $*" >&2; }
     log_success() { echo "[SUCCESS] $*"; }
-fi
+}
 
 # Profile directory
 PROFILE_DIR="${PROFILE_DIR:-$(cd "$SCRIPT_DIR/../profiles" && pwd)}"

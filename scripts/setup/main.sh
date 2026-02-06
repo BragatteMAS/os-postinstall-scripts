@@ -1,38 +1,57 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Setup Universal - Ponto de entrada único para todos os sistemas
-# Compatível com: macOS, Linux, WSL, e até Windows (via Git Bash)
-# Author: Bragatte, M.A.S
-# ==============================================================================
+#######################################
+# Script: main.sh
+# Description: Universal entry point for all systems
+# Supports: macOS, Linux, WSL, Windows (Git Bash)
+# Author: Bragatte
+# Date: 2025-02-05
+#######################################
 
 set -euo pipefail
+IFS=$'\n\t'
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
+# Constants
+SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source logging utilities (SSoT)
+source "${SCRIPT_DIR}/../utils/logging.sh" || {
+    echo "[ERROR] Failed to load logging.sh" >&2
+    exit 1
+}
+
+# Cleanup function
+cleanup() {
+    local exit_code=$?
+    [[ $exit_code -ne 0 ]] && log "Exiting ${SCRIPT_NAME} with code $exit_code"
+    exit $exit_code
+}
+trap cleanup EXIT INT TERM
+
+# Additional colors for this script
 PURPLE='\033[0;35m'
-NC='\033[0m'
 
 # Configuration
 REPO_URL="${REPO_URL:-https://github.com/BragatteMAS/os-postinstall-scripts}"
 REPO_DIR="$HOME/.config/linux-postinstall"
 DEFAULT_PROFILE="${DEFAULT_PROFILE:-developer-standard}"
-USE_PROFILE=false
+# Profile configuration (exported for subscripts)
+export USE_PROFILE=false
+export PROFILE=""
 
 # Parse arguments
 SKIP_REQUIREMENTS=false
 for arg in "$@"; do
     case $arg in
         --profile=*)
-            USE_PROFILE=true
-            PROFILE="${arg#*=}"
+            export USE_PROFILE=true
+            export PROFILE="${arg#*=}"
             shift
             ;;
         --minimal)
-            USE_PROFILE=true
-            PROFILE="developer-minimal"
+            export USE_PROFILE=true
+            export PROFILE="developer-minimal"
             shift
             ;;
         --skip-requirements)
@@ -66,11 +85,12 @@ detect_system() {
     local os=""
     local distro=""
     local version=""
-    local arch=$(uname -m)
-    
+    local arch
+    arch=$(uname -m)
+
     if [[ "$OSTYPE" == "darwin"* ]]; then
         os="macos"
-        version=$(sw_vers -productVersion)
+        version=$(sw_vers -productVersion 2>/dev/null || echo "unknown")
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
         os="linux"
         if [[ -f /etc/os-release ]]; then

@@ -11,10 +11,10 @@
 readonly _DOTFILES_INSTALL_SOURCED=1
 
 # Determine paths
-if [[ -z "${SCRIPT_DIR:-}" ]]; then
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-fi
-REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd -P)"
+# NOTE: Always use BASH_SOURCE[0] for this script's location, not SCRIPT_DIR
+# which may be set by the calling script (setup.sh)
+_INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT="$(cd "${_INSTALLER_DIR}/../.." && pwd -P)"
 
 # Source dependencies
 source "${REPO_ROOT}/src/core/logging.sh"

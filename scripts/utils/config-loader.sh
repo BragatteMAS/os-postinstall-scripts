@@ -3,6 +3,7 @@
 # Provides simple YAML parsing for shell scripts
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Check bash version for associative array support
 if [[ "${BASH_VERSION%%.*}" -lt 4 ]]; then
