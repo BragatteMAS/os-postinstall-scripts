@@ -6,3 +6,6 @@ apt.txt
 
 # macOS
 brew.txt
+
+# Windows
+winget.txt
