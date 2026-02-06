@@ -1,7 +1,15 @@
 # AI Tools Package List
-# Source: scripts/install/ai-tools.sh
+# Source: src/install/ai-tools.sh
 # One package per line, comments start with #
-# Format: package-name or npm:package-name for npm packages
+# Format: prefix:package-name (npm:, curl:, npx:, uv:) or bare word
+
+# AI CLI Tools (via npm)
+npm:@anthropic-ai/claude-code
+npm:@openai/codex
+npm:@google/gemini-cli
+
+# Local LLM Runtime (via curl)
+curl:ollama
 
 # MCP Servers (via npx)
 npx:@context7/mcp-server
