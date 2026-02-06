@@ -116,7 +116,9 @@ do {
             Read-Host 'Press Enter to continue...'
         }
         '0' {
-            Show-FailureSummary
+            # Note: Show-FailureSummary NOT called here — child scripts (winget.ps1)
+            # run in separate process scopes with their own failure tracking.
+            # Each installer calls Show-FailureSummary before its own exit.
             Write-Log -Level INFO -Message 'Exiting...'
             exit 0
         }
