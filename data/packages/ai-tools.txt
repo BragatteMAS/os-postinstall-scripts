@@ -26,4 +26,4 @@ uv:serena-mcp-server
 npm:bmad-method
 
 # Development Utilities
-uv
+# uv — installed by src/install/uv.sh (dev-env), listed here for reference only

@@ -14,7 +14,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - [x] **Phase 2: Consolidation & Data Migration** - DRY the codebase, extract data
 - [x] **Phase 3: Dotfiles Management** - Symlink and shell configuration system
 - [x] **Phase 4: macOS Platform** - Homebrew integration and system setup
-- [ ] **Phase 5: Linux Enhancements** - Feature additions to existing Linux support
+- [x] **Phase 5: Linux Enhancements** - Feature additions to existing Linux support
 - [ ] **Phase 6: Windows Foundation** - Basic WinGet functionality
 - [ ] **Phase 7: User Experience Polish** - Progress feedback, dry-run, summary
 - [ ] **Phase 8: Documentation** - README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
@@ -103,12 +103,12 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — APT hardening (lock timeout, retry backoff, two-pass install, DEBIAN_FRONTEND)
-- [ ] 05-02-PLAN.md — Flatpak/Snap data-driven rewrite (retry, idempotency, legacy removal)
-- [ ] 05-03-PLAN.md — Rust CLI tools installer (apt/brew + symlinks + dotfile integration)
-- [ ] 05-04-PLAN.md — Dev environment setup (fnm + uv + Node LTS + pnpm + bun + SSH)
-- [ ] 05-05-PLAN.md — AI coding tools installer (claude-code, codex, gemini-cli, ollama + profiles)
-- [ ] 05-06-PLAN.md — Linux main.sh orchestrator with profile dispatch and tests
+- [x] 05-01-PLAN.md — APT hardening (lock timeout, retry backoff, two-pass install, DEBIAN_FRONTEND)
+- [x] 05-02-PLAN.md — Flatpak/Snap data-driven rewrite (retry, idempotency, legacy removal)
+- [x] 05-03-PLAN.md — Rust CLI tools installer (apt/brew + symlinks + dotfile integration)
+- [x] 05-04-PLAN.md — Dev environment setup (fnm + uv + Node LTS + pnpm + bun + SSH)
+- [x] 05-05-PLAN.md — AI coding tools installer (claude-code, codex, gemini-cli, ollama + profiles)
+- [x] 05-06-PLAN.md — Linux main.sh orchestrator with profile dispatch and tests
 
 ### Phase 6: Windows Foundation
 **Goal**: Establish basic Windows support via PowerShell and WinGet
@@ -167,7 +167,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Consolidation & Data Migration | 7/7 | Complete | 2026-02-05 |
 | 3. Dotfiles Management | 4/4 | Complete | 2026-02-06 |
 | 4. macOS Platform | 3/3 | Complete | 2026-02-06 |
-| 5. Linux Enhancements | 0/6 | Planned | - |
+| 5. Linux Enhancements | 6/6 | Complete | 2026-02-06 |
 | 6. Windows Foundation | 0/2 | Not started | - |
 | 7. User Experience Polish | 0/3 | Not started | - |
 | 8. Documentation | 0/2 | Not started | - |
@@ -178,6 +178,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 2 completed: 2026-02-05*
 *Phase 3 completed: 2026-02-06*
 *Phase 4 completed: 2026-02-06*
-*Phase 5 planned: 2026-02-06*
+*Phase 5 completed: 2026-02-06*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*

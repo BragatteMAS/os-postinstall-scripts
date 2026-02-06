@@ -45,8 +45,7 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
 # Returns: 0 if installed, 1 if not
 is_snap_installed() {
     local pkg="$1"
-    # Trailing space prevents partial matches (e.g., "docker" vs "docker-compose")
-    snap list 2>/dev/null | grep -q "^${pkg} "
+    snap list "$pkg" &>/dev/null
 }
 
 # snap_install - Install a single Snap package with retry and idempotency

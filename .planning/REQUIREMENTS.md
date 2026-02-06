@@ -16,24 +16,24 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 
 ### Package Management
 
-- [ ] **PKG-01**: Instalar apps via Homebrew no macOS
-- [ ] **PKG-02**: Instalar apps via APT no Linux (Ubuntu/Debian)
+- [x] **PKG-01**: Instalar apps via Homebrew no macOS
+- [x] **PKG-02**: Instalar apps via APT no Linux (Ubuntu/Debian)
 - [ ] **PKG-03**: Instalar apps via WinGet no Windows
 - [x] **PKG-04**: Listas de apps em arquivos separados (.sh/.txt), nao hardcoded
 
 ### Dotfiles
 
-- [ ] **DOT-01**: Symlink de configs para home (zshrc, gitconfig, etc.)
-- [ ] **DOT-02**: Backup de configs existentes antes de linkar
-- [ ] **DOT-03**: Configuracoes de shell (zsh/bash) incluidas
-- [ ] **DOT-04**: Configuracao de git incluida
+- [x] **DOT-01**: Symlink de configs para home (zshrc, gitconfig, etc.)
+- [x] **DOT-02**: Backup de configs existentes antes de linkar
+- [x] **DOT-03**: Configuracoes de shell (zsh/bash) incluidas
+- [x] **DOT-04**: Configuracao de git incluida
 
 ### Profiles
 
-- [ ] **PROF-01**: Perfil minimal disponivel (essenciais apenas)
-- [ ] **PROF-02**: Perfil developer disponivel (ferramentas de dev)
-- [ ] **PROF-03**: Perfil full disponivel (tudo)
-- [ ] **PROF-04**: Selecao interativa de perfil no setup
+- [x] **PROF-01**: Perfil minimal disponivel (essenciais apenas)
+- [x] **PROF-02**: Perfil developer disponivel (ferramentas de dev)
+- [x] **PROF-03**: Perfil full disponivel (tudo)
+- [x] **PROF-04**: Selecao interativa de perfil no setup
 
 ### User Experience
 
@@ -44,9 +44,9 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 
 ### Profile-Specific Features
 
-- [ ] **FEAT-01**: AI/MCP integration disponivel em perfil developer/full
-- [ ] **FEAT-02**: Rust CLI tools (bat, eza, fd, rg, zoxide) em perfil developer/full
-- [ ] **FEAT-03**: Dev environment (Node, Python) em perfil developer/full
+- [x] **FEAT-01**: AI/MCP integration disponivel em perfil developer/full
+- [x] **FEAT-02**: Rust CLI tools (bat, eza, fd, rg, zoxide) em perfil developer/full
+- [x] **FEAT-03**: Dev environment (Node, Python) em perfil developer/full
 
 ### Codebase Modernization
 
@@ -101,19 +101,19 @@ Mapeamento de requirements para fases do roadmap.
 | MOD-02 | Phase 2: Consolidation | Complete |
 | MOD-03 | Phase 2: Consolidation | Complete |
 | PKG-04 | Phase 2: Consolidation | Complete |
-| DOT-01 | Phase 3: Dotfiles | Pending |
-| DOT-02 | Phase 3: Dotfiles | Pending |
-| DOT-03 | Phase 3: Dotfiles | Pending |
-| DOT-04 | Phase 3: Dotfiles | Pending |
-| PKG-01 | Phase 4: macOS | Pending |
-| PROF-01 | Phase 4: macOS | Pending |
-| PROF-02 | Phase 4: macOS | Pending |
-| PROF-03 | Phase 4: macOS | Pending |
-| PROF-04 | Phase 4: macOS | Pending |
-| PKG-02 | Phase 5: Linux | Pending |
-| FEAT-01 | Phase 5: Linux | Pending |
-| FEAT-02 | Phase 5: Linux | Pending |
-| FEAT-03 | Phase 5: Linux | Pending |
+| DOT-01 | Phase 3: Dotfiles | Complete |
+| DOT-02 | Phase 3: Dotfiles | Complete |
+| DOT-03 | Phase 3: Dotfiles | Complete |
+| DOT-04 | Phase 3: Dotfiles | Complete |
+| PKG-01 | Phase 4: macOS | Complete |
+| PROF-01 | Phase 4: macOS | Complete |
+| PROF-02 | Phase 4: macOS | Complete |
+| PROF-03 | Phase 4: macOS | Complete |
+| PROF-04 | Phase 4: macOS | Complete |
+| PKG-02 | Phase 5: Linux | Complete |
+| FEAT-01 | Phase 5: Linux | Complete |
+| FEAT-02 | Phase 5: Linux | Complete |
+| FEAT-03 | Phase 5: Linux | Complete |
 | PKG-03 | Phase 6: Windows | Pending |
 | UX-01 | Phase 7: UX Polish | Pending |
 | UX-02 | Phase 7: UX Polish | Pending |
@@ -128,4 +128,4 @@ Mapeamento de requirements para fases do roadmap.
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-05 after Phase 2 completion*
+*Last updated: 2026-02-06 after Phase 5 completion*
