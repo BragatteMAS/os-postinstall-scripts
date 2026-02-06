@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 4 of 8 (macOS Platform) - In progress
-Plan: 1 of 3 in current phase - COMPLETE
+Plan: 2 of 3 in current phase - COMPLETE
 Status: In progress
-Last activity: 2026-02-06 - Completed 04-01-PLAN.md (Homebrew Installer)
+Last activity: 2026-02-06 - Completed 04-02-PLAN.md (Brew Formula and Cask Installers)
 
-Progress: [███████████████░] 65%
+Progress: [████████████████░] 70%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 2.5 min
-- Total execution time: 38 min
+- Total execution time: 40 min
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [███████████████░] 65%
 | 01-core-infrastructure | 3/3 | 6 min | 2 min |
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
-| 04-macos-platform | 1/3 | 2 min | 2 min |
+| 04-macos-platform | 2/3 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (3 min), 03-02 (2 min), 03-03 (2 min), 03-04 (3 min), 04-01 (2 min)
-- Trend: Stable at ~2.4 min for recent plans
+- Last 5 plans: 03-02 (2 min), 03-03 (2 min), 03-04 (3 min), 04-01 (2 min), 04-02 (2 min)
+- Trend: Stable at ~2.2 min for recent plans
 
 *Updated after each plan completion*
 
@@ -87,6 +87,7 @@ Recent decisions affecting current work:
 - [04-01]: Main guard pattern for dual sourceable/executable scripts
 - [04-01]: Architecture detection: uname -m arm64 -> /opt/homebrew, else /usr/local
 - [04-01]: Xcode CLI Tools: interactive fallback with read -r for GUI installer
+- [04-02]: Cask detection uses `brew list --cask` locally (core is_brew_installed checks formulae only)
 
 ### Patterns Established
 
@@ -124,6 +125,8 @@ Recent decisions affecting current work:
 - Architecture detection: `get_brew_prefix()` returns /opt/homebrew (arm64) or /usr/local (x86_64)
 - Main guard: `if [[ "${BASH_SOURCE[0]}" == "$0" ]]` for sourceable + executable scripts
 - macOS installer pattern: follows apt.sh structure with macOS-specific adaptations
+- Underscore prefix for private helpers: `_brew_formula_install()`, `_brew_cask_install()`
+- HOMEBREW_NO_INSTALL_UPGRADE=1 inline env var to prevent upgrades during install
 
 ### Pending Todos
 
@@ -190,13 +193,15 @@ None.
 
 **Created:**
 - src/platforms/macos/install/homebrew.sh - Idempotent Homebrew installer
+- src/platforms/macos/install/brew.sh - Data-driven formula installer (brew.txt)
+- src/platforms/macos/install/brew-cask.sh - Data-driven cask installer (brew-cask.txt)
 - src/platforms/macos/install/.gitkeep - Directory placeholder
 
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 04-01-PLAN.md (Homebrew Installer)
+Stopped at: Completed 04-02-PLAN.md (Brew Formula and Cask Installers)
 Resume file: None
 
 ---
-*Next action: Execute 04-02-PLAN.md (Brew Packages Installer)*
+*Next action: Execute 04-03-PLAN.md (macOS Defaults and Integration)*
