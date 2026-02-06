@@ -105,6 +105,12 @@ declare -a FAILED_ITEMS=()
 
 log_banner "APT Package Installer"
 
+# Determine which package file to use (two-pass support)
+pkg_file="apt.txt"
+if [[ "${1:-}" == "--post" ]]; then
+    pkg_file="apt-post.txt"
+fi
+
 # Non-interactive mode: keep existing config files on package upgrades
 if [[ "${NONINTERACTIVE:-}" == "true" ]]; then
     export DEBIAN_FRONTEND=noninteractive
@@ -113,12 +119,12 @@ if [[ "${NONINTERACTIVE:-}" == "true" ]]; then
 fi
 
 # Load packages from data file
-if ! load_packages "apt.txt"; then
-    log_error "Failed to load apt packages from data/packages/apt.txt"
+if ! load_packages "$pkg_file"; then
+    log_error "Failed to load apt packages from data/packages/$pkg_file"
     exit 1
 fi
 
-log_info "Loaded ${#PACKAGES[@]} packages from apt.txt"
+log_info "Loaded ${#PACKAGES[@]} packages from $pkg_file"
 
 # Update package lists
 if ! safe_apt_update; then
