@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 5 of 8 (Linux Enhancements)
-Plan: 3 of 6 in current phase
+Plan: 4 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-06 - Completed 05-03-PLAN.md (Rust CLI Tools)
+Last activity: 2026-02-06 - Completed 05-04-PLAN.md (Dev Environment Installers)
 
-Progress: [█████████████████████████░] 87% (20/23 plans)
+Progress: [█████████████████████████░] 91% (21/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 2.4 min
-- Total execution time: 48 min
+- Total execution time: 50 min
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [███████████████████████
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
-| 05-linux-enhancements | 3/6 | 6 min | 2 min |
+| 05-linux-enhancements | 4/6 | 8 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (2 min), 04-03 (2 min), 05-01 (2 min), 05-02 (2 min), 05-03 (2 min)
+- Last 5 plans: 04-03 (2 min), 05-01 (2 min), 05-02 (2 min), 05-03 (2 min), 05-04 (2 min)
 - Trend: Stable at ~2 min for recent plans
 
 *Updated after each plan completion*
@@ -104,6 +104,9 @@ Recent decisions affecting current work:
 - [05-03]: Separate APT/Brew package name arrays for cross-platform installer
 - [05-03]: interactive.sh in src/core/ as shared module for all cross-platform installers
 - [05-03]: src/install/ directory for cross-platform installers (sibling to src/core/)
+- [05-04]: fnm --skip-shell prevents shell config modification (dotfiles handle PATH)
+- [05-04]: SSH key generation default=No, only offered interactively
+- [05-04]: Global npm packages (pnpm, bun) installed via npm install -g after Node LTS
 
 ### Patterns Established
 
@@ -155,6 +158,9 @@ Recent decisions affecting current work:
 - Ubuntu symlink pattern: `/usr/local/bin/` symlinks for binary name divergences (batcat->bat, fdfind->fd)
 - Interactive selection: `show_category_menu()` -> All/Choose/Skip menu
 - Shell integration pattern: `command -v tool && eval "$(tool init shell)"` guard
+- Curl-based installer: idempotent check, curl install, PATH update, verify
+- Orchestrator sources sub-installers: main guard prevents double execution
+- Interactive category menu: group+custom selection for tool categories
 
 ### Pending Todos
 
@@ -254,11 +260,16 @@ None.
 - data/dotfiles/bash/bashrc - zoxide init bash, fnm env
 - data/dotfiles/zsh/zshrc - zoxide init zsh, fnm env
 
+**Created (05-04):**
+- src/install/fnm.sh - Cross-platform fnm installer (fnm + Node LTS + pnpm + bun)
+- src/install/uv.sh - Cross-platform uv installer (uv + Python)
+- src/install/dev-env.sh - Dev environment orchestrator with interactive selection and SSH
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-03-PLAN.md (Rust CLI Tools)
+Stopped at: Completed 05-04-PLAN.md (Dev Environment Installers)
 Resume file: None
 
 ---
-*Next action: Execute 05-04-PLAN.md*
+*Next action: Execute 05-05-PLAN.md*
