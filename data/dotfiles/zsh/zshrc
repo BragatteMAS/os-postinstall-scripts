@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+# Main zsh configuration
+# Symlinked to ~/.zshrc
+
+# History configuration
+HISTFILE="${HOME}/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+
+setopt EXTENDED_HISTORY       # Write timestamp to history
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first
+setopt HIST_IGNORE_DUPS       # Ignore consecutive duplicates
+setopt HIST_IGNORE_SPACE      # Ignore commands starting with space
+setopt HIST_REDUCE_BLANKS     # Remove extra blanks
+setopt SHARE_HISTORY          # Share history between sessions
+setopt INC_APPEND_HISTORY     # Add commands immediately
+
+# Completion
+autoload -Uz compinit
+compinit -C  # -C skips security check for faster startup
+
+# Determine dotfiles location
+# IMPORTANT: Use readlink to resolve symlink, otherwise paths break
+# when ~/.zshrc is a symlink to data/dotfiles/zsh/zshrc
+_zshrc_real="${(%):-%x}"
+if [[ -L "$_zshrc_real" ]]; then
+    # macOS readlink doesn't support -f, use fallback
+    _zshrc_real="$(readlink -f "$_zshrc_real" 2>/dev/null || readlink "$_zshrc_real")"
+fi
+DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "$_zshrc_real")/.." && pwd)}"
+unset _zshrc_real
+DOTFILES_SHARED="${DOTFILES_DIR}/shared"
+DOTFILES_ZSH="${DOTFILES_DIR}/zsh"
+
+# Source order: path, env, aliases, functions, plugins
+# (per CONTEXT.md decision)
+[[ -f "${DOTFILES_SHARED}/path.sh" ]] && source "${DOTFILES_SHARED}/path.sh"
+[[ -f "${DOTFILES_SHARED}/env.sh" ]] && source "${DOTFILES_SHARED}/env.sh"
+[[ -f "${DOTFILES_SHARED}/aliases.sh" ]] && source "${DOTFILES_SHARED}/aliases.sh"
+[[ -f "${DOTFILES_ZSH}/functions.sh" ]] && source "${DOTFILES_ZSH}/functions.sh"
+[[ -f "${DOTFILES_ZSH}/plugins.sh" ]] && source "${DOTFILES_ZSH}/plugins.sh"
+
+# fzf integration (if installed)
+[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh"
+
+# Starship prompt (if available)
+command -v starship &>/dev/null && eval "$(starship init zsh)"
+
+# Local overrides (last, so user can override anything)
+[[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local"
