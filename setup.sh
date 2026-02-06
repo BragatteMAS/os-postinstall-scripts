@@ -2,7 +2,12 @@
 #===============================================
 # os-postinstall-scripts - Setup Entry Point
 #===============================================
-# Usage: ./setup.sh [profile]
+# Usage: ./setup.sh [action|profile]
+#
+# Actions:
+#   dotfiles - Install dotfiles symlinks and zsh plugins
+#   unlink   - Remove dotfiles symlinks and restore backups
+#
 # Profiles: minimal, developer, full
 #
 # This script detects your platform and runs the appropriate installer.
@@ -35,6 +40,38 @@ setup_error_handling
 # Main
 #-----------------------------------------------
 main() {
+    # Handle help flag and special actions before anything else
+    case "${1:-}" in
+        -h|--help)
+            echo "Usage: ./setup.sh [action|profile]"
+            echo ""
+            echo "Actions:"
+            echo "  dotfiles - Install dotfiles symlinks and zsh plugins"
+            echo "  unlink   - Remove dotfiles symlinks and restore backups"
+            echo ""
+            echo "Profiles:"
+            echo "  minimal    - Essential tools only"
+            echo "  developer  - Development environment (default)"
+            echo "  full       - Everything"
+            echo ""
+            echo "Environment variables:"
+            echo "  DRY_RUN=true    - Show what would be done"
+            echo "  VERBOSE=true    - Enable debug output"
+            echo "  UNATTENDED=true - Skip confirmation prompts"
+            exit 0
+            ;;
+        dotfiles)
+            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            install_dotfiles
+            exit $?
+            ;;
+        unlink)
+            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            remove_dotfiles
+            exit $?
+            ;;
+    esac
+
     local profile="${1:-$DEFAULT_PROFILE}"
 
     log_banner "OS Post-Install Scripts"
