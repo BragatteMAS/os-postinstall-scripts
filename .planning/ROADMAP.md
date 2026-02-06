@@ -118,11 +118,11 @@ Plans:
   1. Running `.\setup.ps1` on Windows installs packages via WinGet
   2. Script detects if WinGet is available and provides guidance if not
   3. Basic package list from profile is installed successfully
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: PowerShell entry point and utilities
-- [ ] 06-02: WinGet integration
+- [ ] 06-01-PLAN.md — PowerShell core modules (logging, packages, errors) and setup.ps1 entry point
+- [ ] 06-02-PLAN.md — WinGet data-driven installer and Windows orchestrator with profile dispatch
 
 ### Phase 7: User Experience Polish
 **Goal**: Provide excellent user feedback during execution
