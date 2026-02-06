@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 5 of 8 (Linux Enhancements)
-Plan: 1 of 6 in current phase
+Plan: 2 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-06 - Completed 05-01-PLAN.md (Hardened APT Installer)
+Last activity: 2026-02-06 - Completed 05-02-PLAN.md (Flatpak & Snap Installers)
 
-Progress: [██████████████████████░░░░] 78% (18/23 plans)
+Progress: [████████████████████████░░] 83% (19/23 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: 2.4 min
-- Total execution time: 44 min
+- Total execution time: 46 min
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████████████████████░
 | 02-consolidation-data-migration | 7/7 | 20 min | 2.9 min |
 | 03-dotfiles-management | 4/4 | 10 min | 2.5 min |
 | 04-macos-platform | 3/3 | 6 min | 2 min |
-| 05-linux-enhancements | 1/6 | 2 min | 2 min |
+| 05-linux-enhancements | 2/6 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-04 (3 min), 04-01 (2 min), 04-02 (2 min), 04-03 (2 min), 05-01 (2 min)
-- Trend: Stable at ~2.2 min for recent plans
+- Last 5 plans: 04-01 (2 min), 04-02 (2 min), 04-03 (2 min), 05-01 (2 min), 05-02 (2 min)
+- Trend: Stable at ~2 min for recent plans
 
 *Updated after each plan completion*
 
@@ -96,6 +96,10 @@ Recent decisions affecting current work:
 - [05-01]: retry_with_backoff from core/errors.sh reused in apt.sh (no local redefinition)
 - [05-01]: log_warn on install failure (not log_error) -- script continues
 - [05-01]: No autoclean/autoremove in apt.sh (setup script, not maintenance tool)
+- [05-02]: Flatpak idempotency uses flatpak list --app --columns=application (not dpkg)
+- [05-02]: Snap idempotency uses snap list with trailing space to prevent partial matches
+- [05-02]: Classic confinement declared via classic: prefix in data files (no auto-detect)
+- [05-02]: retry_with_backoff from core/errors.sh, NOT defined locally (DRY)
 
 ### Patterns Established
 
@@ -139,8 +143,10 @@ Recent decisions affecting current work:
 - Profile dispatch: read profile file, case-match on package file names, skip non-platform
 - Dual-mode script: check $1 for unattended, fall through to interactive menu
 - APT lock handling: `-o DPkg::Lock::Timeout=60` instead of fuser polling
-- Two-pass install: `--post` flag selects apt-post.txt
+- Two-pass install: `--post` flag selects apt-post.txt / flatpak-post.txt / snap-post.txt
 - Non-interactive opts: `APT_NONINTERACTIVE_OPTS` array appended to command
+- Flatpak installer: `ensure_flathub_remote()` with `--if-not-exists` before install loop
+- Snap classic prefix: `classic:pkg-name` convention in data files for classic confinement
 
 ### Pending Todos
 
@@ -174,7 +180,7 @@ None.
 - Hardcoded arrays from post_install.sh (extracted to data files)
 
 **Remaining in platforms/linux/:**
-- install/ (flatpak.sh, snap.sh, desktop-environments.sh) - deferred to Phase 5
+- install/ (desktop-environments.sh only) - flatpak.sh and snap.sh removed in Phase 5
 
 ## Gap Closures Complete
 
@@ -222,11 +228,19 @@ None.
 **Modified:**
 - src/platforms/linux/install/apt.sh - Hardened with dpkg lock timeout, retry, two-pass, non-interactive support
 
+**Created:**
+- src/platforms/linux/install/flatpak.sh - Data-driven Flatpak installer with Flathub remote setup
+- src/platforms/linux/install/snap.sh - Data-driven Snap installer with classic confinement support
+
+**Removed:**
+- platforms/linux/install/flatpak.sh - Legacy hardcoded script
+- platforms/linux/install/snap.sh - Legacy hardcoded script
+
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 05-01-PLAN.md (Hardened APT Installer)
+Stopped at: Completed 05-02-PLAN.md (Flatpak & Snap Installers)
 Resume file: None
 
 ---
-*Next action: Execute 05-02-PLAN.md*
+*Next action: Execute 05-03-PLAN.md*
