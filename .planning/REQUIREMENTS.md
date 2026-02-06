@@ -18,7 +18,7 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 
 - [x] **PKG-01**: Instalar apps via Homebrew no macOS
 - [x] **PKG-02**: Instalar apps via APT no Linux (Ubuntu/Debian)
-- [ ] **PKG-03**: Instalar apps via WinGet no Windows
+- [x] **PKG-03**: Instalar apps via WinGet no Windows
 - [x] **PKG-04**: Listas de apps em arquivos separados (.sh/.txt), nao hardcoded
 
 ### Dotfiles
@@ -114,7 +114,7 @@ Mapeamento de requirements para fases do roadmap.
 | FEAT-01 | Phase 5: Linux | Complete |
 | FEAT-02 | Phase 5: Linux | Complete |
 | FEAT-03 | Phase 5: Linux | Complete |
-| PKG-03 | Phase 6: Windows | Pending |
+| PKG-03 | Phase 6: Windows | Complete |
 | UX-01 | Phase 7: UX Polish | Pending |
 | UX-02 | Phase 7: UX Polish | Pending |
 | UX-03 | Phase 7: UX Polish | Pending |
@@ -128,4 +128,4 @@ Mapeamento de requirements para fases do roadmap.
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-06 after Phase 5 completion*
+*Last updated: 2026-02-06 after Phase 6 completion*
