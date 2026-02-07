@@ -39,6 +39,14 @@ source "${MACOS_DIR}/../../core/errors.sh" || {
     exit 1
 }
 
+source "${MACOS_DIR}/../../core/progress.sh" || {
+    log_error "Failed to load progress.sh"
+    exit 1
+}
+
+# Cross-platform installers directory
+INSTALL_DIR="${MACOS_DIR}/../../install"
+
 # DATA_DIR is set by packages.sh, but verify it's correct
 if [[ -z "${DATA_DIR:-}" || ! -d "${DATA_DIR}" ]]; then
     DATA_DIR="$(cd "${MACOS_DIR}/../../data" 2>/dev/null && pwd -P)"
@@ -111,9 +119,22 @@ install_profile() {
         return 1
     fi
 
+    # Show DRY_RUN banner if active
+    show_dry_run_banner
+
     log_info "Profile: $profile_name"
 
+    # Count platform-relevant steps for progress feedback
+    # +1 for Homebrew installation step (always runs first)
+    local total_steps
+    total_steps=$(count_platform_steps "$profile_file" "macos")
+    total_steps=$((total_steps + 1))
+
+    local current_step=0
+
     # Ensure Homebrew is installed first
+    current_step=$((current_step + 1))
+    log_info "[Step ${current_step}/${total_steps}] Ensuring Homebrew is installed..."
     bash "${MACOS_DIR}/install/homebrew.sh" || return 1
 
     # Read profile and dispatch to macOS-relevant installers
@@ -127,22 +148,38 @@ install_profile() {
         # Dispatch based on package file type (PLATFORM FILTERING)
         case "$pkg_file" in
             brew.txt)
-                log_info "Installing brew packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing brew packages..."
                 bash "${MACOS_DIR}/install/brew.sh"
                 ;;
             brew-cask.txt)
-                log_info "Installing brew cask packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing brew cask packages..."
                 bash "${MACOS_DIR}/install/brew-cask.sh"
                 ;;
-            apt.txt)
-                # Linux-only - skip silently on macOS
-                log_debug "Skipping apt.txt (Linux only)"
-                ;;
-            cargo.txt|npm.txt)
-                log_info "Skipping $pkg_file (requires Phase 5)"
-                ;;
             ai-tools.txt)
-                log_info "Skipping ai-tools.txt (requires Phase 5)"
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing AI tools..."
+                bash "${INSTALL_DIR}/ai-tools.sh"
+                ;;
+            apt.txt|apt-post.txt)
+                # Linux-only - skip silently on macOS
+                log_debug "Skipping $pkg_file (Linux only)"
+                ;;
+            flatpak.txt|flatpak-post.txt|snap.txt|snap-post.txt)
+                # Linux-only - skip silently on macOS
+                log_debug "Skipping $pkg_file (Linux only)"
+                ;;
+            cargo.txt)
+                # No macOS cargo installer yet - skip
+                log_debug "Skipping cargo.txt (no macOS installer)"
+                ;;
+            npm.txt)
+                log_debug "Skipping npm.txt (handled by dev-env)"
+                ;;
+            winget.txt)
+                # Windows-only - skip silently on macOS
+                log_debug "Skipping winget.txt (Windows only)"
                 ;;
             *)
                 log_warn "Unknown package file: $pkg_file"
