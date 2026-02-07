@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 7 - User Experience Polish (In progress)
+**Current focus:** Phase 7 - User Experience Polish (COMPLETE)
 
 ## Current Position
 
 Phase: 7 of 8 (User Experience Polish)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-07 - Completed 07-02-PLAN.md (DRY_RUN CLI Flags and Guards)
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-07 - Completed 07-03-PLAN.md (Completion Summary and One-Command Setup)
 
-Progress: [█████████████████████████░] 96% (27/28 plans)
+Progress: [██████████████████████████] 100% (28/28 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 27
+- Total plans completed: 28
 - Average duration: 2.5 min
-- Total execution time: 68 min
+- Total execution time: 70 min
 
 **By Phase:**
 
@@ -33,10 +33,10 @@ Progress: [███████████████████████
 | 04-macos-platform | 3/3 | 6 min | 2 min |
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
-| 07-user-experience-polish | 2/3 | 8 min | 4 min |
+| 07-user-experience-polish | 3/3 | 10 min | 3.3 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (2 min), 06-02 (3 min), 07-01 (4 min), 07-02 (4 min)
+- Last 5 plans: 06-02 (3 min), 07-01 (4 min), 07-02 (4 min), 07-03 (2 min)
 - Trend: Stable at ~2.5 min
 
 *Updated after each plan completion*
@@ -131,6 +131,10 @@ Recent decisions affecting current work:
 - [07-02]: parse_flags() before main() with REMAINING_ARGS passthrough
 - [07-02]: Unknown CLI flags cause error + exit 1 (no silent ignore)
 - [07-02]: DRY_RUN guard placed after idempotency check, before mutation
+- [07-03]: SECONDS builtin for duration tracking (no external date math)
+- [07-03]: _SUMMARY_SHOWN guard prevents double summary on normal vs abnormal exit
+- [07-03]: Cleanup trap overridden in setup.sh after setup_error_handling
+- [07-03]: No per-package installed/skipped counters (orchestrator-level only)
 
 ### Patterns Established
 
@@ -205,6 +209,9 @@ Recent decisions affecting current work:
 - INSTALL_DIR variable: cross-platform installers directory (src/install/)
 - CLI flag parsing: `parse_flags()` with while/case/shift, REMAINING_ARGS passthrough
 - DRY_RUN guard pattern: after idempotency check, before mutation, `[DRY_RUN]` log prefix
+- Completion summary: show_completion_summary() at end of main() with profile/platform/duration/failures
+- _SUMMARY_SHOWN guard: cleanup trap checks flag to prevent duplicate summaries
+- SECONDS timer: reset to 0 at main() start, read at summary for Xm Ys format
 
 ### Pending Todos
 
@@ -342,7 +349,7 @@ None.
 **Removed (06-02):**
 - platforms/windows/win11.ps1 - Legacy hardcoded script (superseded by data-driven winget.ps1)
 
-## Phase 7 Deliverables (IN PROGRESS)
+## Phase 7 Deliverables (COMPLETE)
 
 **Created (07-01):**
 - src/core/progress.sh - Step counter helpers and DRY_RUN banner
@@ -363,11 +370,15 @@ None.
 - src/install/ai-tools.sh - DRY_RUN guards in install_ai_tool() (npm + curl branches)
 - src/install/dev-env.sh - DRY_RUN guard in setup_ssh_key()
 
+**Modified (07-03):**
+- src/core/progress.sh - Added show_completion_summary() with profile, platform, duration, failure integration
+- setup.sh - Sources progress.sh, SECONDS timer, show_completion_summary call, cleanup trap override
+
 ## Session Continuity
 
 Last session: 2026-02-07
-Stopped at: Completed 07-02-PLAN.md (DRY_RUN CLI Flags and Guards)
+Stopped at: Completed 07-03-PLAN.md (Completion Summary and One-Command Setup)
 Resume file: None
 
 ---
-*Next action: Continue Phase 7 with 07-03-PLAN.md (Completion Summary)*
+*Phase 7 complete. All 28 plans across 7 phases executed. Ready for Phase 8 (Documentation) or release.*
