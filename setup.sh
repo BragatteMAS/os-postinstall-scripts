@@ -37,10 +37,21 @@ source "${SCRIPT_DIR}/config.sh"
 source "${CORE_DIR}/logging.sh"
 source "${CORE_DIR}/platform.sh"
 source "${CORE_DIR}/errors.sh"
+source "${CORE_DIR}/progress.sh"
 
 # Setup colors and error handling
 setup_colors
 setup_error_handling
+
+# Override cleanup trap to prevent double summary on normal exit
+cleanup() {
+    if [[ -z "${_SUMMARY_SHOWN:-}" ]]; then
+        show_failure_summary
+    fi
+    cleanup_temp_dir
+    exit 0
+}
+trap cleanup EXIT INT TERM
 
 #-----------------------------------------------
 # Parse CLI flags
@@ -83,6 +94,9 @@ parse_flags() {
 # Main
 #-----------------------------------------------
 main() {
+    # Start duration timer
+    SECONDS=0
+
     # Handle help flag and special actions before anything else
     case "${1:-}" in
         -h|--help)
@@ -167,9 +181,9 @@ main() {
             ;;
     esac
 
-    # Show summary
-    show_failure_summary
-    log_banner "Setup Complete"
+    # Show completion summary
+    show_completion_summary "$profile" "${DETECTED_OS:-unknown}"
+    _SUMMARY_SHOWN=1
 }
 
 # Parse flags, then run main with remaining arguments
