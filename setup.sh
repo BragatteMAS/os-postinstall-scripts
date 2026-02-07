@@ -2,7 +2,13 @@
 #===============================================
 # os-postinstall-scripts - Setup Entry Point
 #===============================================
-# Usage: ./setup.sh [action|profile]
+# Usage: ./setup.sh [options] [action|profile]
+#
+# Options:
+#   -n, --dry-run     Show what would be done without making changes
+#   -v, --verbose     Enable debug output with timestamps
+#   -y, --unattended  Skip confirmation prompts
+#   -h, --help        Show this help message
 #
 # Actions:
 #   dotfiles - Install dotfiles symlinks and zsh plugins
@@ -12,7 +18,7 @@
 #
 # This script detects your platform and runs the appropriate installer.
 #
-# Environment variables:
+# Environment variables (alternative to flags):
 #   DRY_RUN=true    - Show what would be done
 #   VERBOSE=true    - Enable debug output
 #   UNATTENDED=true - Skip confirmation prompts
@@ -37,27 +43,75 @@ setup_colors
 setup_error_handling
 
 #-----------------------------------------------
+# Parse CLI flags
+#-----------------------------------------------
+parse_flags() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -n|--dry-run)
+                export DRY_RUN=true
+                shift
+                ;;
+            -v|--verbose)
+                export VERBOSE=true
+                shift
+                ;;
+            -y|--unattended)
+                export UNATTENDED=true
+                shift
+                ;;
+            -h|--help)
+                # Help is handled inside main(), just pass through
+                break
+                ;;
+            -*)
+                echo "[ERROR] Unknown option: $1" >&2
+                echo "Usage: ./setup.sh [options] [action|profile]" >&2
+                echo "Run './setup.sh --help' for details" >&2
+                exit 1
+                ;;
+            *)
+                break  # Non-flag argument = action or profile
+                ;;
+        esac
+    done
+    # Return remaining args for main()
+    REMAINING_ARGS=("$@")
+}
+
+#-----------------------------------------------
 # Main
 #-----------------------------------------------
 main() {
     # Handle help flag and special actions before anything else
     case "${1:-}" in
         -h|--help)
-            echo "Usage: ./setup.sh [action|profile]"
+            echo "Usage: ./setup.sh [options] [action|profile]"
+            echo ""
+            echo "Options:"
+            echo "  -n, --dry-run     Show what would be done without making changes"
+            echo "  -v, --verbose     Enable debug output with timestamps"
+            echo "  -y, --unattended  Skip confirmation prompts"
+            echo "  -h, --help        Show this help message"
             echo ""
             echo "Actions:"
-            echo "  dotfiles - Install dotfiles symlinks and zsh plugins"
-            echo "  unlink   - Remove dotfiles symlinks and restore backups"
+            echo "  dotfiles  Install dotfiles symlinks and zsh plugins"
+            echo "  unlink    Remove dotfiles symlinks and restore backups"
             echo ""
             echo "Profiles:"
-            echo "  minimal    - Essential tools only"
-            echo "  developer  - Development environment (default)"
-            echo "  full       - Everything"
+            echo "  minimal    Essential tools only"
+            echo "  developer  Development environment (default)"
+            echo "  full       Everything"
             echo ""
-            echo "Environment variables:"
+            echo "Environment variables (alternative to flags):"
             echo "  DRY_RUN=true    - Show what would be done"
             echo "  VERBOSE=true    - Enable debug output"
             echo "  UNATTENDED=true - Skip confirmation prompts"
+            echo ""
+            echo "Examples:"
+            echo "  ./setup.sh --dry-run developer"
+            echo "  ./setup.sh -n -v full"
+            echo "  ./setup.sh --unattended minimal"
             exit 0
             ;;
         dotfiles)
@@ -118,5 +172,6 @@ main() {
     log_banner "Setup Complete"
 }
 
-# Run main with all arguments
-main "$@"
+# Parse flags, then run main with remaining arguments
+parse_flags "$@"
+main "${REMAINING_ARGS[@]}"
