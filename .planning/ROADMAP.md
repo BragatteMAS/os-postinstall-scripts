@@ -141,20 +141,21 @@ Plans:
 - [x] 07-03-PLAN.md — Completion summary and one-command setup (rich summary with duration, SECONDS timer)
 
 ### Phase 8: Documentation
-**Goal**: Comprehensive documentation for users and contributors
+**Goal**: Comprehensive documentation for users and contributors (single README with all content, CONTRIBUTING rewrite, community health files)
 **Depends on**: Phase 7
 **Requirements**: MOD-04
 **Success Criteria** (what must be TRUE):
-  1. README.md explains what the project does and how to get started
-  2. INSTALL.md covers prerequisites and installation steps for all platforms
-  3. USAGE.md documents all commands, flags, and profiles
-  4. CUSTOMIZE.md explains how to add packages and modify configurations
-  5. CONTRIBUTING.md provides guidelines for contributors
-**Plans**: TBD
+  1. README.md explains what the project does and how to get started (23-section single document)
+  2. README.md covers prerequisites, installation, usage, customization (merged per CONTEXT decision)
+  3. CONTRIBUTING.md provides project-specific guidelines for contributors (no BMAD boilerplate)
+  4. CODE_OF_CONDUCT.md exists (Contributor Covenant v2.1)
+  5. GitHub templates and repo metadata are current
+**Plans**: 3 plans
 
 Plans:
-- [ ] 08-01: User documentation (README, INSTALL, USAGE)
-- [ ] 08-02: Customization and contribution guides
+- [ ] 08-01-PLAN.md -- README.md complete rewrite (23 sections) + demo GIF placeholder
+- [ ] 08-02-PLAN.md -- CONTRIBUTING.md + CODE_OF_CONDUCT.md + GitHub templates update
+- [ ] 08-03-PLAN.md -- GitHub repo metadata + cross-link verification + visual check
 
 ## Progress
 
@@ -170,7 +171,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Linux Enhancements | 6/6 | Complete | 2026-02-06 |
 | 6. Windows Foundation | 2/2 | Complete | 2026-02-06 |
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
-| 8. Documentation | 0/2 | Not started | - |
+| 8. Documentation | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-04*
