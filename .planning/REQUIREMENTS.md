@@ -37,10 +37,10 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 
 ### User Experience
 
-- [ ] **UX-01**: Progress feedback durante execucao (o que esta acontecendo)
-- [ ] **UX-02**: Dry-run mode (--dry-run mostra o que faria sem executar)
-- [ ] **UX-03**: Resumo ao final (o que foi instalado/configurado)
-- [ ] **UX-04**: One-command setup (./setup.sh e pronto)
+- [x] **UX-01**: Progress feedback durante execucao (o que esta acontecendo)
+- [x] **UX-02**: Dry-run mode (--dry-run mostra o que faria sem executar)
+- [x] **UX-03**: Resumo ao final (o que foi instalado/configurado)
+- [x] **UX-04**: One-command setup (./setup.sh e pronto)
 
 ### Profile-Specific Features
 
@@ -115,10 +115,10 @@ Mapeamento de requirements para fases do roadmap.
 | FEAT-02 | Phase 5: Linux | Complete |
 | FEAT-03 | Phase 5: Linux | Complete |
 | PKG-03 | Phase 6: Windows | Complete |
-| UX-01 | Phase 7: UX Polish | Pending |
-| UX-02 | Phase 7: UX Polish | Pending |
-| UX-03 | Phase 7: UX Polish | Pending |
-| UX-04 | Phase 7: UX Polish | Pending |
+| UX-01 | Phase 7: UX Polish | Complete |
+| UX-02 | Phase 7: UX Polish | Complete |
+| UX-03 | Phase 7: UX Polish | Complete |
+| UX-04 | Phase 7: UX Polish | Complete |
 | MOD-04 | Phase 8: Documentation | Pending |
 
 **Coverage:**
