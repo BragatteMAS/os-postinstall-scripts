@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 7 of 8 (User Experience Polish)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-07 - Completed 07-01-PLAN.md (Progress Feedback System)
+Last activity: 2026-02-07 - Completed 07-02-PLAN.md (DRY_RUN CLI Flags and Guards)
 
-Progress: [████████████████████████░░] 93% (26/28 plans)
+Progress: [█████████████████████████░] 96% (27/28 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
+- Total plans completed: 27
 - Average duration: 2.5 min
-- Total execution time: 64 min
+- Total execution time: 68 min
 
 **By Phase:**
 
@@ -33,10 +33,10 @@ Progress: [███████████████████████
 | 04-macos-platform | 3/3 | 6 min | 2 min |
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
-| 07-user-experience-polish | 1/3 | 4 min | 4 min |
+| 07-user-experience-polish | 2/3 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-06 (3 min), 06-01 (2 min), 06-02 (3 min), 07-01 (4 min)
+- Last 5 plans: 06-01 (2 min), 06-02 (3 min), 07-01 (4 min), 07-02 (4 min)
 - Trend: Stable at ~2.5 min
 
 *Updated after each plan completion*
@@ -128,6 +128,9 @@ Recent decisions affecting current work:
 - [07-01]: ai-tools.txt dispatch enabled for macOS (Phase 5 cross-platform installer exists)
 - [07-01]: winget.txt skip case added to both Linux/macOS orchestrators
 - [07-01]: $((count + 1)) arithmetic over ((count++)) for Bash 3.2 compat
+- [07-02]: parse_flags() before main() with REMAINING_ARGS passthrough
+- [07-02]: Unknown CLI flags cause error + exit 1 (no silent ignore)
+- [07-02]: DRY_RUN guard placed after idempotency check, before mutation
 
 ### Patterns Established
 
@@ -200,6 +203,8 @@ Recent decisions affecting current work:
 - Step counter pattern: count_platform_steps() pre-count + current_step increment at dispatch
 - DRY_RUN banner: show_dry_run_banner() at top of install_profile()
 - INSTALL_DIR variable: cross-platform installers directory (src/install/)
+- CLI flag parsing: `parse_flags()` with while/case/shift, REMAINING_ARGS passthrough
+- DRY_RUN guard pattern: after idempotency check, before mutation, `[DRY_RUN]` log prefix
 
 ### Pending Todos
 
@@ -346,11 +351,23 @@ None.
 - src/platforms/linux/main.sh - Step-counted profile dispatch with [Step X/Y] prefix
 - src/platforms/macos/main.sh - Step-counted profile dispatch, ai-tools.txt enabled, INSTALL_DIR added
 
+**Modified (07-02):**
+- setup.sh - CLI flag parsing (--dry-run, --verbose, --unattended) + updated help text
+- src/platforms/linux/install/apt.sh - DRY_RUN guards in safe_apt_update() and apt_hardened_install()
+- src/platforms/linux/install/flatpak.sh - DRY_RUN guards in ensure_flathub_remote() and flatpak_install()
+- src/platforms/linux/install/snap.sh - DRY_RUN guard in snap_install()
+- src/platforms/linux/install/cargo.sh - DRY_RUN guards in ensure_rust_installed(), cargo_install(), ensure_binstall()
+- src/install/rust-cli.sh - DRY_RUN guards in install_rust_tools_linux(), install_rust_tools_macos(), create_rust_symlinks()
+- src/install/fnm.sh - DRY_RUN guards in install_fnm(), install_node_lts(), install_global_npm()
+- src/install/uv.sh - DRY_RUN guards in install_uv(), install_python()
+- src/install/ai-tools.sh - DRY_RUN guards in install_ai_tool() (npm + curl branches)
+- src/install/dev-env.sh - DRY_RUN guard in setup_ssh_key()
+
 ## Session Continuity
 
 Last session: 2026-02-07
-Stopped at: Completed 07-01-PLAN.md (Progress Feedback System)
+Stopped at: Completed 07-02-PLAN.md (DRY_RUN CLI Flags and Guards)
 Resume file: None
 
 ---
-*Next action: Continue Phase 7 with 07-02-PLAN.md (Dry-Run Mode) and 07-03-PLAN.md (Completion Summary)*
+*Next action: Continue Phase 7 with 07-03-PLAN.md (Completion Summary)*
