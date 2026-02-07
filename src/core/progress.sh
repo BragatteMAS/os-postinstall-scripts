@@ -99,8 +99,14 @@ show_completion_summary() {
     local elapsed=${SECONDS:-0}
     local mins=$((elapsed / 60))
     local secs=$((elapsed % 60))
-    local fail_count
-    fail_count=$(get_failure_count 2>/dev/null || echo 0)
+    local fail_count=0
+
+    # Cross-process: read from shared failure log if available
+    if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" ]]; then
+        fail_count=$(wc -l < "$FAILURE_LOG" | tr -d ' ')
+    else
+        fail_count=$(get_failure_count 2>/dev/null || echo 0)
+    fi
 
     echo ""
     if [[ "${DRY_RUN:-}" == "true" ]]; then
@@ -116,7 +122,15 @@ show_completion_summary() {
 
     if [[ "$fail_count" -gt 0 ]]; then
         log_warn "Completed with ${fail_count} failure(s)"
-        show_failure_summary
+        if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" ]]; then
+            echo "  Failed items:"
+            while IFS= read -r item; do
+                echo "    - $item"
+            done < "$FAILURE_LOG"
+            echo ""
+        else
+            show_failure_summary
+        fi
     else
         log_ok "All sections completed successfully"
     fi
