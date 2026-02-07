@@ -87,6 +87,44 @@ count_platform_steps() {
 }
 
 #######################################
+# show_completion_summary()
+# Display a rich end-of-run summary with profile, platform, duration, and results
+# Args: $1 = profile name, $2 = platform
+# Requires: SECONDS builtin (set to 0 at start of setup.sh)
+# Requires: get_failure_count() and show_failure_summary() from errors.sh
+#######################################
+show_completion_summary() {
+    local profile="${1:-unknown}"
+    local platform="${2:-unknown}"
+    local elapsed=${SECONDS:-0}
+    local mins=$((elapsed / 60))
+    local secs=$((elapsed % 60))
+    local fail_count
+    fail_count=$(get_failure_count 2>/dev/null || echo 0)
+
+    echo ""
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_banner "Dry Run Complete"
+    else
+        log_banner "Setup Complete"
+    fi
+
+    log_info "Profile:  ${profile}"
+    log_info "Platform: ${platform}"
+    log_info "Duration: ${mins}m ${secs}s"
+    echo ""
+
+    if [[ "$fail_count" -gt 0 ]]; then
+        log_warn "Completed with ${fail_count} failure(s)"
+        show_failure_summary
+    else
+        log_ok "All sections completed successfully"
+    fi
+
+    echo ""
+}
+
+#######################################
 # Export functions for subshells
 #######################################
-export -f show_dry_run_banner count_platform_steps
+export -f show_dry_run_banner count_platform_steps show_completion_summary
