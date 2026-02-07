@@ -39,6 +39,11 @@ source "${LINUX_DIR}/../../core/errors.sh" || {
     exit 1
 }
 
+source "${LINUX_DIR}/../../core/progress.sh" || {
+    log_error "Failed to load progress.sh"
+    exit 1
+}
+
 # Cross-platform installers directory
 INSTALL_DIR="${LINUX_DIR}/../../install"
 
@@ -93,14 +98,30 @@ install_profile() {
         return 1
     fi
 
+    # Show DRY_RUN banner if active
+    show_dry_run_banner
+
     log_info "Profile: $profile_name"
+
+    # Count platform-relevant steps for progress feedback
+    local total_steps
+    total_steps=$(count_platform_steps "$profile_file" "linux")
+
+    # For developer/full: dev-env + rust-cli run before dispatch loop
+    if [[ "$profile_name" != "minimal" ]]; then
+        total_steps=$((total_steps + 2))
+    fi
+
+    local current_step=0
 
     # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
     if [[ "$profile_name" != "minimal" ]]; then
-        log_info "Setting up development environment..."
+        current_step=$((current_step + 1))
+        log_info "[Step ${current_step}/${total_steps}] Setting up development environment..."
         bash "${INSTALL_DIR}/dev-env.sh"
 
-        log_info "Installing Rust CLI tools..."
+        current_step=$((current_step + 1))
+        log_info "[Step ${current_step}/${total_steps}] Installing Rust CLI tools..."
         bash "${INSTALL_DIR}/rust-cli.sh"
     fi
 
@@ -115,43 +136,55 @@ install_profile() {
         # Dispatch based on package file type (PLATFORM FILTERING)
         case "$pkg_file" in
             apt.txt)
-                log_info "Installing APT packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing APT packages..."
                 bash "${LINUX_DIR}/install/apt.sh"
                 ;;
             apt-post.txt)
-                log_info "Installing APT post-packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing APT post-packages..."
                 bash "${LINUX_DIR}/install/apt.sh" --post
                 ;;
             flatpak.txt)
-                log_info "Installing Flatpak packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing Flatpak packages..."
                 bash "${LINUX_DIR}/install/flatpak.sh"
                 ;;
             flatpak-post.txt)
-                log_info "Installing Flatpak post-packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing Flatpak post-packages..."
                 bash "${LINUX_DIR}/install/flatpak.sh" --post
                 ;;
             snap.txt)
-                log_info "Installing Snap packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing Snap packages..."
                 bash "${LINUX_DIR}/install/snap.sh"
                 ;;
             snap-post.txt)
-                log_info "Installing Snap post-packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing Snap post-packages..."
                 bash "${LINUX_DIR}/install/snap.sh" --post
                 ;;
             cargo.txt)
-                log_info "Installing Cargo packages..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing Cargo packages..."
                 bash "${LINUX_DIR}/install/cargo.sh"
                 ;;
             npm.txt)
                 log_debug "Skipping npm.txt (handled by dev-env)"
                 ;;
             ai-tools.txt)
-                log_info "Installing AI tools..."
+                current_step=$((current_step + 1))
+                log_info "[Step ${current_step}/${total_steps}] Installing AI tools..."
                 bash "${INSTALL_DIR}/ai-tools.sh"
                 ;;
             brew.txt|brew-cask.txt)
                 # macOS-only - skip silently on Linux
                 log_debug "Skipping $pkg_file (macOS only)"
+                ;;
+            winget.txt)
+                # Windows-only - skip silently on Linux
+                log_debug "Skipping winget.txt (Windows only)"
                 ;;
             *)
                 log_warn "Unknown package file: $pkg_file"

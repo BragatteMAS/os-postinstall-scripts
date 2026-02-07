@@ -76,7 +76,6 @@ count_platform_steps() {
                 case "$pkg_file" in
                     brew.txt)       count=$((count + 1)) ;;
                     brew-cask.txt)  count=$((count + 1)) ;;
-                    cargo.txt)      count=$((count + 1)) ;;
                     ai-tools.txt)   count=$((count + 1)) ;;
                 esac
                 ;;
