@@ -70,6 +70,11 @@ record_failure() {
     local item="${1:-unknown}"
     FAILED_ITEMS+=("$item")
 
+    # Cross-process: append to shared log if available
+    if [[ -n "${FAILURE_LOG:-}" ]]; then
+        echo "$item" >> "$FAILURE_LOG" 2>/dev/null
+    fi
+
     # Log the failure if logging is available
     if type log_error &>/dev/null; then
         log_error "Failed: $item"

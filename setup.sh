@@ -43,10 +43,21 @@ source "${CORE_DIR}/progress.sh"
 setup_colors
 setup_error_handling
 
+# Enable cross-process failure tracking via shared file
+export FAILURE_LOG="${TEMP_DIR}/failures.log"
+touch "$FAILURE_LOG"
+
 # Override cleanup trap to prevent double summary on normal exit
 cleanup() {
     if [[ -z "${_SUMMARY_SHOWN:-}" ]]; then
-        show_failure_summary
+        if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" && -s "$FAILURE_LOG" ]]; then
+            log_warn "Failures detected:"
+            while IFS= read -r item; do
+                echo "  - $item"
+            done < "$FAILURE_LOG"
+        else
+            show_failure_summary
+        fi
     fi
     cleanup_temp_dir
     exit 0
