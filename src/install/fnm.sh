@@ -41,6 +41,11 @@ install_fnm() {
         return 0
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install fnm"
+        return 0
+    fi
+
     log_info "Installing fnm (Fast Node Manager)..."
 
     # Install fnm via official script (--skip-shell prevents modifying shell configs)
@@ -79,6 +84,11 @@ install_node_lts() {
         return 1
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install Node LTS via fnm"
+        return 0
+    fi
+
     log_info "Installing Node.js LTS via fnm..."
 
     if ! fnm install --lts; then
@@ -107,6 +117,11 @@ install_node_lts() {
 install_global_npm() {
     if ! command -v npm &>/dev/null; then
         log_warn "npm not available - cannot install global packages"
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would npm install -g: pnpm, bun"
         return 0
     fi
 

@@ -68,6 +68,11 @@ snap_install() {
         return 0
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would snap install: $pkg"
+        return 0
+    fi
+
     log_info "Installing: $pkg"
 
     if retry_with_backoff sudo snap install "$pkg" $classic_flag; then

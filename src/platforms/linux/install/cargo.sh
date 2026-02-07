@@ -46,6 +46,11 @@ ensure_rust_installed() {
         return 0
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install Rust via rustup"
+        return 0
+    fi
+
     log_info "Rust not found, installing via rustup..."
     if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; then
         # Source cargo env for current session
@@ -80,6 +85,11 @@ cargo_install() {
         return 0
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would cargo install: $pkg"
+        return 0
+    fi
+
     log_info "Installing: $pkg"
 
     # Try cargo-binstall first (faster binary downloads)
@@ -104,6 +114,11 @@ cargo_install() {
 ensure_binstall() {
     if command -v cargo-binstall &>/dev/null; then
         log_debug "cargo-binstall already available"
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install cargo-binstall"
         return 0
     fi
 
