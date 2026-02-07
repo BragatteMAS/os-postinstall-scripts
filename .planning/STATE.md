@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 7 - User Experience Polish (COMPLETE)
+**Current focus:** Phase 8 - Documentation (IN PROGRESS)
 
 ## Current Position
 
-Phase: 7 of 8 (User Experience Polish)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-07 - Completed 07-03-PLAN.md (Completion Summary and One-Command Setup)
+Phase: 8 of 8 (Documentation)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-07 - Completed 08-01-PLAN.md (README Rewrite)
 
-Progress: [██████████████████████████] 100% (28/28 plans)
+Progress: [█████████████████████████░░] 94% (29/31 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28
-- Average duration: 2.5 min
-- Total execution time: 70 min
+- Total plans completed: 29
+- Average duration: 2.6 min
+- Total execution time: 75 min
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: [███████████████████████
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
 | 07-user-experience-polish | 3/3 | 10 min | 3.3 min |
+| 08-documentation | 1/3 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-02 (3 min), 07-01 (4 min), 07-02 (4 min), 07-03 (2 min)
-- Trend: Stable at ~2.5 min
+- Last 5 plans: 07-01 (4 min), 07-02 (4 min), 07-03 (2 min), 08-01 (5 min)
+- Trend: Slight increase for documentation (content-heavy)
 
 *Updated after each plan completion*
 
@@ -135,6 +136,9 @@ Recent decisions affecting current work:
 - [07-03]: _SUMMARY_SHOWN guard prevents double summary on normal vs abnormal exit
 - [07-03]: Cleanup trap overridden in setup.sh after setup_error_handling
 - [07-03]: No per-package installed/skipped counters (orchestrator-level only)
+- [08-01]: No fake demo.gif; HTML comment placeholder + italic text instead of broken img tag
+- [08-01]: CODE_OF_CONDUCT.md link temporarily broken (Plan 08-02 creates it)
+- [08-01]: Inverted pyramid README structure: instant value -> quick start -> features -> architecture -> reference
 
 ### Patterns Established
 
@@ -212,6 +216,10 @@ Recent decisions affecting current work:
 - Completion summary: show_completion_summary() at end of main() with profile/platform/duration/failures
 - _SUMMARY_SHOWN guard: cleanup trap checks flag to prevent duplicate summaries
 - SECONDS timer: reset to 0 at main() start, read at summary for Xm Ys format
+- Inverted pyramid documentation: instant value -> quick start -> features -> architecture -> reference
+- Collapsible sections: `<details><summary>` for long content in README
+- Badge layout: 2 rows of 3, centered div, shields.io flat style
+- Portfolio showcase: Engineering Highlights section explaining WHY not just WHAT
 
 ### Pending Todos
 
@@ -374,11 +382,17 @@ None.
 - src/core/progress.sh - Added show_completion_summary() with profile, platform, duration, failure integration
 - setup.sh - Sources progress.sh, SECONDS timer, show_completion_summary call, cleanup trap override
 
+## Phase 8 Deliverables (IN PROGRESS)
+
+**Created (08-01):**
+- assets/.gitkeep - Directory placeholder for future terminal demo GIF
+- README.md - Complete 23-section professional documentation (602 lines, rewritten)
+
 ## Session Continuity
 
 Last session: 2026-02-07
-Stopped at: Completed 07-03-PLAN.md (Completion Summary and One-Command Setup)
+Stopped at: Completed 08-01-PLAN.md (README Rewrite)
 Resume file: None
 
 ---
-*Phase 7 complete. All 28 plans across 7 phases executed. Ready for Phase 8 (Documentation) or release.*
+*Phase 8 in progress. 29/31 plans complete. README.md rewritten. CONTRIBUTING.md and GitHub templates remain.*
