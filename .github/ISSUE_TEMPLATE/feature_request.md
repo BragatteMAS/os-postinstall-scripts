@@ -21,9 +21,21 @@ A clear and concise description of any alternative solutions or features you've 
 - [ ] Ubuntu
 - [ ] Pop!_OS
 - [ ] Linux Mint
-- [ ] Windows
 - [ ] macOS
-- [ ] Other: ___
+- [ ] Windows
+
+**Which profile would this affect?**
+- [ ] minimal
+- [ ] developer
+- [ ] full
+- [ ] All profiles
+
+**Which component?**
+- [ ] Packages (data/packages/)
+- [ ] Dotfiles (data/dotfiles/)
+- [ ] Installer (src/platforms/, src/install/)
+- [ ] CLI/UX (setup.sh flags, output, progress)
+- [ ] Documentation
 
 **Additional context**
 Add any other context or screenshots about the feature request here.

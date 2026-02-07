@@ -352,6 +352,33 @@ Mistakes that cause annoyance but are fixable.
 
 ---
 
+### Pitfall 14: AI Content Filtering Blocks Legitimate Policy Documents
+
+**What goes wrong:** AI coding assistants (Claude, Copilot, etc.) refuse to generate or crash when writing standard community documents like Contributor Covenant CODE_OF_CONDUCT.md. The document contains terms about harassment, discrimination, and inappropriate behavior that trigger content safety filters.
+
+**Why it happens:** Content filtering systems flag policy language about prohibited behaviors (harassment, sexual content, etc.) without distinguishing governance documents from harmful content.
+
+**Consequences:**
+- Automated execution pipelines break mid-task (Tasks 2-3 of Plan 08-02 never executed)
+- Connection drops or silent failures with no error message
+- Developer loses context and must restart session
+- Legitimate community health files cannot be AI-generated
+
+**Prevention:**
+- Write CODE_OF_CONDUCT.md manually or copy from contributor-covenant.org
+- Never rely on AI to generate policy documents with sensitive terminology
+- If using AI workflows (GSD, etc.), mark policy document tasks as `type="manual"`
+- Keep these files outside automated execution plans
+
+**Detection:**
+- AI session crashes or hangs during document generation
+- Partial plan execution (some tasks complete, others silently skipped)
+- Connection resets when generating specific file content
+
+**Observed:** 2026-02-07, Phase 08-02 Task 2. Claude Code session dropped twice attempting to write Contributor Covenant v2.1. Task was removed from scope; CODE_OF_CONDUCT.md excluded from project.
+
+---
+
 ## Phase-Specific Warnings
 
 | Phase Topic | Likely Pitfall | Mitigation |

@@ -595,8 +595,6 @@ winget uninstall <package>
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, coding style guide, commit conventions, and the PR process.
 
-For a code of conduct, see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

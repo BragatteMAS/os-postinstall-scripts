@@ -157,7 +157,7 @@ cd os-postinstall-scripts
 
 **Row 2 (Quality + AI):**
 ```markdown
-[![ShellCheck](https://img.shields.io/badge/ShellCheck-passing-brightgreen)](...)
+[![ShellCheck](https://img.shields.io/badge/ShellCheck-compliant-green)](...)
 [![Built with Claude Code](https://img.shields.io/badge/Built%20with-Claude%20Code-blueviolet)](...)
 [![Last Commit](https://img.shields.io/github/last-commit/BragatteMAS/os-postinstall-scripts)](...)
 ```
@@ -401,7 +401,7 @@ Download as PNG (1280x640px), upload via GitHub Settings > Social preview.
 ```bash
 # Update description
 gh repo edit BragatteMAS/os-postinstall-scripts \
-  --description "Cross-platform post-install automation for Linux, macOS & Windows. One command to set up your entire dev environment with 7+ installer types, 3 profiles, dry-run mode, and production-grade error handling."
+  --description "Cross-platform post-install automation for Linux, macOS & Windows. One command to set up your entire dev environment with 10+ installer types, 3 profiles, dry-run mode, and production-grade error handling."
 
 # Update topics (max 20)
 gh repo edit BragatteMAS/os-postinstall-scripts \
@@ -431,11 +431,11 @@ Verified facts from source code analysis (HIGH confidence -- read directly from 
 - Total commits: 425+
 - ADRs: 9 (with 3 more in .github/PROJECT_DOCS/adrs/)
 - Completed phases: 7 (core infra, consolidation, dotfiles, macOS, Linux enhancements, Windows, UX polish)
-- Package files: 9 (apt, brew, cargo, flatpak, snap, winget, brew-cask, npm, ai-tools)
+- Package files: 12 (apt, apt-post, brew, brew-cask, cargo, flatpak, flatpak-post, snap, snap-post, npm, winget, ai-tools)
 - Total package lines: 414 across all files
 - Core modules: 8 (logging, platform, errors, progress, idempotent, dotfiles, packages, interactive)
 - Platform handlers: 3 (Linux, macOS, Windows)
-- Installer types: 7+ (APT, Brew, Brew Cask, Flatpak, Snap, Cargo, WinGet, npm, AI tools)
+- Installer types: 10+ (APT, Brew, Brew Cask, Flatpak, Snap, Cargo, WinGet, npm, fnm, uv, AI tools, dev-env)
 
 ### CLI Interface (from setup.sh)
 - Entry point: `./setup.sh [options] [action|profile]`
@@ -505,8 +505,8 @@ Things that couldn't be fully resolved:
 
 4. **GitHub repo description character limit**
    - What we know: GitHub allows up to 350 characters for repository description.
-   - What's unclear: Whether the proposed description (169 chars) fits comfortably.
-   - Recommendation: The proposed description at 169 characters is well within the 350-char limit. Verified.
+   - What's unclear: Whether the proposed description fits comfortably.
+   - Recommendation: The proposed description at ~172 characters is well within the 350-char limit. Verified.
 
 ## Sources
 

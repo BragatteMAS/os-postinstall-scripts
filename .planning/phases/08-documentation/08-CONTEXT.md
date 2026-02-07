@@ -54,7 +54,7 @@ Section order follows "inverted pyramid" + portfolio pattern:
 
 ### Badges (6 total, 2 rows)
 Row 1 (Status): License: MIT | Platforms: Linux | macOS | Windows | Shell: Bash 4.0+
-Row 2 (Quality + AI): ShellCheck: passing | Built with Claude Code | Last Commit
+Row 2 (Quality + AI): ShellCheck: compliant | Built with Claude Code | Last Commit
 
 ### Visual Elements
 - asciinema GIF demo (~30s): record setup.sh running with completion summary, convert via agg
@@ -98,7 +98,7 @@ Row 2 (Quality + AI): ShellCheck: passing | Built with Claude Code | Last Commit
 - Encourages partial adoption
 
 ### GitHub Repository Metadata
-- Update description: "Cross-platform post-install automation for Linux, macOS & Windows. One command to set up your entire dev environment with 7+ installer types, 3 profiles, dry-run mode, and production-grade error handling."
+- Update description: "Cross-platform post-install automation for Linux, macOS & Windows. One command to set up your entire dev environment with 10+ installer types, 3 profiles, dry-run mode, and production-grade error handling."
 - Update topics (20 tags): bash, powershell, shell-script, automation, devops, dotfiles, post-install, setup-script, cross-platform, linux, macos, windows, apt, homebrew, winget, flatpak, snap, developer-tools, ai-tools, mcp
 - Social preview image: generate via socialify.git.ci (1280x640px)
 
