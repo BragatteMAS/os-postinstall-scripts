@@ -60,6 +60,11 @@ setup_ssh_key() {
             ;;
     esac
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would generate SSH key"
+        return 0
+    fi
+
     log_info "Generating SSH key (ed25519)..."
 
     # Ensure .ssh directory exists with correct permissions

@@ -41,6 +41,11 @@ install_uv() {
         return 0
     fi
 
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install uv"
+        return 0
+    fi
+
     log_info "Installing uv (Python package manager)..."
 
     # Install uv via official script
@@ -72,6 +77,11 @@ install_python() {
     if ! command -v uv &>/dev/null; then
         log_warn "uv not available - cannot install Python"
         return 1
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install Python via uv"
+        return 0
     fi
 
     log_info "Installing Python via uv..."

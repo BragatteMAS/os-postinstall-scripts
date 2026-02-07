@@ -45,6 +45,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
 # Uses DPkg::Lock::Timeout=60 instead of manual fuser loop
 # Returns: 0 on success, 1 on failure
 safe_apt_update() {
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would run apt update"
+        return 0
+    fi
+
     log_info "Updating package lists (with dpkg lock timeout)..."
     retry_with_backoff sudo apt-get update -y -o DPkg::Lock::Timeout=60
 }
@@ -58,6 +63,11 @@ apt_hardened_install() {
 
     if is_apt_installed "$pkg"; then
         log_debug "Already installed: $pkg"
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would apt install: $pkg"
         return 0
     fi
 

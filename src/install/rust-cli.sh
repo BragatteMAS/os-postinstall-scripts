@@ -78,6 +78,11 @@ install_rust_tools_linux() {
             continue
         fi
 
+        if [[ "${DRY_RUN:-}" == "true" ]]; then
+            log_info "[DRY_RUN] Would apt install: $tool"
+            continue
+        fi
+
         log_info "Installing: $tool"
         if sudo apt-get install -y -o DPkg::Lock::Timeout=60 "$tool" 2>/dev/null; then
             log_ok "Installed: $tool"
@@ -107,6 +112,11 @@ install_rust_tools_macos() {
             continue
         fi
 
+        if [[ "${DRY_RUN:-}" == "true" ]]; then
+            log_info "[DRY_RUN] Would brew install: $tool"
+            continue
+        fi
+
         log_info "Installing: $tool"
         if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install "$tool" 2>/dev/null; then
             log_ok "Installed: $tool"
@@ -128,6 +138,11 @@ install_rust_tools_macos() {
 create_rust_symlinks() {
     # Only needed on Linux
     if [[ "${DETECTED_OS}" != "linux" ]]; then
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would create symlinks: batcat->bat, fdfind->fd"
         return 0
     fi
 

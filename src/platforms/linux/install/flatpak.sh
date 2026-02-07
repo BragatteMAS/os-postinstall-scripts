@@ -43,6 +43,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
 # ensure_flathub_remote - Add Flathub remote if not already configured
 # Returns: 0 on success, 1 on failure
 ensure_flathub_remote() {
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would add Flathub remote"
+        return 0
+    fi
+
     log_info "Ensuring Flathub remote is configured..."
     if flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; then
         log_ok "Flathub remote ready"
@@ -69,6 +74,11 @@ flatpak_install() {
 
     if is_flatpak_installed "$app_id"; then
         log_debug "Already installed: $app_id"
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would flatpak install: $app_id"
         return 0
     fi
 

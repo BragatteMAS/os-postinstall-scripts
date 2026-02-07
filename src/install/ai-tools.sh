@@ -81,6 +81,11 @@ install_ai_tool() {
                 return 0
             fi
 
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_info "[DRY_RUN] Would npm install -g: $tool"
+                return 0
+            fi
+
             log_info "Installing npm tool: $tool"
             if npm install -g "$tool"; then
                 log_ok "Installed: $tool"
@@ -97,6 +102,11 @@ install_ai_tool() {
                     # Idempotent check
                     if command -v ollama &>/dev/null; then
                         log_debug "Already installed: ollama"
+                        return 0
+                    fi
+
+                    if [[ "${DRY_RUN:-}" == "true" ]]; then
+                        log_info "[DRY_RUN] Would curl-install: ollama"
                         return 0
                     fi
 
