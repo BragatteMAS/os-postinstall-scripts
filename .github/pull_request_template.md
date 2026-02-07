@@ -17,35 +17,36 @@
 
 - [ ] All
 - [ ] Ubuntu
-- [ ] Pop!_OS  
+- [ ] Pop!_OS
 - [ ] Linux Mint
-- [ ] Windows
 - [ ] macOS
-- [ ] Other: ___
+- [ ] Windows
 
 ## Checklist
 <!-- Mark completed items with an "x" -->
 
 - [ ] I have tested my changes locally
-- [ ] My code follows the project's coding conventions (see `.ai/conventions/CONVENTIONS.md`)
+- [ ] My code follows the project's coding conventions (see CONTRIBUTING.md)
+- [ ] **I have run ShellCheck on all modified shell scripts (REQUIRED: zero warnings)**
 - [ ] I have added/updated tests as needed
 - [ ] I have updated the documentation as needed
 - [ ] My changes generate no new warnings
-- [ ] I have run ShellCheck on any modified shell scripts
 - [ ] I have tested on the target distribution(s)
 
 ## Testing
-<!-- Describe the tests you ran and how to reproduce them -->
+
+**Profile tested**: [e.g. minimal, developer, full]
+
+**Dry-run test**: Run `./setup.sh --dry-run` and confirm no regressions.
 
 **Test Configuration**:
 - OS/Distribution:
 - Shell version:
-- Hardware:
 
 **Test Steps**:
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Additional Notes
 <!-- Add any additional notes, screenshots, or context about the PR here -->

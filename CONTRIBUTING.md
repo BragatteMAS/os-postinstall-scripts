@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing. This document covers how to set up the project locally, follow our coding conventions, and submit changes.
 
-By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
-
 ## Table of Contents
 
 - [Getting Started](#getting-started)
