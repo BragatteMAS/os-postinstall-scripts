@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 6 - Windows Foundation (Complete)
+**Current focus:** Phase 7 - User Experience Polish (In progress)
 
 ## Current Position
 
-Phase: 6 of 8 (Windows Foundation)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-06 - Completed 06-02-PLAN.md (WinGet Installer + Windows Orchestrator)
+Phase: 7 of 8 (User Experience Polish)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-07 - Completed 07-01-PLAN.md (Progress Feedback System)
 
-Progress: [██████████████████████████] 100% (25/25 plans)
+Progress: [████████████████████████░░] 93% (26/28 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 25
-- Average duration: 2.4 min
-- Total execution time: 60 min
+- Total plans completed: 26
+- Average duration: 2.5 min
+- Total execution time: 64 min
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [███████████████████████
 | 04-macos-platform | 3/3 | 6 min | 2 min |
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
+| 07-user-experience-polish | 1/3 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-04 (2 min), 05-05 (2 min), 05-06 (3 min), 06-01 (2 min), 06-02 (3 min)
-- Trend: Stable at ~2.4 min
+- Last 5 plans: 05-06 (3 min), 06-01 (2 min), 06-02 (3 min), 07-01 (4 min)
+- Trend: Stable at ~2.5 min
 
 *Updated after each plan completion*
 
@@ -123,6 +124,10 @@ Recent decisions affecting current work:
 - [06-02]: winget list --id --exact AND output match for idempotent check (double-check needed)
 - [06-02]: Non-Windows package files skipped with DEBUG log (not WARN), matching macOS pattern
 - [06-02]: Show-FailureSummary in interactive exit only (setup.ps1 calls it in unattended path)
+- [07-01]: cargo.txt excluded from macOS step count (no macOS cargo installer exists)
+- [07-01]: ai-tools.txt dispatch enabled for macOS (Phase 5 cross-platform installer exists)
+- [07-01]: winget.txt skip case added to both Linux/macOS orchestrators
+- [07-01]: $((count + 1)) arithmetic over ((count++)) for Bash 3.2 compat
 
 ### Patterns Established
 
@@ -192,6 +197,9 @@ Recent decisions affecting current work:
 - PS dual-mode orchestrator: `-Profile` param for unattended, `do {} while` for interactive
 - PS profile dispatch: `Get-Content` reads profile directly, `switch` dispatches to installers
 - PS platform filtering: `default` case skips non-Windows files with DEBUG log
+- Step counter pattern: count_platform_steps() pre-count + current_step increment at dispatch
+- DRY_RUN banner: show_dry_run_banner() at top of install_profile()
+- INSTALL_DIR variable: cross-platform installers directory (src/install/)
 
 ### Pending Todos
 
@@ -329,11 +337,20 @@ None.
 **Removed (06-02):**
 - platforms/windows/win11.ps1 - Legacy hardcoded script (superseded by data-driven winget.ps1)
 
+## Phase 7 Deliverables (IN PROGRESS)
+
+**Created (07-01):**
+- src/core/progress.sh - Step counter helpers and DRY_RUN banner
+
+**Modified (07-01):**
+- src/platforms/linux/main.sh - Step-counted profile dispatch with [Step X/Y] prefix
+- src/platforms/macos/main.sh - Step-counted profile dispatch, ai-tools.txt enabled, INSTALL_DIR added
+
 ## Session Continuity
 
-Last session: 2026-02-06
-Stopped at: Completed 06-02-PLAN.md (WinGet Installer + Windows Orchestrator)
+Last session: 2026-02-07
+Stopped at: Completed 07-01-PLAN.md (Progress Feedback System)
 Resume file: None
 
 ---
-*Next action: Phase 6 complete. Ready for Phase 7 (UX Polish) or Phase 8 (Documentation)*
+*Next action: Continue Phase 7 with 07-02-PLAN.md (Dry-Run Mode) and 07-03-PLAN.md (Completion Summary)*
