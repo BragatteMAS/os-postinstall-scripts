@@ -14,7 +14,7 @@ git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
 
 # Run profile-based setup
-./setup-with-profile.sh
+./setup.sh
 ```
 
 Available profiles:
@@ -97,19 +97,19 @@ This installs:
 
 ### "I need a full dev environment ASAP"
 ```bash
-./setup-with-profile.sh --profile developer-minimal
+./setup.sh --profile developer-minimal
 ```
 
 ### "I'm setting up multiple machines"
 ```bash
 # Use the same profile on all machines
-./setup-with-profile.sh --profile developer-standard --dry-run  # Preview first
-./setup-with-profile.sh --profile developer-standard            # Then install
+./setup.sh --profile developer-standard --dry-run  # Preview first
+./setup.sh --profile developer-standard            # Then install
 ```
 
 ### "I'm a student learning to code"
 ```bash
-./setup-with-profile.sh --profile student
+./setup.sh --profile student
 ```
 
 ## ⚡ What Happens During Installation?

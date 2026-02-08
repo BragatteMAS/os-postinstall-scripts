@@ -51,7 +51,7 @@ curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/m
 # Clone and choose your profile
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
-./setup-with-profile.sh
+./setup.sh
 ```
 
 ### Manual Control
@@ -76,7 +76,7 @@ cd os-postinstall-scripts
 Profiles are pre-configured sets of tools for specific use cases:
 
 ```bash
-./setup-with-profile.sh
+./setup.sh
 ```
 
 Available profiles:

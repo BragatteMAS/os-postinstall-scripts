@@ -194,7 +194,7 @@ Installation profiles let you quickly set up your development environment based 
 
 ### Interactive Selection (Recommended)
 ```bash
-./setup-with-profile.sh
+./setup.sh
 ```
 You'll see a menu like:
 ```
@@ -212,22 +212,22 @@ Enter number (1-5):
 ### Direct Profile Installation
 ```bash
 # Install specific profile
-./setup-with-profile.sh --profile developer-minimal
+./setup.sh --profile developer-minimal
 
 # See what would be installed first
-./setup-with-profile.sh --profile devops --dry-run
+./setup.sh --profile devops --dry-run
 ```
 
 ### Command Line Options
 ```bash
 # List all available profiles
-./setup-with-profile.sh --list
+./setup.sh --list
 
 # Show detailed information about a profile
-./setup-with-profile.sh --details data-scientist
+./setup.sh --details data-scientist
 
 # Help
-./setup-with-profile.sh --help
+./setup.sh --help
 ```
 
 ## 📝 Creating Custom Profiles
@@ -370,7 +370,7 @@ You can install multiple profiles or start minimal and add more:
 
 ```bash
 # Start with minimal
-./setup-with-profile.sh --profile developer-minimal
+./setup.sh --profile developer-minimal
 
 # Later add specific tools
 ./src/install/rust-cli.sh  # Add modern CLI tools
@@ -387,7 +387,7 @@ Profiles are versioned and can be updated:
 git pull
 
 # Reinstall profile to get new packages
-./setup-with-profile.sh --profile developer-standard --update
+./setup.sh --profile developer-standard --update
 ```
 
 ### Contributing Profiles
@@ -408,7 +408,7 @@ A: Yes! Copy the profile, modify it, and use your custom version:
 ```bash
 cp profiles/developer-standard.yaml profiles/my-standard.yaml
 # Edit my-standard.yaml
-./setup-with-profile.sh --profile my-standard
+./setup.sh --profile my-standard
 ```
 
 **Q: What if I need packages from multiple profiles?**  

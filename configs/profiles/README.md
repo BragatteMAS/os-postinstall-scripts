@@ -34,25 +34,25 @@ Profiles allow you to customize what gets installed based on your needs. Each pr
 ### Quick Start
 ```bash
 # Interactive selection
-./setup-with-profile.sh
+./setup.sh
 
 # Use specific profile
-./setup-with-profile.sh --profile minimal
+./setup.sh --profile minimal
 
 # See what would be installed
-./setup-with-profile.sh --profile devops --dry-run
+./setup.sh --profile devops --dry-run
 ```
 
 ### Commands
 ```bash
 # List all profiles
-./setup-with-profile.sh --list
+./setup.sh --list
 
 # Show profile details
-./setup-with-profile.sh --details student
+./setup.sh --details student
 
 # Help
-./setup-with-profile.sh --help
+./setup.sh --help
 ```
 
 ## Creating Custom Profiles
@@ -84,7 +84,7 @@ packages:
 
 3. Use your profile:
 ```bash
-./setup-with-profile.sh --profile my-profile
+./setup.sh --profile my-profile
 ```
 
 ## Profile Structure
@@ -104,7 +104,7 @@ The traditional `setup.sh` still works and installs the `developer-standard` pro
 ```bash
 # These are equivalent:
 ./setup.sh
-./setup-with-profile.sh --profile developer-standard
+./setup.sh --profile developer-standard
 ```
 
 ## Tips

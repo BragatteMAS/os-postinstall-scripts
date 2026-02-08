@@ -249,10 +249,10 @@ sudo apt update
 **Solution:**
 ```bash
 # List available profiles
-./setup-with-profile.sh --list
+./setup.sh --list
 
 # Use full profile name
-./setup-with-profile.sh --profile developer-minimal
+./setup.sh --profile developer-minimal
 
 # Check profile exists
 ls profiles/
@@ -278,7 +278,7 @@ cat profiles/developer-minimal.yaml
 **Solution:**
 ```bash
 # Check installation log
-./setup-with-profile.sh --profile developer-standard 2>&1 | tee install.log
+./setup.sh --profile developer-standard 2>&1 | tee install.log
 
 # Look for errors
 grep -i error install.log
@@ -551,7 +551,7 @@ docker run -it ubuntu:22.04 bash
 
 3. **Use dry-run when available:**
 ```bash
-./setup-with-profile.sh --dry-run --profile developer-minimal
+./setup.sh --dry-run --profile developer-minimal
 ```
 
 4. **Read output carefully:**

@@ -1,5 +1,5 @@
 # Cargo (Rust) Package List
-# Source: scripts/install/rust-tools.sh
+# Source: src/install/rust-cli.sh
 # One package per line, comments start with #
 
 # Terminal - File Navigation
