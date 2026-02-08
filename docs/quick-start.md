@@ -84,7 +84,7 @@ curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/m
 
 ### "I just want modern CLI tools"
 ```bash
-./install_rust_tools.sh
+./src/install/rust-cli.sh
 ```
 
 This installs:
