@@ -373,8 +373,7 @@ You can install multiple profiles or start minimal and add more:
 ./setup-with-profile.sh --profile developer-minimal
 
 # Later add specific tools
-./install_rust_tools.sh  # Add modern CLI tools
-./linux/install/docker.sh  # Add Docker
+./src/install/rust-cli.sh  # Add modern CLI tools
 ```
 
 ## 🛠️ Profile Maintenance

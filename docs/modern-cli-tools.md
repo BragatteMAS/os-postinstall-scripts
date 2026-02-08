@@ -19,7 +19,7 @@ Transform your command line experience with blazing-fast Rust-powered tools that
 
 ### All Tools at Once
 ```bash
-./install_rust_tools.sh
+./src/install/rust-cli.sh
 ```
 
 ### Individual Tools
