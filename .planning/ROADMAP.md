@@ -165,10 +165,33 @@ Plans:
 Plans:
 - [x] PLAN.md — Standalone terminal-setup.ps1 (547 lines, 10/10 must-haves verified)
 
+### Phase 8.2: Audit Remediation (INSERTED)
+**Goal**: Address technical debt identified by 4-agent codebase audit (Linux, macOS, Windows, Docs/Tests specialists). Fix runtime bugs, security issues, test gaps, and documentation drift.
+**Depends on**: Phase 8.1
+**Constraint**: NO CI/CD automation — all tests are manual execution only
+**Success Criteria** (what must be TRUE):
+  1. `post_install.sh` is either deprecated with clear notice or migrated to modern architecture
+  2. Manual test suites exist for macOS and Windows platforms (test-macos.sh, test-windows.ps1)
+  3. Windows `main.ps1` dispatches cargo.txt, npm.txt, and ai-tools.txt profiles (not silent skip)
+  4. `homebrew.sh` propagates failure exit code to macOS `main.sh`
+  5. `terminal-setup.sh` respects dry-run mode for all install operations including curl|sh
+  6. Orchestrators (macOS main.sh, Windows main.ps1) aggregate failure summaries from child processes
+  7. CODE_OF_CONDUCT.md exists (Contributor Covenant v2.1, deferred from Phase 8)
+**Plans**: TBD (research and planning required)
+
+Priority order for planning:
+1. [Alta] Deprecate/migrate `post_install.sh` — 10+ bugs, deprecated apt-key, chmod 777, $HOME overwrite
+2. [Alta] Expand manual test coverage — test-macos.sh, test-windows.ps1, core module unit tests
+3. [Média] Windows `main.ps1` cross-platform dispatch — cargo, npm, ai-tools profile support
+4. [Média] `homebrew.sh` exit code propagation — fix exit 0 masking failure
+5. [Média] `terminal-setup.sh` dry-run bypass — wrap curl|sh in run() or DRY_RUN guard
+6. [Média] Cross-process failure tracking — FAILURE_LOG env var or exit code aggregation
+7. [Baixa] Create CODE_OF_CONDUCT.md — Contributor Covenant v2.1
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -181,6 +204,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
+| 8.2 Audit Remediation | 0/? | Not Started | — |
 
 ---
 *Roadmap created: 2026-02-04*

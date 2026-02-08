@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 8.1 - Terminal Setup Windows (COMPLETE)
+**Current focus:** Phase 8.2 - Audit Remediation (NOT STARTED)
 
 ## Current Position
 
-Phase: 8.1 of 8.1 (Terminal Setup Windows) — COMPLETE
-Plan: 1 of 1 in current phase
-Status: Complete
-Last activity: 2026-02-08 - Completed 08.1-01-PLAN.md (terminal-setup.ps1)
+Phase: 8.2 of 8.2 (Audit Remediation) — NOT STARTED
+Plan: 0 of ? in current phase (research and planning required)
+Status: Inserted after 4-agent codebase audit
+Last activity: 2026-02-08 - Phase 8.2 inserted, Tier 1 fixes applied
 
-Progress: [████████████████████████████] 100% (32/32 plans)
+Progress: [████████████████████████████░] 97% (32/32+ plans)
 
 ## Performance Metrics
 
@@ -233,15 +233,24 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 8.1 inserted after Phase 8: terminal-setup.ps1 for Windows (COMPLETE)
+- Phase 8.2 inserted after Phase 8.1: Audit remediation from 4-agent review (NOT STARTED)
 
 ### Pending Todos
 
-None.
+Phase 8.2 — 7 priority items from codebase audit:
+1. [Alta] Deprecate/migrate post_install.sh
+2. [Alta] Expand manual test coverage (macOS, Windows, core modules)
+3. [Média] Windows main.ps1 cross-platform dispatch
+4. [Média] homebrew.sh exit code propagation
+5. [Média] terminal-setup.sh dry-run bypass
+6. [Média] Cross-process failure tracking
+7. [Baixa] CODE_OF_CONDUCT.md creation
 
 ### Blockers/Concerns
 
 - macOS ships Bash 3.2; check_bash_upgrade() warns but continues (addressed in Phase 4)
 - scripts/utils/ application-level scripts not yet consolidated
+- NO CI/CD automation — explicit owner decision (2026-02-08). Tests are manual only.
 
 ## Phase 2 Deliverables
 
@@ -412,11 +421,21 @@ None.
 - [ ] Terminal demo video (asciinema + agg -> GIF) for README
 - [ ] Social preview image via socialify.git.ci
 
+## Phase 8.2 Audit Context
+
+**Source**: 4-agent parallel review (2026-02-08)
+- linux-reviewer: 6 CRITICAL, 13 WARNING, 6 INFO
+- macos-reviewer: 2 CRITICAL, 7 WARNING, 7 INFO
+- windows-reviewer: 4 CRITICAL, 8 WARNING, 7 INFO + 12 GAPs
+- docs-tests-reviewer: 4 CRITICAL, 8 WARNING, 5 INFO + 6 TEST GAPs
+
+**Tier 1 fixes applied** (same session): SCRIPT_DIR collision, GNU sed portability, test_harness paths, README accuracy, Bash 4+ compat
+
 ## Session Continuity
 
 Last session: 2026-02-08
-Stopped at: Completed 08.1-01 (terminal-setup.ps1). All phases including 8.1 insertion complete.
+Stopped at: Phase 8.2 inserted with 7 priority items. Tier 1 fixes applied. Ready for research/planning.
 Resume file: None
 
 ---
-*Milestone v1.0 complete + Phase 8.1 insertion. 32/32 plans done. All phases shipped.*
+*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 32/32 plans done + Phase 8.2 pending.*
