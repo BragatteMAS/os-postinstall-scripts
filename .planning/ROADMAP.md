@@ -180,10 +180,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 08.2-01-PLAN.md — Deprecate post_install.sh + update test_harness.sh + create CODE_OF_CONDUCT.md
-- [ ] 08.2-02-PLAN.md — homebrew.sh exit code propagation + cross-process failure aggregation (macOS/Linux/Windows)
-- [ ] 08.2-03-PLAN.md — terminal-setup.sh dry-run fix + Windows main.ps1 WARN dispatch
-- [ ] 08.2-04-PLAN.md — Static test suites for macOS (test-macos.sh) and Windows (test-windows.ps1)
+- [x] 08.2-01-PLAN.md — Deprecate post_install.sh + update test_harness.sh + create CODE_OF_CONDUCT.md
+- [x] 08.2-02-PLAN.md — homebrew.sh exit code propagation + cross-process failure aggregation (macOS/Linux/Windows)
+- [x] 08.2-03-PLAN.md — terminal-setup.sh dry-run fix + Windows main.ps1 WARN dispatch
+- [x] 08.2-04-PLAN.md — Static test suites for macOS (test-macos.sh) and Windows (test-windows.ps1)
 
 ## Progress
 
@@ -201,7 +201,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
-| 8.2 Audit Remediation | 0/4 | Planned | — |
+| 8.2 Audit Remediation | 4/4 | Complete | 2026-02-08 |
 
 ---
 *Roadmap created: 2026-02-04*
@@ -214,6 +214,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 *Phase 7 completed: 2026-02-07*
 *Phase 8 completed: 2026-02-07*
 *Phase 8.1 completed: 2026-02-08*
-*Depth: comprehensive (8 phases + 1 insertion)*
+*Phase 8.2 completed: 2026-02-08*
+*Depth: comprehensive (8 phases + 2 insertions)*
 *Requirements coverage: 22/22 mapped*
 *Milestone v1.0 complete: 2026-02-08*
