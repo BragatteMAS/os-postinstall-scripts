@@ -178,14 +178,22 @@ install_tools() {
 
         # zoxide
         if ! command -v zoxide &>/dev/null; then
-            run curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_dry "install zoxide via curl|sh"
+            else
+                curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+            fi
         else
             log_ok "zoxide"
         fi
 
         # starship
         if ! command -v starship &>/dev/null; then
-            run curl -sS https://starship.rs/install.sh | sh -s -- -y
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_dry "install starship via curl|sh"
+            else
+                curl -sS https://starship.rs/install.sh | sh -s -- -y
+            fi
         else
             log_ok "starship"
         fi
