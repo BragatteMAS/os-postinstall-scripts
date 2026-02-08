@@ -1,4 +1,0 @@
-# Ignore test results but keep directory
-*
-!.gitignore
-!.gitkeep

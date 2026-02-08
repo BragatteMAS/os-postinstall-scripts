@@ -7,655 +7,265 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Cross-platform setup framework (Linux, macOS, Windows)
+- Data-driven package management with `data/packages/*.txt`
+- Profile composition system (minimal, standard, devops, data-science)
+- Core modules: platform detection, idempotency, logging, error handling
+- Progress feedback with step counting and DRY_RUN banners
+- Completion summary with timing and failure tracking
+- Windows foundation with WinGet installer and orchestrator
+- Modular dotfiles system with symlink manager
+- Zsh installation script with profile selection
+- Professional README with 23 sections
+- CONTRIBUTING.md rewrite
+- GitHub issue/PR templates with ShellCheck requirements
+- 7 Architecture Decision Records for current codebase
+
+### Changed
+- Complete repository restructure to `src/`, `data/`, `platforms/` layout
+- Package lists extracted from scripts to `data/packages/*.txt`
+- Platform orchestrators migrated to `src/platforms/`
+- Dotfiles translated to English, Claude-specific config moved to `.zshrc.local`
+- Setup entry point with `--dry-run`, `--verbose`, `--profile` CLI flags
+
+### Removed
+- Legacy BMAD framework and agent-os artifacts
+- 300+ obsolete files (backup dirs, legacy docs, empty stubs)
+- CI/CD workflows (manual execution only going forward)
+- Outdated ADRs, test guides, and manual test scripts
+- Dead symlinks and migration tools
+
+### Fixed
+- All internal paths updated to match new structure
+- Cross-process failure tracking via shared log file
+- Broken cargo.txt path reference
+- Dead `setup-with-profile.sh` references replaced
+
+---
+
 ## [3.2.2] - 2025-08-03
 
 ### Fixed
-- Standardized all documentation references to use `.mdc` extension for CLAUDE-EXTENDED
-- Updated shell scripts to reference correct global Agent-OS documentation paths
+- Standardized documentation references and file extensions
 - Fixed inconsistencies between symlinks and actual file locations
-- Translated all documentation from Portuguese to English for consistency
-
-### Changed
-- Updated `STATUS.md` to reference `CLAUDE-EXTENDED.mdc` instead of `.md`
-- Updated `BMAD_CLAUDE_FLOW_INTEGRATION.md` to use correct symlink path
-- Modified `scripts/install/ai-tools.sh` to reference global documentation location
-- Updated `migrate-structure.sh` to skip CLAUDE-EXTENDED (now globally managed)
-- Removed redundant `docs/guides/CLAUDE-EXTENDED.md` file
-- Created proper symlink structure for backward compatibility
+- Translated remaining Portuguese sections to English
 
 ## [3.2.1] - 2025-08-03
 
 ### Added
-- Documentation symlinks and Agent-OS integration
-- Global documentation structure in `~/.agent-os/documentation/`
+- Documentation symlinks for backward compatibility
+- Global documentation structure
 
 ## [3.2.0] - 2025-08-03
 
 ### Added
-- 🤖 **Agent-OS Integration**: Lightweight agent orchestration system
-  - Created `.agent-os/` directory structure for agent management
-  - Added agent templates and configuration system
-  - Integrated with native Claude agents
-  - SQLite-based memory persistence for agents
-  - Automatic hooks system for pre/post task execution
-  
-- 📚 **Documentation Agent**: Automated documentation maintenance
-  - Auto-updates README, CHANGELOG, and STATUS files
-  - Maintains version consistency across all docs
-  - Tracks documentation staleness automatically
-
-- 🔗 **Symlink Structure**: Improved project organization
-  - Created symlink from root to `.agent-os/` for easier access
-  - Better integration with Claude Code workflow
+- Lightweight agent orchestration system (`.agent-os/`)
+- Documentation agent for automated doc maintenance
 
 ### Changed
-- 📦 **Updated Dependencies**:
-  - BMAD Method: v4.33.0 → v4.34.0
-  - claude-flow: Installed v2.0.0-alpha.84 (latest)
-  
-- 📝 **BMAD_CLAUDE_FLOW_INTEGRATION.md**: 
-  - Updated all references from `claude-flow@alpha` to `claude-flow@latest`
-  - Ensures always using the most recent version
-  - Better maintainability without hardcoded versions
+- Updated dependencies and integration tooling
 
 ### Fixed
-- 🧹 **Code Cleanup**:
-  - Removed trailing whitespace from Warp Terminal configuration files
-  - Improved code formatting consistency across shell scripts
+- Trailing whitespace cleanup in configuration files
 
 ## [3.1.5] - 2025-07-01
 
 ### Added
-- 🔌 **Updated MCP configuration with new global MCPs**
-  - Added FastAPI documentation MCP for up-to-date API docs
-  - Added Google A2A (AI to AI) tools MCP
-  - Added system-prompts-and-models-of-ai MCP for optimized prompts
-  - Updated CLAUDE.md to v2.3.1 with 7 essential MCPs
+- MCP configuration with 7 essential MCPs (Context7, fetch, sequential-thinking, serena, FastAPI, A2A, system-prompts)
 
 ### Changed
-- 📚 **CLAUDE.md version bump to 2.3.1**
-  - Updated from 4 MCPs to 7 MCPs configuration
-  - Enhanced MCP descriptions and usage examples
-  - Improved configuration examples in claude.json
-- 🔧 **BMAD Method IDE configuration updated**
-  - Added claude-code as primary IDE in all installation commands
-  - Updated all scripts to use `--ide claude-code --ide cursor`
-  - Improved IDE support for Claude Code users
+- CLAUDE.md updated to v2.3.1
 
 ## [3.1.4] - 2025-07-28
 
 ### Added
-- 📚 **Enhanced documentation structure**
-  - Integrated CLAUDE.md v2.3.0 with extended philosophy and patterns
-  - Added CLAUDE-EXTENDED.md for detailed implementation guidance
-  - Created comprehensive Context Engineering documentation
+- CLAUDE.md v2.3.0 with Context Engineering documentation
+- CLAUDE-EXTENDED.md for detailed implementation guidance
 
 ### Changed
-- 🔧 **Updated .zshrc configuration**
-  - Synchronized latest shell configurations
-  - Enhanced environment setup for development
-
-### Fixed
-- 📋 **Documentation consistency**
-  - Aligned all project documentation with global standards
-  - Fixed version synchronization between local and global configs
-
-### Planned for v3.2.0 (August 2025)
-- 🤖 **Full BMAD agents integration**
-  - SM agent for structured story creation
-  - QA agent for test strategy definition
-  - Complete agent-assisted workflow
-- 🎯 **Intelligent recommendation system**
-  - PRD/STORIES parsing engine
-  - Technology detection and mapping
-  - Context-aware suggestions
-- ⚡ **15-minute minimal base installation**
-  - Optimized package installation
-  - Parallel execution where safe
-  - Progress tracking improvements
-
-### Planned for v3.3.0 (September 2025)
-- 🌍 **Cross-platform enhancement**
-  - Mac support to 45% (from 20%)
-  - Windows support to 10% (from 0%)
-  - Platform-specific optimizations
-- 🏗️ **Core/adapter architecture**
-  - Clean abstraction layers
-  - Platform adapters implementation
-  - Reduced code duplication
-
-### Planned for v4.0.0 (October 2025)
-- 🚀 **Architecture evolution**
-  - Complete profile system removal
-  - Full parallel execution
-  - Enterprise deployment features
+- Synchronized .zshrc configuration with latest shell setup
 
 ## [3.1.3] - 2025-07-27
 
 ### Fixed
-- 🌐 **Translated Portuguese sections to English**
-  - STORIES.md focal questions and headers
-  - Maintained English consistency across repository
-  - Fixed language mixing in documentation
+- Translated remaining Portuguese sections to English across documentation
 
 ## [3.1.2] - 2025-07-27
 
 ### Fixed
-- 📅 **Corrected timeline dates**
-  - Fixed dates from past (February-April 2025) to future (August-October 2025)
-  - Updated ROADMAP.md, PRD.md, and STORIES.md with correct timelines
-  - Aligned all phases with current date (July 2025)
+- Corrected timeline dates in ROADMAP.md, PRD.md, and STORIES.md
 
 ## [3.1.1] - 2025-07-27
 
 ### Added
-- 📊 **Comprehensive PRD v2.0.0 with brownfield analysis**
-  - Merged brownfield assessment into main PRD
-  - Current state analysis and technical debt assessment
-  - Migration strategy for v3.2.0, v3.3.0, and v4.0.0
-  - Risk assessment and success metrics
-
-- 📝 **STORIES.md alignment with PRD promises**
-  - 7 new user stories for intelligent recommendations
-  - Platform parity stories (Mac/Linux 45%, Windows 10%)
-  - Manual testing philosophy stories
-  - BMAD agent integration stories
-
-- 🔍 **PO validation deliverables**
-  - GAP_REMEDIATION_PLAN.md - comprehensive gap analysis
-  - STORIES_UPDATE_TASKS.md - PRD sharded into 12 tasks
-  - NEW_STORIES_DRAFT.md - 9 new stories template
+- Comprehensive PRD v2.0.0 with brownfield analysis
+- STORIES.md aligned with PRD (user stories for recommendations, platform parity)
+- PO validation deliverables (gap analysis, story tasks)
 
 ### Changed
-- 🎯 **Testing philosophy to manual-only**
-  - Removed all automated testing references
-  - Added manual test execution guides
-  - Emphasized user control over test execution
-
-- 🔄 **Profile system deprecation**
-  - Shifted from 5 rigid profiles to intelligent recommendations
-  - PRD/STORIES parsing for technology detection
-  - Context-aware tool suggestions
-
-### Updated
-- 📋 **BMAD agent workflow**
-  - PM agent brownfield PRD creation completed
-  - PO agent validation and gap analysis completed
-  - Clear agent activation order: PM → PO → QA → SM
+- Testing philosophy shifted to manual-only approach
+- Profile system deprecation in favor of intelligent recommendations
 
 ## [3.1.0] - 2025-07-27
 
 ### Added
-- 📋 **Configuration templates system**
-  - YAML, JSON, TOML templates for various configurations
-  - Template manager (`tools/templates/manager.sh`) for easy selection
-  - Profile-specific templates in `configs/templates/`
-- 🔧 **Unattended installation mode**
-  - `--unattended` flag for automated setups
-  - Configuration via environment variables
-  - Silent mode for CI/CD pipelines
+- YAML/JSON/TOML configuration templates system
+- Template manager (`tools/templates/manager.sh`)
+- Unattended installation mode with `--unattended` flag
+- CI/CD pipeline support via environment variables
 
 ### Changed
-- 📦 **BMAD Method updated to v4.32.0**
-  - Updated from v4.25.0 to latest v4.32.0
-  - New templates and workflows included
-  - Enhanced brainstorming and elicitation features
-- 📍 **Documentation structure alignment**
-  - Critical docs (STATUS.md, PRD.md, STORIES.md, TESTING.md) moved to root
-  - Better alignment with CLAUDE.md requirements
-  - ADRs remain in `.github/PROJECT_DOCS/adrs/`
+- Documentation structure aligned with CLAUDE.md requirements
+- Critical docs (STATUS.md, PRD.md, STORIES.md) moved to root
 
 ### Fixed
-- 🐛 Documentation discovery issues in Context Engineering
-- 🔍 Version consistency across all project files
+- Documentation discovery issues
+- Version consistency across project files
 
 ## [3.0.0] - 2025-01-27
 
 ### Changed - BREAKING
-- 🏗️ **Complete repository restructure** following Agile Repository Structure Guide
-  - All scripts moved to organized `scripts/` directory
-  - Platform-specific code consolidated in `platforms/`
-  - Configuration files centralized in `configs/`
-  - Documentation reorganized in `docs/`
-  - Created clear separation of concerns
+- Complete repository restructure following Agile Repository Structure Guide
+- Scripts organized into `scripts/` directory by function
+- Platform-specific code consolidated in `platforms/`
+- Configuration files centralized in `configs/`
 
 ### Added
-- 📁 **New directory structure**:
-  - `scripts/install/` - All installation scripts
-  - `scripts/setup/` - Setup and configuration scripts
-  - `scripts/utils/` - Shared utilities
-  - `platforms/` - OS-specific implementations
-  - `configs/` - All configuration files
-  - `tools/` - Development and maintenance tools
-  - `share/` - Examples and exports
-- 🔗 **Compatibility symlinks** for backward compatibility
-- 📝 **README files** in each major directory
-- 🔧 **Migration tools**:
-  - `migrate-structure.sh` - Automated migration script
-  - `verify-migration.sh` - Migration verification
-
-### Improved
-- 🧹 **Cleaner root directory** - Only essential files remain
-- 📊 **Better organization** - Logical grouping by function
-- 🔍 **Easier navigation** - Self-explanatory structure
-- ♻️ **Eliminated duplicates** - Consolidated utils directories
-- 📈 **Scalability** - Easy to add new features without clutter
-
-### Migration Guide
-1. Run `./migrate-structure.sh` to reorganize existing installation
-2. Verify with `./verify-migration.sh`
-3. Update any custom scripts to use new paths
-4. Symlinks maintain backward compatibility
+- New directory layout: `scripts/install/`, `scripts/setup/`, `scripts/utils/`, `platforms/`, `configs/`, `tools/`, `share/`
+- Compatibility symlinks for backward compatibility
+- Migration tools (`migrate-structure.sh`, `verify-migration.sh`)
 
 ## [2.7.0] - 2025-01-27
 
 ### Added
-- 🌍 **Complete Internationalization (i18n) - English Translation**
-  - All user-facing content translated to English
-  - All code comments translated to English
-  - All documentation translated to English
-  - Structured 4-phase translation approach:
-    - Phase 1: Core documentation (CLAUDE.md, README.md, STATUS.md)
-    - Phase 2: User-facing messages in shell scripts
-    - Phase 3: Code comments and internal documentation
-    - Phase 4: Function names (already in English, no changes needed)
-  - New MIGRATION_PT_EN.md guide documenting all changes
-  - Version tags for each phase completion (v2.7.0 through v2.7.3)
+- Complete internationalization (English translation)
+  - All user-facing content, code comments, and documentation translated
+  - 4-phase structured translation approach
 
 ### Changed
-- 📝 **Documentation**
-  - docs/ai-tools-setup.md fully translated to English
-  - All inline documentation in scripts translated
-  - README.md and other core docs already in English
-
-- 🔧 **Shell Scripts**
-  - setup.sh: All user messages and comments translated
-  - install_rust_tools.sh: All user messages and comments translated
-  - Other scripts verified/updated as needed
-
-- 💬 **Code Comments**
-  - zshrc: All comments translated to English
-  - All .sh files: Comments translated to English
-  - Consistent English terminology throughout codebase
-
-### Improved
-- 🚀 **User Experience**
-  - More accessible to international users
-  - Consistent language throughout the project
-  - Professional English terminology
-  - No breaking changes - full compatibility maintained
+- All shell scripts translated (setup.sh, install_rust_tools.sh, etc.)
+- Consistent English terminology throughout codebase
 
 ## [2.6.0] - 2025-07-26
 
 ### Added
-- 🔄 **BMAD Method Scripts**
-  - New `install_bmad.sh` script for simple BMAD installation
-  - New `update_bmad.sh` script for easy BMAD updates
-  - Automatic version checking and comparison
-  - Backup creation before updates
-  - Native `.bmad-core/` location (gitignored for clean commits)
-  - Preserves custom content (expansion packs, custom agents)
-  - Shows changelog reference after update
-
-### Changed
-- 📦 **BMAD Method updated to v4.32.0**
-  - Updated from v4.25.0 to latest v4.32.0
-  - New templates and workflows included
-  - Enhanced brainstorming and elicitation features
-  - Improved core configuration structure
-  - Better workflow management utilities
-  - New brainstorming and elicitation methods
+- Automated installation and update scripts for development tools
+- Automatic version checking and backup creation before updates
 
 ## [2.5.1] - 2025-07-25
 
 ### Changed
-- 🔄 **CI/CD Workflows converted to manual execution only**
-  - All workflows now use `workflow_dispatch` instead of automatic triggers
-  - Removed automatic execution on push, pull_request, and schedule
-  - Added required `reason` input field for audit trail
-  - Added `confirm_major_change` option in test-scripts workflow
-  - Added `check_type` selector in dependency-check workflow
-  - **BREAKING CHANGE**: Workflows no longer run automatically
+- **BREAKING**: CI/CD workflows converted to manual execution only (`workflow_dispatch`)
+- All workflows now require explicit `reason` input for audit trail
 
 ### Added
-- 📋 **Testing Guidelines Documentation**
-  - Created `.github/TESTING_GUIDELINES.md` with comprehensive testing strategy
-  - Defined when tests are mandatory vs optional
-  - Instructions for running tests via GitHub UI and CLI
-  - Local testing recommendations to save CI/CD resources
+- Testing guidelines documentation
 
 ### Security
-- 🔒 Reduced attack surface by eliminating automatic workflow execution
-- 🛡️ All CI/CD operations now require explicit human approval
+- Reduced attack surface by eliminating automatic workflow execution
 
 ## [2.5.0] - 2025-07-24
 
 ### Added
-- 🤖 **AI Development Tools Integration**
-  - MCPs (Model Context Protocol) configuration support
-  - 4 essential MCPs: context7, fetch, sequential-thinking, serena
-  - BMAD Method v4.31.0 agent-based integration
-  - Cross-platform installer for AI tools (`install_ai_tools.sh`)
-  - Diagnostic script to verify installations (`check_ai_tools.sh`)
-  - Quick start guide for AI-powered development
-- 🎯 **Product-Focused Git Configuration System**
-  - Global git template system for automatic .github/ structure
-  - Smart git hooks for automatic commit prefixing
-  - Product-focused git aliases (logp, diffp, statusp)
-  - Shell functions for project management (gnew, ginit, gcheck)
-  - Migration tools for existing projects
-  - Comprehensive documentation (`docs/product-focused-git.md`)
-- 📚 **Context Engineering Documentation**
-  - CLAUDE.md v2.3.0 - AI collaboration guidelines
-  - CLAUDE-EXTENDED.md - Detailed implementation guides
-  - Integration with BMAD methodology
+- AI development tools integration (MCPs configuration support)
+- Cross-platform installer for AI tools (`install_ai_tools.sh`)
+- Diagnostic script for installation verification
+- Product-focused git configuration system (templates, hooks, aliases)
+- Context Engineering documentation (CLAUDE.md v2.3.0)
 
 ### Changed
 - Updated LICENSE copyright to "Bragatte, M.A.S"
-- Repository structure reorganization (AI tools → .github/)
-- Improved .gitignore for .github/AI_TOOLKIT directories
-- Enhanced setup.sh with AI tools and product-focused git options
 
 ### Fixed
-- Corrected claude.json filename references (was claude_desktop_config.json)
-- Fixed profile configurations to use correct MCP config filename
+- Corrected `claude.json` filename references
 
 ## [2.4.0-alpha.1] - 2025-07-23
-### Added
-- 🎯 **Profile-based installation system**
-  - 5 pre-configured profiles: developer-standard, developer-minimal, devops, data-scientist, student
-  - setup-with-profile.sh for interactive profile selection
-  - YAML-based profile configuration
-  - Dry-run mode to preview installations
-  - Custom profile support
-- 📚 **Comprehensive user documentation**
-  - quick-start.md - Fast onboarding guide
-  - modern-cli-tools.md - Detailed tool usage guides
-  - shell-customization.md - Zsh/Oh-My-Zsh configuration
-  - installation-profiles.md - Complete profile documentation
-  - troubleshooting.md - Common issues and solutions
-  - versioning-guide.md - Clear semantic versioning strategy
 
-### Changed
-- Updated setup.sh to support --profile and --minimal arguments
-- Transformed user-guide.md to focus on actual usage instead of BMAD methodology
-- Added versioning strategy to CLAUDE-EXTENDED.md
+### Added
+- Profile-based installation system with 5 pre-configured profiles
+- Interactive profile selection via `setup-with-profile.sh`
+- Comprehensive user documentation (quick-start, modern-cli-tools, shell-customization, troubleshooting)
 
 ## [2.3.1] - 2025-07-23
+
 ### Security
-- ✅ **Fixed critical APT lock vulnerability (ADR-005)**
-  - Removed all dangerous `sudo rm /var/lib/dpkg/lock*` commands
-  - Implemented safe wait mechanisms for package managers
-  - Added package-manager-safety.sh module
-  - 100% of APT scripts now use safe operations
+- Fixed critical APT lock vulnerability (removed dangerous force-removal commands)
+- Implemented safe wait mechanisms for package managers
+- Added `package-manager-safety.sh` module
 
 ### Added
-- Comprehensive security test suite
-  - test_apt_lock_safety.sh - 10 security validations
-  - test_apt_timeout_scenarios.sh - 5 integration scenarios
-  - test_apt_safety_simple.sh - CI/CD friendly tests
-  - Security test documentation (tests/security/README.md)
+- Security test suite (10 validations, 5 integration scenarios)
 
 ### Changed
-- Made logging.sh compatible with Bash 3.2 (macOS support)
+- Made `logging.sh` compatible with Bash 3.2 (macOS support)
 - Repository reorganized for user-focused navigation
-- Moved development docs to .github/PROJECT_DOCS/
-- Moved AI context to .github/AI_CONTEXT/
 
-### Fixed
-- APT lock timeout issues
-- Package validation to prevent injection attacks
-- Error handling and recovery mechanisms
+## [2.3.0] - 2025-07-23
 
----
+### Added
+- CLAUDE.md v2.3.0 for Context Engineering
+- PRD.md, STORIES.md, STATUS.md, TESTING.md
+- 8 Architecture Decision Records
 
-## OS Post-Install Scripts Releases
-
-## Pre-release History
-
-### [2.3.1-alpha.4] - 2025-07-23 (Superseded by 2.3.1 release)
-- Completed security test suite
-- Fixed Bash 3.2 compatibility
-- Repository reorganization
-
-### [2.3.1-alpha.3] - 2025-07-23
-- Repository reorganized for user focus
-- Moved docs to appropriate directories
-
-### [2.3.1-alpha.2] - 2025-07-23
-- Completed migration of ALL APT scripts
-- Added safe wrapper functions
-
-### [2.3.1-alpha.1] - 2025-07-23
-- Initial security module implementation
-- Started APT script migration
-
-### [2.3.0] - 2025-07-23
-#### Added
-- CLAUDE.md v2.3.0 integration for Context Engineering
-- PRD.md with comprehensive project requirements
-- STORIES.md with user journey mapping and Epic 0
-- STATUS.md for project health tracking
-- TESTING.md with Testing Trophy strategy
-- 8 Architecture Decision Records (ADRs)
-- BMAD Method v4.30 integration
-
-#### Changed
-- Project now follows Context Engineering principles
-- Documentation structure aligned with CLAUDE.md standards
-- Adopted transparent communication about test coverage
-
-#### Security
-- Discovered critical APT lock vulnerability (see v2.3.1)
-
----
-
-## CLAUDE.md Framework Updates
-*These entries document the evolution of the CLAUDE.md AI interaction framework:*
-
-### [2.3.0] - 2025-07-23
-#### Added
-- Quick Start section at the beginning of the document
-- Serena as 4th essential MCP
-- Instructions to activate the 4 MCPs by default
-- Separation of changelog into dedicated file
-
-#### Changed
-- Reorganization for better reading flow
-- MCPs are now 4 by default (Context7, fetch, sequential-thinking, serena)
-- Consolidated links to avoid redundancy
-
-#### Removed
-- Changelog from main file (moved to dedicated file)
-- Unnecessary external references (books, communities)
-
-### [2.2.0] - 2025-07-22
-#### Added
-- Specific technical preferences:
-  - Python: UV for environments, Polars > pandas
-  - Rust: Explicit typing and memory management
-  - React: Epic Stack patterns
-- Direct links to Epic Stack and modern tools
-
-#### Changed
-- More specific code patterns section by language
-- Updated recommended versions
-
-### [2.1.0] - 2025-07-22
-#### Added
-- Contextual self-modulation system with flow diagram
-- Detailed protocol for existing projects
-- Integrated bioinformatics specific examples
-- STORIES → CLAUDE.md decision table
-- Section on how decisions filter the document
-
-#### Changed
-- Reorganization to highlight adaptive flow at top
-- Improvements in code examples with bioinformatics cases
-- Expansion of startup protocol to include PRD verification
-
-#### Fixed
-- Clarification that not all sections always apply
-- Alignment with real flow STATUS → PRD → STORIES → CLAUDE
-
-### [2.0.0] - 2025-07-19
-#### Added
-- CLAUDE-EXTENDED.md as complementary document
-- Context Engineering vs Prompt Engineering complete section
-- Testing Trophy with detailed philosophy
-- Essential MCPs (Context7, fetch, sequential-thinking)
-- Prompt capture protocol [prompt-saved]
-
-#### Changed
-- Major restructuring to separate basic vs. advanced content
-- All extensive examples moved to EXTENDED
-- Focus on being an operational document, not encyclopedic
-
-### [1.5.0] - 2025-07-16
-#### Added
-- "Never Do" section expanded with 13 items
-- Cross-platform compatibility with pathlib
-- Conventional commit patterns
-- Tripartite quality checklist
-
-#### Changed
-- Code examples now with mandatory ## comments
-- Better organization of quick references
-
-### [1.0.0] - 2025-07-12
-#### Added
-- Official integration with BMAD Method
-- Essential documents system (red/purple/yellow)
-- ADRs with mandatory Mermaid diagrams
-- Simplicity philosophy with quotes
-
-#### Changed
-- Migration from loose guidelines to structured system
-- Prioritization of STATUS.md as entry point
-
-### [0.5.0] - 2025-07-08
-#### Added
-- Session startup protocol
-- Why-What-How as standard structure
-- Rules for artifacts
-- "Always Do" section
-
-#### Changed
-- Refinement of fundamental principles
-- Better definition of intellectual partnership
-
-### [0.2.0] - 2025-07-04
-#### Added
-- Basic fundamental principles
-- Initial comment structure for R/Python
-- "Documentation is code" concept
-
-### [0.1.0] - 2025-07-01
-- First draft of CLAUDE.md
-- Initial idea to prevent vibe-coding
-- Basic structure inspired by README.md
-
-## OS Post-Install Scripts Updates
+### Changed
+- Project follows Context Engineering principles
+- Transparent communication about test coverage
 
 ## [2.2.0] - 2025-07-10
 
 ### Added
-- New modular directory structure (install/, utils/, verify/)
-- Central orchestrator script (main.sh) with interactive menu
-- Comprehensive verification system (check-installation.sh)
+- Modular directory structure (install/, utils/, verify/)
+- Central orchestrator script with interactive menu
+- Comprehensive verification system
 - Interactive desktop environment installer
-- Backward compatibility wrappers
 
 ### Changed
-- Reorganized all scripts into logical directories
-- Standardized naming convention (hyphens instead of underscores)
-- Converted flavors.sh into interactive desktop-environments.sh
-- All scripts now have proper shebangs and error handling
+- Standardized naming convention (hyphens over underscores)
+- All scripts with proper shebangs and error handling
 
 ### Fixed
-- All 50 tests now passing
-- Missing shebangs in bashrc.sh and flavors.sh
+- All 50 tests passing
 - Script permission issues resolved
-- Test harness now ignores test files for URL checks
 
 ## [2.1.0] - 2025-07-10
 
 ### Added
-- Comprehensive test harness for validating script functionality
-- Script inventory documentation
-- Logging system for all scripts
-- Safe APT lock handling mechanism
-- BMad Method integration with AI-assisted development
-- Dual Makefile system (BMad + Project-specific targets)
+- Test harness for validating script functionality
+- Logging system and safe APT lock handling
 - Security improvements across all scripts
 
 ### Changed
-- All scripts now use `set -euo pipefail` for better error handling
-- Fixed placeholder URLs (SEU_USUARIO → BragatteMAS)
-- Improved script permissions (all scripts now executable)
-- Reorganized documentation structure
-
-### Fixed
-- Security vulnerabilities in APT lock handling
-- Missing error handling in scripts
-- Non-executable script permissions
-- Placeholder URLs causing script failures
+- All scripts use `set -euo pipefail`
+- Fixed placeholder URLs (SEU_USUARIO to BragatteMAS)
 
 ### Security
-- Added proper error trapping to prevent silent failures
-- Implemented safe APT lock waiting instead of force removal
-- Added logging for audit trails
+- Safe APT lock waiting instead of force removal
+- Logging for audit trails
 
 ## [2.0.0] - 2024-12-15
 
 ### Added
-- **Section 22: Advanced Enhancements** - 13 major new features:
-  - Universal package manager function (`install_tool`)
-  - Git credential security setup (`setup_git_credentials`)
-  - Configuration backup system with rotation (`backup_configs`)
-  - Full WSL (Windows Subsystem for Linux) support
-  - Docker/Podman integration with custom aliases
-  - Adaptive themes based on system preferences
-  - Performance monitoring (`shell_benchmark`)
-  - Secure environment variables loading from `.env.local`
-  - Lazy loading for nvm and rbenv
+- Advanced shell enhancements (13 features):
+  - Universal package manager function
+  - Git credential security setup
+  - Configuration backup system with rotation
+  - WSL support, Docker/Podman integration
+  - Adaptive themes, performance monitoring
+  - Lazy loading for nvm/rbenv
   - Built-in documentation system (`zdoc`)
   - Interactive quick menu (`qm`)
-  - Automatic SSH agent management
-  - Feature flags support via `.zshrc.flags`
-
-- **Enhanced Welcome Message**:
-  - Shows current git branch
-  - Organized command categories with tree structure
-  - Dynamic status indicators (conda env, secure env)
-  - Compact version available (`welcomec`)
-
-- **Improved Help System**:
-  - `zdoc` - Complete function documentation
-  - Better organized help categories
-  - `ac rust` - List all Rust tools
+  - SSH agent management, feature flags (`.zshrc.flags`)
 
 ### Changed
-- Fixed sed alias conflict - renamed to `sdr` for sd (Rust tool)
-- Improved help functions to use `\sed` bypassing aliases
-- Enhanced `nu_compare` function for better compatibility
-- Optimized xargs usage in command tracking to prevent quote errors
+- Fixed sed alias conflict (renamed to `sdr`)
+- Optimized xargs usage to prevent quote errors
 - Removed terminal clearing from welcome message
-- Removed blocking "Press Enter" prompts
-- Quick menu no longer clears screen
 
 ### Fixed
-- Conda access issues due to syntax errors
-- Help system "halp by category" not working
-- "xargs: unterminated quote" error in command tracking
-- Terminal being cleared unexpectedly
-- Quick menu (`qm`) clearing terminal history
-
-### Improved
-- Cross-platform compatibility (macOS/Linux/WSL)
-- Performance with lazy loading
-- Security with credential management
-- User experience with non-intrusive prompts
+- Conda access syntax errors
+- Help system category navigation
+- Terminal clearing issues
 
 ## [1.0.0] - Initial Release
 
