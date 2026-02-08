@@ -76,14 +76,21 @@ alias df="df -h"
 alias du="du -h"
 alias duh="du -h -d 1"
 
-# Network
-alias ip="ip -c"
-alias ports="ss -tulanp"
+# Network (platform-aware)
+if command -v ss &>/dev/null; then
+    alias ports="ss -tulanp"
+    alias ip="ip -c"
+else
+    alias ports="lsof -iTCP -sTCP:LISTEN -nP"
+fi
 
 # -----------------------------------------------------------------------------
-# System-specific (Ubuntu/Debian)
+# System-specific package manager
 # -----------------------------------------------------------------------------
 if command -v apt &>/dev/null; then
-    alias update="sudo apt update && sudo apt upgrade -y"
-    alias cleanup="sudo apt autoremove -y && sudo apt autoclean"
+    alias update="sudo apt update && sudo apt upgrade"
+    alias cleanup="sudo apt autoremove && sudo apt autoclean"
+elif command -v brew &>/dev/null; then
+    alias update="brew update && brew upgrade"
+    alias cleanup="brew cleanup"
 fi

@@ -1,0 +1,98 @@
+# Starship Prompt Configuration
+# Snapshot: 2026-02-08 | Minimal prompt focused on git workflow
+#
+# Reference: https://starship.rs/config/
+# Install: curl -sS https://starship.rs/install.sh | sh
+"$schema" = "https://starship.rs/config-schema.json"
+
+# Prompt format — shows only what matters while coding
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+# Directory
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+# Git branch
+# NOTE: The symbol uses a Nerd Font glyph. If it renders as a box,
+# either install a Nerd Font (https://www.nerdfonts.com/) or
+# replace with a plain text alternative like "git:"
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = " "        # Nerd Font: nf-dev-git_branch
+# symbol = "git:"     # Plain text alternative
+style = "bold purple"
+
+# Git status
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bold red"
+
+# Command duration (only shows for slow commands)
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "
+style = "bold yellow"
+
+# Prompt character
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+# ===== Disabled Modules =====
+# This config disables language version indicators to keep the prompt
+# minimal. Uncomment any you want to see in your prompt.
+
+[package]
+disabled = true
+
+# Uncomment to show language versions when in project directories:
+# [nodejs]
+# disabled = false
+# [python]
+# disabled = false
+# [rust]
+# disabled = false
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[golang]
+disabled = true
+
+[java]
+disabled = true
+
+[ruby]
+disabled = true
+
+[php]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[azure]
+disabled = true

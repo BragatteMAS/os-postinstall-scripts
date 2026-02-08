@@ -416,6 +416,17 @@ Then run: `./setup.sh custom`
 2. Add a mapping entry in `src/installers/dotfiles-install.sh` (the `symlink_map` array)
 3. Run `./setup.sh dotfiles`
 
+### Examples
+
+The `examples/` directory contains reference configurations used by the maintainer:
+
+| File | Description |
+|------|-------------|
+| `claude-md-example.md` | CLAUDE.md for AI-assisted development (Claude Code) |
+| `starship-example.toml` | Starship prompt configuration |
+
+These are snapshots for reference — the operational dotfiles live in `data/dotfiles/`.
+
 ## CLI Flags
 
 | Flag | Short | Env Var | Description |
