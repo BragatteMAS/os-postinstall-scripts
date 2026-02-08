@@ -180,13 +180,18 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
 
     if ! install_homebrew; then
         log_error "Homebrew installation failed"
-        exit 0  # Always exit 0 (per Phase 1 decision)
+        # Exception to always-exit-0: Homebrew is a hard prerequisite
+        # for all subsequent macOS installs. Signal failure to caller.
+        if [[ -n "${FAILURE_LOG:-}" ]]; then
+            echo "homebrew-install" >> "$FAILURE_LOG"
+        fi
+        exit 1
     fi
 
     configure_shell_path
 
     log_ok "Homebrew setup complete"
 
-    # Always exit 0 (per Phase 1 decision)
+    # Success path: exit 0
     exit 0
 fi
