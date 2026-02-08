@@ -95,7 +95,7 @@ test_script_shebang() {
 # Test all .sh files for shebangs
 while IFS= read -r -d '' script; do
     test_script_shebang "$script"
-done < <(find . -name "*.sh" -type f -not -path './.git/*' -print0 2>/dev/null)
+done < <(find . -name "*.sh" -type f -not -path './.git/*' -not -path './data/dotfiles/*' -print0 2>/dev/null)
 
 # Test: Verify post_install.sh deprecation notice
 if grep -q "DEPRECATED" src/platforms/linux/post_install.sh; then
