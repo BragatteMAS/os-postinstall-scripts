@@ -340,7 +340,7 @@ verify_all() {
     elif [[ -n "$DETECTED_DISTRO" && "$DETECTED_DISTRO" != "unknown" ]]; then
         # Capitalize first letter of distro for display
         local display_distro
-        display_distro=$(echo "$DETECTED_DISTRO" | sed 's/./\U&/')
+        display_distro="$(printf '%s' "${DETECTED_DISTRO:0:1}" | tr '[:lower:]' '[:upper:]')${DETECTED_DISTRO:1}"
         _platform_ok "Detected: $display_distro $DETECTED_VERSION ($DETECTED_PKG)"
     else
         _platform_ok "Detected: $DETECTED_OS ($DETECTED_PKG)"

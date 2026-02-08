@@ -241,18 +241,19 @@ install_zsh_plugins() {
     local plugin_dir="${HOME}/.zsh"
     run mkdir -p "$plugin_dir"
 
-    local -A plugins=(
-        [zsh-autosuggestions]="https://github.com/zsh-users/zsh-autosuggestions"
-        [zsh-completions]="https://github.com/zsh-users/zsh-completions"
-        [zsh-syntax-highlighting]="https://github.com/zsh-users/zsh-syntax-highlighting"
-    )
+    local plugin_names="zsh-autosuggestions zsh-completions zsh-syntax-highlighting"
+    local plugin_urls="https://github.com/zsh-users/zsh-autosuggestions https://github.com/zsh-users/zsh-completions https://github.com/zsh-users/zsh-syntax-highlighting"
 
-    for name in "${!plugins[@]}"; do
+    local i=1
+    for name in $plugin_names; do
+        local url
+        url=$(echo "$plugin_urls" | cut -d' ' -f"$i")
         if [[ -d "${plugin_dir}/${name}" ]]; then
             log_ok "$name"
         else
-            run git clone --depth=1 "${plugins[$name]}" "${plugin_dir}/${name}"
+            run git clone --depth=1 "$url" "${plugin_dir}/${name}"
         fi
+        i=$((i + 1))
     done
 }
 
