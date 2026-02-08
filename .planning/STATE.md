@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 8.2 - Audit Remediation (NOT STARTED)
+**Current focus:** Phase 8.2 - Audit Remediation (IN PROGRESS)
 
 ## Current Position
 
-Phase: 8.2 of 8.2 (Audit Remediation) — NOT STARTED
-Plan: 0 of ? in current phase (research and planning required)
-Status: Inserted after 4-agent codebase audit
-Last activity: 2026-02-08 - Phase 8.2 inserted, Tier 1 fixes applied
+Phase: 8.2 of 8.2 (Audit Remediation) — IN PROGRESS
+Plan: 03 of 4 in current phase (1/4 complete)
+Status: In progress
+Last activity: 2026-02-08 - Completed 08.2-03-PLAN.md
 
-Progress: [████████████████████████████░] 97% (32/32+ plans)
+Progress: [████████████████████████████░] 92% (33/36 plans)
 
 ## Performance Metrics
 
@@ -37,9 +37,11 @@ Progress: [███████████████████████
 | 08-documentation | 3/3 | 15 min | 5 min |
 | 08.1-terminal-setup-windows | 1/1 | 3 min | 3 min |
 
+| 08.2-audit-remediation | 1/4 | 1 min | 1 min |
+
 **Recent Trend:**
-- Last 5 plans: 07-02 (4 min), 07-03 (2 min), 08-01 (5 min), 08.1-01 (3 min)
-- Trend: Stable at ~3 min for single-file creation tasks
+- Last 5 plans: 07-03 (2 min), 08-01 (5 min), 08.1-01 (3 min), 08.2-03 (1 min)
+- Trend: Stable at ~2 min for targeted fix tasks
 
 *Updated after each plan completion*
 
@@ -144,6 +146,9 @@ Recent decisions affecting current work:
 - [08.1-01]: ASCII-safe > symbol in starship config instead of Unicode arrows (cross-terminal compat)
 - [08.1-01]: Per-user font path ($env:LOCALAPPDATA) avoids requiring admin elevation
 - [08.1-01]: Remove built-in aliases before defining replacement functions (PS alias conflict)
+- [08.2-03]: Explicit DRY_RUN guard for curl|sh pipes (run() cannot guard pipe right side)
+- [08.2-03]: WARN level for known-unimplemented Windows dispatchers (gap is intentional, not broken)
+- [08.2-03]: Keep default case at DEBUG for truly unrelated platform files
 
 ### Patterns Established
 
@@ -229,6 +234,8 @@ Recent decisions affecting current work:
 - Per-user font install: LOCALAPPDATA fonts dir + HKCU registry entries (no admin)
 - PS profile append: marker check, backup, Add-Content with UTF8 encoding
 - PS alias conflict resolution: Remove-Item Alias:name before function definition
+- curl|sh guard: explicit DRY_RUN check wrapping entire pipeline, not run() on left side
+- Known-gap logging: WARN level for dispatchers that exist on other platforms but not current
 
 ### Roadmap Evolution
 
@@ -240,9 +247,9 @@ Recent decisions affecting current work:
 Phase 8.2 — 7 priority items from codebase audit:
 1. [Alta] Deprecate/migrate post_install.sh
 2. [Alta] Expand manual test coverage (macOS, Windows, core modules)
-3. [Média] Windows main.ps1 cross-platform dispatch
+3. [Média] Windows main.ps1 cross-platform dispatch -- WARN logging added (08.2-03)
 4. [Média] homebrew.sh exit code propagation
-5. [Média] terminal-setup.sh dry-run bypass
+5. [Média] terminal-setup.sh dry-run bypass -- FIXED (08.2-03)
 6. [Média] Cross-process failure tracking
 7. [Baixa] CODE_OF_CONDUCT.md creation
 
@@ -415,6 +422,12 @@ Phase 8.2 — 7 priority items from codebase audit:
 **Created (08.1-01):**
 - examples/terminal-setup.ps1 - Standalone PowerShell terminal setup wizard (547 lines)
 
+## Phase 8.2 Deliverables (IN PROGRESS)
+
+**Modified (08.2-03):**
+- examples/terminal-setup.sh - DRY_RUN guards on zoxide and starship curl|sh pipelines
+- src/platforms/windows/main.ps1 - WARN logging for cargo.txt, npm.txt, ai-tools.txt in switch dispatch
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
@@ -433,9 +446,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 
 ## Session Continuity
 
-Last session: 2026-02-08
-Stopped at: Phase 8.2 inserted with 7 priority items. Tier 1 fixes applied. Ready for research/planning.
+Last session: 2026-02-08T21:15:41Z
+Stopped at: Completed 08.2-03-PLAN.md (dry-run fix + Windows WARN logging)
 Resume file: None
 
 ---
-*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 32/32 plans done + Phase 8.2 pending.*
+*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 33/36 plans done. Phase 8.2 in progress (1/4).*
