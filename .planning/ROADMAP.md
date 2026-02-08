@@ -153,9 +153,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- README.md complete rewrite (23 sections) + demo GIF placeholder
-- [ ] 08-02-PLAN.md -- CONTRIBUTING.md + CODE_OF_CONDUCT.md + GitHub templates update
-- [ ] 08-03-PLAN.md -- GitHub repo metadata + cross-link verification + visual check
+- [x] 08-01-PLAN.md -- README.md complete rewrite (23 sections) + demo GIF placeholder
+- [x] 08-02-PLAN.md -- CONTRIBUTING.md + GitHub templates update (CODE_OF_CONDUCT descoped, Pitfall 14)
+- [x] 08-03-PLAN.md -- GitHub repo metadata + cross-link verification + visual check
 
 ## Progress
 
@@ -171,7 +171,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Linux Enhancements | 6/6 | Complete | 2026-02-06 |
 | 6. Windows Foundation | 2/2 | Complete | 2026-02-06 |
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
-| 8. Documentation | 0/3 | Not started | - |
+| 8. Documentation | 3/3 | Complete | 2026-02-07 |
 
 ---
 *Roadmap created: 2026-02-04*
@@ -182,5 +182,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 5 completed: 2026-02-06*
 *Phase 6 completed: 2026-02-06*
 *Phase 7 completed: 2026-02-07*
+*Phase 8 completed: 2026-02-07*
 *Depth: comprehensive (8 phases)*
 *Requirements coverage: 22/22 mapped*
+*Milestone v1.0 complete: 2026-02-08*

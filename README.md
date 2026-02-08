@@ -30,6 +30,7 @@ Every fresh OS installation means hours of manual setup: installing packages, co
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Just Want the Terminal?](#just-want-the-terminal)
 - [Features](#features)
 - [Platform Support](#platform-support)
 - [Installation Profiles](#installation-profiles)
@@ -132,6 +133,34 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1 -Profile minimal
 The Windows handler uses WinGet for package installation. No admin elevation is required for standard WinGet operations.
 
 </details>
+
+## Just Want the Terminal?
+
+Don't need the full setup? Get the modern terminal experience in one command:
+
+```bash
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+bash os-postinstall-scripts/examples/terminal-setup.sh
+```
+
+Or choose what to install with `--interactive`:
+
+```bash
+bash os-postinstall-scripts/examples/terminal-setup.sh --interactive
+bash os-postinstall-scripts/examples/terminal-setup.sh --dry-run  # preview first
+```
+
+**What it does:**
+
+| Component | Details |
+|-----------|---------|
+| Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
+| CLI tools | bat, eza, fd, ripgrep, delta, zoxide, starship |
+| Prompt | Minimal Starship config (git branch, status, duration) |
+| Aliases | 40+ shortcuts for git, navigation, modern tools |
+| Plugins | zsh-autosuggestions, syntax-highlighting, completions |
+| Platforms | Linux (apt) and macOS (brew) |
+| Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |
 
 ## Features
 
@@ -418,14 +447,15 @@ Then run: `./setup.sh custom`
 
 ### Examples
 
-The `examples/` directory contains reference configurations used by the maintainer:
+The `examples/` directory contains reference configurations:
 
 | File | Description |
 |------|-------------|
-| `claude-md-example.md` | CLAUDE.md for AI-assisted development (Claude Code) |
+| `terminal-setup.sh` | One-script terminal transformation (tools + prompt + aliases + plugins) |
 | `starship-example.toml` | Starship prompt configuration |
+| `claude-md-example.md` | CLAUDE.md template for AI-assisted development |
 
-These are snapshots for reference — the operational dotfiles live in `data/dotfiles/`.
+These are self-contained snapshots — the operational dotfiles live in `data/dotfiles/`. See [Just Want the Terminal?](#just-want-the-terminal) for quick usage.
 
 ## CLI Flags
 

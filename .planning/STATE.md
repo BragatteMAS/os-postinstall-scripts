@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 ## Current Position
 
-Phase: 8 of 8 (Documentation)
-Plan: 1 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-07 - Completed 08-01-PLAN.md (README Rewrite)
+Phase: 8 of 8 (Documentation) — COMPLETE
+Plan: 3 of 3 in current phase
+Status: Complete
+Last activity: 2026-02-08 - All 8 phases complete. Milestone v1.0 done.
 
-Progress: [█████████████████████████░░] 94% (29/31 plans)
+Progress: [████████████████████████████] 100% (31/31 plans)
 
 ## Performance Metrics
 
@@ -34,7 +34,7 @@ Progress: [███████████████████████
 | 05-linux-enhancements | 6/6 | 13 min | 2.2 min |
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
 | 07-user-experience-polish | 3/3 | 10 min | 3.3 min |
-| 08-documentation | 1/3 | 5 min | 5 min |
+| 08-documentation | 3/3 | 15 min | 5 min |
 
 **Recent Trend:**
 - Last 5 plans: 07-01 (4 min), 07-02 (4 min), 07-03 (2 min), 08-01 (5 min)
@@ -388,11 +388,18 @@ None.
 - assets/.gitkeep - Directory placeholder for future terminal demo GIF
 - README.md - Complete 23-section professional documentation (602 lines, rewritten)
 
+## Pending Items
+
+- [ ] Terminal screenshot (static PNG) for README hero image
+- [ ] Terminal demo video (asciinema + agg → GIF) for README
+- [ ] Social preview image via socialify.git.ci
+- [ ] `terminal-setup.ps1` for Windows (candidate for Phase 8.1)
+
 ## Session Continuity
 
-Last session: 2026-02-07
-Stopped at: Completed 08-01-PLAN.md (README Rewrite)
+Last session: 2026-02-08
+Stopped at: All phases complete. terminal-setup.sh shipped as standalone product.
 Resume file: None
 
 ---
-*Phase 8 in progress. 29/31 plans complete. README.md rewritten. CONTRIBUTING.md and GitHub templates remain.*
+*Milestone v1.0 complete. 31/31 plans done. All 8 phases shipped.*

@@ -65,6 +65,7 @@ os-postinstall-scripts/
 │       └── starship/         # starship.toml
 │
 ├── examples/                  # Reference configs (snapshots)
+│   ├── terminal-setup.sh      # One-script terminal transformation
 │   ├── claude-md-example.md   # CLAUDE.md for AI-assisted dev
 │   └── starship-example.toml  # Starship prompt config
 │
