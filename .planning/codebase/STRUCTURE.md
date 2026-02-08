@@ -64,10 +64,6 @@ os-postinstall-scripts/
 │       ├── shared/           # aliases.sh, env.sh, path.sh (cross-shell)
 │       └── starship/         # starship.toml
 │
-├── configs/                   # Configuration metadata
-│   └── profiles/
-│       └── README.md          # Points to data/packages/profiles/
-│
 ├── docs/                      # User documentation
 │   ├── quick-start.md
 │   ├── user-guide.md
