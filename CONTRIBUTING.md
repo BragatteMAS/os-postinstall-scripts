@@ -325,8 +325,8 @@ Blank lines and lines starting with `#` are ignored by the package loader.
 This project uses structured development practices:
 
 - **GSD (Get Shit Done) workflow** -- phased development with research, planning, and execution stages
-- **Architecture Decision Records (ADRs)** -- 9 ADRs document key technical decisions
-- **Conventional Commits** -- all 425+ commits follow the conventional format
+- **Architecture Decision Records (ADRs)** -- 7 ADRs document key architectural choices (`.planning/adrs/`)
+- **Conventional Commits** -- all 430+ commits follow the conventional format
 - **Claude Code as development co-pilot** -- AI-assisted development across all 8 phases
 - **Data-driven architecture** -- package lists in text files, not hardcoded arrays
 
