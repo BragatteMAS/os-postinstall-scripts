@@ -111,9 +111,13 @@ The script auto-detects Intel (`/usr/local`) vs Apple Silicon (`/opt/homebrew`) 
 <details>
 <summary><b>Windows (PowerShell)</b></summary>
 
-Windows uses a separate PowerShell entry point:
+Windows uses a separate PowerShell entry point. Git is not pre-installed on a fresh Windows -- install it first via WinGet:
 
 ```powershell
+# Install git (fresh Windows)
+winget install Git.Git
+
+# Restart PowerShell, then:
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
 
@@ -379,7 +383,7 @@ MCP (Model Context Protocol) servers are listed in `data/packages/ai-tools.txt` 
 
 ### Development Methodology
 
-This project was developed with Claude Code as a co-pilot across 428+ commits and 8 phases. The workflow uses the GSD (Get Stuff Done) methodology with structured planning, research, and execution phases. Nine Architecture Decision Records (ADRs) document key decisions. The badge "Built with Claude Code" reflects this AI-assisted development approach.
+This project was developed with Claude Code as a co-pilot across 430+ commits and 8 phases. The workflow uses the GSD (Get Stuff Done) methodology with structured planning, research, and execution phases. Seven Architecture Decision Records (ADRs) document key architectural choices. The badge "Built with Claude Code" reflects this AI-assisted development approach.
 
 ## Customization
 
@@ -589,7 +593,7 @@ winget uninstall <package>
 
 ### Development
 
-- [Claude Code](https://claude.ai/) -- AI-assisted development co-pilot (428+ commits)
+- [Claude Code](https://claude.ai/) -- AI-assisted development co-pilot (430+ commits)
 
 ## Contributing
 
