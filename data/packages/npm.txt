@@ -17,5 +17,4 @@ eslint
 prettier
 
 # AI/MCP Tools
-bmad-method
 license-checker

@@ -22,8 +22,5 @@ npx:@modelcontextprotocol/server-system-prompts-and-models-of-ai
 # Python Tools (via uv)
 uv:serena-mcp-server
 
-# Project Management
-npm:bmad-method
-
 # Development Utilities
 # uv — installed by src/install/uv.sh (dev-env), listed here for reference only
