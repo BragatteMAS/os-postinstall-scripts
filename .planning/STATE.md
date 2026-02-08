@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 8 - Documentation (IN PROGRESS)
+**Current focus:** Phase 8.1 - Terminal Setup Windows (COMPLETE)
 
 ## Current Position
 
-Phase: 8 of 8 (Documentation) — COMPLETE
-Plan: 3 of 3 in current phase
+Phase: 8.1 of 8.1 (Terminal Setup Windows) — COMPLETE
+Plan: 1 of 1 in current phase
 Status: Complete
-Last activity: 2026-02-08 - All 8 phases complete. Milestone v1.0 done.
+Last activity: 2026-02-08 - Completed 08.1-01-PLAN.md (terminal-setup.ps1)
 
-Progress: [████████████████████████████] 100% (31/31 plans)
+Progress: [████████████████████████████] 100% (32/32 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 29
+- Total plans completed: 30
 - Average duration: 2.6 min
-- Total execution time: 75 min
+- Total execution time: 78 min
 
 **By Phase:**
 
@@ -35,10 +35,11 @@ Progress: [███████████████████████
 | 06-windows-foundation | 2/2 | 5 min | 2.5 min |
 | 07-user-experience-polish | 3/3 | 10 min | 3.3 min |
 | 08-documentation | 3/3 | 15 min | 5 min |
+| 08.1-terminal-setup-windows | 1/1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (4 min), 07-02 (4 min), 07-03 (2 min), 08-01 (5 min)
-- Trend: Slight increase for documentation (content-heavy)
+- Last 5 plans: 07-02 (4 min), 07-03 (2 min), 08-01 (5 min), 08.1-01 (3 min)
+- Trend: Stable at ~3 min for single-file creation tasks
 
 *Updated after each plan completion*
 
@@ -139,6 +140,10 @@ Recent decisions affecting current work:
 - [08-01]: No fake demo.gif; HTML comment placeholder + italic text instead of broken img tag
 - [08-01]: CODE_OF_CONDUCT.md link temporarily broken (Plan 08-02 creates it)
 - [08-01]: Inverted pyramid README structure: instant value -> quick start -> features -> architecture -> reference
+- [08.1-01]: Write-Err function name avoids collision with built-in Write-Error cmdlet
+- [08.1-01]: ASCII-safe > symbol in starship config instead of Unicode arrows (cross-terminal compat)
+- [08.1-01]: Per-user font path ($env:LOCALAPPDATA) avoids requiring admin elevation
+- [08.1-01]: Remove built-in aliases before defining replacement functions (PS alias conflict)
 
 ### Patterns Established
 
@@ -220,6 +225,14 @@ Recent decisions affecting current work:
 - Collapsible sections: `<details><summary>` for long content in README
 - Badge layout: 2 rows of 3, centered div, shields.io flat style
 - Portfolio showcase: Engineering Highlights section explaining WHY not just WHAT
+- Standalone PS wizard: CmdletBinding + param block + feature flags + wizard + main
+- Per-user font install: LOCALAPPDATA fonts dir + HKCU registry entries (no admin)
+- PS profile append: marker check, backup, Add-Content with UTF8 encoding
+- PS alias conflict resolution: Remove-Item Alias:name before function definition
+
+### Roadmap Evolution
+
+- Phase 8.1 inserted after Phase 8: terminal-setup.ps1 for Windows (COMPLETE)
 
 ### Pending Todos
 
@@ -382,24 +395,28 @@ None.
 - src/core/progress.sh - Added show_completion_summary() with profile, platform, duration, failure integration
 - setup.sh - Sources progress.sh, SECONDS timer, show_completion_summary call, cleanup trap override
 
-## Phase 8 Deliverables (IN PROGRESS)
+## Phase 8 Deliverables (COMPLETE)
 
 **Created (08-01):**
 - assets/.gitkeep - Directory placeholder for future terminal demo GIF
 - README.md - Complete 23-section professional documentation (602 lines, rewritten)
 
+## Phase 8.1 Deliverables (COMPLETE)
+
+**Created (08.1-01):**
+- examples/terminal-setup.ps1 - Standalone PowerShell terminal setup wizard (547 lines)
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
-- [ ] Terminal demo video (asciinema + agg → GIF) for README
+- [ ] Terminal demo video (asciinema + agg -> GIF) for README
 - [ ] Social preview image via socialify.git.ci
-- [ ] `terminal-setup.ps1` for Windows (candidate for Phase 8.1)
 
 ## Session Continuity
 
 Last session: 2026-02-08
-Stopped at: All phases complete. terminal-setup.sh shipped as standalone product.
+Stopped at: Completed 08.1-01 (terminal-setup.ps1). All phases including 8.1 insertion complete.
 Resume file: None
 
 ---
-*Milestone v1.0 complete. 31/31 plans done. All 8 phases shipped.*
+*Milestone v1.0 complete + Phase 8.1 insertion. 32/32 plans done. All phases shipped.*

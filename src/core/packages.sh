@@ -17,11 +17,13 @@ readonly _PACKAGES_SOURCED=1
 #######################################
 
 # Get directory where THIS script lives
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-readonly SCRIPT_DIR
+# NOTE: Uses _PACKAGES_DIR (not SCRIPT_DIR) to avoid readonly collision
+# with other scripts that set SCRIPT_DIR for their own source paths.
+_PACKAGES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+readonly _PACKAGES_DIR
 
 # Data directory relative to this script
-DATA_DIR="$(cd "${SCRIPT_DIR}/../../data" 2>/dev/null && pwd -P)"
+DATA_DIR="$(cd "${_PACKAGES_DIR}/../../data" 2>/dev/null && pwd -P)"
 readonly DATA_DIR
 
 #######################################

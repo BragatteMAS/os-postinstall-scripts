@@ -157,10 +157,18 @@ Plans:
 - [x] 08-02-PLAN.md -- CONTRIBUTING.md + GitHub templates update (CODE_OF_CONDUCT descoped, Pitfall 14)
 - [x] 08-03-PLAN.md -- GitHub repo metadata + cross-link verification + visual check
 
+### Phase 8.1: Terminal Setup for Windows (INSERTED)
+**Goal**: Create `terminal-setup.ps1` for Windows, providing equivalent terminal configuration wizard to the existing `terminal-setup.sh` (Unix)
+**Depends on**: Phase 8
+**Plans**: 1 plan
+
+Plans:
+- [x] PLAN.md — Standalone terminal-setup.ps1 (547 lines, 10/10 must-haves verified)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -172,6 +180,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 6. Windows Foundation | 2/2 | Complete | 2026-02-06 |
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
+| 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
 
 ---
 *Roadmap created: 2026-02-04*
@@ -183,6 +192,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 *Phase 6 completed: 2026-02-06*
 *Phase 7 completed: 2026-02-07*
 *Phase 8 completed: 2026-02-07*
-*Depth: comprehensive (8 phases)*
+*Phase 8.1 completed: 2026-02-08*
+*Depth: comprehensive (8 phases + 1 insertion)*
 *Requirements coverage: 22/22 mapped*
 *Milestone v1.0 complete: 2026-02-08*

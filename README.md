@@ -250,13 +250,13 @@ snap-post.txt    # Linux
 | `brew.txt` | 19 | All macOS profiles |
 | `brew-cask.txt` | 14 | Developer, Full |
 | `cargo.txt` | 30 | Developer, Full |
-| `npm.txt` | 8 | Developer, Full |
+| `npm.txt` | 7 | Developer, Full |
 | `winget.txt` | 36 | All Windows profiles |
 | `flatpak.txt` | 24 | Developer, Full |
 | `flatpak-post.txt` | 49 | Full |
 | `snap.txt` | 21 | Developer, Full |
 | `snap-post.txt` | 7 | Full |
-| `ai-tools.txt` | 12 | Developer, Full |
+| `ai-tools.txt` | 11 | Developer, Full |
 
 </details>
 
@@ -355,7 +355,7 @@ os-postinstall-scripts/
 │       ├── bash/bashrc
 │       ├── git/gitconfig
 │       ├── starship/starship.toml
-│       └── shared/             #   aliases, env, path, functions
+│       └── shared/             #   aliases, env, path
 └── tests/                      # Test suites
     ├── test-dotfiles.sh
     ├── test-linux.sh
@@ -451,7 +451,8 @@ The `examples/` directory contains reference configurations:
 
 | File | Description |
 |------|-------------|
-| `terminal-setup.sh` | One-script terminal transformation (tools + prompt + aliases + plugins) |
+| `terminal-setup.sh` | One-script terminal transformation for Unix/macOS (tools + prompt + aliases + plugins) |
+| `terminal-setup.ps1` | One-script terminal transformation for Windows PowerShell (WinGet + Starship + aliases) |
 | `starship-example.toml` | Starship prompt configuration |
 | `claude-md-example.md` | CLAUDE.md template for AI-assisted development |
 
@@ -512,7 +513,7 @@ Git user identity is separated into `~/.gitconfig.local` (created interactively 
 - The script never deletes files; it only creates symlinks and installs packages
 - Dry-run mode skips all sudo requests entirely
 
-For vulnerability reports, see [SECURITY.md](SECURITY.md).
+For vulnerability reports, please open a [GitHub Issue](https://github.com/bragatte/os-postinstall-scripts/issues) with the `security` label.
 
 ## Troubleshooting
 
