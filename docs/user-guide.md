@@ -41,7 +41,7 @@ A comprehensive collection of scripts that automatically configure a fresh opera
 ### Fastest Installation
 
 ```bash
-# One-line install (uses developer-standard profile)
+# One-line install (uses developer profile)
 curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
 ```
 
@@ -80,11 +80,9 @@ Profiles are pre-configured sets of tools for specific use cases:
 ```
 
 Available profiles:
-- **developer-standard**: Full development environment (15 min)
-- **developer-minimal**: Just essentials (5 min)
-- **devops**: Infrastructure and cloud tools (20 min)
-- **data-scientist**: Python, R, ML tools (25 min)
-- **student**: Multiple languages for learning (15 min)
+- **minimal**: Essential system packages only
+- **developer**: Full development environment (default)
+- **full**: Everything including extra packages
 
 ### Method 2: Interactive Menu
 
@@ -93,14 +91,10 @@ Available profiles:
 ```
 
 Presents an interactive menu:
-1. 🦀 Install Rust tools only
-2. 📦 Install system packages
-3. 🔧 Complete setup (recommended)
-4. 🐍 Python with UV
-5. 🐳 Docker/Podman
-6. 📁 Sync dotfiles
-7. 🏃 Quick essentials
-8. 🔍 Check installed tools
+1. Minimal (essential packages only)
+2. Developer (system + dev tools + AI)
+3. Full (everything)
+0. Exit
 
 ### Method 3: Individual Scripts
 

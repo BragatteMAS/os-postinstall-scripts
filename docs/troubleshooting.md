@@ -244,31 +244,17 @@ sudo apt update
 
 ### Profile not found
 
-**Problem:** "Profile not found: minimal"
+**Problem:** "Profile not found: myprofile"
 
 **Solution:**
 ```bash
-# List available profiles
-./setup.sh --list
+# Available profiles: minimal, developer, full
+./setup.sh minimal
+./setup.sh developer
+./setup.sh full
 
-# Use full profile name
-./setup.sh --profile developer-minimal
-
-# Check profile exists
-ls profiles/
-```
-
-### YAML parsing errors
-
-**Problem:** Profile details show incorrect format
-
-**Solution:**
-```bash
-# This is a known display issue
-# The profile will still install correctly
-
-# To verify profile content:
-cat profiles/developer-minimal.yaml
+# Check profile files exist
+ls data/packages/profiles/
 ```
 
 ### Profile installation incomplete
@@ -277,8 +263,8 @@ cat profiles/developer-minimal.yaml
 
 **Solution:**
 ```bash
-# Check installation log
-./setup.sh --profile developer-standard 2>&1 | tee install.log
+# Run with verbose output and log
+./setup.sh -v developer 2>&1 | tee install.log
 
 # Look for errors
 grep -i error install.log
@@ -551,7 +537,7 @@ docker run -it ubuntu:22.04 bash
 
 3. **Use dry-run when available:**
 ```bash
-./setup.sh --dry-run --profile developer-minimal
+./setup.sh --dry-run minimal
 ```
 
 4. **Read output carefully:**

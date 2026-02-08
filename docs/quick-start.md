@@ -18,11 +18,9 @@ cd os-postinstall-scripts
 ```
 
 Available profiles:
-- **developer-standard** - Full development environment (15 min)
-- **developer-minimal** - Just the essentials (5 min)
-- **devops** - Infrastructure and cloud tools (20 min)
-- **data-scientist** - Python, R, Jupyter (25 min)
-- **student** - Learning environment (15 min)
+- **minimal** - Essential system packages only
+- **developer** - Full development environment (default)
+- **full** - Everything including extra packages
 
 ### Option 2: Traditional Interactive Setup
 
@@ -97,19 +95,19 @@ This installs:
 
 ### "I need a full dev environment ASAP"
 ```bash
-./setup.sh --profile developer-minimal
+./setup.sh minimal
 ```
 
 ### "I'm setting up multiple machines"
 ```bash
 # Use the same profile on all machines
-./setup.sh --profile developer-standard --dry-run  # Preview first
-./setup.sh --profile developer-standard            # Then install
+./setup.sh --dry-run developer  # Preview first
+./setup.sh developer            # Then install
 ```
 
-### "I'm a student learning to code"
+### "I want everything"
 ```bash
-./setup.sh --profile student
+./setup.sh full
 ```
 
 ## ⚡ What Happens During Installation?
