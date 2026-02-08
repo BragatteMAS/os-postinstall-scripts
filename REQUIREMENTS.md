@@ -25,7 +25,7 @@ This document outlines the requirements for using the OS Post-Install Scripts. W
 ### Package Managers
 - **macOS**: Homebrew (will be installed if missing)
 - **Linux**: apt, dnf, pacman, or zypper
-- **npm**: For Node.js packages (MCPs, BMAD)
+- **npm**: For Node.js packages
 
 ## 💡 Recommended Setup
 
