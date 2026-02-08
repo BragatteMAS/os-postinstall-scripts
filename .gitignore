@@ -44,7 +44,6 @@ test-results/
 tests/results/*.log
 
 # AI/Dev tools (work locally, don't pollute git history)
-.bmad-core/
 .ai/
 .claude/
 .cursor/
