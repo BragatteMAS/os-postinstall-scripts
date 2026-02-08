@@ -64,8 +64,6 @@ os-postinstall-scripts/
 │       ├── shared/           # aliases.sh, env.sh, path.sh (cross-shell)
 │       └── starship/         # starship.toml
 │
-├── platforms/                 # (empty - migrated to src/platforms/)
-│
 ├── configs/                   # Configuration metadata
 │   └── profiles/
 │       └── README.md          # Points to data/packages/profiles/
@@ -92,8 +90,7 @@ os-postinstall-scripts/
 │
 ├── .github/                   # GitHub configuration
 │   ├── ISSUE_TEMPLATE/        # Bug report, feature request, config
-│   ├── pull_request_template.md
-│   └── workflows/             # (empty - CI removed)
+│   └── pull_request_template.md
 │
 ├── setup.sh                   # Main entry point (Bash)
 ├── setup.ps1                  # Windows entry point (PowerShell)
@@ -133,7 +130,7 @@ os-postinstall-scripts/
 ## Key File Locations
 
 **Entry Points:**
-- `setup.sh`: Root entry point with --dry-run, --verbose, --profile flags
+- `setup.sh`: Root entry point with --dry-run, --verbose, --unattended flags and positional profile argument
 - `setup.ps1`: Windows entry point (PowerShell)
 - `src/platforms/<os>/main.sh`: Platform orchestrators
 

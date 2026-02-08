@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Cross-platform setup framework (Linux, macOS, Windows)
 - Data-driven package management with `data/packages/*.txt`
-- Profile composition system (minimal, standard, devops, data-science)
+- Profile composition system (minimal, developer, full)
 - Core modules: platform detection, idempotency, logging, error handling
 - Progress feedback with step counting and DRY_RUN banners
 - Completion summary with timing and failure tracking
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package lists extracted from scripts to `data/packages/*.txt`
 - Platform orchestrators migrated to `src/platforms/`
 - Dotfiles translated to English, Claude-specific config moved to `.zshrc.local`
-- Setup entry point with `--dry-run`, `--verbose`, `--profile` CLI flags
+- Setup entry point with `--dry-run`, `--verbose`, `--unattended` CLI flags and positional profile argument
 
 ### Removed
 - Legacy BMAD framework and agent-os artifacts

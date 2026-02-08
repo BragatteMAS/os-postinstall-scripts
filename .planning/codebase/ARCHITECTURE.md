@@ -17,12 +17,12 @@
 
 **Entry/CLI:**
 - Location: `setup.sh`, `config.sh`
-- Contains: CLI flag parsing (--dry-run, --verbose, --profile), platform dispatch
+- Contains: CLI flag parsing (--dry-run, --verbose, --unattended), positional profile argument, platform dispatch
 - Depends on: Core modules
 
 **Core Modules:**
 - Location: `src/core/`
-- Contains: platform.sh, logging.sh, errors.sh, idempotent.sh, packages.sh, progress.sh, dotfiles.sh
+- Contains: platform.sh, logging.sh, errors.sh, idempotent.sh, packages.sh, progress.sh, interactive.sh, dotfiles.sh
 - Depends on: Nothing (foundational layer)
 - Used by: All other layers
 
@@ -45,7 +45,7 @@
 
 **Installation Flow:**
 
-1. User runs `./setup.sh [--profile developer] [--dry-run]`
+1. User runs `./setup.sh [--dry-run] [developer]`
 2. `setup.sh` sources `config.sh` and `src/core/platform.sh`
 3. Platform detected via `detect_os()` → delegates to `src/platforms/<os>/main.sh`
 4. Orchestrator sources core modules and calls install scripts
