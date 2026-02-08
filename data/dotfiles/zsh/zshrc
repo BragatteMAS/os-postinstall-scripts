@@ -33,7 +33,6 @@ DOTFILES_SHARED="${DOTFILES_DIR}/shared"
 DOTFILES_ZSH="${DOTFILES_DIR}/zsh"
 
 # Source order: path, env, aliases, functions, plugins
-# (per CONTEXT.md decision)
 [[ -f "${DOTFILES_SHARED}/path.sh" ]] && source "${DOTFILES_SHARED}/path.sh"
 [[ -f "${DOTFILES_SHARED}/env.sh" ]] && source "${DOTFILES_SHARED}/env.sh"
 [[ -f "${DOTFILES_SHARED}/aliases.sh" ]] && source "${DOTFILES_SHARED}/aliases.sh"

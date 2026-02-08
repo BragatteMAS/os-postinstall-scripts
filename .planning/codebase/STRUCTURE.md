@@ -64,6 +64,10 @@ os-postinstall-scripts/
 │       ├── shared/           # aliases.sh, env.sh, path.sh (cross-shell)
 │       └── starship/         # starship.toml
 │
+├── examples/                  # Reference configs (snapshots)
+│   ├── claude-md-example.md   # CLAUDE.md for AI-assisted dev
+│   └── starship-example.toml  # Starship prompt config
+│
 ├── docs/                      # User documentation
 │   ├── quick-start.md
 │   ├── user-guide.md
@@ -91,7 +95,6 @@ os-postinstall-scripts/
 ├── setup.sh                   # Main entry point (Bash)
 ├── setup.ps1                  # Windows entry point (PowerShell)
 ├── config.sh                  # User configuration options
-├── CLAUDE.md                  # AI context and guidelines
 ├── README.md                  # Project overview
 ├── CONTRIBUTING.md            # Contribution guidelines
 ├── CHANGELOG.md               # Version history

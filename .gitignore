@@ -53,6 +53,5 @@ tests/results/*.log
 .continue/
 
 # Project documentation (NOT ignored - these are versionable)
-!CLAUDE.md
 !CHANGELOG.md
 !README.md

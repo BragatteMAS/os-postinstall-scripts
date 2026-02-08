@@ -31,7 +31,8 @@
 
 # Merge settings
 # ff = only rejects non-fast-forward merges (keeps linear history)
-# Override in ~/.gitconfig.local with: [merge] ff = false
+# If this blocks your merge, use: git merge --no-ff <branch>
+# Or override permanently in ~/.gitconfig.local with: [merge] ff = false
 [merge]
     ff = only
     conflictStyle = zdiff3
@@ -75,7 +76,9 @@
     # List aliases
     aliases = config --get-regexp alias
 
-# Delta pager (if installed, git falls back to less if missing)
+# Delta pager integration (requires delta installed)
+# Without delta, git falls back to system pager (less)
+# Install: cargo install git-delta / brew install git-delta
 [interactive]
     diffFilter = delta --color-only
 
