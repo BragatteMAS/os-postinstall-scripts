@@ -48,8 +48,6 @@ Codebase funcional mas com problemas significativos:
 - **Código deprecated**: `scripts/common/` marcado como deprecated mas ainda existe
 - **Testes**: Cobertura ~5%, sem framework real
 - **macOS**: ~20% implementado vs Linux 100%
-- **Backup dentro do repo**: `.agent-os/` com backup completo
-
 ### Princípios (do CLAUDE.md)
 
 - **FAIR**: Contexto completo e replicável

@@ -153,7 +153,6 @@ ls ~/.*.bak  # Your original configs
 ## 📖 Next Steps
 
 - 📚 Read the full [User Guide](user-guide.md)
-- 🎨 Customize your [Shell Configuration](shell-customization.md)
 - 🛠️ Learn about [Modern CLI Tools](modern-cli-tools.md)
 - 🤝 [Contribute](../CONTRIBUTING.md) to the project
 
