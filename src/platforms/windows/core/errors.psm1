@@ -34,6 +34,11 @@ function Add-FailedItem {
 
     $script:FailedItems += $Item
     Write-Log -Level ERROR -Message "Failed: $Item"
+
+    # Cross-process tracking via shared file (matches Bash FAILURE_LOG pattern)
+    if ($env:FAILURE_LOG -and (Test-Path (Split-Path $env:FAILURE_LOG -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue)) {
+        Add-Content -Path $env:FAILURE_LOG -Value $Item -Encoding UTF8
+    }
 }
 
 function Show-FailureSummary {

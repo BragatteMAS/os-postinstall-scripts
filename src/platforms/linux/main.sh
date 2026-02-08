@@ -55,6 +55,15 @@ fi
 # Cleanup function
 cleanup() {
     local exit_code=$?
+
+    # Aggregate failures from child processes via shared log
+    if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" && -s "$FAILURE_LOG" ]]; then
+        log_warn "Child process failures detected:"
+        while IFS= read -r item; do
+            echo "  - $item"
+        done < "$FAILURE_LOG"
+    fi
+
     [[ $exit_code -ne 0 ]] && log_info "Exiting ${SCRIPT_NAME} with code $exit_code"
     exit $exit_code
 }
