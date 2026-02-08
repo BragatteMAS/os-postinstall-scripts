@@ -76,6 +76,15 @@ function Install-Profile {
                 Write-Log -Level INFO -Message 'Installing WinGet packages...'
                 & "$WindowsDir/install/winget.ps1"
             }
+            'cargo.txt' {
+                Write-Log -Level WARN -Message 'cargo.txt: Windows Cargo installer not yet implemented (skipping)'
+            }
+            'npm.txt' {
+                Write-Log -Level WARN -Message 'npm.txt: Windows npm installer not yet implemented (skipping)'
+            }
+            'ai-tools.txt' {
+                Write-Log -Level WARN -Message 'ai-tools.txt: Windows AI tools installer not yet implemented (skipping)'
+            }
             default {
                 # Non-Windows package files (apt.txt, brew.txt, etc.): skip silently
                 Write-Log -Level DEBUG -Message "Skipping $pkgFile (not a Windows package file)"
