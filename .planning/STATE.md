@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 8.2 of 8.2 (Audit Remediation) — IN PROGRESS
-Plan: 03 of 4 in current phase (1/4 complete)
+Plan: 02 of 4 in current phase (2/4 complete)
 Status: In progress
-Last activity: 2026-02-08 - Completed 08.2-03-PLAN.md
+Last activity: 2026-02-08 - Completed 08.2-02-PLAN.md
 
-Progress: [████████████████████████████░] 92% (33/36 plans)
+Progress: [█████████████████████████████░] 94% (34/36 plans)
 
 ## Performance Metrics
 
@@ -37,11 +37,11 @@ Progress: [███████████████████████
 | 08-documentation | 3/3 | 15 min | 5 min |
 | 08.1-terminal-setup-windows | 1/1 | 3 min | 3 min |
 
-| 08.2-audit-remediation | 1/4 | 1 min | 1 min |
+| 08.2-audit-remediation | 2/4 | 2 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-03 (2 min), 08-01 (5 min), 08.1-01 (3 min), 08.2-03 (1 min)
-- Trend: Stable at ~2 min for targeted fix tasks
+- Last 5 plans: 08-01 (5 min), 08.1-01 (3 min), 08.2-03 (1 min), 08.2-02 (1 min)
+- Trend: Stable at ~1 min for targeted fix tasks
 
 *Updated after each plan completion*
 
@@ -149,6 +149,11 @@ Recent decisions affecting current work:
 - [08.2-03]: Explicit DRY_RUN guard for curl|sh pipes (run() cannot guard pipe right side)
 - [08.2-03]: WARN level for known-unimplemented Windows dispatchers (gap is intentional, not broken)
 - [08.2-03]: Keep default case at DEBUG for truly unrelated platform files
+- [08.2-02]: homebrew.sh exits 1 on failure (exception to always-exit-0 for hard prerequisites)
+- [08.2-02]: FAILURE_LOG write in homebrew.sh guarded by `[[ -n FAILURE_LOG ]]` for standalone safety
+- [08.2-02]: Orchestrator cleanup checks -f and -s before reading FAILURE_LOG
+- [08.2-02]: PS Add-FailedItem writes to $env:FAILURE_LOG with Split-Path parent dir check
+- [08.2-02]: setup.ps1 creates FAILURE_LOG using $PID for unique temp file name
 
 ### Patterns Established
 
@@ -236,6 +241,9 @@ Recent decisions affecting current work:
 - PS alias conflict resolution: Remove-Item Alias:name before function definition
 - curl|sh guard: explicit DRY_RUN check wrapping entire pipeline, not run() on left side
 - Known-gap logging: WARN level for dispatchers that exist on other platforms but not current
+- Hard prerequisite exit: exit 1 + FAILURE_LOG write for must-have dependencies (homebrew.sh)
+- Orchestrator FAILURE_LOG aggregation: cleanup() reads shared log and reports child failures
+- PS FAILURE_LOG lifecycle: setup.ps1 creates -> errors.psm1 writes -> setup.ps1 reads + removes
 
 ### Roadmap Evolution
 
@@ -248,9 +256,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 1. [Alta] Deprecate/migrate post_install.sh
 2. [Alta] Expand manual test coverage (macOS, Windows, core modules)
 3. [Média] Windows main.ps1 cross-platform dispatch -- WARN logging added (08.2-03)
-4. [Média] homebrew.sh exit code propagation
+4. [Média] homebrew.sh exit code propagation -- FIXED (08.2-02)
 5. [Média] terminal-setup.sh dry-run bypass -- FIXED (08.2-03)
-6. [Média] Cross-process failure tracking
+6. [Média] Cross-process failure tracking -- FIXED (08.2-02)
 7. [Baixa] CODE_OF_CONDUCT.md creation
 
 ### Blockers/Concerns
@@ -428,6 +436,13 @@ Phase 8.2 — 7 priority items from codebase audit:
 - examples/terminal-setup.sh - DRY_RUN guards on zoxide and starship curl|sh pipelines
 - src/platforms/windows/main.ps1 - WARN logging for cargo.txt, npm.txt, ai-tools.txt in switch dispatch
 
+**Modified (08.2-02):**
+- src/platforms/macos/install/homebrew.sh - Exit 1 on failure + FAILURE_LOG write
+- src/platforms/macos/main.sh - Cleanup reads FAILURE_LOG and reports child failures
+- src/platforms/linux/main.sh - Cleanup reads FAILURE_LOG and reports child failures
+- src/platforms/windows/core/errors.psm1 - Add-FailedItem writes to $env:FAILURE_LOG file
+- setup.ps1 - FAILURE_LOG lifecycle: create, read at exit, remove temp file
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
@@ -446,9 +461,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 
 ## Session Continuity
 
-Last session: 2026-02-08T21:15:41Z
-Stopped at: Completed 08.2-03-PLAN.md (dry-run fix + Windows WARN logging)
+Last session: 2026-02-08T21:15:51Z
+Stopped at: Completed 08.2-02-PLAN.md (homebrew exit code + failure aggregation)
 Resume file: None
 
 ---
-*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 33/36 plans done. Phase 8.2 in progress (1/4).*
+*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 34/36 plans done. Phase 8.2 in progress (2/4).*
