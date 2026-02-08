@@ -40,6 +40,9 @@ if ($Help) {
 Import-Module "$PSScriptRoot/src/platforms/windows/core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/src/platforms/windows/core/errors.psm1" -Force
 
+# Cross-process failure tracking (mirrors Bash FAILURE_LOG pattern)
+$env:FAILURE_LOG = Join-Path ([System.IO.Path]::GetTempPath()) "ospostinstall-failures-$PID.log"
+
 # Banner and profile info
 Write-Log -Level BANNER -Message 'OS Post-Install Scripts (Windows)'
 Write-Log -Level INFO -Message "Profile: $Profile"
@@ -54,9 +57,18 @@ if (Test-Path -LiteralPath $MainScript -PathType Leaf) {
     exit 0
 }
 
-# Summary and exit
-# Note: Show-FailureSummary NOT called here — child scripts (winget.ps1) run in
-# separate process scopes, so $script:FailedItems is invisible to this caller.
-# Each installer calls Show-FailureSummary before its own exit.
+# Failure aggregation via $env:FAILURE_LOG file (cross-process tracking)
+# Child processes write to this file via Add-FailedItem in errors.psm1
+if ($env:FAILURE_LOG -and (Test-Path $env:FAILURE_LOG)) {
+    $failures = Get-Content $env:FAILURE_LOG -ErrorAction SilentlyContinue
+    if ($failures) {
+        Write-Log -Level WARN -Message "Child process failures detected:"
+        foreach ($item in $failures) {
+            Write-Host "    - $item"
+        }
+    }
+    Remove-Item $env:FAILURE_LOG -Force -ErrorAction SilentlyContinue
+}
+
 Write-Log -Level BANNER -Message 'Setup Complete'
 exit 0
