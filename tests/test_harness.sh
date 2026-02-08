@@ -97,6 +97,13 @@ while IFS= read -r -d '' script; do
     test_script_shebang "$script"
 done < <(find . -name "*.sh" -type f -not -path './.git/*' -print0 2>/dev/null)
 
+# Test: Verify post_install.sh deprecation notice
+if grep -q "DEPRECATED" src/platforms/linux/post_install.sh; then
+    pass "post_install.sh has deprecation notice"
+else
+    fail "post_install.sh missing deprecation notice"
+fi
+
 # Test 4: Check for placeholder URLs
 header "Placeholder URL Tests"
 
