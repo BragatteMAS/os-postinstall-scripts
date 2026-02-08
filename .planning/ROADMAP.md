@@ -177,16 +177,13 @@ Plans:
   5. `terminal-setup.sh` respects dry-run mode for all install operations including curl|sh
   6. Orchestrators (macOS main.sh, Windows main.ps1) aggregate failure summaries from child processes
   7. CODE_OF_CONDUCT.md exists (Contributor Covenant v2.1, deferred from Phase 8)
-**Plans**: TBD (research and planning required)
+**Plans**: 4 plans
 
-Priority order for planning:
-1. [Alta] Deprecate/migrate `post_install.sh` — 10+ bugs, deprecated apt-key, chmod 777, $HOME overwrite
-2. [Alta] Expand manual test coverage — test-macos.sh, test-windows.ps1, core module unit tests
-3. [Média] Windows `main.ps1` cross-platform dispatch — cargo, npm, ai-tools profile support
-4. [Média] `homebrew.sh` exit code propagation — fix exit 0 masking failure
-5. [Média] `terminal-setup.sh` dry-run bypass — wrap curl|sh in run() or DRY_RUN guard
-6. [Média] Cross-process failure tracking — FAILURE_LOG env var or exit code aggregation
-7. [Baixa] Create CODE_OF_CONDUCT.md — Contributor Covenant v2.1
+Plans:
+- [ ] 08.2-01-PLAN.md — Deprecate post_install.sh + update test_harness.sh + create CODE_OF_CONDUCT.md
+- [ ] 08.2-02-PLAN.md — homebrew.sh exit code propagation + cross-process failure aggregation (macOS/Linux/Windows)
+- [ ] 08.2-03-PLAN.md — terminal-setup.sh dry-run fix + Windows main.ps1 WARN dispatch
+- [ ] 08.2-04-PLAN.md — Static test suites for macOS (test-macos.sh) and Windows (test-windows.ps1)
 
 ## Progress
 
@@ -204,7 +201,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
-| 8.2 Audit Remediation | 0/? | Not Started | — |
+| 8.2 Audit Remediation | 0/4 | Planned | — |
 
 ---
 *Roadmap created: 2026-02-04*
