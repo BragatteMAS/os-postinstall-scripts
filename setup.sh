@@ -192,6 +192,16 @@ main() {
             ;;
     esac
 
+    # Offer dotfiles installation (interactive only)
+    if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
+        echo ""
+        read -rp "Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
+        if [[ "$answer" =~ ^[yYsS]$ ]]; then
+            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            install_dotfiles
+        fi
+    fi
+
     # Show completion summary
     show_completion_summary "$profile" "${DETECTED_OS:-unknown}"
     _SUMMARY_SHOWN=1
