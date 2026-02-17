@@ -7,7 +7,7 @@
 #######################################
 # PowerShell equivalent of src/platforms/linux/main.sh
 # Dual-mode: $Profile param for unattended, interactive menu otherwise
-# Reads profile file directly, dispatches winget.txt to winget.ps1
+# Reads profile file directly, dispatches winget.txt, cargo.txt, npm.txt, ai-tools.txt to platform installers
 # Non-Windows package files (apt.txt, brew.txt, etc.) silently skipped
 
 param(
@@ -48,7 +48,7 @@ function Show-Menu {
 # Install-Profile
 # Install packages for a given profile
 # Reads profile file directly (no Read-Profile abstraction)
-# Dispatches winget.txt to winget.ps1, skips non-Windows files
+# Dispatches winget.txt, cargo.txt, npm.txt, ai-tools.txt to platform installers, skips non-Windows files
 #######################################
 function Install-Profile {
     param(
@@ -77,13 +77,16 @@ function Install-Profile {
                 & "$WindowsDir/install/winget.ps1"
             }
             'cargo.txt' {
-                Write-Log -Level WARN -Message 'cargo.txt: Windows Cargo installer not yet implemented (skipping)'
+                Write-Log -Level INFO -Message 'Installing Cargo packages...'
+                & "$WindowsDir/install/cargo.ps1"
             }
             'npm.txt' {
-                Write-Log -Level WARN -Message 'npm.txt: Windows npm installer not yet implemented (skipping)'
+                Write-Log -Level INFO -Message 'Installing NPM global packages...'
+                & "$WindowsDir/install/npm.ps1"
             }
             'ai-tools.txt' {
-                Write-Log -Level WARN -Message 'ai-tools.txt: Windows AI tools installer not yet implemented (skipping)'
+                Write-Log -Level INFO -Message 'Installing AI tools...'
+                & "$WindowsDir/install/ai-tools.ps1"
             }
             default {
                 # Non-Windows package files (apt.txt, brew.txt, etc.): skip silently
