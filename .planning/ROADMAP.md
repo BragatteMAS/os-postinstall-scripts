@@ -18,7 +18,9 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - [x] **Phase 6: Windows Foundation** - Basic WinGet functionality
 - [x] **Phase 7: User Experience Polish** - Progress feedback, dry-run, summary
 - [x] **Phase 8: Documentation** - README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
-- [ ] **Phase 9: Terminal Blueprint** - Terminal replication with p10k migration, Starship presets, standalone setup
+- [x] **Phase 9: Terminal Blueprint** - Terminal replication with p10k migration, Starship presets, standalone setup
+- [x] **Phase 10: Windows Cross-Platform Installers** - PowerShell cargo, npm, ai-tools installers [GAP CLOSURE] (completed 2026-02-17)
+- [ ] **Phase 10.1: Process Debt Cleanup** - Missing verification, documentation drift [GAP CLOSURE]
 
 ## Phase Details
 
@@ -199,12 +201,36 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md — Starship presets (3 TOML files) + p10k migration script
-- [ ] 09-02-PLAN.md — Modular setup.sh, backward-compat wrapper, standalone README
+- [x] 09-02-PLAN.md — Modular setup.sh, backward-compat wrapper, standalone README
+
+### Phase 10: Windows Cross-Platform Installers [GAP CLOSURE]
+**Goal**: Implement PowerShell equivalents for cross-platform installers (cargo, npm, ai-tools) on Windows, closing integration gap from v2.1 audit
+**Depends on**: Phase 6
+**Gap Closure**: Closes v2.1 audit integration gaps (Windows cargo.txt, npm.txt, ai-tools.txt)
+**Success Criteria** (what must be TRUE):
+  1. Windows `main.ps1` dispatches `cargo.txt` to a working PowerShell installer (not WARN skip)
+  2. Windows `main.ps1` dispatches `npm.txt` to a working PowerShell installer (not WARN skip)
+  3. Windows `main.ps1` dispatches `ai-tools.txt` to a working PowerShell installer (not WARN skip)
+  4. Developer/full profiles on Windows install all listed packages from cargo/npm/ai-tools
+**Plans**: 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Create cargo.ps1, npm.ps1, ai-tools.ps1 (three Windows installers)
+- [ ] 10-02-PLAN.md — Wire dispatch in main.ps1 + extend test-windows.ps1
+
+### Phase 10.1: Process Debt Cleanup (INSERTED) [GAP CLOSURE]
+**Goal**: Close process gaps from v2.1 audit — missing verification file, documentation drift
+**Depends on**: Phase 10
+**Gap Closure**: Closes v2.1 audit tech debt (Phase 08 VERIFICATION.md, MOD-04 drift)
+**Success Criteria** (what must be TRUE):
+  1. Phase 08 has VERIFICATION.md with passing status confirming all success criteria
+  2. MOD-04 marked "Complete" in REQUIREMENTS.md traceability table
+**Plans**: TBD
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2 -> 9
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2 -> 9 -> 10 -> 10.1
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -218,7 +244,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
 | 8.2 Audit Remediation | 4/4 | Complete | 2026-02-08 |
-| 9. Terminal Blueprint | 1/2 | In Progress | — |
+| 9. Terminal Blueprint | 2/2 | Complete | 2026-02-17 |
+| 10. Windows Cross-Platform Installers | 0/2 | Complete    | 2026-02-17 |
+| 10.1 Process Debt Cleanup | 0/? | Pending | — |
 
 ---
 *Roadmap created: 2026-02-04*
@@ -232,6 +260,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 *Phase 8 completed: 2026-02-07*
 *Phase 8.1 completed: 2026-02-08*
 *Phase 8.2 completed: 2026-02-08*
-*Depth: comprehensive (8 phases + 2 insertions)*
+*Phase 9 completed: 2026-02-17*
+*Depth: comprehensive (8 phases + 2 insertions + 2 gap closure)*
 *Requirements coverage: 22/22 mapped*
 *Milestone v1.0 complete: 2026-02-08*
