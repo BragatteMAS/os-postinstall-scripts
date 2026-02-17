@@ -44,5 +44,8 @@ nextcloud
 # Productivity - Development
 docker
 
+# Dotfiles Manager
+chezmoi
+
 # Research
 pymol-oss
