@@ -80,6 +80,15 @@ Assert-Pass "errors.psm1 exists" {
 Assert-Pass "setup.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/setup.ps1")) { throw "missing" }
 }
+Assert-Pass "cargo.ps1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/cargo.ps1")) { throw "missing" }
+}
+Assert-Pass "npm.ps1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/npm.ps1")) { throw "missing" }
+}
+Assert-Pass "ai-tools.ps1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1")) { throw "missing" }
+}
 
 Write-Host ""
 
@@ -99,6 +108,29 @@ Assert-Contains "WARN in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1"
 Assert-Contains "cargo.txt in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "cargo\.txt"
 Assert-Contains "Requires -Version 5.1 in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Requires -Version 5\.1"
 
+# cargo.ps1 content
+Assert-Contains "WinGetMap in cargo.ps1" "$ProjectRoot/src/platforms/windows/install/cargo.ps1" "WinGetMap"
+Assert-Contains "Read-PackageFile cargo.txt in cargo.ps1" "$ProjectRoot/src/platforms/windows/install/cargo.ps1" "Read-PackageFile.*cargo\.txt"
+Assert-Contains "zellij skip in cargo.ps1" "$ProjectRoot/src/platforms/windows/install/cargo.ps1" "zellij"
+Assert-Contains "DRY_RUN in cargo.ps1" "$ProjectRoot/src/platforms/windows/install/cargo.ps1" "DRY_RUN"
+
+# npm.ps1 content
+Assert-Contains "npm install -g in npm.ps1" "$ProjectRoot/src/platforms/windows/install/npm.ps1" "npm install -g"
+Assert-Contains "Read-PackageFile npm.txt in npm.ps1" "$ProjectRoot/src/platforms/windows/install/npm.ps1" "Read-PackageFile.*npm\.txt"
+Assert-Contains "node check in npm.ps1" "$ProjectRoot/src/platforms/windows/install/npm.ps1" "Get-Command node"
+Assert-Contains "DRY_RUN in npm.ps1" "$ProjectRoot/src/platforms/windows/install/npm.ps1" "DRY_RUN"
+
+# ai-tools.ps1 content
+Assert-Contains "prefix dispatch in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "switch.*prefix"
+Assert-Contains "Ollama WinGet in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Ollama\.Ollama"
+Assert-Contains "Read-PackageFile ai-tools in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Read-PackageFile.*ai-tools\.txt"
+Assert-Contains "DRY_RUN in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "DRY_RUN"
+
+# main.ps1 dispatch (replaces WARN checks)
+Assert-Contains "cargo dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/cargo\.ps1"
+Assert-Contains "npm dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/npm\.ps1"
+Assert-Contains "ai-tools dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/ai-tools\.ps1"
+
 Write-Host ""
 
 #######################################
@@ -108,6 +140,9 @@ Write-Host "--- Anti-pattern Checks ---"
 
 Assert-NotContains "no Write-Error in logging.psm1" "$ProjectRoot/src/platforms/windows/core/logging.psm1" "Write-Error"
 Assert-NotContains "no ErrorActionPreference Stop in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "ErrorActionPreference\s*=\s*'Stop'"
+Assert-NotContains "no WARN skip for cargo in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Cargo installer not yet implemented"
+Assert-NotContains "no WARN skip for npm in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "npm installer not yet implemented"
+Assert-NotContains "no WARN skip for ai-tools in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "AI tools installer not yet implemented"
 
 Write-Host ""
 
