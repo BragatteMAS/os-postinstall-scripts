@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 10 of 10 (Windows Cross-Platform Installers) — COMPLETE
-Plan: 1 of 1 in current phase
+Plan: 2 of 2 in current phase
 Status: All plans complete
-Last activity: 2026-02-17 - Plan 10-01 complete (cargo.ps1, npm.ps1, ai-tools.ps1)
+Last activity: 2026-02-17 - Plan 10-02 complete (dispatch wiring + extended tests)
 
-Progress: [████████████████████████████████] 100% (39/39 plans total)
+Progress: [████████████████████████████████] 100% (40/40 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 39
+- Total plans completed: 40
 - Average duration: 2.4 min
-- Total execution time: 95 min
+- Total execution time: 97 min
 
 **By Phase:**
 
@@ -39,10 +39,10 @@ Progress: [███████████████████████
 
 | 08.2-audit-remediation | 4/4 | 6 min | 1.5 min |
 | 09-terminal-blueprint | 2/2 | 6 min | 3 min |
-| 10-windows-cross-platform-installers | 1/1 | 3 min | 3 min |
+| 10-windows-cross-platform-installers | 2/2 | 5 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 08.2-04 (2 min), 09-01 (2 min), 09-02 (4 min), 10-01 (3 min)
+- Last 5 plans: 08.2-04 (2 min), 09-01 (2 min), 09-02 (4 min), 10-01 (3 min), 10-02 (2 min)
 - Trend: Stable at ~2-4 min for feature tasks
 
 *Updated after each plan completion*
@@ -173,6 +173,7 @@ Recent decisions affecting current work:
 - [10-01]: curl:ollama maps to winget install Ollama.Ollama on Windows
 - [10-01]: Each PS script self-contained with own helper functions (separate process execution)
 - [10-01]: npm list -g for idempotent check (handles scoped @scope/pkg per Phase 5 decision)
+- [10-02]: Header comments updated to list all dispatched package types (winget, cargo, npm, ai-tools)
 
 ### Patterns Established
 
@@ -293,7 +294,7 @@ Recent decisions affecting current work:
 Phase 8.2 — 7 priority items from codebase audit:
 1. [Alta] Deprecate/migrate post_install.sh
 2. [Alta] Expand manual test coverage (macOS, Windows, core modules) -- DONE (08.2-04)
-3. [Média] Windows main.ps1 cross-platform dispatch -- WARN logging added (08.2-03)
+3. [Média] Windows main.ps1 cross-platform dispatch -- DONE (10-02, dispatch wiring replaces WARN placeholders)
 4. [Média] homebrew.sh exit code propagation -- FIXED (08.2-02)
 5. [Média] terminal-setup.sh dry-run bypass -- FIXED (08.2-03)
 6. [Média] Cross-process failure tracking -- FIXED (08.2-02)
@@ -507,6 +508,10 @@ Phase 8.2 — 7 priority items from codebase audit:
 - src/platforms/windows/install/npm.ps1 - npm global package installer (126 lines)
 - src/platforms/windows/install/ai-tools.ps1 - Prefix-based AI tools installer (226 lines)
 
+**Modified (10-02):**
+- src/platforms/windows/main.ps1 - Dispatch wiring: cargo.txt/npm.txt/ai-tools.txt to install/*.ps1 (replaces WARN-skip)
+- tests/test-windows.ps1 - Extended from 18 to 39 tests covering new installer scripts
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
@@ -525,9 +530,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 
 ## Session Continuity
 
-Last session: 2026-02-17T19:55:00Z
-Stopped at: Completed 10-01-PLAN.md (ALL PLANS COMPLETE)
+Last session: 2026-02-17T19:59:00Z
+Stopped at: Completed 10-02-PLAN.md (ALL PLANS COMPLETE)
 Resume file: None
 
 ---
-*ALL 39 PLANS COMPLETE. Milestone v1.0 + Phase 8.1/8.2 insertions + Phase 9 Terminal Blueprint + Phase 10 Windows Installers.*
+*ALL 40 PLANS COMPLETE. Milestone v1.0 + Phase 8.1/8.2 insertions + Phase 9 Terminal Blueprint + Phase 10 Windows Installers (2 plans).*
