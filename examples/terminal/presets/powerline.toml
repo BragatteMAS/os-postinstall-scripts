@@ -1,0 +1,77 @@
+# Powerline Starship Preset
+# Colored segments with arrow separators — Nerd Font REQUIRED
+#
+# Inspired by Starship pastel-powerline and gruvbox-rainbow presets.
+# Uses palette feature for DRY color definitions.
+# Segment separators use Nerd Font glyph U+E0B0 ().
+#
+# Prerequisites: Install a Nerd Font (e.g., JetBrainsMono Nerd Font)
+#   brew install --cask font-jetbrains-mono-nerd-font  # macOS
+#   # or download from https://www.nerdfonts.com/
+#
+# Usage: cp powerline.toml ~/.config/starship.toml
+"$schema" = "https://starship.rs/config-schema.json"
+
+palette = "powerline"
+
+format = """
+[](fg:color_blue)\
+$directory\
+[](fg:color_blue bg:color_purple)\
+$git_branch\
+$git_status\
+[](fg:color_purple bg:color_yellow)\
+$cmd_duration\
+[](fg:color_yellow)\
+$line_break\
+$character"""
+
+[palettes.powerline]
+color_blue = "#3465A4"
+color_purple = "#75507B"
+color_yellow = "#C4A000"
+color_fg = "#EEEEEC"
+color_green = "#4E9A06"
+color_red = "#CC0000"
+
+[directory]
+format = "[ $path ]($style)"
+style = "fg:color_fg bg:color_blue"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[ $symbol$branch ]($style)"
+symbol = " "
+style = "fg:color_fg bg:color_purple"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style)"
+style = "fg:color_fg bg:color_purple"
+
+[cmd_duration]
+format = "[ $duration ]($style)"
+min_time = 2000
+style = "fg:color_fg bg:color_yellow"
+
+[character]
+success_symbol = "[>](bold color_green)"
+error_symbol = "[>](bold color_red)"
+
+# ===== Disabled Modules =====
+# Keep segments focused
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[docker_context]
+disabled = true
