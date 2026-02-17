@@ -23,6 +23,9 @@ zoxide
 git-delta
 starship
 
+# Dotfiles Manager
+chezmoi
+
 # Shell
 zsh
 bash
