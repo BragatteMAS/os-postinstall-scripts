@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 9 - Terminal Blueprint (COMPLETE)
+**Current focus:** Phase 10 - Windows Cross-Platform Installers (COMPLETE)
 
 ## Current Position
 
-Phase: 9 of 9 (Terminal Blueprint) — COMPLETE
-Plan: 2 of 2 in current phase
+Phase: 10 of 10 (Windows Cross-Platform Installers) — COMPLETE
+Plan: 1 of 1 in current phase
 Status: All plans complete
-Last activity: 2026-02-17 - Plan 09-02 complete (Terminal setup SSoT + wrapper + README)
+Last activity: 2026-02-17 - Plan 10-01 complete (cargo.ps1, npm.ps1, ai-tools.ps1)
 
-Progress: [████████████████████████████████] 100% (38/38 plans total)
+Progress: [████████████████████████████████] 100% (39/39 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 38
+- Total plans completed: 39
 - Average duration: 2.4 min
-- Total execution time: 92 min
+- Total execution time: 95 min
 
 **By Phase:**
 
@@ -39,9 +39,10 @@ Progress: [███████████████████████
 
 | 08.2-audit-remediation | 4/4 | 6 min | 1.5 min |
 | 09-terminal-blueprint | 2/2 | 6 min | 3 min |
+| 10-windows-cross-platform-installers | 1/1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08.2-02 (1 min), 08.2-01 (1 min), 08.2-04 (2 min), 09-01 (2 min), 09-02 (4 min)
+- Last 5 plans: 08.2-04 (2 min), 09-01 (2 min), 09-02 (4 min), 10-01 (3 min)
 - Trend: Stable at ~2-4 min for feature tasks
 
 *Updated after each plan completion*
@@ -166,6 +167,12 @@ Recent decisions affecting current work:
 - [09-02]: offer_migration() uses bash subprocess, never source
 - [09-02]: setup_starship() has inline TOML fallback when presets/ missing
 - [09-02]: --migrate flag for explicit non-interactive migration
+- [10-01]: WinGet-first strategy for cargo.txt packages (17 WinGet IDs, 11 cargo-install fallback)
+- [10-01]: Do NOT auto-install Rust/rustup (per research decision, avoids MSVC trap)
+- [10-01]: zellij in SkipOnWindows (no Windows support, different semantic from null WinGet mapping)
+- [10-01]: curl:ollama maps to winget install Ollama.Ollama on Windows
+- [10-01]: Each PS script self-contained with own helper functions (separate process execution)
+- [10-01]: npm list -g for idempotent check (handles scoped @scope/pkg per Phase 5 decision)
 
 ### Patterns Established
 
@@ -266,12 +273,20 @@ Recent decisions affecting current work:
 - SSoT wrapper: pure exec delegation wrapper (~20 lines) replacing full script
 - Subprocess migration: `bash "${SCRIPT_DIR}/script.sh"` instead of source for zero coupling
 - Inline TOML fallback: hardcoded config when presets/ directory is missing
+- WinGet-first cargo: `$script:WinGetMap` maps cargo names to WinGet IDs, cargo install fallback
+- PS SkipOnWindows: `$script:SkipOnWindows = @('pkg')` for packages with no Windows support
+- PS cargo idempotent: `cargo install --list` + regex match `^packagename ` pattern
+- PS npm idempotent: `npm list -g $pkg | Out-Null` + `$LASTEXITCODE -eq 0` for scoped support
+- PS prefix dispatch: `$Entry.Split(':', 2)` + `switch ($prefix)` for multi-method installer
+- PS curl-to-WinGet mapping: Windows maps curl-installed tools to WinGet equivalents (ollama)
+- PS self-contained helpers: duplicate helper functions across scripts (separate process execution)
 
 ### Roadmap Evolution
 
 - Phase 8.1 inserted after Phase 8: terminal-setup.ps1 for Windows (COMPLETE)
 - Phase 8.2 inserted after Phase 8.1: Audit remediation from 4-agent review (COMPLETE)
 - Phase 9 added: Terminal Blueprint — terminal replication with p10k migration, Starship presets, standalone setup
+- Phase 10 added: Windows Cross-Platform Installers — cargo.ps1, npm.ps1, ai-tools.ps1 closing v2.1 audit gaps
 
 ### Pending Todos
 
@@ -485,6 +500,13 @@ Phase 8.2 — 7 priority items from codebase audit:
 **Modified (09-02):**
 - examples/terminal-setup.sh - Converted to 24-line pure wrapper (was 493 lines)
 
+## Phase 10 Deliverables (COMPLETE)
+
+**Created (10-01):**
+- src/platforms/windows/install/cargo.ps1 - WinGet-first Cargo package installer (226 lines)
+- src/platforms/windows/install/npm.ps1 - npm global package installer (126 lines)
+- src/platforms/windows/install/ai-tools.ps1 - Prefix-based AI tools installer (226 lines)
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
@@ -503,9 +525,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 
 ## Session Continuity
 
-Last session: 2026-02-17T16:55:00Z
-Stopped at: Completed 09-02-PLAN.md (ALL PLANS COMPLETE)
+Last session: 2026-02-17T19:55:00Z
+Stopped at: Completed 10-01-PLAN.md (ALL PLANS COMPLETE)
 Resume file: None
 
 ---
-*ALL 38 PLANS COMPLETE. Milestone v1.0 + Phase 8.1/8.2 insertions + Phase 9 Terminal Blueprint.*
+*ALL 39 PLANS COMPLETE. Milestone v1.0 + Phase 8.1/8.2 insertions + Phase 9 Terminal Blueprint + Phase 10 Windows Installers.*
