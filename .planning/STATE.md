@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Phase 8.2 - Audit Remediation (COMPLETE)
+**Current focus:** Phase 9 - Terminal Blueprint (IN PROGRESS)
 
 ## Current Position
 
-Phase: 8.2 of 8.2 (Audit Remediation) — COMPLETE
-Plan: 04 of 4 in current phase (4/4 complete)
-Status: All phases complete
-Last activity: 2026-02-08 - Completed 08.2-04-PLAN.md
+Phase: 9 of 9 (Terminal Blueprint) — IN PROGRESS
+Plan: 1 of 2 in current phase
+Status: Plan 09-01 complete, Plan 09-02 next
+Last activity: 2026-02-17 - Plan 09-01 complete (Starship presets + p10k migration)
 
-Progress: [██████████████████████████████] 100% (36/36 plans)
+Progress: [███████████████████████████████] 97% (37/38 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 36
+- Total plans completed: 37
 - Average duration: 2.4 min
-- Total execution time: 86 min
+- Total execution time: 88 min
 
 **By Phase:**
 
@@ -38,10 +38,11 @@ Progress: [███████████████████████
 | 08.1-terminal-setup-windows | 1/1 | 3 min | 3 min |
 
 | 08.2-audit-remediation | 4/4 | 6 min | 1.5 min |
+| 09-terminal-blueprint | 1/2 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 08.1-01 (3 min), 08.2-03 (1 min), 08.2-02 (1 min), 08.2-01 (1 min), 08.2-04 (2 min)
-- Trend: Stable at ~1-2 min for targeted fix/test tasks
+- Last 5 plans: 08.2-03 (1 min), 08.2-02 (1 min), 08.2-01 (1 min), 08.2-04 (2 min), 09-01 (2 min)
+- Trend: Stable at ~1-2 min for targeted tasks
 
 *Updated after each plan completion*
 
@@ -156,6 +157,10 @@ Recent decisions affecting current work:
 - [08.2-02]: setup.ps1 creates FAILURE_LOG using $PID for unique temp file name
 - [08.2-04]: grep -E (POSIX extended) instead of grep -P (Perl) for macOS BSD grep compatibility
 - [08.2-04]: PS test file resolves $ProjectRoot from $PSScriptRoot/.. for portable path resolution
+- [09-01]: ASCII > character for all presets (per project decision 08.1-01)
+- [09-01]: mktemp + mv for .zshrc editing (portable, no sed -i)
+- [09-01]: Default deactivate + backup (safe); --remove flag for full cleanup
+- [09-01]: Preset selection gated by [[ -t 0 ]] for interactive-only
 
 ### Patterns Established
 
@@ -248,11 +253,17 @@ Recent decisions affecting current work:
 - PS FAILURE_LOG lifecycle: setup.ps1 creates -> errors.psm1 writes -> setup.ps1 reads + removes
 - macOS test suite: assert_pass/assert_fail with POSIX grep -E (BSD compatible)
 - PS test suite: Assert-Pass (scriptblock), Assert-Contains/Assert-NotContains (Select-String)
+- Starship preset files: static TOML in presets/ directory with $schema for editor validation
+- Starship palette: `palette = "name"` + `[palettes.name]` for DRY color definitions in TOML
+- Migration script: detect + backup + clean + optional remove pattern for safe config migration
+- Temp file editing: mktemp + grep -v + mv instead of sed -i for portable .zshrc modification
+- Interactive gate: `[[ -t 0 ]]` check before interactive prompts in migration scripts
 
 ### Roadmap Evolution
 
 - Phase 8.1 inserted after Phase 8: terminal-setup.ps1 for Windows (COMPLETE)
 - Phase 8.2 inserted after Phase 8.1: Audit remediation from 4-agent review (COMPLETE)
+- Phase 9 added: Terminal Blueprint — terminal replication with p10k migration, Starship presets, standalone setup
 
 ### Pending Todos
 
@@ -451,6 +462,14 @@ Phase 8.2 — 7 priority items from codebase audit:
 - tests/test-macos.sh - macOS platform static test suite (16 tests)
 - tests/test-windows.ps1 - Windows platform static test suite (18 tests)
 
+## Phase 9 Deliverables (IN PROGRESS)
+
+**Created (09-01):**
+- examples/terminal/presets/minimal.toml - ASCII-safe Starship preset (project default style)
+- examples/terminal/presets/powerline.toml - Nerd Font preset with palette and colored segments
+- examples/terminal/presets/p10k-alike.toml - p10k Lean approximation with username/hostname/git_state
+- examples/terminal/migrate-p10k.sh - Standalone p10k migration script (7-method detection, backup, cleanup)
+
 ## Pending Items
 
 - [ ] Terminal screenshot (static PNG) for README hero image
@@ -469,9 +488,9 @@ Phase 8.2 — 7 priority items from codebase audit:
 
 ## Session Continuity
 
-Last session: 2026-02-08T21:23:01Z
-Stopped at: Completed 08.2-04-PLAN.md (static test suites for macOS and Windows)
+Last session: 2026-02-17T16:51:00Z
+Stopped at: Completed 09-01-PLAN.md
 Resume file: None
 
 ---
-*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 36/36 plans done. All phases complete.*
+*Milestone v1.0 complete + Phase 8.1/8.2 insertions. 37/38 plans done. Phase 9 in progress (1/2).*

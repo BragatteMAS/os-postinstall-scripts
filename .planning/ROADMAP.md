@@ -17,7 +17,8 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - [x] **Phase 5: Linux Enhancements** - Feature additions to existing Linux support
 - [x] **Phase 6: Windows Foundation** - Basic WinGet functionality
 - [x] **Phase 7: User Experience Polish** - Progress feedback, dry-run, summary
-- [ ] **Phase 8: Documentation** - README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
+- [x] **Phase 8: Documentation** - README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
+- [ ] **Phase 9: Terminal Blueprint** - Terminal replication with p10k migration, Starship presets, standalone setup
 
 ## Phase Details
 
@@ -185,10 +186,25 @@ Plans:
 - [x] 08.2-03-PLAN.md — terminal-setup.sh dry-run fix + Windows main.ps1 WARN dispatch
 - [x] 08.2-04-PLAN.md — Static test suites for macOS (test-macos.sh) and Windows (test-windows.ps1)
 
+### Phase 9: Terminal Blueprint
+**Goal**: Standalone terminal replication subproduct with automated p10k → Starship migration, curated presets, and one-command setup within examples/terminal/
+**Depends on**: Phase 8.2
+**Success Criteria** (what must be TRUE):
+  1. `examples/terminal/` directory exists with modular scripts (setup.sh, migrate-p10k.sh)
+  2. At least 3 Starship presets available in `examples/terminal/presets/` (minimal, powerline, p10k-alike)
+  3. migrate-p10k.sh detects p10k installation, backs up config, removes p10k, and installs Starship equivalent
+  4. Standalone README.md in `examples/terminal/` with migration guide and before/after comparison
+  5. Existing `examples/terminal-setup.sh` functionality preserved (backward compatible entry point)
+**Plans**: 2 plans
+
+Plans:
+- [x] 09-01-PLAN.md — Starship presets (3 TOML files) + p10k migration script
+- [ ] 09-02-PLAN.md — Modular setup.sh, backward-compat wrapper, standalone README
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -202,6 +218,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 8. Documentation | 3/3 | Complete | 2026-02-07 |
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
 | 8.2 Audit Remediation | 4/4 | Complete | 2026-02-08 |
+| 9. Terminal Blueprint | 1/2 | In Progress | — |
 
 ---
 *Roadmap created: 2026-02-04*
