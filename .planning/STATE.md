@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 11 in progress
+**Current focus:** Milestone v3.0 Quality & Parity -- Phase 12 in progress
 
 ## Current Position
 
-Phase: 11 of 14 (Flag & Boolean Fixes)
-Plan: 01 complete
-Status: Plan 11-01 complete
-Last activity: 2026-02-18 -- Executed 11-01 (flag boolean fixes)
+Phase: 12 of 14 (Structure & DRY Cleanup)
+Plan: 02
+Status: Ready to execute
+Last activity: 2026-02-18 -- Plan 12-01 complete (DRY-01 idempotent module)
 
-Progress: [###################################░░░░░░░] 78% (42/54 plans estimated)
+Progress: [####################################░░░░░░] 80% (43/54 plans estimated)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 42
+- Total plans completed: 43
 - Average duration: 2.4 min
-- Total execution time: 100 min
+- Total execution time: 102 min
 
 **By Phase:**
 
@@ -44,11 +44,12 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 09-terminal-blueprint | 2/2 | 6 min | 3 min |
 | 10-windows-cross-platform-installers | 2/2 | 5 min | 2.5 min |
 | 10.1-process-debt-cleanup | 1/1 | 1 min | 1 min |
-| 11-flag-boolean-fixes | 1/? | 2 min | 2 min |
+| 11-flag-boolean-fixes | 1/1 | 2 min | 2 min |
+| 12-structure-dry-cleanup | 1/2 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 09-02 (4 min), 10-01 (3 min), 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min)
-- Trend: Stable at ~1-4 min
+- Last 5 plans: 10-01 (3 min), 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min)
+- Trend: Stable at ~1-3 min
 
 *Updated after each plan completion*
 
@@ -66,6 +67,7 @@ Recent decisions affecting current work:
 - [v3.0]: No exit code changes -- ADR-001 "always exit 0" preserved
 - [11-01]: VERBOSE checks use == "true" string comparison (not -n/-z)
 - [11-01]: NONINTERACTIVE two-site bridge: config.sh for env-var path, setup.sh for -y flag path
+- [12-01]: Test-CargoInstalled extracted into shared module despite no duplication (future-proofing for Phase 13)
 
 ### Pending Todos
 
@@ -82,7 +84,7 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 11-01-PLAN.md (flag boolean fixes, winget cleanup, doc alignment)
+Stopped at: Completed 12-01-PLAN.md. Ready to execute 12-02-PLAN.md (DRY-02/03/04).
 Resume file: None
 
 ---
