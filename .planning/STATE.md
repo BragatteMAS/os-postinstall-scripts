@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 14 in progress (plan 02 of 2 complete)
+**Current focus:** Milestone v3.0 Quality & Parity -- COMPLETE (all 14 phases done)
 
 ## Current Position
 
 Phase: 14 of 14 (Testing & Documentation)
-Plan: 02 of 2 complete
-Status: In progress
-Last activity: 2026-02-18 -- Plan 14-02 complete (README: EXTRA_PACKAGES/SKIP_PACKAGES docs, Windows troubleshooting)
+Plan: 2 of 2 complete
+Status: Complete
+Last activity: 2026-02-18 -- Plan 14-01 complete (37 bats unit tests, ShellCheck/PSScriptAnalyzer lint runners)
 
-Progress: [#########################################░] 92% (47/54 plans estimated)
+Progress: [############################################] 100% (48/48 plans)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 47
+- Total plans completed: 48
 - Average duration: 2.4 min
-- Total execution time: 112 min
+- Total execution time: 115 min
 
 **By Phase:**
 
@@ -47,10 +47,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 11-flag-boolean-fixes | 1/1 | 2 min | 2 min |
 | 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
 | 13-windows-parity | 2/2 | 6 min | 3 min |
-| 14-testing-documentation | 1/2 | 1 min | 1 min |
+| 14-testing-documentation | 2/2 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 12-01 (2 min), 12-02 (3 min), 13-01 (4 min), 13-02 (2 min), 14-02 (1 min)
+- Last 5 plans: 12-02 (3 min), 13-01 (4 min), 13-02 (2 min), 14-02 (1 min), 14-01 (3 min)
 - Trend: Stable at ~1-4 min
 
 *Updated after each plan completion*
@@ -76,6 +76,9 @@ Recent decisions affecting current work:
 - [13-01]: Show-CompletionSummary reads FAILURE_LOG internally, replacing inline failure aggregation
 - [13-02]: Bare [CmdletBinding()] only on module functions -- no ShouldProcess (WPAR-04)
 - [13-02]: Parameterless functions get [CmdletBinding()] + empty param() for PS compliance
+- [14-01]: bats-core via git submodules (not Homebrew) for portability across CI-less environments
+- [14-01]: sleep override via export -f in errors.bats to avoid 20s retry delays
+- [14-01]: .shellcheckrc suppresses SC2034/SC1091 project-wide (export -f and dynamic source false positives)
 - [14-02]: EXTRA_PACKAGES/SKIP_PACKAGES documented with honest note that no installer consumes them yet
 - [14-02]: Troubleshooting uses existing collapsible <details> pattern with Problem/Solution structure
 
@@ -94,7 +97,7 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 14-02-PLAN.md. Phase 14 plan 01 still pending.
+Stopped at: Completed 14-01-PLAN.md. All Phase 14 plans done. Milestone v3.0 complete.
 Resume file: None
 
 ---
