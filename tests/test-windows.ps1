@@ -186,6 +186,39 @@ Assert-Contains "progress.psm1 import in main.ps1" "$ProjectRoot/src/platforms/w
 Assert-NotContains "no CmdletBinding in setup.ps1" "$ProjectRoot/setup.ps1" "CmdletBinding"
 Assert-NotContains "no CmdletBinding in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "CmdletBinding"
 
+# CmdletBinding in core modules (WPAR-04)
+Assert-Contains "[CmdletBinding] in logging.psm1 Write-Log" "$ProjectRoot/src/platforms/windows/core/logging.psm1" "CmdletBinding"
+Assert-Contains "[CmdletBinding] in errors.psm1 Add-FailedItem" "$ProjectRoot/src/platforms/windows/core/errors.psm1" "CmdletBinding"
+Assert-Contains "[CmdletBinding] in packages.psm1 Read-PackageFile" "$ProjectRoot/src/platforms/windows/core/packages.psm1" "CmdletBinding"
+Assert-Contains "[CmdletBinding] in idempotent.psm1" "$ProjectRoot/src/platforms/windows/core/idempotent.psm1" "CmdletBinding"
+
+# Verify count: exactly 1 in logging, 4 in errors, 1 in packages, 3 in idempotent
+Assert-Pass "logging.psm1 has 1 CmdletBinding" {
+    $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/logging.psm1" -Pattern 'CmdletBinding').Count
+    if ($count -ne 1) { throw "expected 1, got $count" }
+}
+Assert-Pass "errors.psm1 has 4 CmdletBinding" {
+    $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/errors.psm1" -Pattern 'CmdletBinding').Count
+    if ($count -ne 4) { throw "expected 4, got $count" }
+}
+Assert-Pass "packages.psm1 has 1 CmdletBinding" {
+    $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/packages.psm1" -Pattern 'CmdletBinding').Count
+    if ($count -ne 1) { throw "expected 1, got $count" }
+}
+Assert-Pass "idempotent.psm1 has 3 CmdletBinding" {
+    $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/idempotent.psm1" -Pattern 'CmdletBinding').Count
+    if ($count -ne 3) { throw "expected 3, got $count" }
+}
+
+# Anti-pattern: no ShouldProcess anywhere
+Assert-NotContains "no ShouldProcess in logging.psm1" "$ProjectRoot/src/platforms/windows/core/logging.psm1" "ShouldProcess"
+Assert-NotContains "no ShouldProcess in errors.psm1" "$ProjectRoot/src/platforms/windows/core/errors.psm1" "ShouldProcess"
+Assert-NotContains "no ShouldProcess in packages.psm1" "$ProjectRoot/src/platforms/windows/core/packages.psm1" "ShouldProcess"
+Assert-NotContains "no ShouldProcess in idempotent.psm1" "$ProjectRoot/src/platforms/windows/core/idempotent.psm1" "ShouldProcess"
+
+# CmdletBinding in progress.psm1 (created in 13-01, should already have it)
+Assert-Contains "[CmdletBinding] in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "CmdletBinding"
+
 Write-Host ""
 
 #######################################
