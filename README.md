@@ -438,6 +438,30 @@ cargo.txt
 
 Then run: `./setup.sh custom`
 
+### Environment variables
+
+Two arrays in `config.sh` allow per-run customization without editing package files:
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `EXTRA_PACKAGES` | Bash array | `()` | Additional packages appended to the profile's package list |
+| `SKIP_PACKAGES` | Bash array | `()` | Packages to exclude even if listed in the profile |
+
+**Usage:**
+
+```bash
+# Install extra packages alongside your profile
+EXTRA_PACKAGES=(neovim tmux) ./setup.sh
+
+# Skip specific packages from the profile
+SKIP_PACKAGES=(kite snapd) ./setup.sh
+
+# Combine both
+EXTRA_PACKAGES=(neovim) SKIP_PACKAGES=(snapd) ./setup.sh
+```
+
+> **Note:** These variables are declared in `config.sh` (lines 36-41) as hooks for customization. Currently, no installer reads them automatically -- they serve as a configuration point for users who source `config.sh` in custom scripts or for future installer integration.
+
 ### Adding dotfiles
 
 1. Place your config file in `data/dotfiles/<topic>/`
