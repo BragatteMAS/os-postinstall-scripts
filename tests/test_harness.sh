@@ -130,7 +130,6 @@ test_directory_exists() {
 test_directory_exists "src"
 test_directory_exists "src/core"
 test_directory_exists "src/install"
-test_directory_exists "src/installers"
 test_directory_exists "src/platforms"
 test_directory_exists "src/platforms/linux"
 test_directory_exists "src/platforms/macos"
