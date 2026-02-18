@@ -80,6 +80,7 @@ parse_flags() {
                 ;;
             -y|--unattended)
                 export UNATTENDED=true
+                export NONINTERACTIVE=true
                 shift
                 ;;
             -h|--help)
