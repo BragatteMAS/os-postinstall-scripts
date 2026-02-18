@@ -61,17 +61,17 @@ Requirements para milestone Quality & Parity. Cada um mapeia para fases do roadm
 
 ### Flag & Boolean Correctness
 
-- [ ] **FLAG-01**: VERBOSE check usa `== "true"` em vez de `-n` em logging.sh (fix boolean bug)
-- [ ] **FLAG-02**: NONINTERACTIVE/UNATTENDED unificados via bridge em config.sh (fix propagation bug)
-- [ ] **FLAG-03**: Remover kite.kite do winget.txt (pacote descontinuado 2022)
-- [ ] **FLAG-04**: ARCHITECTURE.md corrigido para refletir decisao real (no set -e per ADR-001)
+- [x] **FLAG-01**: VERBOSE check usa `== "true"` em vez de `-n` em logging.sh (fix boolean bug)
+- [x] **FLAG-02**: NONINTERACTIVE/UNATTENDED unificados via bridge em config.sh (fix propagation bug)
+- [x] **FLAG-03**: Remover kite.kite do winget.txt (pacote descontinuado 2022)
+- [x] **FLAG-04**: ARCHITECTURE.md corrigido para refletir decisao real (no set -e per ADR-001)
 
 ### Structure & DRY
 
-- [ ] **DRY-01**: Extrair Test-WinGetInstalled e Test-NpmInstalled para idempotent.psm1 compartilhado
-- [ ] **DRY-02**: Consolidar src/install/ e src/installers/ em um unico diretorio
-- [ ] **DRY-03**: Eliminar definicoes de cor duplicadas em platform.sh, usar logging.sh como SSoT
-- [ ] **DRY-04**: Resolver DATA_DIR dual readonly com guard -z em packages.sh
+- [x] **DRY-01**: Extrair Test-WinGetInstalled e Test-NpmInstalled para idempotent.psm1 compartilhado
+- [x] **DRY-02**: Consolidar src/install/ e src/installers/ em um unico diretorio
+- [x] **DRY-03**: Eliminar definicoes de cor duplicadas em platform.sh, usar logging.sh como SSoT
+- [x] **DRY-04**: Resolver DATA_DIR dual readonly com guard -z em packages.sh
 
 ### Windows Parity
 
@@ -161,14 +161,14 @@ Mapeamento de requirements para fases do roadmap. Atualizado durante criacao do 
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FLAG-01 | Phase 11 | Pending |
-| FLAG-02 | Phase 11 | Pending |
-| FLAG-03 | Phase 11 | Pending |
-| FLAG-04 | Phase 11 | Pending |
-| DRY-01 | Phase 12 | Pending |
-| DRY-02 | Phase 12 | Pending |
-| DRY-03 | Phase 12 | Pending |
-| DRY-04 | Phase 12 | Pending |
+| FLAG-01 | Phase 11 | Complete |
+| FLAG-02 | Phase 11 | Complete |
+| FLAG-03 | Phase 11 | Complete |
+| FLAG-04 | Phase 11 | Complete |
+| DRY-01 | Phase 12 | Complete |
+| DRY-02 | Phase 12 | Complete |
+| DRY-03 | Phase 12 | Complete |
+| DRY-04 | Phase 12 | Complete |
 | WPAR-01 | Phase 13 | Pending |
 | WPAR-02 | Phase 13 | Pending |
 | WPAR-03 | Phase 13 | Pending |

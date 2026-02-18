@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 
 ## Current Position
 
-Phase: 12 of 14 (Structure & DRY Cleanup)
-Plan: 02 of 02 (complete)
-Status: Phase 12 complete
-Last activity: 2026-02-18 -- Plan 12-02 complete (DRY-02/03/04 bash-side fixes)
+Phase: 13 of 14 (Windows Parity)
+Plan: --
+Status: Ready to plan
+Last activity: 2026-02-18 -- Phase 12 complete (structure & DRY cleanup)
 
 Progress: [#####################################░░░░░] 81% (44/54 plans estimated)
 

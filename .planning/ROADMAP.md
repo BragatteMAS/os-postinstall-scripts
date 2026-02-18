@@ -37,8 +37,8 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 
 ### v3.0 Quality & Parity (Phases 11-14)
 
-- [ ] **Phase 11: Flag & Boolean Fixes** - Correct flag semantics (VERBOSE, NONINTERACTIVE, stale data, doc drift)
-- [ ] **Phase 12: Structure & DRY Cleanup** - Extract shared PS helpers, merge directories, eliminate duplication
+- [x] **Phase 11: Flag & Boolean Fixes** - Correct flag semantics (VERBOSE, NONINTERACTIVE, stale data, doc drift) (completed 2026-02-18)
+- [x] **Phase 12: Structure & DRY Cleanup** - Extract shared PS helpers, merge directories, eliminate duplication (completed 2026-02-18)
 - [ ] **Phase 13: Windows Parity** - DryRun flag, step counters, completion summary, CmdletBinding for Windows
 - [ ] **Phase 14: Testing & Documentation** - Unit tests for core modules, lint runners, README gaps
 
@@ -264,11 +264,10 @@ Plans:
   2. Running with `./setup.sh -y` suppresses all interactive prompts including apt confirmation (NONINTERACTIVE/UNATTENDED unified via bridge)
   3. Running `.\setup.ps1` on Windows does not attempt to install kite.kite (stale entry removed from winget.txt)
   4. ARCHITECTURE.md accurately describes the error handling strategy (no set -e, per ADR-001)
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 11-01-PLAN.md — TBD
-- [ ] 11-02-PLAN.md — TBD
+- [ ] 11-01-PLAN.md — Fix VERBOSE boolean, NONINTERACTIVE bridge, stale winget entry, and doc drift
 
 ### Phase 12: Structure & DRY Cleanup
 **Goal**: Eliminate code duplication and unify directory structure so each concept has exactly one home
@@ -279,11 +278,11 @@ Plans:
   2. Only one install directory exists under src/ (src/install/, not both src/install/ and src/installers/)
   3. Color/format variables are defined only in logging.sh (platform.sh has no independent color definitions)
   4. Running `./setup.sh` twice does not hit a readonly DATA_DIR collision error (guard protects re-source)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 12-01-PLAN.md — TBD
-- [ ] 12-02-PLAN.md — TBD
+- [x] 12-01-PLAN.md — Extract PS idempotent check functions to shared idempotent.psm1 module (DRY-01)
+- [x] 12-02-PLAN.md — Merge install directories, eliminate platform.sh color duplication, guard DATA_DIR readonly (DRY-02, DRY-03, DRY-04)
 
 ### Phase 13: Windows Parity
 **Goal**: Windows users see the same UX feedback as Unix users (flags, progress, summary)
@@ -335,8 +334,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 9. Terminal Blueprint | 2/2 | Complete | 2026-02-17 |
 | 10. Windows Cross-Platform Installers | 2/2 | Complete | 2026-02-17 |
 | 10.1 Process Debt Cleanup | 1/1 | Complete | 2026-02-17 |
-| 11. Flag & Boolean Fixes | 0/? | Not started | - |
-| 12. Structure & DRY Cleanup | 0/? | Not started | - |
+| 11. Flag & Boolean Fixes | 1/1 | Complete | 2026-02-18 |
+| 12. Structure & DRY Cleanup | 2/2 | Complete | 2026-02-18 |
 | 13. Windows Parity | 0/? | Not started | - |
 | 14. Testing & Documentation | 0/? | Not started | - |
 
