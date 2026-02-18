@@ -53,7 +53,7 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 - [x] **MOD-01**: Reestruturar para src/ + data/ + docs/
 - [x] **MOD-02**: Consolidar codigo duplicado (scripts/ + platforms/)
 - [x] **MOD-03**: Remover codigo deprecated e arquivos legados
-- [ ] **MOD-04**: Documentacao: README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
+- [x] **MOD-04**: Documentacao: README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
 
 ## v2 Requirements
 
@@ -119,7 +119,7 @@ Mapeamento de requirements para fases do roadmap.
 | UX-02 | Phase 7: UX Polish | Complete |
 | UX-03 | Phase 7: UX Polish | Complete |
 | UX-04 | Phase 7: UX Polish | Complete |
-| MOD-04 | Phase 8: Documentation | Pending |
+| MOD-04 | Phase 8: Documentation | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

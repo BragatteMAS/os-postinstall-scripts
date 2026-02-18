@@ -20,7 +20,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - [x] **Phase 8: Documentation** - README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
 - [x] **Phase 9: Terminal Blueprint** - Terminal replication with p10k migration, Starship presets, standalone setup
 - [x] **Phase 10: Windows Cross-Platform Installers** - PowerShell cargo, npm, ai-tools installers [GAP CLOSURE] (completed 2026-02-17)
-- [ ] **Phase 10.1: Process Debt Cleanup** - Missing verification, documentation drift [GAP CLOSURE]
+- [x] **Phase 10.1: Process Debt Cleanup** - Missing verification, documentation drift [GAP CLOSURE] (completed 2026-02-17)
 
 ## Phase Details
 
@@ -215,8 +215,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — Create cargo.ps1, npm.ps1, ai-tools.ps1 (three Windows installers)
-- [ ] 10-02-PLAN.md — Wire dispatch in main.ps1 + extend test-windows.ps1
+- [x] 10-01-PLAN.md — Create cargo.ps1, npm.ps1, ai-tools.ps1 (three Windows installers)
+- [x] 10-02-PLAN.md — Wire dispatch in main.ps1 + extend test-windows.ps1
 
 ### Phase 10.1: Process Debt Cleanup (INSERTED) [GAP CLOSURE]
 **Goal**: Close process gaps from v2.1 audit — missing verification file, documentation drift
@@ -225,7 +225,10 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Phase 08 has VERIFICATION.md with passing status confirming all success criteria
   2. MOD-04 marked "Complete" in REQUIREMENTS.md traceability table
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [x] 10.1-01-PLAN.md — Phase 08 VERIFICATION.md + MOD-04 traceability update
 
 ## Progress
 
@@ -245,8 +248,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
 | 8.2 Audit Remediation | 4/4 | Complete | 2026-02-08 |
 | 9. Terminal Blueprint | 2/2 | Complete | 2026-02-17 |
-| 10. Windows Cross-Platform Installers | 0/2 | Complete    | 2026-02-17 |
-| 10.1 Process Debt Cleanup | 0/? | Pending | — |
+| 10. Windows Cross-Platform Installers | 2/2 | Complete | 2026-02-17 |
+| 10.1 Process Debt Cleanup | 1/1 | Complete | 2026-02-17 |
 
 ---
 *Roadmap created: 2026-02-04*
@@ -261,6 +264,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 *Phase 8.1 completed: 2026-02-08*
 *Phase 8.2 completed: 2026-02-08*
 *Phase 9 completed: 2026-02-17*
+*Phase 10 completed: 2026-02-17*
+*Phase 10.1 completed: 2026-02-17*
 *Depth: comprehensive (8 phases + 2 insertions + 2 gap closure)*
-*Requirements coverage: 22/22 mapped*
+*Requirements coverage: 22/22 mapped — all Complete*
 *Milestone v1.0 complete: 2026-02-08*
+*Milestone v2.1 process debt closed: 2026-02-17*
