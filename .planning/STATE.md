@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 12 in progress
+**Current focus:** Milestone v3.0 Quality & Parity -- Phase 12 complete, Phase 13 pending
 
 ## Current Position
 
 Phase: 12 of 14 (Structure & DRY Cleanup)
-Plan: 02
-Status: Ready to execute
-Last activity: 2026-02-18 -- Plan 12-01 complete (DRY-01 idempotent module)
+Plan: 02 of 02 (complete)
+Status: Phase 12 complete
+Last activity: 2026-02-18 -- Plan 12-02 complete (DRY-02/03/04 bash-side fixes)
 
-Progress: [####################################░░░░░░] 80% (43/54 plans estimated)
+Progress: [#####################################░░░░░] 81% (44/54 plans estimated)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 43
+- Total plans completed: 44
 - Average duration: 2.4 min
-- Total execution time: 102 min
+- Total execution time: 105 min
 
 **By Phase:**
 
@@ -45,10 +45,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 10-windows-cross-platform-installers | 2/2 | 5 min | 2.5 min |
 | 10.1-process-debt-cleanup | 1/1 | 1 min | 1 min |
 | 11-flag-boolean-fixes | 1/1 | 2 min | 2 min |
-| 12-structure-dry-cleanup | 1/2 | 2 min | 2 min |
+| 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 10-01 (3 min), 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min)
+- Last 5 plans: 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min), 12-02 (3 min)
 - Trend: Stable at ~1-3 min
 
 *Updated after each plan completion*
@@ -68,6 +68,8 @@ Recent decisions affecting current work:
 - [11-01]: VERBOSE checks use == "true" string comparison (not -n/-z)
 - [11-01]: NONINTERACTIVE two-site bridge: config.sh for env-var path, setup.sh for -y flag path
 - [12-01]: Test-CargoInstalled extracted into shared module despite no duplication (future-proofing for Phase 13)
+- [12-02]: logging.sh is SSoT for colors and log functions; platform.sh delegates to log_info/log_ok/log_warn/log_error
+- [12-02]: DATA_DIR readonly guarded with -z check to prevent collision on re-source
 
 ### Pending Todos
 
@@ -78,13 +80,13 @@ Recent decisions affecting current work:
 ### Blockers/Concerns
 
 - CmdletBinding rollout scope: research defers to v3.1, but WPAR-04 requires it for exported functions. Resolution: add to core module functions only (Phase 13), not all installer scripts.
-- packages.sh readonly DATA_DIR in test context: resolve during Phase 14 when writing unit tests.
+- ~~packages.sh readonly DATA_DIR in test context~~ -- resolved in 12-02 (DRY-04: -z guard added).
 - NO CI/CD automation -- explicit owner decision (2026-02-08). Tests are manual only.
 
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 12-01-PLAN.md. Ready to execute 12-02-PLAN.md (DRY-02/03/04).
+Stopped at: Phase 12 complete (2/2 plans). Ready to plan Phase 13 (Windows Parity).
 Resume file: None
 
 ---
