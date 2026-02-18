@@ -9,9 +9,10 @@
 #
 # This script detects Windows and runs the platform-specific installer.
 #
-# Environment variables (set automatically by CLI switches):
-#   DRY_RUN=true    - Set by -DryRun switch
-#   UNATTENDED=true - Set by -Unattended switch
+# Environment variables (also settable via CLI switches):
+#   DRY_RUN=true    - Show what would be done (or use -DryRun)
+#   VERBOSE=true    - Enable debug output and timestamps (or use -Verbose)
+#   UNATTENDED=true - Skip confirmation prompts (or use -Unattended)
 #   NO_COLOR=1      - Disable colored output
 #######################################
 
