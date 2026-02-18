@@ -27,6 +27,9 @@ VERBOSE="${VERBOSE:-false}"
 # Set to "true" to skip confirmation prompts
 UNATTENDED="${UNATTENDED:-false}"
 
+# Bridge: downstream scripts (apt.sh, interactive.sh, etc.) check NONINTERACTIVE
+NONINTERACTIVE="${NONINTERACTIVE:-${UNATTENDED}}"
+
 #===============================================
 # CUSTOMIZATION
 #===============================================
@@ -51,4 +54,4 @@ readonly CORE_DIR="${SRC_DIR}/core"
 
 # Export for use by other scripts
 export PROJECT_ROOT SRC_DIR DATA_DIR CORE_DIR
-export DEFAULT_PROFILE DRY_RUN VERBOSE UNATTENDED
+export DEFAULT_PROFILE DRY_RUN VERBOSE UNATTENDED NONINTERACTIVE

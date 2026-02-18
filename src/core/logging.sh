@@ -96,7 +96,7 @@ log_ok() {
     local msg="$*"
     local prefix=""
 
-    if [[ -n "${VERBOSE:-}" ]]; then
+    if [[ "${VERBOSE:-}" == "true" ]]; then
         prefix="[$(_timestamp)] "
     fi
 
@@ -110,7 +110,7 @@ log_error() {
     local msg="$*"
     local prefix=""
 
-    if [[ -n "${VERBOSE:-}" ]]; then
+    if [[ "${VERBOSE:-}" == "true" ]]; then
         prefix="[$(_timestamp)] "
     fi
 
@@ -124,7 +124,7 @@ log_warn() {
     local msg="$*"
     local prefix=""
 
-    if [[ -n "${VERBOSE:-}" ]]; then
+    if [[ "${VERBOSE:-}" == "true" ]]; then
         prefix="[$(_timestamp)] "
     fi
 
@@ -138,7 +138,7 @@ log_info() {
     local msg="$*"
     local prefix=""
 
-    if [[ -n "${VERBOSE:-}" ]]; then
+    if [[ "${VERBOSE:-}" == "true" ]]; then
         prefix="[$(_timestamp)] "
     fi
 
@@ -150,7 +150,7 @@ log_info() {
 # Usage: log_debug "message"
 log_debug() {
     # Only show debug messages in verbose mode
-    if [[ -z "${VERBOSE:-}" ]]; then
+    if [[ "${VERBOSE:-}" != "true" ]]; then
         return 0
     fi
 
