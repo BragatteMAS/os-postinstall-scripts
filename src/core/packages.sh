@@ -22,9 +22,11 @@ readonly _PACKAGES_SOURCED=1
 _PACKAGES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly _PACKAGES_DIR
 
-# Data directory relative to this script
-DATA_DIR="$(cd "${_PACKAGES_DIR}/../../data" 2>/dev/null && pwd -P)"
-readonly DATA_DIR
+# Data directory relative to this script (guarded to avoid readonly collision with config.sh)
+if [[ -z "${DATA_DIR:-}" ]]; then
+    DATA_DIR="$(cd "${_PACKAGES_DIR}/../../data" 2>/dev/null && pwd -P)"
+    readonly DATA_DIR
+fi
 
 #######################################
 # Global array for loaded packages
