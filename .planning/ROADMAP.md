@@ -39,7 +39,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 
 - [x] **Phase 11: Flag & Boolean Fixes** - Correct flag semantics (VERBOSE, NONINTERACTIVE, stale data, doc drift) (completed 2026-02-18)
 - [x] **Phase 12: Structure & DRY Cleanup** - Extract shared PS helpers, merge directories, eliminate duplication (completed 2026-02-18)
-- [ ] **Phase 13: Windows Parity** - DryRun flag, step counters, completion summary, CmdletBinding for Windows
+- [x] **Phase 13: Windows Parity** - DryRun flag, step counters, completion summary, CmdletBinding for Windows (completed 2026-02-18)
 - [ ] **Phase 14: Testing & Documentation** - Unit tests for core modules, lint runners, README gaps
 
 ## Phase Details
@@ -267,7 +267,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 11-01-PLAN.md — Fix VERBOSE boolean, NONINTERACTIVE bridge, stale winget entry, and doc drift
+- [x] 11-01-PLAN.md — Fix VERBOSE boolean, NONINTERACTIVE bridge, stale winget entry, and doc drift
 
 ### Phase 12: Structure & DRY Cleanup
 **Goal**: Eliminate code duplication and unify directory structure so each concept has exactly one home
@@ -293,11 +293,11 @@ Plans:
   2. Windows installation shows `[Step X/Y]` prefix for each dispatch step (matching Unix step counters)
   3. After Windows setup completes, user sees a summary with profile name, platform, duration, and failure count (matching Unix completion summary)
   4. All exported PowerShell functions use `[CmdletBinding()]` so `-Verbose` and `-Debug` propagate natively
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 13-01-PLAN.md — TBD
-- [ ] 13-02-PLAN.md — TBD
+- [x] 13-01-PLAN.md — CLI flags + progress.psm1 module + step counters + completion summary (WPAR-01, WPAR-02, WPAR-03)
+- [x] 13-02-PLAN.md — CmdletBinding for all core module exported functions (WPAR-04)
 
 ### Phase 14: Testing & Documentation
 **Goal**: Validate final codebase correctness with unit tests and close documentation gaps
@@ -336,7 +336,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 
 | 10.1 Process Debt Cleanup | 1/1 | Complete | 2026-02-17 |
 | 11. Flag & Boolean Fixes | 1/1 | Complete | 2026-02-18 |
 | 12. Structure & DRY Cleanup | 2/2 | Complete | 2026-02-18 |
-| 13. Windows Parity | 0/? | Not started | - |
+| 13. Windows Parity | 2/2 | Complete | 2026-02-18 |
 | 14. Testing & Documentation | 0/? | Not started | - |
 
 ---

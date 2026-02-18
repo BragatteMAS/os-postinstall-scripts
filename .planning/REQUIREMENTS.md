@@ -75,10 +75,10 @@ Requirements para milestone Quality & Parity. Cada um mapeia para fases do roadm
 
 ### Windows Parity
 
-- [ ] **WPAR-01**: setup.ps1 aceita -DryRun, -Verbose, -Unattended como switches CLI
-- [ ] **WPAR-02**: main.ps1 mostra [Step X/Y] em cada dispatch (step counters)
-- [ ] **WPAR-03**: setup.ps1 mostra completion summary com profile, platform, duracao, falhas
-- [ ] **WPAR-04**: Todos os scripts PS usam [CmdletBinding()] para suporte nativo -Verbose/-Debug
+- [x] **WPAR-01**: setup.ps1 aceita -DryRun, -Verbose, -Unattended como switches CLI
+- [x] **WPAR-02**: main.ps1 mostra [Step X/Y] em cada dispatch (step counters)
+- [x] **WPAR-03**: setup.ps1 mostra completion summary com profile, platform, duracao, falhas
+- [x] **WPAR-04**: Todos os scripts PS usam [CmdletBinding()] para suporte nativo -Verbose/-Debug
 
 ### Testing & Documentation
 
@@ -169,10 +169,10 @@ Mapeamento de requirements para fases do roadmap. Atualizado durante criacao do 
 | DRY-02 | Phase 12 | Complete |
 | DRY-03 | Phase 12 | Complete |
 | DRY-04 | Phase 12 | Complete |
-| WPAR-01 | Phase 13 | Pending |
-| WPAR-02 | Phase 13 | Pending |
-| WPAR-03 | Phase 13 | Pending |
-| WPAR-04 | Phase 13 | Pending |
+| WPAR-01 | Phase 13 | Complete |
+| WPAR-02 | Phase 13 | Complete |
+| WPAR-03 | Phase 13 | Complete |
+| WPAR-04 | Phase 13 | Complete |
 | TEST-01 | Phase 14 | Pending |
 | TEST-02 | Phase 14 | Pending |
 | DOC-01 | Phase 14 | Pending |
