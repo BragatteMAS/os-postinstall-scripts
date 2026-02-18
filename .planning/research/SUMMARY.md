@@ -1,326 +1,203 @@
 # Project Research Summary
 
-**Project:** OS Post-Install Scripts
-**Domain:** Cross-platform system provisioning / dotfiles management
-**Researched:** 2026-02-04
+**Project:** os-postinstall-scripts v3.0 "Quality & Parity"
+**Domain:** Cross-platform post-install automation (Bash + PowerShell)
+**Researched:** 2026-02-18
 **Confidence:** HIGH
 
 ## Executive Summary
 
-This project automates fresh machine setup across Linux, macOS, and Windows using native shell scripts (Bash + PowerShell). Research shows the "pure shell approach" is optimal for zero-dependency bootstrapping, where the goal is running scripts immediately on a fresh OS without installing anything first. This positions the project between simple symlink managers (GNU Stow) and complex configuration managers (chezmoi), with unique differentiators in AI/MCP integration and intelligent tool recommendations.
+v3.0 is not a feature milestone — it is a quality milestone for a functionally complete system. The codebase installs across Linux, macOS, and Windows and earns a 7.5/10 from reviewers. The gap to 9+/10 is not about capabilities; it is about correctness (one active boolean bug that silently enables verbose mode for all users by default), consistency (NONINTERACTIVE and UNATTENDED are disconnected names for the same concept), Windows parity (step counters and completion summary exist only on Linux/macOS), and structural hygiene (duplicate PowerShell functions, a stale directory, a DATA_DIR readonly collision). All four categories are confirmed by direct code inspection with exact file and line number references.
 
-The recommended approach is **data-driven modularization**: separate code (`src/`) from data (`data/packages/*.yaml`) with platform-specific implementations unified by a thin abstraction layer. Current brownfield state shows significant code duplication across `scripts/` and `platforms/` directories, with Linux at 100% completion but macOS only 20% and Windows nearly non-existent. The primary architectural cleanup involves consolidating this duplicate code into a coherent module system following industry-standard dotfiles patterns (Holman-style topic organization).
+The recommended approach is a strict dependency-ordered four-phase execution: fix the boolean/flag bugs first (they infect every module), then extract duplicated code and clean structure (creates a stable foundation for Windows parity work), then close the Windows UX parity gap (flags, step counters, completion summary), and finally add unit tests and documentation that validate the cleaned-up state. Reversing this order creates rework: writing tests before fixing the VERBOSE bug means tests validate broken behavior, and adding Windows features before extracting shared helpers means touching the same files twice.
 
-**Critical risk:** Non-idempotent scripts that corrupt configurations on re-runs. The codebase has partial idempotency but lacks consistent patterns. Other major risks include cross-platform shell incompatibility (macOS ships Bash 3.2, project requires 4.0+) and destructive operations without backups. These must be addressed in Phase 1 through shared utilities that enforce safe patterns across all platform-specific code.
+The key risk is breakage in a working system. Each of the five architectural changes has a confirmed failure mode: 13+ hardcoded path references for the directory merge, PowerShell multi-process scope isolation for the module extraction, the NONINTERACTIVE/UNATTENDED Homebrew API exception trap, the VERBOSE boolean truthiness cascade. All risks have confirmed mitigations. The "always exit 0" policy from ADR-001 must be preserved — the reviewer suggestion to change exit codes contradicts a deliberate architectural decision that is correct for this use case.
+
+---
 
 ## Key Findings
 
 ### Recommended Stack
 
-The research strongly validates the current approach: **native shell scripts over external tools**. For cross-platform post-install automation, Bash 4.0+ (Unix) and PowerShell 5.1+ (Windows) provide zero bootstrap overhead while leveraging built-in platform capabilities. This eliminates the dependency hell that plagues Python/Ansible approaches and the bootstrap paradox of tools like chezmoi (which require pre-installation).
+The runtime stack (Bash 4+, PowerShell 5.1+, zero runtime deps) is unchanged. v3.0 adds dev-time quality tooling only. Three categories of tooling are needed: **bats-core 1.13.0** (with bats-support 0.3.0 and bats-assert 2.1.0) for Bash unit testing via git submodule; **ShellCheck 0.11.0 + shfmt 3.12.0** with a local `tools/lint.sh` runner for shell static analysis; and **PSScriptAnalyzer 1.24.0** with `[CmdletBinding()]` adoption for PowerShell quality. Pester is explicitly deferred — with only 8 PowerShell files, the cost of adoption exceeds the benefit. All tools are dev-machine only; no CI/CD pipeline is introduced (owner decision, permanent scope).
 
-**Core technologies:**
-- **Bash 4.0+**: Unix scripting (Linux, macOS) — associative arrays and modern string handling justify dropping POSIX sh compatibility. macOS users must upgrade via provided script.
-- **PowerShell 5.1+**: Windows scripting — native on Windows 10+, no installation needed.
-- **Native package managers**: Homebrew (macOS), APT/DNF (Linux), winget (Windows) — de facto standards, excellent ecosystems.
-- **ShellCheck + shfmt**: Static analysis and formatting — industry standard for shell quality (Microsoft, GitLab use these).
-
-**Critical decision:** NO external configuration parsers (jq, yq). Shell arrays in `.sh` files + plain text are the only zero-dependency options. YAML for package lists is acceptable if parsed minimally or converted to shell arrays during setup.
-
-**Development quality tools:** shellcheck (linting), shfmt (formatting), bats-core (testing). These are dev-time only, not runtime dependencies.
+**Core technologies (new, dev-time only):**
+- bats-core 1.13.0: Bash unit testing — industry standard, TAP-compliant, tests actual function behavior vs. current smoke-test-only approach
+- bats-assert 2.1.0 + bats-support 0.3.0: Assertion helpers — eliminates manual `[ "$status" -eq 0 ]` boilerplate in test files
+- ShellCheck 0.11.0: Shell static analysis — catches 400+ shell pitfalls, enforced via local `tools/lint.sh` (no CI required)
+- shfmt 3.12.0: Shell formatter — parser-based (not regex), consistent formatting enforcement
+- PSScriptAnalyzer 1.24.0: PowerShell linting — Microsoft-maintained, 80+ rules, enforced via local `tools/lint.ps1`
+- CmdletBinding(): PowerShell language feature (zero install cost) — adds `-Verbose`, `-Debug`, `-ErrorAction` propagation to all PS exported functions
 
 ### Expected Features
 
-Post-install scripts have clear **table stakes** that users expect. Missing any of these makes the product feel incomplete:
+**Must have (table stakes — confirmed bugs or parity gaps):**
+- Fix VERBOSE boolean bug — `VERBOSE=false` currently enables verbose mode because `-n` tests string non-emptiness; 5 locations in logging.sh need `== "true"` comparison
+- Unify NONINTERACTIVE/UNATTENDED — the `-y` flag sets UNATTENDED but apt.sh and interactive.sh check NONINTERACTIVE; they are disconnected, `-y` silently fails to suppress apt prompts
+- Remove stale winget.txt entry — `kite.kite` (Kite AI shut down November 2022) causes install failures on Windows
+- Windows -DryRun flag — Bash has `--dry-run`, Windows has only `$env:DRY_RUN`; highest-visibility parity gap identified by reviewers
+- Windows step counters — Linux/macOS show `[Step X/Y]`, Windows shows nothing
+- Windows completion summary — Linux/macOS show profile/platform/duration/failures, Windows shows bare "Setup Complete"
+- Extract shared PowerShell helpers — `Test-WinGetInstalled` duplicated 3x, `Test-NpmInstalled` duplicated 2x; DRY violation confirmed by grep
 
-**Must have (table stakes):**
-- Cross-platform detection (OS, distro, version) — users switch between systems
-- Package manager integration (APT, Homebrew, winget) — core value proposition
-- Idempotency (safe to run multiple times) — critical for trust and reliability
-- Dotfiles symlink/copy management — the "dot" in dotfiles
-- One-command setup (`./setup.sh`) — "just works" experience
-- Progress feedback (colors, status) — users need to know what's happening
-- Error handling (graceful failures) — no silent corruption
+**Should have (differentiators that raise quality score):**
+- Unit tests for core Bash modules — logging.sh, errors.sh, progress.sh, packages.sh, idempotent.sh tested at function level, not just file existence
+- Windows -Verbose flag — map PS -Verbose switch to `$env:VERBOSE=true` for parity with Bash `--verbose`
+- Profile validation tests — verify profile .txt files reference existing package files; typos currently skipped silently
+- DATA_DIR readonly collision fix — packages.sh and config.sh both set `readonly DATA_DIR`; one-line guard in packages.sh resolves latent bug
 
-**Current gaps:** macOS only 20% complete vs Linux 100%, Windows nearly absent, inconsistent idempotency patterns across scripts.
-
-**Should have (competitive differentiators):**
-- **PRD/STORIES parser** — unique feature, detect project tech stack and recommend tools automatically
-- **Modern CLI tools first** — bat, eza, fd, ripgrep, zoxide over legacy tools (already implemented)
-- **AI/MCP integration** — pre-configured Claude, context7, etc. (already implemented, bleeding edge)
-- Dry-run mode — preview changes before applying (builds trust)
-- Backup before changes — automatic safety net (prevents data loss)
-- Parallel execution — 40%+ speed improvement potential
-
-**Defer (v2+):**
-- Machine-specific templating (complexity overkill)
-- Secrets encryption (use external tools like 1Password)
-- Remote bootstrap via curl | bash (security risk, out of scope)
-
-**Competitive position:** More capable than symlink managers (Stow, Dotbot), simpler than configuration managers (chezmoi, Nix), lighter than infrastructure automation (Ansible), with unique AI/MCP integration.
+**Defer to v3.1+:**
+- CmdletBinding on PS installer scripts (additive, low impact, no functionality change)
+- src/installers/ directory consolidation (cosmetic, low user impact)
+- PSScriptAnalyzer integration (quality enhancement, project works without it)
+- ARCHITECTURE.md drift fix (contributor-only impact)
+- Full Windows troubleshooting documentation
+- Pester test framework (8 PS files is below the justification threshold)
+- PS ShouldProcess/WhatIf migration (breaks cross-platform `DRY_RUN` consistency — explicit anti-feature for v3.0)
 
 ### Architecture Approach
 
-Research recommends **separating code, data, and documentation** following industry patterns from successful dotfiles projects (Holman, YADM, chezmoi). The target structure follows platform-layered organization:
+Five architectural changes define v3.0. Four are mutually independent and can be sequenced freely: (1) merge `src/installers/` into `src/install/` (one file move, 3 path references in setup.sh, 1 in test_harness.sh); (2) extract shared PS helpers into a new `windows/core/idempotent.psm1` module (4 scripts updated, 1 new file); (3) remove duplicate color definitions from platform.sh so logging.sh becomes the single SSoT for output formatting; (4) fix DATA_DIR dual-readonly collision in packages.sh with a one-line guard. The fifth — unit tests for core modules — depends on the DATA_DIR fix being in place before packages.sh unit tests can run without hitting a readonly error. Post-v3.0, `src/install/` holds all cross-platform installers (merged), `windows/core/` holds 4 PS modules (up from 3), and `tests/` gains 5 new `test-core-*.sh` unit test files alongside the existing smoke/validation tests which are not replaced.
 
-**Major components:**
-
-1. **Core layer (`src/core/`)** — Platform-agnostic utilities (logging, platform detection, config parsing, error handling). These are leaf dependencies used by everything else.
-
-2. **Platform layers (`src/unix/`, `src/linux/`, `src/macos/`, `src/windows/`)** — Specific implementations with thin abstraction layer. Platform router in bootstrap directs to appropriate implementation.
-
-3. **Data layer (`data/packages/`, `data/profiles/`, `data/dotfiles/`)** — Declarative YAML package lists, installation profiles, configuration files. Logic and data are cleanly separated.
-
-4. **Topic-centric dotfiles (`data/dotfiles/git/`, `data/dotfiles/zsh/`)** — Holman-style organization where files named `*.symlink` get symlinked to `$HOME`, `*.zsh` get auto-sourced, `install.sh` runs during bootstrap.
-
-**Key patterns:**
-- **Data-driven package lists**: YAML files declare packages, shell scripts install them (separation of concerns)
-- **Platform abstraction**: Common `pkg_install()` interface, platform-specific implementations
-- **Main function pattern**: Google Shell Style — wrap logic in `main()`, use `local` variables, single entry point
-- **Graceful degradation**: Dotfiles work even when optional tools missing (check `command -v tool` before using)
-
-**Anti-patterns to avoid:** Hardcoded package lists in scripts (current issue), duplicated platform detection, relative path gymnastics, scripts >100 lines without functions, platform-specific code in core.
+**Major components (post-v3.0):**
+1. `src/core/*.sh` (8 Bash modules) — foundation layer; VERBOSE bug fix and DATA_DIR guard live here; logging.sh becomes color SSoT
+2. `src/install/*.sh` (6 cross-platform installers, post-merge) — unified; dotfiles-install.sh moves here from src/installers/
+3. `src/platforms/windows/core/*.psm1` (4 modules, up from 3) — idempotent.psm1 is new; shared check helpers extracted here
+4. `src/platforms/windows/install/*.ps1` (4 installer scripts, thinner) — import idempotent.psm1, local duplicates removed
+5. `tests/` — two layers preserved: existing smoke/validation tests (keep, do not replace) and new unit test files for core modules
 
 ### Critical Pitfalls
 
-Research and codebase analysis reveal pitfalls that cause rewrites or major issues:
+1. **VERBOSE boolean truthiness trap** — changing `-n`/`-z` tests to `== "true"` in logging.sh must cover all 5 locations (lines 99, 113, 127, 141, 153) atomically; add a normalization bridge for non-standard user values (`VERBOSE=1`, `VERBOSE=yes`); test both `VERBOSE=false` (no timestamps) and `VERBOSE=true` (timestamps visible) after the fix
+2. **NONINTERACTIVE/UNATTENDED Homebrew exception** — `homebrew.sh` line 95 uses `NONINTERACTIVE=1` as a Homebrew installer API variable, NOT the project flag; do NOT rename it; the correct fix is a bridge in config.sh (`export NONINTERACTIVE="${UNATTENDED}"`) rather than a rename sweep across all files
+3. **Directory merge path cascade** — 13+ hardcoded references to `src/installers/` exist across setup.sh, test_harness.sh, and test-linux.sh; use `git mv` (not delete+create), update test_harness.sh to expect new path before moving the file, verify with `bash tests/test_harness.sh` + `bash tests/test-linux.sh` after
+4. **PowerShell multi-process scope isolation** — shared helper module functions are NOT inherited by child processes spawned with `&`; each `.ps1` installer must explicitly `Import-Module "$PSScriptRoot/../core/idempotent.psm1" -Force`; `$script:` scoped state does NOT propagate cross-process; only `$env:` vars do
+5. **Exit code trap cascade** — do NOT change the "always exit 0" policy (ADR-001); four different `cleanup()` functions co-exist with different behaviors; changing exit codes breaks the trap cascade and contradicts the deliberate "partial failure is acceptable" design; only exit non-zero for hard prerequisites before any work begins
 
-1. **Non-idempotent scripts** — Scripts that append to config files on every run create duplicate entries (PATH, aliases), slow shell startup, corrupt configs. **Prevention:** Check before appending with `grep -q` guards, use markers (`# BEGIN/END os-postinstall`), check if package already installed, backup before ANY modification. **When to address:** Phase 1 — establish idempotent patterns in shared utilities.
-
-2. **Cross-platform shell incompatibility** — macOS ships Bash 3.2 (from 2006), project requires 4.0+ for associative arrays. GNU vs BSD tool differences (sed, xargs, readlink) cause silent failures. **Prevention:** Use `#!/usr/bin/env bash`, test on both platforms, abstract platform differences in wrapper functions, document Bash 4+ requirement with upgrade script. **When to address:** Phase 1 — create platform abstraction layer.
-
-3. **Destructive operations without backup** — Overwriting user configs without asking or backing up causes data loss and trust destruction. **Prevention:** ALWAYS create timestamped backup before modifying (`file.backup-$(date +%Y%m%d-%H%M%S)`), prompt in interactive mode, implement `--restore` command. **When to address:** Phase 1 — backup utilities in shared library.
-
-4. **Secrets in repository** — Dotfiles containing credentials (SSH configs, gitconfig tokens) end up committed. **Prevention:** `.example` files for templates, comprehensive `.gitignore`, pre-commit hooks (git-secrets, gitleaks), never store credentials directly. **When to address:** Phase 1 — security hardening.
-
-5. **Code duplication across platforms** — Same logic in `scripts/install/` and `platforms/linux/install/` diverges over time. Fixes applied to one location but not others. **Prevention:** Extract shared logic to `src/core/`, keep platform-specific code minimal, regular deduplication audits. **When to address:** Phase 2 — primary goal of consolidation refactor.
-
-**Moderate pitfalls:** Zsh performance issues (lazy-load version managers, cache completions), package manager lock handling (wait, don't force), hardcoded paths (use `$HOME`, detect Homebrew location), missing error handling (`set -euo pipefail`), incomplete feature parity across platforms.
+---
 
 ## Implications for Roadmap
 
-Based on research, the brownfield cleanup should follow dependency-driven phases:
+Based on the dependency chain confirmed across all four research files, four phases are recommended:
 
-### Phase 1: Core Infrastructure
-**Rationale:** Foundation must be solid before building platform-specific code. Core utilities are leaf dependencies with no dependencies themselves but everything depends on them. Addressing critical pitfalls (idempotency, backups, error handling) here prevents propagating bad patterns to platform code.
+### Phase 1: Flag & Boolean Correctness
 
-**Delivers:**
-- `src/core/logging.sh` — consistent output formatting, emoji handling
-- `src/core/platform.sh` — OS/distro detection (replaces duplicated detection logic)
-- `src/core/utils.sh` — idempotent file operations, backup utilities, error handling
-- `src/core/config-loader.sh` — YAML parsing (if needed) or shell array sourcing
+**Rationale:** The VERBOSE bug and NONINTERACTIVE/UNATTENDED disconnect affect every module that does logging or interactivity checks. Testing anything that touches logging while the boolean bug exists means tests validate broken behavior. These fixes have zero dependencies on other changes, the smallest blast radius (5 lines in logging.sh, one bridge line in config.sh, one line deletion in winget.txt), and the highest confidence (exact locations confirmed by code inspection).
 
-**Addresses features:**
-- Error handling (table stakes)
-- Progress feedback (table stakes)
-- Cross-platform detection (table stakes)
+**Delivers:** A codebase where flag semantics are correct — `VERBOSE=false` does not show timestamps, `-y` propagates to apt.sh, `kite.kite` no longer causes Windows install failures.
 
-**Avoids pitfalls:**
-- Non-idempotent scripts (Pitfall 1) — utilities enforce safe patterns
-- Destructive operations without backup (Pitfall 3) — backup utils required
-- Missing error handling (Pitfall 8) — `set -euo pipefail` patterns
-- Platform-specific code in core (Anti-pattern 5) — clear boundaries
+**Addresses:** VERBOSE boolean bug (logging.sh lines 99/113/127/141/153), NONINTERACTIVE/UNATTENDED split (config.sh bridge + no rename of homebrew.sh), stale winget.txt entry.
 
-**Research flag:** Standard patterns, well-documented — skip `/gsd:research-phase`
+**Avoids:** Pitfall 1 (truthiness normalization bridge), Pitfall 2 (Homebrew NONINTERACTIVE exception), Pitfall 3 (exit code policy — do not change).
 
-### Phase 2: Consolidation & Data Migration
-**Rationale:** With core utilities established, consolidate duplicate code currently scattered across `scripts/` and `platforms/`. Migrate hardcoded package lists to YAML in `data/packages/`. This addresses the primary brownfield cleanup goal and sets foundation for platform parity work.
+**Research flag:** No additional research needed. Exact file locations, line numbers, and fix patterns are fully specified in FEATURES.md and PITFALLS.md.
 
-**Delivers:**
-- Unified platform abstraction (`src/unix/packages.sh`, `src/linux/apt.sh`)
-- Data-driven package lists (`data/packages/core.yaml`, `data/packages/rust-cli.yaml`)
-- Deprecation of duplicate code in old locations
-- Single bootstrap entry point (`src/core/bootstrap.sh`)
+---
 
-**Addresses features:**
-- Package manager integration (table stakes) — unified, maintainable
-- Minimal base option (table stakes) — profiles reference package files
+### Phase 2: Structure & DRY Cleanup
 
-**Avoids pitfalls:**
-- Code duplication across platforms (Pitfall 9) — consolidation eliminates
-- Hardcoded package lists (Anti-pattern 1) — migration to YAML
-- Duplicated platform detection (Anti-pattern 2) — uses Phase 1 utilities
+**Rationale:** Clean module boundaries before adding features to them. The PowerShell DRY extraction creates `idempotent.psm1`, which Windows parity features (step counters, completion summary) will also use. Merging install directories resolves the naming ambiguity. The DATA_DIR fix prevents the readonly collision from surfacing in Phase 4 unit tests. All four changes in this phase are mutually independent and can be done in any order.
 
-**Research flag:** Standard patterns — skip `/gsd:research-phase`
+**Delivers:** Unified `src/install/` directory, shared `windows/core/idempotent.psm1`, logging.sh as the sole color SSoT (platform.sh no longer defines its own), DATA_DIR guard in packages.sh.
 
-### Phase 3: Dotfiles Management
-**Rationale:** With core and package installation solid, tackle dotfiles using Holman-style topic organization. This is independent of package installation and can be built after consolidation completes.
+**Addresses:** Directory merge (src/installers/ into src/install/), PS DRY violation (Test-WinGetInstalled 3x, Test-NpmInstalled 2x consolidated into idempotent.psm1), duplicate color variables in platform.sh, DATA_DIR readonly collision.
 
-**Delivers:**
-- Topic-centric dotfiles structure (`data/dotfiles/git/`, `data/dotfiles/zsh/`)
-- Symlink manager (`src/unix/shell-setup.sh`)
-- File extension conventions (`.symlink`, `.zsh`, `path.zsh`, `completion.zsh`)
-- Graceful degradation (configs work without optional tools)
+**Avoids:** Pitfall 4 (PS scope isolation — Import-Module in every consumer, not dot-source), Pitfall 5 (directory path cascade — git mv + update all 13+ references before moving), Pitfall 8 (source guard collision — keep old guard variable names as aliases when touching platform.sh).
 
-**Addresses features:**
-- Dotfiles symlink/copy (table stakes)
-- Git integration (table stakes)
+**Research flag:** No additional research needed. All implementation details, file locations, and exact code patterns are specified in ARCHITECTURE.md.
 
-**Avoids pitfalls:**
-- Zsh performance (Pitfall 5) — lazy loading from start
-- Hardcoded paths (Pitfall 7) — use variables
+---
 
-**Research flag:** Well-documented patterns (Holman) — skip `/gsd:research-phase`
+### Phase 3: Windows Parity
 
-### Phase 4: macOS Parity
-**Rationale:** Linux implementation provides reference patterns. macOS shares Unix base but has platform-specific needs (Homebrew, system defaults, Bash upgrade). Current 20% → target 45%+ to match Linux.
+**Rationale:** Windows parity features depend on `idempotent.psm1` from Phase 2. Adding step counters and completion summary before extracting shared helpers means touching main.ps1 in two phases. The `-DryRun` and `-Verbose` switches map directly to `$env:DRY_RUN` and `$env:VERBOSE` — preserving cross-platform UX symmetry without introducing ShouldProcess asymmetry. The Bash `show_completion_summary` and `count_platform_steps` functions are the direct reference implementations for the PS ports.
 
-**Delivers:**
-- `src/macos/brew.sh` — Homebrew operations (NONINTERACTIVE mode)
-- `src/macos/defaults.sh` — System preferences automation
-- `src/macos/cask.sh` — GUI application installation
-- Bash 4+ upgrade script (already exists, integrate)
+**Delivers:** Windows users see `[Step X/Y]` progress during installation, a DryRun banner when running in dry-run mode, a completion summary showing profile/platform/duration/failures, and `-DryRun`/`-Verbose` CLI flags matching Bash `--dry-run`/`--verbose` equivalents.
 
-**Addresses features:**
-- Cross-platform detection (completing table stakes)
-- Package manager integration for macOS
+**Addresses:** Windows -DryRun flag (setup.ps1 param block), Windows DryRun banner (main.ps1), Windows step counters (Get-PlatformStepCount function in main.ps1), Windows completion summary (Show-CompletionSummary function), Windows -Verbose flag (maps to `$env:VERBOSE='true'`).
 
-**Avoids pitfalls:**
-- Cross-platform shell incompatibility (Pitfall 2) — test with Bash 3.2, provide upgrade
-- Hardcoded paths (Pitfall 7) — detect Intel vs Apple Silicon Homebrew paths
-- Incomplete feature parity (Pitfall 10) — target 45%
+**Avoids:** Pitfall 12 (env var case sensitivity — always use `$env:DRY_RUN` uppercase, never `$env:DryRun`). Anti-feature explicitly rejected: do NOT adopt ShouldProcess/WhatIf as replacement for DRY_RUN — breaks cross-platform UX symmetry where Bash uses `DRY_RUN=true ./setup.sh` and Windows should mirror `.\setup.ps1 -DryRun`.
 
-**Research flag:** Homebrew automation patterns well-documented — skip `/gsd:research-phase`
+**Research flag:** No additional research needed. Bash reference implementations are identified. PS port strategy is defined. Anti-patterns are explicitly documented.
 
-### Phase 5: Windows Foundation
-**Rationale:** After Unix platforms mature, tackle Windows. Separate PowerShell scripts, not Bash-via-WSL shims. Current 0% → target 10% (basic winget functionality).
+---
 
-**Delivers:**
-- `src/windows/winget.ps1` — WinGet package installation
-- Windows entry point (`install.ps1`)
-- Basic package list support
+### Phase 4: Testing & Documentation
 
-**Addresses features:**
-- Cross-platform detection (completing for all 3 platforms)
-- Package manager integration for Windows
+**Rationale:** Tests should validate the final cleaned-up state, not intermediate states. Writing tests before Phase 1-3 changes would require test rewrites after each phase. The unit test pattern is already established in `test-dotfiles.sh` — new tests follow that exact pattern (temp dir isolation, assert_eq, trap cleanup). bats-core reduces boilerplate but is optional; the existing harness pattern also works and introduces less infrastructure overhead.
 
-**Avoids pitfalls:**
-- PowerShell vs Bash differences (Phase-specific warning) — separate implementations
-- Incomplete feature parity (Pitfall 10) — establish foundation
+**Delivers:** Unit tests for logging.sh, errors.sh, packages.sh, idempotent.sh, platform.sh (5 new test-core-*.sh files); profile validation tests (each profile .txt verified against existing package files); ShellCheck + shfmt local lint runner (`tools/lint.sh`); PSScriptAnalyzer local lint runner (`tools/lint.ps1`); ARCHITECTURE.md updated to reflect actual codebase patterns; EXTRA_PACKAGES documented in README.
 
-**Research flag:** WinGet is new, may need `/gsd:research-phase` for best practices
+**Addresses:** Unit tests for core Bash modules, profile validation, ShellCheck/shfmt enforcement, PSScriptAnalyzer enforcement, ARCHITECTURE.md drift (references detect_os() not detect_platform(), lists needs_update() that does not exist, says set -euo pipefail when project uses only set -o pipefail).
 
-### Phase 6: Differentiators & Polish
-**Rationale:** After core functionality solid across platforms, add unique features that set this project apart from competitors.
+**Uses:** bats-core 1.13.0 (git submodule, no external dep), bats-assert 2.1.0, bats-support 0.3.0, ShellCheck 0.11.0, shfmt 3.12.0, PSScriptAnalyzer 1.24.0.
 
-**Delivers:**
-- Dry-run mode (`--dry-run` flag)
-- PRD/STORIES parser (intelligent recommendations)
-- Backup before changes (timestamped safety net)
-- Parallel execution (performance optimization)
+**Avoids:** Pitfall 9 (system-dependent tests — test functions not scripts, mock externals like dpkg with shell functions, never run `apt install` in tests), Pitfall 3 (exit code test — verify `./setup.sh --dry-run minimal; echo $?` returns 0 as ADR-001 requires).
 
-**Addresses features:**
-- Dry-run mode (differentiator)
-- PRD/STORIES parser (unique differentiator)
-- Backup before changes (differentiator)
-- Parallel execution (differentiator)
+**Research flag:** Needs attention for packages.sh tests specifically — the `readonly DATA_DIR` behavior when unit-testing requires special setup: either pre-set DATA_DIR before sourcing packages.sh, or source packages.sh in a subshell. All other module tests follow the test-dotfiles.sh pattern directly.
 
-**Avoids pitfalls:**
-- Secrets in repository (Pitfall 4) — parser must not recommend committing secrets
-
-**Research flag:** PRD/STORIES parser is novel — consider `/gsd:research-phase` for implementation patterns
-
-### Phase 7: Testing & Documentation
-**Rationale:** Final phase ensures quality and maintainability. CI matrix across platforms, bats tests for core utilities, comprehensive documentation.
-
-**Delivers:**
-- GitHub Actions matrix (Ubuntu, macOS, Windows)
-- bats-core tests for core utilities
-- Idempotency verification (run twice, compare state)
-- Usage, contribution, troubleshooting docs
-
-**Addresses features:**
-- Documentation (table stakes)
-
-**Avoids pitfalls:**
-- Cross-platform CI (Phase-specific warning) — matrix testing catches incompatibilities
-- Idempotency verification (Phase-specific warning) — automated testing
-
-**Research flag:** Testing strategies well-documented — skip `/gsd:research-phase`
+---
 
 ### Phase Ordering Rationale
 
-**Dependency-driven:** Phase 1 (Core) has no dependencies but everything depends on it. Phase 2 (Consolidation) depends on Phase 1 utilities. Phases 3-5 (Dotfiles, macOS, Windows) can partially parallelize as they're platform-specific. Phase 6 (Differentiators) requires stable foundation. Phase 7 (Testing) validates everything.
-
-**Risk-mitigation driven:** Critical pitfalls (non-idempotency, destructive operations, cross-platform incompatibility) addressed in Phase 1-2 before they propagate to platform implementations. This prevents rework.
-
-**Architecture-driven:** Separates code (Phase 1-2), data (Phase 2), and platform implementations (Phase 3-5) following research-recommended patterns. Topic-centric dotfiles (Phase 3) implemented as separate system.
+- **Phase 1 before everything** because VERBOSE and NONINTERACTIVE/UNATTENDED are evaluated by virtually every module. Any test or feature built on broken flag semantics produces false confidence or requires rework.
+- **Phase 2 before Phase 3** because `idempotent.psm1` is created in Phase 2 and consumed by Windows parity features in Phase 3. Also, the directory structure stabilizes in Phase 2 — test file paths written in Phase 4 do not need updates after Phase 2 is done.
+- **Phase 3 before Phase 4** because tests should validate finished behavior. Writing step counter tests before step counters exist requires the test to be written twice.
+- **Phase 4 last** as the validation and documentation layer. The research explicitly recommends this order: correctness fixes → structure cleanup → feature additions → tests and docs.
 
 ### Research Flags
 
-**Phases needing deeper research during planning:**
-- **Phase 5 (Windows):** WinGet is relatively new (2020), best practices still emerging. Consider `/gsd:research-phase winget` for automation patterns, idempotency handling.
-- **Phase 6 (PRD/STORIES parser):** Novel feature, no existing implementations found. Consider `/gsd:research-phase prd-parser` for parsing strategies, tech stack detection algorithms.
+No phase requires `/gsd:research-phase` — all implementation details are fully specified by the existing research:
 
-**Phases with standard patterns (skip research):**
-- **Phase 1 (Core):** Shell scripting patterns well-documented (Google Style Guide, shellcheck)
-- **Phase 2 (Consolidation):** Standard refactoring, data-driven architecture documented
-- **Phase 3 (Dotfiles):** Holman-style organization extensively documented
-- **Phase 4 (macOS):** Homebrew automation well-documented, many examples
-- **Phase 7 (Testing):** bats-core and GitHub Actions matrix patterns well-established
+- **Phase 1:** File locations, line numbers, and exact fix patterns confirmed by code inspection. Zero unknowns.
+- **Phase 2:** All 13+ path references for directory merge enumerated in PITFALLS.md. Module extraction pattern with exact code specified in ARCHITECTURE.md. DATA_DIR guard one-liner specified.
+- **Phase 3:** Bash reference implementations (`show_completion_summary`, `count_platform_steps`) identified and documented. PS port strategy defined. The Bash implementations are the spec.
+- **Phase 4 (most modules):** test-dotfiles.sh is the established template. bats-core patterns documented in STACK.md with concrete working examples.
+
+One implementation detail needs resolution during Phase 4 execution (not blocking): packages.sh unit test setup sequence for the `readonly DATA_DIR` scenario. Options are documented; the correct one depends on how the test runner sources the module.
+
+---
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | Official documentation verified (Homebrew, shellcheck, winget), project already using recommended stack |
-| Features | MEDIUM | Based on competitive analysis (chezmoi, YADM) and community discussions, not direct user research |
-| Architecture | HIGH | Multiple authoritative sources (Holman, Google Shell Style, Arch Wiki), patterns proven in production dotfiles |
-| Pitfalls | HIGH | Combination of documented issues (Microsoft, Apple dev docs) and codebase analysis revealing current problems |
+| Stack | HIGH | All tool versions verified via official GitHub releases. bats-core 1.13.0, ShellCheck 0.11.0, shfmt 3.12.0, PSScriptAnalyzer 1.24.0 confirmed. Pester deferral justified by file count (8 PS files). |
+| Features | HIGH | All bugs confirmed by direct code inspection with file and line number references. NONINTERACTIVE/UNATTENDED disconnect verified by grep across 7 files. Kite AI shutdown date confirmed. |
+| Architecture | HIGH | All changes derived from reading every file in src/, tests/, setup.sh, setup.ps1, config.sh. 13+ path references enumerated. No external library dependencies introduced. |
+| Pitfalls | HIGH | Critical pitfalls confirmed by code structure analysis and shell/PS runtime semantics. ADR-001 and ADR-007 consulted and preserved. |
 
 **Overall confidence:** HIGH
 
-Research methodology combined official documentation (Bash, Homebrew, PowerShell), authoritative guides (Google Shell Style, Microsoft Engineering Playbook), established dotfiles projects (Holman, YADM, chezmoi), and direct codebase analysis. Cross-referencing multiple sources for each recommendation increases confidence.
-
 ### Gaps to Address
 
-**Windows implementation details:** Research covered WinGet basics but lacks depth on enterprise scenarios, silent installation patterns, and handling Windows-specific quirks (UAC, path separators, PowerShell execution policies). Plan for discovery during Phase 5 implementation.
+- **packages.sh readonly DATA_DIR in test context:** The exact setup sequence for unit-testing packages.sh without triggering the readonly collision is not fully resolved. Options are: pre-set DATA_DIR before sourcing, or run tests in a subshell. Resolve during Phase 4 implementation when the actual test is being written.
+- **bats-core on Windows (Git Bash):** STACK.md notes bats-core works on Windows via Git Bash but does not address test isolation differences or shebang handling. New unit tests target Linux/macOS only; Windows unit test coverage remains at the existing test-windows.ps1 level.
+- **CmdletBinding rollout scope:** STACK.md recommends CmdletBinding on all PS functions; FEATURES.md defers it to v3.1. This gap should be resolved before Phase 2 begins — the decision between "add to installer scripts in Phase 2" vs "defer entirely" affects which files Phase 2 touches.
 
-**PRD/STORIES parser specifics:** Research validated the concept but didn't find existing implementations. Parsing strategy (regex vs AST), technology detection heuristics, and recommendation engine design need exploration during Phase 6 planning. Consider spike story.
-
-**Performance optimization:** Research identified that parallel execution could yield 40%+ speedup but didn't detail implementation strategies for shell scripts (background jobs, wait patterns, error aggregation). May need deeper research during Phase 6.
-
-**Secrets management:** Research recommended against building it in, but didn't fully explore how to guide users toward solutions (1Password CLI, git-crypt, etc.). Documentation phase should research recommendations.
+---
 
 ## Sources
 
-### PRIMARY (HIGH confidence)
+### Primary (HIGH confidence — official releases and direct code analysis)
+- [bats-core v1.13.0 Release](https://github.com/bats-core/bats-core/releases) — version confirmed Nov 2024
+- [ShellCheck v0.11.0 Release](https://github.com/koalaman/shellcheck/releases) — version confirmed Aug 2025
+- [shfmt v3.12.0 Release](https://github.com/mvdan/sh/releases) — version confirmed Jul 2024
+- [PSScriptAnalyzer v1.24.0 Release](https://github.com/PowerShell/PSScriptAnalyzer/releases) — version confirmed Mar 2025
+- [CmdletBinding Attribute](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_cmdletbindingattribute) — Microsoft Learn
+- [PowerShell about_Scopes](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scopes) — scope isolation confirmation for multi-process architecture
+- Direct code inspection: src/core/logging.sh (VERBOSE bug, lines 99-153), config.sh (VERBOSE default line 25), interactive.sh + apt.sh (NONINTERACTIVE), setup.sh (UNATTENDED), windows/install/*.ps1 (Test-WinGetInstalled 3x duplication)
+- Project ADR-001 (error resilience, "always exit 0") and ADR-007 (idempotency safety, guard ordering)
 
-**Official Documentation:**
-- [Homebrew Installation](https://docs.brew.sh/Installation) — NONINTERACTIVE mode for automation
-- [Microsoft WinGet Documentation](https://learn.microsoft.com/en-us/windows/package-manager/winget/) — Official winget automation guide
-- [ShellCheck](https://www.shellcheck.net/) — Static analysis documentation
-- [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html) — Main function pattern, best practices
-
-**Authoritative Guides:**
-- [Microsoft Engineering Playbook - Bash Code Reviews](https://microsoft.github.io/code-with-engineering-playbook/code-reviews/recipes/bash/) — shellcheck/shfmt CI integration
-- [GitLab Shell Scripting Standards](https://docs.gitlab.com/development/shell_scripting_guide/) — Enterprise shell guidelines
-- [Arch Wiki - Dotfiles](https://wiki.archlinux.org/title/Dotfiles) — Comprehensive dotfiles management patterns
-
-### SECONDARY (MEDIUM confidence)
-
-**Established Projects:**
-- [Holman Dotfiles](https://github.com/holman/dotfiles) — Topic-centric organization pattern
-- [chezmoi Comparison Table](https://www.chezmoi.io/comparison-table/) — Feature comparison across tools
-- [chezmoi Why Use](https://www.chezmoi.io/why-use-chezmoi/) — When configuration managers make sense
-- [YADM](https://yadm.io/) — Alternative architecture approach
-
-**Community Consensus:**
-- [dotfiles.github.io](https://dotfiles.github.io/) — Curated dotfiles resources
-- [Hacker News dotfiles discussion](https://news.ycombinator.com/item?id=41453264) — Community perspectives
-- [Hacker News YADM vs chezmoi](https://news.ycombinator.com/item?id=39975247) — Tool comparison discussion
-
-### TERTIARY (LOW confidence)
-
-**Individual Implementations:**
-- [Daniel Schmidt chezmoi setup](https://danielmschmidt.de/posts/2024-07-28-dev-env-setup-with-chezmoi/) — Personal setup patterns
-- [Medium dotfiles secrets](https://medium.com/@htoopyaelwin/organizing-your-dotfiles-managing-secrets-8fd33f06f9bf) — Secrets handling approaches
-- [Modular Bash Architecture Guide](https://medium.com/mkdir-awesome/the-ultimate-guide-to-modularizing-bash-script-code-f4a4d53000c2) — Modularization patterns
-
-**Platform-Specific:**
-- [Differences Between MacOS and Linux Scripting](https://dev.to/aghost7/differences-between-macos-and-linux-scripting-74d) — Portability issues
-- [Apple Shell Scripting Guide](https://developer.apple.com/library/archive/documentation/OpenSource/Conceptual/ShellScripting/PortingScriptstoMacOSX/PortingScriptstoMacOSX.html) — macOS-specific considerations
+### Secondary (MEDIUM confidence — community consensus)
+- [Baeldung: Boolean in Shell Scripts](https://www.baeldung.com/linux/shell-script-boolean-type-variable) — `-n` vs `== "true"` pitfall confirmation
+- [Testing Bash Scripts with BATS](https://www.hackerone.com/blog/testing-bash-scripts-bats-practical-guide) — unit test patterns
+- [bats-core documentation](https://bats-core.readthedocs.io/) — setup/teardown, run helper, load directive
+- [PowerShell Scripting Best Practices 2025](https://dstreefkerk.github.io/2025-06-powershell-scripting-best-practices/) — CmdletBinding patterns
+- [Cross-Platform BATS Issues](https://blog.shukebeta.com/2025/09/02/git-bash-test-compatibility-a-deep-dive-into-cross-platform-bats-issues/) — Windows/macOS differences in bats-core
 
 ---
-*Research completed: 2026-02-04*
+
+*Research completed: 2026-02-18*
+*Supersedes: SUMMARY.md from 2026-02-04 (v1.0 research, pre-v3.0 scope)*
 *Ready for roadmap: yes*
