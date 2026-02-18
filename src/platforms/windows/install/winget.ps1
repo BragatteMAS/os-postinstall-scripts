@@ -65,6 +65,12 @@ function Install-WinGetPackage {
         return
     }
 
+    # DRY_RUN guard
+    if ($env:DRY_RUN -eq 'true') {
+        Write-Log -Level INFO -Message "[DRY_RUN] Would winget install: $PackageId"
+        return
+    }
+
     Write-Log -Level INFO -Message "Installing: $PackageId"
 
     winget install --id $PackageId --exact --accept-source-agreements --accept-package-agreements --silent --source winget 2>$null
