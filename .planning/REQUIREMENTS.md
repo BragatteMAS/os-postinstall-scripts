@@ -3,9 +3,9 @@
 **Defined:** 2026-02-04
 **Core Value:** Facil de manter > features
 
-## v1 Requirements
+## v1 Requirements (Complete)
 
-Requirements para release inicial. Cada um mapeia para fases do roadmap.
+All 22 requirements from v1.0 + v2.1 milestones — COMPLETE.
 
 ### Core Infrastructure
 
@@ -55,22 +55,53 @@ Requirements para release inicial. Cada um mapeia para fases do roadmap.
 - [x] **MOD-03**: Remover codigo deprecated e arquivos legados
 - [x] **MOD-04**: Documentacao: README, INSTALL, USAGE, CUSTOMIZE, CONTRIBUTING
 
-## v2 Requirements
+## v3.0 Requirements
 
-Deferidos para release futura. Tracked mas nao no roadmap atual.
+Requirements para milestone Quality & Parity. Cada um mapeia para fases do roadmap.
+
+### Flag & Boolean Correctness
+
+- [ ] **FLAG-01**: VERBOSE check usa `== "true"` em vez de `-n` em logging.sh (fix boolean bug)
+- [ ] **FLAG-02**: NONINTERACTIVE/UNATTENDED unificados via bridge em config.sh (fix propagation bug)
+- [ ] **FLAG-03**: Remover kite.kite do winget.txt (pacote descontinuado 2022)
+- [ ] **FLAG-04**: ARCHITECTURE.md corrigido para refletir decisao real (no set -e per ADR-001)
+
+### Structure & DRY
+
+- [ ] **DRY-01**: Extrair Test-WinGetInstalled e Test-NpmInstalled para idempotent.psm1 compartilhado
+- [ ] **DRY-02**: Consolidar src/install/ e src/installers/ em um unico diretorio
+- [ ] **DRY-03**: Eliminar definicoes de cor duplicadas em platform.sh, usar logging.sh como SSoT
+- [ ] **DRY-04**: Resolver DATA_DIR dual readonly com guard -z em packages.sh
+
+### Windows Parity
+
+- [ ] **WPAR-01**: setup.ps1 aceita -DryRun, -Verbose, -Unattended como switches CLI
+- [ ] **WPAR-02**: main.ps1 mostra [Step X/Y] em cada dispatch (step counters)
+- [ ] **WPAR-03**: setup.ps1 mostra completion summary com profile, platform, duracao, falhas
+- [ ] **WPAR-04**: Todos os scripts PS usam [CmdletBinding()] para suporte nativo -Verbose/-Debug
+
+### Testing & Documentation
+
+- [ ] **TEST-01**: Unit tests para core modules via bats-core (logging, errors, idempotent, packages)
+- [ ] **TEST-02**: Lint runners locais (tools/lint.sh com ShellCheck + tools/lint.ps1 com PSScriptAnalyzer)
+- [ ] **DOC-01**: README documenta EXTRA_PACKAGES e SKIP_PACKAGES na secao Customization
+- [ ] **DOC-02**: README inclui secao Windows Troubleshooting (execution policy, WinGet, PATH)
+
+## Future Requirements
+
+Deferidos para releases futuras. Tracked mas nao no roadmap atual.
 
 ### Advanced Features
 
 - **ADV-01**: Parallel execution (instalar multiplos pacotes simultaneamente)
-- **ADV-02**: PRD/STORIES parser (ler docs de projeto)
-- **ADV-03**: Diff preview antes de aplicar mudancas
-- **ADV-04**: Suporte a mais distros Linux (Arch, Fedora)
+- **ADV-02**: Diff preview antes de aplicar mudancas
+- **ADV-03**: Suporte a mais distros Linux (Arch, Fedora)
 
-### Testing
+### Testing Evolution
 
-- **TEST-01**: bats-core test framework
-- **TEST-02**: CI matrix (testar em multiplos OS)
-- **TEST-03**: Coverage minimo 30%
+- **TEVO-01**: bats-core test coverage para platform.sh e progress.sh
+- **TEVO-02**: Pester migration para testes PowerShell (quando PS file count > 15)
+- **TEVO-03**: Profile validation tests (typo protection para .txt references)
 
 ## Out of Scope
 
@@ -78,54 +109,46 @@ Explicitamente excluido. Documentado para prevenir scope creep.
 
 | Feature | Reason |
 |---------|--------|
-| Rust/Zig como linguagem | Shell e suficiente, zero deps (ADR pendente) |
+| Rust/Zig como linguagem | Shell e suficiente, zero deps |
 | curl \| bash como fluxo principal | git clone e mais seguro |
 | JSON/TOML para dados | Requer parsers externos (jq, yq) |
 | Distros Linux obscuras | Manter foco em Ubuntu/Debian |
 | GUI ou interface web | CLI only, KISS |
 | Containerizacao (Docker) | Foco em bare metal |
-| Cloud sync de dotfiles | Complexidade desnecessaria |
-| Secrets management | Fora do escopo |
+| CI/CD automation | Decisao explicita do owner |
+| Pester migration | PS surface area < 15 files |
+| Exit code changes (0→1) | ADR-001 correto, risco de trap cascade |
+| ShouldProcess/WhatIf nativo | Quebraria padrao cross-platform DRY_RUN |
+| Terminal demo recording | Deferido (precisa asciinema + agg setup) |
 
 ## Traceability
 
-Mapeamento de requirements para fases do roadmap.
+Mapeamento de requirements para fases do roadmap. Atualizado durante criacao do roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1: Core Infrastructure | Complete |
-| CORE-02 | Phase 1: Core Infrastructure | Complete |
-| CORE-03 | Phase 1: Core Infrastructure | Complete |
-| CORE-04 | Phase 1: Core Infrastructure | Complete |
-| MOD-01 | Phase 2: Consolidation | Complete |
-| MOD-02 | Phase 2: Consolidation | Complete |
-| MOD-03 | Phase 2: Consolidation | Complete |
-| PKG-04 | Phase 2: Consolidation | Complete |
-| DOT-01 | Phase 3: Dotfiles | Complete |
-| DOT-02 | Phase 3: Dotfiles | Complete |
-| DOT-03 | Phase 3: Dotfiles | Complete |
-| DOT-04 | Phase 3: Dotfiles | Complete |
-| PKG-01 | Phase 4: macOS | Complete |
-| PROF-01 | Phase 4: macOS | Complete |
-| PROF-02 | Phase 4: macOS | Complete |
-| PROF-03 | Phase 4: macOS | Complete |
-| PROF-04 | Phase 4: macOS | Complete |
-| PKG-02 | Phase 5: Linux | Complete |
-| FEAT-01 | Phase 5: Linux | Complete |
-| FEAT-02 | Phase 5: Linux | Complete |
-| FEAT-03 | Phase 5: Linux | Complete |
-| PKG-03 | Phase 6: Windows | Complete |
-| UX-01 | Phase 7: UX Polish | Complete |
-| UX-02 | Phase 7: UX Polish | Complete |
-| UX-03 | Phase 7: UX Polish | Complete |
-| UX-04 | Phase 7: UX Polish | Complete |
-| MOD-04 | Phase 8: Documentation | Complete |
+| FLAG-01 | — | Pending |
+| FLAG-02 | — | Pending |
+| FLAG-03 | — | Pending |
+| FLAG-04 | — | Pending |
+| DRY-01 | — | Pending |
+| DRY-02 | — | Pending |
+| DRY-03 | — | Pending |
+| DRY-04 | — | Pending |
+| WPAR-01 | — | Pending |
+| WPAR-02 | — | Pending |
+| WPAR-03 | — | Pending |
+| WPAR-04 | — | Pending |
+| TEST-01 | — | Pending |
+| TEST-02 | — | Pending |
+| DOC-01 | — | Pending |
+| DOC-02 | — | Pending |
 
 **Coverage:**
-- v1 requirements: 22 total
-- Mapped to phases: 22
-- Unmapped: 0
+- v3.0 requirements: 16 total
+- Mapped to phases: 0 (pending roadmap)
+- Unmapped: 16
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-06 after Phase 6 completion*
+*v3.0 requirements added: 2026-02-18 after specialist review*
