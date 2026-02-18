@@ -18,6 +18,7 @@ function Test-WinGetInstalled {
     .OUTPUTS
         System.Boolean - $true if installed, $false otherwise.
     #>
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$PackageId
@@ -40,6 +41,7 @@ function Test-NpmInstalled {
     .OUTPUTS
         System.Boolean - $true if installed globally, $false otherwise.
     #>
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$PackageName
@@ -58,6 +60,7 @@ function Test-CargoInstalled {
     .OUTPUTS
         System.Boolean - $true if installed, $false otherwise.
     #>
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$PackageName

@@ -25,6 +25,7 @@ function Write-Log {
         Write-Log -Level INFO -Message "Starting setup..."
         Write-Log -Level OK -Message "Package installed"
     #>
+    [CmdletBinding()]
     param(
         [ValidateSet('OK','ERROR','WARN','INFO','DEBUG','BANNER')]
         [string]$Level = 'INFO',
