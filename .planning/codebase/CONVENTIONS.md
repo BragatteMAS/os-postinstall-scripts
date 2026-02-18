@@ -28,14 +28,14 @@
 - Always `#!/usr/bin/env bash`
 
 **Strict Mode:**
-- Every script starts with `set -euo pipefail`
+- Every script starts with `set -o pipefail` (no set -e, per ADR-001)
 
 ## Import Organization
 
 **Shell:**
 ```bash
 #!/usr/bin/env bash
-set -euo pipefail
+set -o pipefail
 
 # Resolve project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -59,7 +59,7 @@ main "$@"
 ## Error Handling
 
 **Shell Patterns:**
-- `set -euo pipefail` at top of every script
+- `set -o pipefail` at top of every script (no set -e, per ADR-001)
 - `src/core/errors.sh`: trap-based cleanup, failure tracking, summary at end
 - Conditional checks: `if ! command -v tool &>/dev/null; then ...`
 - Guard functions: `is_installed()`, `needs_update()` from `src/core/idempotent.sh`

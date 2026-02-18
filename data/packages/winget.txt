@@ -41,7 +41,6 @@ ClickUp.ClickUp
 
 # Productivity - Data
 UniversityOfWaikato.Weka
-kite.kite
 
 # Productivity - Utilities
 Microsoft.PowerToys

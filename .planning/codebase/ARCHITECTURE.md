@@ -69,10 +69,11 @@
 
 ## Error Handling
 
-**Strategy:** Fail-fast with tracking; continue on non-critical failures.
+**Strategy:** Continue on failure with tracking. No set -e anywhere (per ADR-001).
 
 **Patterns:**
-- `set -euo pipefail` at top of every script
+- No `set -e` or `set -u` (per ADR-001: continue-on-failure strategy)
+- `set -o pipefail` only (catches pipe failures without aborting on first error)
 - `src/core/errors.sh`: trap-based cleanup, failure log file, summary at end
 - `src/core/idempotent.sh`: skip already-installed packages
 - `DRY_RUN` mode: preview all operations without execution
