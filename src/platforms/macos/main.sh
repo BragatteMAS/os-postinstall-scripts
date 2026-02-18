@@ -139,12 +139,28 @@ install_profile() {
     total_steps=$(count_platform_steps "$profile_file" "macos")
     total_steps=$((total_steps + 1))
 
+    # For developer/full: dev-env + rust-cli run before dispatch loop
+    if [[ "$profile_name" != "minimal" ]]; then
+        total_steps=$((total_steps + 2))
+    fi
+
     local current_step=0
 
     # Ensure Homebrew is installed first
     current_step=$((current_step + 1))
     log_info "[Step ${current_step}/${total_steps}] Ensuring Homebrew is installed..."
     bash "${MACOS_DIR}/install/homebrew.sh" || return 1
+
+    # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
+    if [[ "$profile_name" != "minimal" ]]; then
+        current_step=$((current_step + 1))
+        log_info "[Step ${current_step}/${total_steps}] Setting up development environment..."
+        bash "${INSTALL_DIR}/dev-env.sh"
+
+        current_step=$((current_step + 1))
+        log_info "[Step ${current_step}/${total_steps}] Installing Rust CLI tools..."
+        bash "${INSTALL_DIR}/rust-cli.sh"
+    fi
 
     # Read profile and dispatch to macOS-relevant installers
     while IFS= read -r pkg_file || [[ -n "$pkg_file" ]]; do
