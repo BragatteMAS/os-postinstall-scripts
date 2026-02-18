@@ -605,6 +605,43 @@ The dotfiles (`data/dotfiles/shared/path.sh`) configure this automatically for f
 
 </details>
 
+<details>
+<summary><b>PowerShell execution policy on Windows</b></summary>
+
+**Problem:** `.\setup.ps1 : File .\setup.ps1 cannot be loaded because running scripts is disabled on this system.`
+
+**Solution:** Windows restricts script execution by default. Run one of:
+
+```powershell
+# Option 1: Bypass for this session only (recommended)
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+
+# Option 2: Allow scripts permanently for current user
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\setup.ps1
+```
+
+The `-ExecutionPolicy Bypass` flag is the safest option as it only affects the current invocation.
+
+</details>
+
+<details>
+<summary><b>PATH not updated after WinGet install on Windows</b></summary>
+
+**Problem:** A package installed via WinGet is not found when you run it immediately after installation.
+
+**Solution:** WinGet modifies the system PATH, but the current PowerShell session does not pick up changes automatically. Either:
+
+1. **Close and reopen PowerShell** (simplest)
+2. **Refresh PATH in the current session:**
+   ```powershell
+   $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+   ```
+
+This is a Windows limitation, not a script issue. The same applies to any installer that modifies PATH (Cargo, npm, etc.).
+
+</details>
+
 ## Uninstall / Restore
 
 ### Remove dotfiles symlinks
