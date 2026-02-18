@@ -334,14 +334,13 @@ os-postinstall-scripts/
 │   │       ├── main.ps1        #   Windows orchestrator
 │   │       ├── core/           #   logging.psm1, errors.psm1, packages.psm1
 │   │       └── install/        #   winget.ps1
-│   ├── install/                # Cross-platform installers
-│   │   ├── rust-cli.sh         #   bat, eza, fd, rg, delta, zoxide
-│   │   ├── dev-env.sh          #   fnm + uv orchestrator, SSH keys
-│   │   ├── fnm.sh              #   Node.js via fnm
-│   │   ├── uv.sh              #   Python via uv
-│   │   └── ai-tools.sh         #   Claude, Codex, Gemini, Ollama
-│   └── installers/
-│       └── dotfiles-install.sh # Dotfiles symlink installer
+│   └── install/                # Cross-platform installers
+│       ├── rust-cli.sh         #   bat, eza, fd, rg, delta, zoxide
+│       ├── dev-env.sh          #   fnm + uv orchestrator, SSH keys
+│       ├── fnm.sh              #   Node.js via fnm
+│       ├── uv.sh              #   Python via uv
+│       ├── ai-tools.sh         #   Claude, Codex, Gemini, Ollama
+│       └── dotfiles-install.sh #   Dotfiles symlink installer
 ├── data/
 │   ├── packages/               # Package lists (one file per manager)
 │   │   ├── profiles/           #   minimal.txt, developer.txt, full.txt
@@ -442,7 +441,7 @@ Then run: `./setup.sh custom`
 ### Adding dotfiles
 
 1. Place your config file in `data/dotfiles/<topic>/`
-2. Add a mapping entry in `src/installers/dotfiles-install.sh` (the `symlink_map` array)
+2. Add a mapping entry in `src/install/dotfiles-install.sh` (the `symlink_map` array)
 3. Run `./setup.sh dotfiles`
 
 ### Examples

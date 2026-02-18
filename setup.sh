@@ -141,12 +141,12 @@ main() {
             exit 0
             ;;
         dotfiles)
-            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             install_dotfiles
             exit $?
             ;;
         unlink)
-            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             remove_dotfiles
             exit $?
             ;;
@@ -198,7 +198,7 @@ main() {
         echo ""
         read -rp "Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
         if [[ "$answer" =~ ^[yYsS]$ ]]; then
-            source "${SCRIPT_DIR}/src/installers/dotfiles-install.sh"
+            source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             install_dotfiles
         fi
     fi
