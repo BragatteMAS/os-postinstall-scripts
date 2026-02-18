@@ -1,0 +1,7 @@
+# This is a comment
+curl
+
+# Another comment
+wget
+
+git
