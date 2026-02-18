@@ -20,56 +20,11 @@ $ErrorActionPreference = 'Continue'
 Import-Module "$PSScriptRoot/../core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/../core/packages.psm1" -Force
 Import-Module "$PSScriptRoot/../core/errors.psm1" -Force
+Import-Module "$PSScriptRoot/../core/idempotent.psm1" -Force
 
 #######################################
 # Helper Functions
 #######################################
-
-function Test-NpmInstalled {
-    <#
-    .SYNOPSIS
-        Check if an npm package is installed globally.
-    .DESCRIPTION
-        Self-contained helper (each script runs in separate process).
-        Uses npm list -g which works for both scoped and unscoped packages.
-    .PARAMETER PackageName
-        The npm package name to check.
-    .OUTPUTS
-        System.Boolean - $true if installed globally, $false otherwise.
-    #>
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PackageName
-    )
-
-    npm list -g $PackageName 2>$null | Out-Null
-    return ($LASTEXITCODE -eq 0)
-}
-
-function Test-WinGetInstalled {
-    <#
-    .SYNOPSIS
-        Check if a WinGet package is already installed.
-    .DESCRIPTION
-        Self-contained helper (needed for ollama WinGet check).
-        Same implementation as winget.ps1.
-    .PARAMETER PackageId
-        The exact WinGet package ID to check.
-    .OUTPUTS
-        System.Boolean - $true if installed, $false otherwise.
-    #>
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PackageId
-    )
-
-    $output = winget list --id $PackageId --exact --accept-source-agreements 2>$null
-    if ($LASTEXITCODE -eq 0 -and $output -match [regex]::Escape($PackageId)) {
-        return $true
-    }
-
-    return $false
-}
 
 function Install-AiTool {
     <#

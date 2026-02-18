@@ -16,31 +16,11 @@ $ErrorActionPreference = 'Continue'
 Import-Module "$PSScriptRoot/../core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/../core/packages.psm1" -Force
 Import-Module "$PSScriptRoot/../core/errors.psm1" -Force
+Import-Module "$PSScriptRoot/../core/idempotent.psm1" -Force
 
 #######################################
 # Helper Functions
 #######################################
-
-function Test-NpmInstalled {
-    <#
-    .SYNOPSIS
-        Check if an npm package is installed globally.
-    .DESCRIPTION
-        Uses npm list -g which works for both scoped (@scope/pkg) and unscoped packages.
-        Per Phase 5 decision: scoped packages need npm-level check (not Get-Command).
-    .PARAMETER PackageName
-        The npm package name to check.
-    .OUTPUTS
-        System.Boolean - $true if installed globally, $false otherwise.
-    #>
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PackageName
-    )
-
-    npm list -g $PackageName 2>$null | Out-Null
-    return ($LASTEXITCODE -eq 0)
-}
 
 function Install-NpmPackage {
     <#

@@ -16,32 +16,11 @@ $ErrorActionPreference = 'Continue'
 Import-Module "$PSScriptRoot/../core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/../core/packages.psm1" -Force
 Import-Module "$PSScriptRoot/../core/errors.psm1" -Force
+Import-Module "$PSScriptRoot/../core/idempotent.psm1" -Force
 
 #######################################
 # WinGet Helper Functions
 #######################################
-
-function Test-WinGetInstalled {
-    <#
-    .SYNOPSIS
-        Check if a WinGet package is already installed.
-    .PARAMETER PackageId
-        The exact WinGet package ID to check.
-    .OUTPUTS
-        System.Boolean - $true if installed, $false otherwise.
-    #>
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$PackageId
-    )
-
-    $output = winget list --id $PackageId --exact --accept-source-agreements 2>$null
-    if ($LASTEXITCODE -eq 0 -and $output -match [regex]::Escape($PackageId)) {
-        return $true
-    }
-
-    return $false
-}
 
 function Install-WinGetPackage {
     <#
