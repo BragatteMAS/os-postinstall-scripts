@@ -27,6 +27,7 @@ function Add-FailedItem {
     .EXAMPLE
         Add-FailedItem -Item 'git'
     #>
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$Item
@@ -48,6 +49,8 @@ function Show-FailureSummary {
     .DESCRIPTION
         If no failures, shows success message. Otherwise lists all failed items.
     #>
+    [CmdletBinding()]
+    param()
 
     $count = $script:FailedItems.Count
 
@@ -69,6 +72,8 @@ function Get-FailureCount {
     .OUTPUTS
         System.Int32
     #>
+    [CmdletBinding()]
+    param()
 
     return $script:FailedItems.Count
 }
@@ -78,6 +83,8 @@ function Clear-Failures {
     .SYNOPSIS
         Reset the failure tracking list.
     #>
+    [CmdletBinding()]
+    param()
 
     $script:FailedItems = @()
 }

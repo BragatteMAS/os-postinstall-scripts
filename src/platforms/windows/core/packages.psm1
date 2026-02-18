@@ -29,6 +29,7 @@ function Read-PackageFile {
     .EXAMPLE
         $packages = Read-PackageFile -FileName 'winget.txt'
     #>
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$FileName
