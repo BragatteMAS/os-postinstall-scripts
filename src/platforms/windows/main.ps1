@@ -21,6 +21,7 @@ $WindowsDir = $PSScriptRoot
 Import-Module "$WindowsDir/core/logging.psm1" -Force
 Import-Module "$WindowsDir/core/packages.psm1" -Force
 Import-Module "$WindowsDir/core/errors.psm1" -Force
+Import-Module "$WindowsDir/core/progress.psm1" -Force
 
 # Resolve project root and data directory
 $ProjectRoot = (Resolve-Path "$WindowsDir/../../..").Path
@@ -65,6 +66,13 @@ function Install-Profile {
         return
     }
 
+    # Show DRY_RUN banner if active (before any dispatch)
+    Show-DryRunBanner
+
+    # Count Windows-relevant steps from profile
+    $totalSteps = Get-PlatformStepCount -ProfileFile $profileFile
+    $currentStep = 0
+
     $entries = Get-Content -Path $profileFile -Encoding UTF8 |
         ForEach-Object { $_.Trim() } |
         Where-Object { $_ -ne '' -and -not $_.StartsWith('#') }
@@ -73,19 +81,23 @@ function Install-Profile {
     foreach ($pkgFile in $entries) {
         switch ($pkgFile) {
             'winget.txt' {
-                Write-Log -Level INFO -Message 'Installing WinGet packages...'
+                $currentStep++
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet packages..."
                 & "$WindowsDir/install/winget.ps1"
             }
             'cargo.txt' {
-                Write-Log -Level INFO -Message 'Installing Cargo packages...'
+                $currentStep++
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing Cargo packages..."
                 & "$WindowsDir/install/cargo.ps1"
             }
             'npm.txt' {
-                Write-Log -Level INFO -Message 'Installing NPM global packages...'
+                $currentStep++
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing NPM global packages..."
                 & "$WindowsDir/install/npm.ps1"
             }
             'ai-tools.txt' {
-                Write-Log -Level INFO -Message 'Installing AI tools...'
+                $currentStep++
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing AI tools..."
                 & "$WindowsDir/install/ai-tools.ps1"
             }
             default {

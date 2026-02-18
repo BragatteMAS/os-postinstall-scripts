@@ -147,6 +147,48 @@ Assert-NotContains "no WARN skip for ai-tools in main.ps1" "$ProjectRoot/src/pla
 Write-Host ""
 
 #######################################
+# 4. Phase 13: Windows Parity checks
+#######################################
+Write-Host "--- Phase 13: Windows Parity ---"
+
+# progress.psm1 existence
+Assert-Pass "progress.psm1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/core/progress.psm1")) { throw "missing" }
+}
+
+# setup.ps1 CLI switches
+Assert-Contains "-DryRun switch in setup.ps1" "$ProjectRoot/setup.ps1" '\[switch\]\$DryRun'
+Assert-Contains "-Verbose switch in setup.ps1" "$ProjectRoot/setup.ps1" '\[switch\]\$Verbose'
+Assert-Contains "-Unattended switch in setup.ps1" "$ProjectRoot/setup.ps1" '\[switch\]\$Unattended'
+
+# Environment variable mapping
+Assert-Contains "DRY_RUN env mapping in setup.ps1" "$ProjectRoot/setup.ps1" "env:DRY_RUN.*=.*'true'"
+Assert-Contains "VERBOSE env mapping in setup.ps1" "$ProjectRoot/setup.ps1" "env:VERBOSE.*=.*'true'"
+Assert-Contains "UNATTENDED env mapping in setup.ps1" "$ProjectRoot/setup.ps1" "env:UNATTENDED.*=.*'true'"
+
+# StartTime and summary
+Assert-Contains "StartTime in setup.ps1" "$ProjectRoot/setup.ps1" "StartTime.*=.*Get-Date"
+Assert-Contains "Show-CompletionSummary in setup.ps1" "$ProjectRoot/setup.ps1" "Show-CompletionSummary"
+
+# progress.psm1 content
+Assert-Contains "Show-DryRunBanner in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "function Show-DryRunBanner"
+Assert-Contains "Get-PlatformStepCount in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "function Get-PlatformStepCount"
+Assert-Contains "Show-CompletionSummary in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "function Show-CompletionSummary"
+Assert-Contains "Export-ModuleMember in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "Export-ModuleMember"
+
+# Step counters in main.ps1
+Assert-Contains "Step counter pattern in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" '\[Step.*totalSteps'
+Assert-Contains "Get-PlatformStepCount in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Get-PlatformStepCount"
+Assert-Contains "Show-DryRunBanner in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Show-DryRunBanner"
+Assert-Contains "progress.psm1 import in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "progress\.psm1"
+
+# No CmdletBinding in scripts (only in module functions)
+Assert-NotContains "no CmdletBinding in setup.ps1" "$ProjectRoot/setup.ps1" "CmdletBinding"
+Assert-NotContains "no CmdletBinding in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "CmdletBinding"
+
+Write-Host ""
+
+#######################################
 # Summary
 #######################################
 Write-Host "========================================="
