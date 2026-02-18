@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 11 pending
+**Current focus:** Milestone v3.0 Quality & Parity -- Phase 11 in progress
 
 ## Current Position
 
 Phase: 11 of 14 (Flag & Boolean Fixes)
-Plan: --
-Status: Ready to plan
-Last activity: 2026-02-18 -- Roadmap created for milestone v3.0
+Plan: 01 complete
+Status: Plan 11-01 complete
+Last activity: 2026-02-18 -- Executed 11-01 (flag boolean fixes)
 
-Progress: [##################################░░░░░░░░] 76% (41/54 plans estimated)
+Progress: [###################################░░░░░░░] 78% (42/54 plans estimated)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 41
+- Total plans completed: 42
 - Average duration: 2.4 min
-- Total execution time: 98 min
+- Total execution time: 100 min
 
 **By Phase:**
 
@@ -44,9 +44,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 09-terminal-blueprint | 2/2 | 6 min | 3 min |
 | 10-windows-cross-platform-installers | 2/2 | 5 min | 2.5 min |
 | 10.1-process-debt-cleanup | 1/1 | 1 min | 1 min |
+| 11-flag-boolean-fixes | 1/? | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 09-01 (2 min), 09-02 (4 min), 10-01 (3 min), 10-02 (2 min), 10.1-01 (1 min)
+- Last 5 plans: 09-02 (4 min), 10-01 (3 min), 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min)
 - Trend: Stable at ~1-4 min
 
 *Updated after each plan completion*
@@ -63,6 +64,8 @@ Recent decisions affecting current work:
 - [v3.0]: No Pester migration -- PS surface area < 15 files
 - [v3.0]: No ShouldProcess/WhatIf -- breaks cross-platform DRY_RUN consistency
 - [v3.0]: No exit code changes -- ADR-001 "always exit 0" preserved
+- [11-01]: VERBOSE checks use == "true" string comparison (not -n/-z)
+- [11-01]: NONINTERACTIVE two-site bridge: config.sh for env-var path, setup.sh for -y flag path
 
 ### Pending Todos
 
@@ -79,7 +82,7 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Roadmap created for v3.0 (Phases 11-14). Ready to plan Phase 11.
+Stopped at: Completed 11-01-PLAN.md (flag boolean fixes, winget cleanup, doc alignment)
 Resume file: None
 
 ---
