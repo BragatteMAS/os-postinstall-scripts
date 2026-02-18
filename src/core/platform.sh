@@ -28,42 +28,6 @@ export DETECTED_BASH=""
 readonly SUPPORTED_DISTROS="ubuntu debian pop linuxmint elementary zorin"
 
 #######################################
-# Colors (only if terminal)
-#######################################
-if [[ -t 1 ]]; then
-    readonly _RED='\033[0;31m'
-    readonly _GREEN='\033[0;32m'
-    readonly _YELLOW='\033[1;33m'
-    readonly _BLUE='\033[0;34m'
-    readonly _NC='\033[0m'
-else
-    readonly _RED=''
-    readonly _GREEN=''
-    readonly _YELLOW=''
-    readonly _BLUE=''
-    readonly _NC=''
-fi
-
-#######################################
-# Internal logging helpers
-#######################################
-_platform_info() {
-    echo -e "${_BLUE}[INFO]${_NC} $*"
-}
-
-_platform_ok() {
-    echo -e "${_GREEN}[OK]${_NC} $*"
-}
-
-_platform_warn() {
-    echo -e "${_YELLOW}[WARN]${_NC} $*"
-}
-
-_platform_error() {
-    echo -e "${_RED}[ERROR]${_NC} $*" >&2
-}
-
-#######################################
 # detect_platform()
 # Detects OS, distro, package manager, architecture, and Bash version
 # Sets all DETECTED_* variables
@@ -152,7 +116,7 @@ verify_bash_version() {
     local major="${BASH_VERSINFO[0]:-0}"
 
     if [[ "$major" -lt 4 ]]; then
-        _platform_error "Bash version $DETECTED_BASH is too old. Version 4.0+ is required."
+        log_error "Bash version $DETECTED_BASH is too old. Version 4.0+ is required."
         echo ""
         echo "Upgrade instructions:"
         if [[ "$DETECTED_OS" == "macos" ]]; then
@@ -192,13 +156,13 @@ verify_supported_distro() {
     done
 
     if [[ "$distro_found" == "false" ]]; then
-        _platform_warn "Distro '$DETECTED_DISTRO' is not officially supported."
+        log_warn "Distro '$DETECTED_DISTRO' is not officially supported."
         echo "  Supported distros: $SUPPORTED_DISTROS"
         echo ""
 
         # If not interactive, return error
         if [[ ! -t 0 ]]; then
-            _platform_warn "Non-interactive mode. Continuing anyway..."
+            log_warn "Non-interactive mode. Continuing anyway..."
             return 0
         fi
 
@@ -223,7 +187,7 @@ verify_supported_distro() {
 #######################################
 verify_package_manager() {
     if [[ -z "$DETECTED_PKG" ]]; then
-        _platform_error "No supported package manager found."
+        log_error "No supported package manager found."
         echo "  Supported package managers: apt, brew, winget"
         echo ""
 
@@ -259,12 +223,12 @@ check_internet() {
         return 0
     fi
 
-    _platform_warn "No internet connection detected."
+    log_warn "No internet connection detected."
     echo ""
 
     # If not interactive, continue with warning
     if [[ ! -t 0 ]]; then
-        _platform_warn "Non-interactive mode. Continuing anyway..."
+        log_warn "Non-interactive mode. Continuing anyway..."
         return 0
     fi
 
@@ -288,7 +252,7 @@ check_internet() {
 request_sudo() {
     # Skip in dry-run mode
     if [[ "${DRY_RUN:-false}" == "true" ]]; then
-        _platform_info "Dry-run mode: skipping sudo request"
+        log_info "Dry-run mode: skipping sudo request"
         return 0
     fi
 
@@ -301,7 +265,7 @@ request_sudo() {
     if [[ "$DETECTED_OS" == "macos" ]]; then
         # Still request for system-level operations
         if ! sudo -v 2>/dev/null; then
-            _platform_warn "sudo access not granted. Some operations may fail."
+            log_warn "sudo access not granted. Some operations may fail."
             return 0
         fi
         return 0
@@ -309,13 +273,13 @@ request_sudo() {
 
     # Linux: sudo is required for apt
     if ! command -v sudo &>/dev/null; then
-        _platform_error "sudo is not available. Cannot proceed."
+        log_error "sudo is not available. Cannot proceed."
         return 1
     fi
 
-    _platform_info "Requesting sudo access..."
+    log_info "Requesting sudo access..."
     if ! sudo -v; then
-        _platform_error "sudo access denied."
+        log_error "sudo access denied."
         return 1
     fi
 
@@ -336,14 +300,14 @@ verify_all() {
 
     # Print detection output
     if [[ "$DETECTED_OS" == "macos" ]]; then
-        _platform_ok "Detected: macOS $DETECTED_VERSION ($DETECTED_PKG)"
+        log_ok "Detected: macOS $DETECTED_VERSION ($DETECTED_PKG)"
     elif [[ -n "$DETECTED_DISTRO" && "$DETECTED_DISTRO" != "unknown" ]]; then
         # Capitalize first letter of distro for display
         local display_distro
         display_distro="$(printf '%s' "${DETECTED_DISTRO:0:1}" | tr '[:lower:]' '[:upper:]')${DETECTED_DISTRO:1}"
-        _platform_ok "Detected: $display_distro $DETECTED_VERSION ($DETECTED_PKG)"
+        log_ok "Detected: $display_distro $DETECTED_VERSION ($DETECTED_PKG)"
     else
-        _platform_ok "Detected: $DETECTED_OS ($DETECTED_PKG)"
+        log_ok "Detected: $DETECTED_OS ($DETECTED_PKG)"
     fi
 
     # Verify Bash version
