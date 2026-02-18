@@ -125,30 +125,66 @@ Explicitamente excluido. Documentado para prevenir scope creep.
 
 Mapeamento de requirements para fases do roadmap. Atualizado durante criacao do roadmap.
 
+### v1.0 + v2.1 (Complete)
+
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FLAG-01 | — | Pending |
-| FLAG-02 | — | Pending |
-| FLAG-03 | — | Pending |
-| FLAG-04 | — | Pending |
-| DRY-01 | — | Pending |
-| DRY-02 | — | Pending |
-| DRY-03 | — | Pending |
-| DRY-04 | — | Pending |
-| WPAR-01 | — | Pending |
-| WPAR-02 | — | Pending |
-| WPAR-03 | — | Pending |
-| WPAR-04 | — | Pending |
-| TEST-01 | — | Pending |
-| TEST-02 | — | Pending |
-| DOC-01 | — | Pending |
-| DOC-02 | — | Pending |
+| CORE-01 | Phase 1 | Complete |
+| CORE-02 | Phase 1 | Complete |
+| CORE-03 | Phase 1 | Complete |
+| CORE-04 | Phase 1 | Complete |
+| PKG-01 | Phase 4 | Complete |
+| PKG-02 | Phase 5 | Complete |
+| PKG-03 | Phase 6 | Complete |
+| PKG-04 | Phase 2 | Complete |
+| DOT-01 | Phase 3 | Complete |
+| DOT-02 | Phase 3 | Complete |
+| DOT-03 | Phase 3 | Complete |
+| DOT-04 | Phase 3 | Complete |
+| PROF-01 | Phase 4 | Complete |
+| PROF-02 | Phase 4 | Complete |
+| PROF-03 | Phase 4 | Complete |
+| PROF-04 | Phase 4 | Complete |
+| UX-01 | Phase 7 | Complete |
+| UX-02 | Phase 7 | Complete |
+| UX-03 | Phase 7 | Complete |
+| UX-04 | Phase 7 | Complete |
+| FEAT-01 | Phase 5 | Complete |
+| FEAT-02 | Phase 5 | Complete |
+| FEAT-03 | Phase 5 | Complete |
+| MOD-01 | Phase 2 | Complete |
+| MOD-02 | Phase 2 | Complete |
+| MOD-03 | Phase 2 | Complete |
+| MOD-04 | Phase 8 | Complete |
+
+### v3.0 (Active)
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| FLAG-01 | Phase 11 | Pending |
+| FLAG-02 | Phase 11 | Pending |
+| FLAG-03 | Phase 11 | Pending |
+| FLAG-04 | Phase 11 | Pending |
+| DRY-01 | Phase 12 | Pending |
+| DRY-02 | Phase 12 | Pending |
+| DRY-03 | Phase 12 | Pending |
+| DRY-04 | Phase 12 | Pending |
+| WPAR-01 | Phase 13 | Pending |
+| WPAR-02 | Phase 13 | Pending |
+| WPAR-03 | Phase 13 | Pending |
+| WPAR-04 | Phase 13 | Pending |
+| TEST-01 | Phase 14 | Pending |
+| TEST-02 | Phase 14 | Pending |
+| DOC-01 | Phase 14 | Pending |
+| DOC-02 | Phase 14 | Pending |
 
 **Coverage:**
+- v1.0+v2.1 requirements: 22 total -- all Complete
 - v3.0 requirements: 16 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 16
+- Mapped to phases: 16/16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-04*
 *v3.0 requirements added: 2026-02-18 after specialist review*
+*v3.0 traceability updated: 2026-02-18 after roadmap creation*
