@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 13 plan 01 complete
+**Current focus:** Milestone v3.0 Quality & Parity -- Phase 13 plan 02 complete
 
 ## Current Position
 
 Phase: 13 of 14 (Windows Parity)
-Plan: 01 complete
-Status: Plan 01 done, ready for next plan
-Last activity: 2026-02-18 -- Plan 01 complete (CLI switches, step counters, completion summary)
+Plan: 02 complete
+Status: Plan 02 done, ready for next plan
+Last activity: 2026-02-18 -- Plan 02 complete (CmdletBinding on 9 exported functions in 4 core modules)
 
-Progress: [######################################░░░░] 83% (45/54 plans estimated)
+Progress: [######################################░░░░] 85% (46/54 plans estimated)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 45
+- Total plans completed: 46
 - Average duration: 2.4 min
-- Total execution time: 109 min
+- Total execution time: 111 min
 
 **By Phase:**
 
@@ -46,11 +46,11 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 10.1-process-debt-cleanup | 1/1 | 1 min | 1 min |
 | 11-flag-boolean-fixes | 1/1 | 2 min | 2 min |
 | 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
-| 13-windows-parity | 1/? | 4 min | 4 min |
+| 13-windows-parity | 2/? | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min), 12-02 (3 min), 13-01 (4 min)
-- Trend: Stable at ~1-4 min
+- Last 5 plans: 11-01 (2 min), 12-01 (2 min), 12-02 (3 min), 13-01 (4 min), 13-02 (2 min)
+- Trend: Stable at ~2-4 min
 
 *Updated after each plan completion*
 
@@ -73,6 +73,8 @@ Recent decisions affecting current work:
 - [12-02]: DATA_DIR readonly guarded with -z check to prevent collision on re-source
 - [13-01]: No CmdletBinding on setup.ps1 or main.ps1 (scripts) -- only on module exported functions
 - [13-01]: Show-CompletionSummary reads FAILURE_LOG internally, replacing inline failure aggregation
+- [13-02]: Bare [CmdletBinding()] only on module functions -- no ShouldProcess (WPAR-04)
+- [13-02]: Parameterless functions get [CmdletBinding()] + empty param() for PS compliance
 
 ### Pending Todos
 
@@ -82,14 +84,14 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- CmdletBinding rollout scope: research defers to v3.1, but WPAR-04 requires it for exported functions. Resolution: add to core module functions only (Phase 13), not all installer scripts.
+- ~~CmdletBinding rollout scope: research defers to v3.1, but WPAR-04 requires it for exported functions.~~ Resolved in 13-02: added to all 9 core module functions.
 - ~~packages.sh readonly DATA_DIR in test context~~ -- resolved in 12-02 (DRY-04: -z guard added).
 - NO CI/CD automation -- explicit owner decision (2026-02-08). Tests are manual only.
 
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Phase 13 plan 01 complete. Ready for next plan.
+Stopped at: Phase 13 plan 02 complete. Ready for next plan.
 Resume file: None
 
 ---
