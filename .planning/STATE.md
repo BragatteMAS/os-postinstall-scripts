@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- Phase 12 complete, Phase 13 pending
+**Current focus:** Milestone v3.0 Quality & Parity -- Phase 13 plan 01 complete
 
 ## Current Position
 
 Phase: 13 of 14 (Windows Parity)
-Plan: --
-Status: Ready to plan
-Last activity: 2026-02-18 -- Phase 12 complete (structure & DRY cleanup)
+Plan: 01 complete
+Status: Plan 01 done, ready for next plan
+Last activity: 2026-02-18 -- Plan 01 complete (CLI switches, step counters, completion summary)
 
-Progress: [#####################################░░░░░] 81% (44/54 plans estimated)
+Progress: [######################################░░░░] 83% (45/54 plans estimated)
 
 ## Previous Milestone Performance
 
@@ -23,9 +23,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 44
+- Total plans completed: 45
 - Average duration: 2.4 min
-- Total execution time: 105 min
+- Total execution time: 109 min
 
 **By Phase:**
 
@@ -46,10 +46,11 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 10.1-process-debt-cleanup | 1/1 | 1 min | 1 min |
 | 11-flag-boolean-fixes | 1/1 | 2 min | 2 min |
 | 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
+| 13-windows-parity | 1/? | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 10-02 (2 min), 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min), 12-02 (3 min)
-- Trend: Stable at ~1-3 min
+- Last 5 plans: 10.1-01 (1 min), 11-01 (2 min), 12-01 (2 min), 12-02 (3 min), 13-01 (4 min)
+- Trend: Stable at ~1-4 min
 
 *Updated after each plan completion*
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [12-01]: Test-CargoInstalled extracted into shared module despite no duplication (future-proofing for Phase 13)
 - [12-02]: logging.sh is SSoT for colors and log functions; platform.sh delegates to log_info/log_ok/log_warn/log_error
 - [12-02]: DATA_DIR readonly guarded with -z check to prevent collision on re-source
+- [13-01]: No CmdletBinding on setup.ps1 or main.ps1 (scripts) -- only on module exported functions
+- [13-01]: Show-CompletionSummary reads FAILURE_LOG internally, replacing inline failure aggregation
 
 ### Pending Todos
 
@@ -86,7 +89,7 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Phase 12 complete (2/2 plans). Ready to plan Phase 13 (Windows Parity).
+Stopped at: Phase 13 plan 01 complete. Ready for next plan.
 Resume file: None
 
 ---
