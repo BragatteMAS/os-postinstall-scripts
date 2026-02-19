@@ -5,16 +5,15 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Milestone v3.0 Quality & Parity -- COMPLETE (all 14 phases done)
+**Current focus:** Between milestones. v3.0 archived, next milestone TBD.
 
 ## Current Position
 
-Phase: 14 of 14 (Testing & Documentation)
-Plan: 2 of 2 complete
-Status: Complete
-Last activity: 2026-02-18 -- Plan 14-01 complete (37 bats unit tests, ShellCheck/PSScriptAnalyzer lint runners)
+Milestone: v3.0 Quality & Parity -- SHIPPED (tag v4.0.0, 2026-02-18)
+Status: Archived
+Last activity: 2026-02-18 -- Milestone v3.0 archived to .planning/milestones/
 
-Progress: [############################################] 100% (48/48 plans)
+Progress: All 3 milestones complete (48/48 plans across 14 phases)
 
 ## Previous Milestone Performance
 
@@ -97,8 +96,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 14-01-PLAN.md. All Phase 14 plans done. Milestone v3.0 complete.
+Stopped at: Milestone v3.0 archived. Tag v4.0.0 created. Ready for next milestone.
 Resume file: None
+Next step: `/gsd:new-milestone` to start next milestone
 
 ---
-*Milestone v3.0 Quality & Parity -- started 2026-02-18*
+*Milestone v3.0 Quality & Parity -- shipped 2026-02-18 (tag v4.0.0)*

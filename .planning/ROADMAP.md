@@ -8,7 +8,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 
 - v1.0 MVP - Phases 1-8.2 (shipped 2026-02-08)
 - v2.1 Feature Completion - Phases 9-10.1 (shipped 2026-02-17)
-- v3.0 Quality & Parity - Phases 11-14 (in progress)
+- v3.0 Quality & Parity - Phases 11-14 (shipped 2026-02-18, tag v4.0.0) — [archive](.planning/milestones/v3.0-ROADMAP.md)
 
 ## Phases
 
@@ -35,17 +35,10 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 
 </details>
 
-### v3.0 Quality & Parity (Phases 11-14)
-
-- [x] **Phase 11: Flag & Boolean Fixes** - Correct flag semantics (VERBOSE, NONINTERACTIVE, stale data, doc drift) (completed 2026-02-18)
-- [x] **Phase 12: Structure & DRY Cleanup** - Extract shared PS helpers, merge directories, eliminate duplication (completed 2026-02-18)
-- [x] **Phase 13: Windows Parity** - DryRun flag, step counters, completion summary, CmdletBinding for Windows (completed 2026-02-18)
-- [ ] **Phase 14: Testing & Documentation** - Unit tests for core modules, lint runners, README gaps
-
 ## Phase Details
 
 <details>
-<summary>v1.0 MVP + v2.1 Feature Completion (Phases 1-10.1) -- SHIPPED 2026-02-17</summary>
+<summary>v1.0 MVP + v2.1 Feature Completion + v3.0 Quality & Parity (Phases 1-14) -- SHIPPED 2026-02-18</summary>
 
 ### Phase 1: Core Infrastructure
 **Goal**: Establish robust foundation utilities that enforce safe patterns across all platform-specific code
@@ -253,97 +246,28 @@ Plans:
 Plans:
 - [x] 10.1-01-PLAN.md — Phase 08 VERIFICATION.md + MOD-04 traceability update
 
+- [x] **Phase 11: Flag & Boolean Fixes** - Correct flag semantics (VERBOSE, NONINTERACTIVE, stale data, doc drift) (completed 2026-02-18)
+- [x] **Phase 12: Structure & DRY Cleanup** - Extract shared PS helpers, merge directories, eliminate duplication (completed 2026-02-18)
+- [x] **Phase 13: Windows Parity** - DryRun flag, step counters, completion summary, CmdletBinding for Windows (completed 2026-02-18)
+- [x] **Phase 14: Testing & Documentation** - Unit tests for core modules, lint runners, README gaps (completed 2026-02-18)
+
 </details>
-
-### Phase 11: Flag & Boolean Fixes
-**Goal**: Correct flag semantics so VERBOSE, NONINTERACTIVE, and data files behave as documented
-**Depends on**: Phase 10.1
-**Requirements**: FLAG-01, FLAG-02, FLAG-03, FLAG-04
-**Success Criteria** (what must be TRUE):
-  1. Running with `VERBOSE=false ./setup.sh` produces no timestamp/debug output (boolean check uses `== "true"`, not `-n`)
-  2. Running with `./setup.sh -y` suppresses all interactive prompts including apt confirmation (NONINTERACTIVE/UNATTENDED unified via bridge)
-  3. Running `.\setup.ps1` on Windows does not attempt to install kite.kite (stale entry removed from winget.txt)
-  4. ARCHITECTURE.md accurately describes the error handling strategy (no set -e, per ADR-001)
-**Plans**: 1 plan
-
-Plans:
-- [x] 11-01-PLAN.md — Fix VERBOSE boolean, NONINTERACTIVE bridge, stale winget entry, and doc drift
-
-### Phase 12: Structure & DRY Cleanup
-**Goal**: Eliminate code duplication and unify directory structure so each concept has exactly one home
-**Depends on**: Phase 11
-**Requirements**: DRY-01, DRY-02, DRY-03, DRY-04
-**Success Criteria** (what must be TRUE):
-  1. Test-WinGetInstalled and Test-NpmInstalled exist in exactly one file (windows/core/idempotent.psm1) and all PS installers import from there
-  2. Only one install directory exists under src/ (src/install/, not both src/install/ and src/installers/)
-  3. Color/format variables are defined only in logging.sh (platform.sh has no independent color definitions)
-  4. Running `./setup.sh` twice does not hit a readonly DATA_DIR collision error (guard protects re-source)
-**Plans**: 2 plans
-
-Plans:
-- [x] 12-01-PLAN.md — Extract PS idempotent check functions to shared idempotent.psm1 module (DRY-01)
-- [x] 12-02-PLAN.md — Merge install directories, eliminate platform.sh color duplication, guard DATA_DIR readonly (DRY-02, DRY-03, DRY-04)
-
-### Phase 13: Windows Parity
-**Goal**: Windows users see the same UX feedback as Unix users (flags, progress, summary)
-**Depends on**: Phase 12
-**Requirements**: WPAR-01, WPAR-02, WPAR-03, WPAR-04
-**Success Criteria** (what must be TRUE):
-  1. Running `.\setup.ps1 -DryRun` shows a DryRun banner and skips all mutations (matching Bash `--dry-run` behavior)
-  2. Windows installation shows `[Step X/Y]` prefix for each dispatch step (matching Unix step counters)
-  3. After Windows setup completes, user sees a summary with profile name, platform, duration, and failure count (matching Unix completion summary)
-  4. All exported PowerShell functions use `[CmdletBinding()]` so `-Verbose` and `-Debug` propagate natively
-**Plans**: 2 plans
-
-Plans:
-- [x] 13-01-PLAN.md — CLI flags + progress.psm1 module + step counters + completion summary (WPAR-01, WPAR-02, WPAR-03)
-- [x] 13-02-PLAN.md — CmdletBinding for all core module exported functions (WPAR-04)
-
-### Phase 14: Testing & Documentation
-**Goal**: Validate final codebase correctness with unit tests and close documentation gaps
-**Depends on**: Phase 13
-**Requirements**: TEST-01, TEST-02, DOC-01, DOC-02
-**Success Criteria** (what must be TRUE):
-  1. Running `bats tests/test-core-*.bats` passes unit tests for logging.sh, errors.sh, packages.sh, and idempotent.sh
-  2. Running `tools/lint.sh` executes ShellCheck on all .sh files and reports results (no CI required)
-  3. README.md Customization section documents EXTRA_PACKAGES and SKIP_PACKAGES environment variables with examples
-  4. README.md includes a Windows Troubleshooting section covering execution policy, WinGet availability, and PATH issues
-**Plans**: TBD
-
-Plans:
-- [ ] 14-01-PLAN.md — TBD
-- [ ] 14-02-PLAN.md — TBD
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 8.1 -> 8.2 -> 9 -> 10 -> 10.1 -> 11 -> 12 -> 13 -> 14
+All 3 milestones shipped. 48 plans executed across 14 phases.
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Core Infrastructure | 3/3 | Complete | 2026-02-05 |
-| 2. Consolidation & Data Migration | 7/7 | Complete | 2026-02-05 |
-| 3. Dotfiles Management | 4/4 | Complete | 2026-02-06 |
-| 4. macOS Platform | 3/3 | Complete | 2026-02-06 |
-| 5. Linux Enhancements | 6/6 | Complete | 2026-02-06 |
-| 6. Windows Foundation | 2/2 | Complete | 2026-02-06 |
-| 7. User Experience Polish | 3/3 | Complete | 2026-02-07 |
-| 8. Documentation | 3/3 | Complete | 2026-02-07 |
-| 8.1 Terminal Setup Windows | 1/1 | Complete | 2026-02-08 |
-| 8.2 Audit Remediation | 4/4 | Complete | 2026-02-08 |
-| 9. Terminal Blueprint | 2/2 | Complete | 2026-02-17 |
-| 10. Windows Cross-Platform Installers | 2/2 | Complete | 2026-02-17 |
-| 10.1 Process Debt Cleanup | 1/1 | Complete | 2026-02-17 |
-| 11. Flag & Boolean Fixes | 1/1 | Complete | 2026-02-18 |
-| 12. Structure & DRY Cleanup | 2/2 | Complete | 2026-02-18 |
-| 13. Windows Parity | 2/2 | Complete | 2026-02-18 |
-| 14. Testing & Documentation | 0/? | Not started | - |
+| Milestone | Phases | Plans | Shipped |
+|-----------|--------|-------|---------|
+| v1.0 MVP | 1-8.2 | 41 | 2026-02-08 |
+| v2.1 Feature Completion | 9-10.1 | 5 | 2026-02-17 |
+| v3.0 Quality & Parity | 11-14 | 7 | 2026-02-18 |
+
+See `.planning/milestones/` for detailed archives.
 
 ---
 *Roadmap created: 2026-02-04*
 *Milestone v1.0 complete: 2026-02-08*
 *Milestone v2.1 complete: 2026-02-17*
-*Milestone v3.0 phases added: 2026-02-18*
-*Depth: comprehensive*
-*v1.0+v2.1 requirements coverage: 22/22 mapped -- all Complete*
-*v3.0 requirements coverage: 16/16 mapped*
+*Milestone v3.0 complete: 2026-02-18 (tag v4.0.0)*
+*Total: 48 plans, 14 phases, 3 milestones*
