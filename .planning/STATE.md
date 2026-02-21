@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 15 in progress, Plan 02 complete
-Last activity: 2026-02-21 -- Phase 15-02 executed (Bash compat, pipefail, PS/brew fixes)
+Status: Phase 16 in progress, Plan 01 complete
+Last activity: 2026-02-21 -- Phase 16-01 executed (semantic exit codes across all scripts)
 
-Progress: 50/~57 plans complete (v1.0-v3.0: 48, v4.1: 2/~9)
+Progress: 51/~57 plans complete (v1.0-v3.0: 48, v4.1: 3/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 50
+- Total plans completed: 51
 - Average duration: 2.4 min
-- Total execution time: 118 min
+- Total execution time: 124 min
 
 **By Phase:**
 
@@ -48,10 +48,11 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 13-windows-parity | 2/2 | 6 min | 3 min |
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
 | 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
+| 16-exit-codes-security | 1/? | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 13-02 (2 min), 14-02 (1 min), 14-01 (3 min), 15-01 (1 min), 15-02 (2 min)
-- Trend: Stable at ~1-4 min
+- Last 5 plans: 14-02 (1 min), 14-01 (3 min), 15-01 (1 min), 15-02 (2 min), 16-01 (6 min)
+- Trend: Stable at ~1-6 min
 
 *Updated after each plan completion*
 
@@ -66,7 +67,10 @@ Recent decisions affecting current work:
 - [v3.0]: No CI/CD automation -- explicit owner decision (permanent)
 - [v3.0]: No Pester migration -- PS surface area < 15 files
 - [v3.0]: No ShouldProcess/WhatIf -- breaks cross-platform DRY_RUN consistency
-- [v3.0]: No exit code changes -- ADR-001 "always exit 0" preserved
+- ~~[v3.0]: No exit code changes -- ADR-001 "always exit 0" preserved~~ Superseded by 16-01: semantic exit codes (0/1/2)
+- [16-01]: Semantic exit codes (0=success, 1=partial, 2=critical) replace hardcoded exit 0; ADR-001 amended
+- [16-01]: INT/TERM traps separated from EXIT; Ctrl+C exits 130
+- [16-01]: Early-return exit 0 preserved for skip/not-applicable scenarios
 - [11-01]: VERBOSE checks use == "true" string comparison (not -n/-z)
 - [11-01]: NONINTERACTIVE two-site bridge: config.sh for env-var path, setup.sh for -y flag path
 - [12-01]: Test-CargoInstalled extracted into shared module despite no duplication (future-proofing for Phase 13)
@@ -103,9 +107,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 15-02-PLAN.md (Bash compat, pipefail, PS/brew fixes)
+Stopped at: Completed 16-01-PLAN.md (semantic exit codes across all scripts)
 Resume file: None
-Next step: Plan remaining Phase 15 work or proceed to Phase 16
+Next step: Execute Phase 16 Plan 02 (input validation / security hardening)
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
