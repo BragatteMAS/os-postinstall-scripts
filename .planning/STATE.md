@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 16 in progress, Plan 02 complete
-Last activity: 2026-02-21 -- Phase 16-02 executed (safe_curl_sh and ADR-009)
+Status: Phase 17 in progress, Plan 01 complete
+Last activity: 2026-02-21 -- Phase 17-01 executed (platform, progress, interactive tests)
 
-Progress: 52/~57 plans complete (v1.0-v3.0: 48, v4.1: 4/~9)
+Progress: 53/~57 plans complete (v1.0-v3.0: 48, v4.1: 5/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 52
+- Total plans completed: 53
 - Average duration: 2.4 min
-- Total execution time: 126 min
+- Total execution time: 128 min
 
 **By Phase:**
 
@@ -49,9 +49,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
 | 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
 | 16-exit-codes-security | 2/? | 8 min | 4 min |
+| 17-test-expansion-bash | 1/? | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 14-01 (3 min), 15-01 (1 min), 15-02 (2 min), 16-01 (6 min), 16-02 (2 min)
+- Last 5 plans: 15-01 (1 min), 15-02 (2 min), 16-01 (6 min), 16-02 (2 min), 17-01 (2 min)
 - Trend: Stable at ~1-6 min
 
 *Updated after each plan completion*
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [16-02]: safe_curl_sh() uses -fsSL flags with HTTPS URLs (no per-site --proto/--tlsv1.2 needed)
 - [16-02]: No checksum/GPG for curl|sh installers -- upstreams don't publish stable checksums (ADR-009)
 - [16-02]: DRY_RUN logic stays in callers, safe_curl_sh is a pure download-then-execute helper
+- [17-01]: uname mock dispatches on $1 (-s vs -m); command mock intercepts -v only with builtin passthrough
+- [17-01]: BASH_VERSINFO is readonly -- Bash <4 path untestable on Bash 5.x, only passing path tested
+- [17-01]: interactive.sh non-interactive paths return 0 before echoing -- test return codes only
 
 ### Pending Todos
 
@@ -110,9 +114,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 16-02-PLAN.md (safe_curl_sh and ADR-009 curl trust model)
+Stopped at: Completed 17-01-PLAN.md (platform, progress, interactive bats tests)
 Resume file: None
-Next step: Execute Phase 16 Plan 03 (if exists) or next phase
+Next step: Execute Phase 17 Plan 02 (dotfiles, data validation, integration tests)
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
