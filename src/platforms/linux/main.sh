@@ -71,7 +71,8 @@ cleanup() {
     [[ ${_worst_exit:-$exit_code} -ne 0 ]] && log_info "Exiting ${SCRIPT_NAME} with code ${_worst_exit:-$exit_code}"
     exit ${_worst_exit:-$exit_code}
 }
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+trap signal_cleanup INT TERM
 
 #######################################
 # show_menu()

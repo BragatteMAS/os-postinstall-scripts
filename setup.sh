@@ -65,7 +65,8 @@ cleanup() {
     cleanup_temp_dir
     exit "${_worst_exit:-0}"
 }
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+trap signal_cleanup INT TERM
 
 #-----------------------------------------------
 # Parse CLI flags

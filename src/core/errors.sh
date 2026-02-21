@@ -190,6 +190,7 @@ cleanup() {
 # signal_cleanup - Cleanup for INT/TERM signals (Ctrl+C)
 # Exits with 130 (standard signal exit code)
 signal_cleanup() {
+    trap - EXIT
     cleanup_temp_dir
     exit 130
 }
