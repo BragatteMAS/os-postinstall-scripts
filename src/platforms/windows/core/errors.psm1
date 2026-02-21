@@ -7,7 +7,7 @@
 #######################################
 # PowerShell equivalent of src/core/errors.sh
 # Tracks failed items and shows summary at end
-# Always exit 0 - failures shown in summary (pragmatic approach)
+# Tracks failed items, computes semantic exit codes (0=success, 1=partial, 2=critical)
 
 # Import logging module
 Import-Module "$PSScriptRoot/logging.psm1" -Force
@@ -15,6 +15,11 @@ Import-Module "$PSScriptRoot/logging.psm1" -Force
 # Simple array for failure tracking
 # For ~35 packages, += performance is irrelevant; KISS over ArrayList/List
 $script:FailedItems = @()
+
+# Exit code constants (semantic)
+$script:EXIT_SUCCESS = 0
+$script:EXIT_PARTIAL_FAILURE = 1
+$script:EXIT_CRITICAL = 2
 
 function Add-FailedItem {
     <#
@@ -78,6 +83,23 @@ function Get-FailureCount {
     return $script:FailedItems.Count
 }
 
+function Get-ExitCode {
+    <#
+    .SYNOPSIS
+        Compute semantic exit code based on failure state.
+    .OUTPUTS
+        System.Int32 -- 0 (success) or 1 (partial failure)
+    #>
+    [CmdletBinding()]
+    param()
+
+    $count = Get-FailureCount
+    if ($count -gt 0) {
+        return $script:EXIT_PARTIAL_FAILURE
+    }
+    return $script:EXIT_SUCCESS
+}
+
 function Clear-Failures {
     <#
     .SYNOPSIS
@@ -89,4 +111,4 @@ function Clear-Failures {
     $script:FailedItems = @()
 }
 
-Export-ModuleMember -Function Add-FailedItem, Show-FailureSummary, Get-FailureCount, Clear-Failures
+Export-ModuleMember -Function Add-FailedItem, Show-FailureSummary, Get-FailureCount, Clear-Failures, Get-ExitCode -Variable EXIT_SUCCESS, EXIT_PARTIAL_FAILURE, EXIT_CRITICAL

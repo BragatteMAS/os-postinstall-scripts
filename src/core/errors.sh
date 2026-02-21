@@ -13,6 +13,13 @@ readonly _ERRORS_SOURCED=1
 # NOTE: No set -e (per Phase 1 decision - conflicts with "continue on failure" strategy)
 
 #######################################
+# Exit Code Constants
+#######################################
+readonly EXIT_SUCCESS=0
+readonly EXIT_PARTIAL_FAILURE=1
+readonly EXIT_CRITICAL=2
+
+#######################################
 # Source logging module for output
 #######################################
 # shellcheck source=logging.sh
@@ -119,6 +126,22 @@ get_failure_count() {
     echo "${#FAILED_ITEMS[@]}"
 }
 
+# compute_exit_code - Return semantic exit code based on failure state
+# Returns: 0 (success) or 1 (partial failure)
+# Note: Code 2 (critical) is set explicitly by callers for pre-flight failures
+compute_exit_code() {
+    local fail_count=0
+    if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" && -s "$FAILURE_LOG" ]]; then
+        fail_count=$(wc -l < "$FAILURE_LOG" | tr -d ' ')
+    elif [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
+        fail_count=${#FAILED_ITEMS[@]}
+    fi
+    if [[ "$fail_count" -gt 0 ]]; then
+        return $EXIT_PARTIAL_FAILURE
+    fi
+    return $EXIT_SUCCESS
+}
+
 # clear_failures - Reset the failure list
 # Usage: clear_failures
 clear_failures() {
@@ -155,17 +178,20 @@ cleanup_temp_dir() {
 #######################################
 
 # cleanup - Main cleanup function called on exit
-# Shows failure summary and cleans up temp files
-# Per CONTEXT: Always exit 0 (pragmatic approach - summary shows what failed)
+# Shows failure summary and exits with semantic exit code based on failure state
 cleanup() {
-    # Show what failed during this run
     show_failure_summary
-
-    # Clean up temp files
+    compute_exit_code
+    local _exit_code=$?
     cleanup_temp_dir
+    exit "$_exit_code"
+}
 
-    # Always exit 0 (per CONTEXT decision)
-    exit 0
+# signal_cleanup - Cleanup for INT/TERM signals (Ctrl+C)
+# Exits with 130 (standard signal exit code)
+signal_cleanup() {
+    cleanup_temp_dir
+    exit 130
 }
 
 # setup_error_handling - Set up trap for cleanup on exit
@@ -174,8 +200,9 @@ setup_error_handling() {
     # Create temp directory
     create_temp_dir
 
-    # Set trap on EXIT, INT, TERM
-    trap cleanup EXIT INT TERM
+    # Separate traps: EXIT for normal cleanup, INT/TERM for signal cleanup
+    trap cleanup EXIT
+    trap signal_cleanup INT TERM
 }
 
 #######################################
@@ -183,5 +210,7 @@ setup_error_handling() {
 #######################################
 export -f retry_with_backoff
 export -f record_failure show_failure_summary get_failure_count clear_failures
-export -f create_temp_dir cleanup_temp_dir cleanup setup_error_handling
+export -f compute_exit_code
+export -f create_temp_dir cleanup_temp_dir cleanup signal_cleanup setup_error_handling
+export EXIT_SUCCESS EXIT_PARTIAL_FAILURE EXIT_CRITICAL
 export TEMP_DIR
