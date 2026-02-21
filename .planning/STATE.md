@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 17 in progress, Plan 02 complete
-Last activity: 2026-02-21 -- Phase 17-02 executed (dotfiles tests, data validation)
+Status: Phase 17 complete, all 3 plans executed
+Last activity: 2026-02-21 -- Phase 17-03 executed (integration tests, contract parity)
 
-Progress: 54/~57 plans complete (v1.0-v3.0: 48, v4.1: 6/~9)
+Progress: 55/~57 plans complete (v1.0-v3.0: 48, v4.1: 7/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 54
-- Average duration: 2.4 min
-- Total execution time: 130 min
+- Total plans completed: 55
+- Average duration: 2.5 min
+- Total execution time: 140 min
 
 **By Phase:**
 
@@ -49,11 +49,11 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
 | 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
 | 16-exit-codes-security | 2/? | 8 min | 4 min |
-| 17-test-expansion-bash | 2/? | 4 min | 2 min |
+| 17-test-expansion-bash | 3/3 | 14 min | 4.7 min |
 
 **Recent Trend:**
-- Last 5 plans: 15-02 (2 min), 16-01 (6 min), 16-02 (2 min), 17-01 (2 min), 17-02 (2 min)
-- Trend: Stable at ~1-6 min
+- Last 5 plans: 16-01 (6 min), 16-02 (2 min), 17-01 (2 min), 17-02 (2 min), 17-03 (10 min)
+- Trend: Stable at ~2-10 min (17-03 slower due to integration test execution)
 
 *Updated after each plan completion*
 
@@ -101,6 +101,9 @@ Recent decisions affecting current work:
 - [17-02]: HOME overridden BEFORE sourcing dotfiles.sh (Pitfall 4: source-time expansion of BACKUP_DIR/MANIFEST_FILE)
 - [17-02]: backup_with_manifest called directly (not via run) for manifest restore test to populate state in same shell
 - [17-02]: ((count++)) replaced with count=$((count + 1)) to avoid bash arithmetic exit code 1 on zero
+- [17-03]: Integration tests use --dry-run subprocess pattern; never run setup.sh without --dry-run
+- [17-03]: Unknown flag test documents EXIT trap bug (exit code swallowed to 0); only assert output content
+- [17-03]: Contract validation cross-references Bash exports against source; PS side is informational
 
 ### Pending Todos
 
@@ -117,9 +120,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 17-02-PLAN.md (dotfiles tests, data validation)
+Stopped at: Completed 17-03-PLAN.md (integration tests, contract parity) -- Phase 17 complete
 Resume file: None
-Next step: Execute Phase 17 Plan 03 (integration tests, contract parity) if it exists, or next phase
+Next step: Execute next phase (Phase 18 or remaining v4.1 plans)
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
