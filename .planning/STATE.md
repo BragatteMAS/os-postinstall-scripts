@@ -10,8 +10,8 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 17 complete, all 3 plans executed
-Last activity: 2026-02-21 -- Phase 17-03 executed (integration tests, contract parity)
+Status: Phase 17 verified, EXIT trap bug fixed, docs updated
+Last activity: 2026-02-21 -- Phase 17 verified (120 tests, 0 failures) + docs/PITFALLS.md created
 
 Progress: 55/~57 plans complete (v1.0-v3.0: 48, v4.1: 7/~9)
 
@@ -102,8 +102,10 @@ Recent decisions affecting current work:
 - [17-02]: backup_with_manifest called directly (not via run) for manifest restore test to populate state in same shell
 - [17-02]: ((count++)) replaced with count=$((count + 1)) to avoid bash arithmetic exit code 1 on zero
 - [17-03]: Integration tests use --dry-run subprocess pattern; never run setup.sh without --dry-run
-- [17-03]: Unknown flag test documents EXIT trap bug (exit code swallowed to 0); only assert output content
+- ~~[17-03]: Unknown flag test documents EXIT trap bug (exit code swallowed to 0); only assert output content~~ Superseded by 17-fix: EXIT trap fixed, test now uses assert_failure
 - [17-03]: Contract validation cross-references Bash exports against source; PS side is informational
+- [17-fix]: EXIT trap bug fixed -- cleanup() now captures $? and uses max(trap_exit_code, _worst_exit)
+- [17-fix]: INT/TERM traps use signal_cleanup (separate from EXIT trap) preserving exit code 130
 
 ### Pending Todos
 
@@ -120,9 +122,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 17-03-PLAN.md (integration tests, contract parity) -- Phase 17 complete
+Stopped at: Phase 17 verified + docs updated (STATE, REQUIREMENTS, ROADMAP, docs/PITFALLS.md)
 Resume file: None
-Next step: Execute next phase (Phase 18 or remaining v4.1 plans)
+Next step: Phase 18 (Polish & OSS Health: Pester tests, SECURITY.md, GitHub Releases, demo GIF)
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*

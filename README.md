@@ -45,6 +45,7 @@ Every fresh OS installation means hours of manual setup: installing packages, co
 - [Troubleshooting](#troubleshooting)
 - [Uninstall / Restore](#uninstall--restore)
 - [Built With](#built-with)
+- [Project Documentation](#project-documentation)
 - [Credits](#credits)
 - [Contributing](#contributing)
 - [License](#license)
@@ -355,10 +356,19 @@ os-postinstall-scripts/
 │       ├── git/gitconfig
 │       ├── starship/starship.toml
 │       └── shared/             #   aliases, env, path
-└── tests/                      # Test suites
-    ├── test-dotfiles.sh
-    ├── test-linux.sh
-    └── test_harness.sh
+├── docs/                       # User and contributor documentation
+│   ├── quick-start.md          #   Quick installation guide
+│   ├── user-guide.md           #   Complete usage guide
+│   ├── troubleshooting.md      #   Common problems and solutions
+│   ├── PITFALLS.md             #   35 cataloged pitfalls
+│   ├── installation-profiles.md #  Profile details
+│   └── modern-cli-tools.md     #   Modern CLI tool reference
+└── tests/                      # bats-core test suites (120+ tests)
+    ├── test-core-*.bats        #   Unit tests per core module (9 files)
+    ├── test-data-validation.bats #  Package list validation
+    ├── test-contracts.bats     #   Bash/PS API parity contracts
+    ├── test-integration.bats   #   setup.sh CLI integration tests
+    └── lib/                    #   Shared test helpers
 ```
 
 ## Engineering Highlights
@@ -680,6 +690,56 @@ winget uninstall <package>
 | Patterns | Idempotency, Data-driven architecture, Cross-process failure tracking, Continue-on-failure |
 | Quality | ShellCheck, Conventional Commits, Architecture Decision Records |
 | AI | Claude Code (co-pilot), GSD methodology, MCP servers |
+
+## Project Documentation
+
+```mermaid
+graph LR
+    README[README.md] --> QS[docs/quick-start.md]
+    README --> UG[docs/user-guide.md]
+    README --> TS[docs/troubleshooting.md]
+    README --> PF[docs/PITFALLS.md]
+    README --> CT[CONTRIBUTING.md]
+    README --> CL[CHANGELOG.md]
+
+    CT --> ADR[.planning/adrs/]
+    CT --> CONV[.planning/codebase/CONVENTIONS.md]
+
+    ADR --> ADR1[ADR-001..009]
+
+    subgraph "User Docs"
+        QS
+        UG
+        TS
+        PF
+    end
+
+    subgraph "Contributor Docs"
+        CT
+        ADR
+        CONV
+    end
+
+    subgraph "Project Management"
+        RM[.planning/ROADMAP.md]
+        ST[.planning/STATE.md]
+        RQ[.planning/REQUIREMENTS.md]
+    end
+```
+
+| Area | Location | Content |
+|------|----------|---------|
+| Getting started | [`docs/quick-start.md`](docs/quick-start.md) | Quick installation guide |
+| Usage guide | [`docs/user-guide.md`](docs/user-guide.md) | Complete usage guide |
+| Troubleshooting | [`docs/troubleshooting.md`](docs/troubleshooting.md) | Common problems and solutions |
+| Lessons learned | [`docs/PITFALLS.md`](docs/PITFALLS.md) | 35 cataloged pitfalls |
+| Profiles | [`docs/installation-profiles.md`](docs/installation-profiles.md) | Profile details |
+| CLI tools | [`docs/modern-cli-tools.md`](docs/modern-cli-tools.md) | Modern CLI tool reference |
+| Contributing | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Setup, style guide, PRs |
+| Changelog | [`CHANGELOG.md`](CHANGELOG.md) | Version history |
+| Architecture decisions | [`.planning/adrs/`](.planning/adrs/) | 9 ADRs |
+| Code conventions | [`.planning/codebase/`](.planning/codebase/) | ARCHITECTURE, CONVENTIONS, TESTING |
+| Roadmap | [`.planning/ROADMAP.md`](.planning/ROADMAP.md) | Phases and progress |
 
 ## Credits
 

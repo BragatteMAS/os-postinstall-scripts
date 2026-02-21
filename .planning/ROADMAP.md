@@ -258,7 +258,7 @@ Plans:
 
 - [x] **Phase 15: Data & Compatibility Fixes** - Fix Flatpak IDs, remove discontinued apps, Bash 3.2 warn, pipefail, minor convergent fixes (completed 2026-02-21)
 - [x] **Phase 16: Exit Codes & Security** - Semantic exit codes, propagation, safe_curl_sh helper, ADR-009 (completed 2026-02-21)
-- [ ] **Phase 17: Test Expansion - Bash** - bats tests for 4 untested modules, profile validation, integration tests, contract parity
+- [x] **Phase 17: Test Expansion - Bash** - bats tests for 4 untested modules, profile validation, integration tests, contract parity (completed 2026-02-21)
 - [ ] **Phase 18: Polish & OSS Health** - Pester tests for PS modules, SECURITY.md, GitHub Releases, demo GIF
 
 ### Phase 15: Data & Compatibility Fixes
@@ -312,9 +312,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 17-01-PLAN.md — Unit tests for platform.sh, progress.sh, and interactive.sh (~33-36 tests)
-- [ ] 17-02-PLAN.md — Unit tests for dotfiles.sh and data validation tests (~23-28 tests)
-- [ ] 17-03-PLAN.md — Integration tests for setup.sh CLI and Bash/PS contract parity file (~10-12 tests)
+- [x] 17-01-PLAN.md — Unit tests for platform.sh, progress.sh, and interactive.sh (36 tests)
+- [x] 17-02-PLAN.md — Unit tests for dotfiles.sh and data validation tests (28 tests)
+- [x] 17-03-PLAN.md — Integration tests for setup.sh CLI and Bash/PS contract parity file (12 tests)
 
 ### Phase 18: Polish & OSS Health
 **Goal**: Add Pester unit tests for PowerShell modules, create SECURITY.md, format GitHub Releases, and produce demo GIF for README
@@ -330,14 +330,14 @@ Plans:
 
 ## Progress
 
-All 3 milestones shipped. 48 plans executed across 14 phases. v4.1 in progress.
+All 3 milestones shipped. 48 plans executed across 14 phases. v4.1 in progress (7/~9 plans).
 
 | Milestone | Phases | Plans | Shipped |
 |-----------|--------|-------|---------|
 | v1.0 MVP | 1-8.2 | 41 | 2026-02-08 |
 | v2.1 Feature Completion | 9-10.1 | 5 | 2026-02-17 |
 | v3.0 Quality & Parity | 11-14 | 7 | 2026-02-18 |
-| v4.1 Production Ready | 15-18 | ~9 | In progress |
+| v4.1 Production Ready | 15-18 | 7/~9 | In progress |
 
 See `.planning/milestones/` for detailed archives.
 
