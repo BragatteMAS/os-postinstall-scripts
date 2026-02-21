@@ -83,3 +83,27 @@ teardown() {
     cleanup_temp_dir
     [ ! -d "$saved_path" ]
 }
+
+@test "EXIT_SUCCESS constant equals 0" {
+    [ "$EXIT_SUCCESS" -eq 0 ]
+}
+
+@test "EXIT_PARTIAL_FAILURE constant equals 1" {
+    [ "$EXIT_PARTIAL_FAILURE" -eq 1 ]
+}
+
+@test "EXIT_CRITICAL constant equals 2" {
+    [ "$EXIT_CRITICAL" -eq 2 ]
+}
+
+@test "compute_exit_code returns 0 when no failures" {
+    clear_failures
+    compute_exit_code
+    [ $? -eq 0 ]
+}
+
+@test "compute_exit_code returns 1 when failures exist" {
+    record_failure "test-pkg"
+    run compute_exit_code
+    [ "$status" -eq 1 ]
+}
