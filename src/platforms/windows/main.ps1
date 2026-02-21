@@ -24,6 +24,9 @@ Import-Module "$WindowsDir/core/packages.psm1" -Force
 Import-Module "$WindowsDir/core/errors.psm1" -Force
 Import-Module "$WindowsDir/core/progress.psm1" -Force
 
+# Track worst exit code from child processes
+$script:worstExit = 0
+
 # Resolve project root and data directory
 $ProjectRoot = (Resolve-Path "$WindowsDir/../../..").Path
 $DataDir = Join-Path $ProjectRoot 'data'
@@ -85,21 +88,25 @@ function Install-Profile {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet packages..."
                 & "$WindowsDir/install/winget.ps1"
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
             'cargo.txt' {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing Cargo packages..."
                 & "$WindowsDir/install/cargo.ps1"
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
             'npm.txt' {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing NPM global packages..."
                 & "$WindowsDir/install/npm.ps1"
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
             'ai-tools.txt' {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing AI tools..."
                 & "$WindowsDir/install/ai-tools.ps1"
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
             default {
                 # Non-Windows package files (apt.txt, brew.txt, etc.): skip silently
@@ -119,7 +126,7 @@ function Install-Profile {
 if ($Profile -ne '') {
     Write-Log -Level INFO -Message "Running in unattended mode with profile: $Profile"
     Install-Profile -ProfileName $Profile
-    exit 0
+    exit $script:worstExit
 }
 
 # Interactive mode: show menu loop

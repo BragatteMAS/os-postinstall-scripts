@@ -180,4 +180,5 @@ foreach ($pkg in $Packages) {
 
 # Summary
 Show-FailureSummary
-exit 0
+$exitCode = Get-ExitCode
+exit $exitCode

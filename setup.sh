@@ -47,6 +47,9 @@ setup_error_handling
 export FAILURE_LOG="${TEMP_DIR}/failures.log"
 touch "$FAILURE_LOG"
 
+# Track worst exit code from child processes
+_worst_exit=0
+
 # Override cleanup trap to prevent double summary on normal exit
 cleanup() {
     if [[ -z "${_SUMMARY_SHOWN:-}" ]]; then
@@ -60,7 +63,7 @@ cleanup() {
         fi
     fi
     cleanup_temp_dir
-    exit 0
+    exit "${_worst_exit:-0}"
 }
 trap cleanup EXIT INT TERM
 
@@ -161,8 +164,11 @@ main() {
     detect_platform
     log_ok "Detected: ${DETECTED_OS} ${DETECTED_VERSION:-} (${DETECTED_PKG:-unknown})"
 
-    # Run verification sequence
+    # Run verification sequence (defensive check for future changes)
     verify_all
+    if [[ $? -ne 0 ]]; then
+        _worst_exit="${EXIT_CRITICAL:-2}"
+    fi
 
     # Dispatch to platform-specific handler
     case "${DETECTED_OS}" in
@@ -171,8 +177,11 @@ main() {
             if [[ -f "$linux_main" ]]; then
                 log_info "Running Linux setup..."
                 bash "$linux_main" "$profile"
+                rc=$?
+                [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
             else
                 log_error "Linux platform handler not found: $linux_main"
+                _worst_exit="${EXIT_CRITICAL:-2}"
                 return 1
             fi
             ;;
@@ -181,14 +190,18 @@ main() {
             if [[ -f "$macos_main" ]]; then
                 log_info "Running macOS setup..."
                 bash "$macos_main" "$profile"
+                rc=$?
+                [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
             else
                 log_warn "macOS platform handler not yet implemented"
                 log_info "See: .planning/ROADMAP.md Phase 4"
+                _worst_exit="${EXIT_CRITICAL:-2}"
                 return 1
             fi
             ;;
         *)
             log_error "Unsupported platform: ${DETECTED_OS}"
+            _worst_exit="${EXIT_CRITICAL:-2}"
             return 1
             ;;
     esac

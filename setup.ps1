@@ -57,6 +57,9 @@ Import-Module "$PSScriptRoot/src/platforms/windows/core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/src/platforms/windows/core/errors.psm1" -Force
 Import-Module "$PSScriptRoot/src/platforms/windows/core/progress.psm1" -Force
 
+# Track worst exit code from child processes
+$script:worstExit = 0
+
 # Cross-process failure tracking (mirrors Bash FAILURE_LOG pattern)
 $env:FAILURE_LOG = Join-Path ([System.IO.Path]::GetTempPath()) "ospostinstall-failures-$PID.log"
 
@@ -69,9 +72,10 @@ $MainScript = Join-Path $PSScriptRoot 'src' 'platforms' 'windows' 'main.ps1'
 
 if (Test-Path -LiteralPath $MainScript -PathType Leaf) {
     & $MainScript -Profile $Profile
+    if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
 } else {
     Write-Log -Level ERROR -Message "Windows platform handler not found: $MainScript"
-    exit 0
+    exit 2
 }
 
 # Completion summary (reads FAILURE_LOG internally, shows profile/platform/duration/failures)
@@ -82,4 +86,4 @@ if ($env:FAILURE_LOG -and (Test-Path $env:FAILURE_LOG)) {
     Remove-Item $env:FAILURE_LOG -Force -ErrorAction SilentlyContinue
 }
 
-exit 0
+exit $script:worstExit

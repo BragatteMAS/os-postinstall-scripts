@@ -178,4 +178,5 @@ Show-AiSummary
 
 # Summary
 Show-FailureSummary
-exit 0
+$exitCode = Get-ExitCode
+exit $exitCode
