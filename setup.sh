@@ -52,6 +52,7 @@ _worst_exit=0
 
 # Override cleanup trap to prevent double summary on normal exit
 cleanup() {
+    local trap_exit_code=$?
     if [[ -z "${_SUMMARY_SHOWN:-}" ]]; then
         if [[ -n "${FAILURE_LOG:-}" && -f "$FAILURE_LOG" && -s "$FAILURE_LOG" ]]; then
             log_warn "Failures detected:"
@@ -63,7 +64,10 @@ cleanup() {
         fi
     fi
     cleanup_temp_dir
-    exit "${_worst_exit:-0}"
+    # Use the worse of: original exit code (e.g. parse_flags exit 1) vs _worst_exit (child failures)
+    local final_exit="${_worst_exit:-0}"
+    [[ $trap_exit_code -gt $final_exit ]] && final_exit=$trap_exit_code
+    exit "$final_exit"
 }
 trap cleanup EXIT
 trap signal_cleanup INT TERM
