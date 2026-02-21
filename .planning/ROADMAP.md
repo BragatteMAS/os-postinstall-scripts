@@ -9,6 +9,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - v1.0 MVP - Phases 1-8.2 (shipped 2026-02-08)
 - v2.1 Feature Completion - Phases 9-10.1 (shipped 2026-02-17)
 - v3.0 Quality & Parity - Phases 11-14 (shipped 2026-02-18, tag v4.0.0) — [archive](.planning/milestones/v3.0-ROADMAP.md)
+- **v4.1 Production Ready** - Phases 15-18 (in progress)
 
 ## Phases
 
@@ -253,15 +254,77 @@ Plans:
 
 </details>
 
+### v4.1 Production Ready (Phases 15-18)
+
+- [ ] **Phase 15: Data & Compatibility Fixes** - Fix Flatpak IDs, remove discontinued apps, Bash 3.2 warn, pipefail, minor convergent fixes
+- [ ] **Phase 16: Exit Codes & Security** - Semantic exit codes, propagation, safe_curl_sh helper, ADR-009
+- [ ] **Phase 17: Test Expansion - Bash** - bats tests for 4 untested modules, profile validation, integration tests, contract parity
+- [ ] **Phase 18: Polish & OSS Health** - Pester tests for PS modules, SECURITY.md, GitHub Releases, demo GIF
+
+### Phase 15: Data & Compatibility Fixes
+**Goal**: Fix broken Flatpak IDs, remove discontinued apps, resolve Bash 3.2 chicken-and-egg on macOS, add pipefail to all scripts, and apply minor convergent fixes
+**Depends on**: Phase 14
+**Requirements**: DATA-01, DATA-02, DATA-03, COMPAT-01, QUAL-01, QUAL-02
+**Success Criteria** (what must be TRUE):
+  1. All entries in `flatpak.txt` use valid reverse-DNS Flatpak IDs (0 short names)
+  2. All entries in `flatpak-post.txt` use valid reverse-DNS Flatpak IDs (0 short names)
+  3. Discontinued apps removed (TogglDesktop, Skype archived)
+  4. `verify_bash_version()` warns but does NOT block on macOS with Bash 3.2
+  5. `set -o pipefail` present in all scripts executed as subshell (not just setup.sh)
+  6. PS `-Profile` parameter uses `[ValidateSet()]`, `Test-CargoInstalled` is multiline-safe, `node` removed from brew.txt, `fzf` added to brew.txt
+**Plans**: ~2 plans
+
+### Phase 16: Exit Codes & Security
+**Goal**: Replace universal `exit 0` with semantic exit codes (0/1/2), propagate through parent-child chain, add download-then-execute helper for curl|sh, document trust model in ADR-009
+**Depends on**: Phase 15
+**Requirements**: EXIT-01, EXIT-02, SEC-01, SEC-02
+**Success Criteria** (what must be TRUE):
+  1. `EXIT_SUCCESS=0`, `EXIT_PARTIAL_FAILURE=1`, `EXIT_CRITICAL=2` constants defined in errors.sh and errors.psm1
+  2. `compute_exit_code()` function in errors.sh returns code based on FAILURE_LOG/FAILED_ITEMS
+  3. All 9 child installer scripts exit with semantic code (not hardcoded 0)
+  4. Parent orchestrators (setup.sh, main.sh, main.ps1) track worst exit code from children
+  5. `safe_curl_sh()` helper in src/core/ downloads to temp file before executing (5 call sites migrated)
+  6. ADR-009 documents curl|sh trust model (HTTPS-only, no checksum — industry standard)
+  7. ADR-001 amended to reflect semantic exit codes (preserving continue-on-failure intent)
+**Plans**: ~2 plans
+
+### Phase 17: Test Expansion - Bash
+**Goal**: Expand bats coverage from 37 to ~100+ tests covering the 4 untested core modules (platform, progress, dotfiles, interactive), add profile validation tests, integration tests, and Bash/PS contract parity file
+**Depends on**: Phase 16 (tests verify exit code behavior)
+**Requirements**: TEST-03, TEST-04, TEST-05, TEST-06, TEST-07, TEST-08, TEST-09
+**Success Criteria** (what must be TRUE):
+  1. `test-core-platform.bats` exists with ~15-18 tests (mock uname, detect_platform, verify_bash_version, verify_package_manager)
+  2. `test-core-progress.bats` exists with ~10-12 tests (show_dry_run_banner, count_platform_steps, show_completion_summary)
+  3. `test-core-dotfiles.bats` exists with ~18-22 tests (path_to_backup_name, create_dotfile_symlink, backup_with_manifest in tmpdir)
+  4. `test-core-interactive.bats` exists with ~6-8 tests (non-interactive paths of show_category_menu and ask_tool)
+  5. `test-data-validation.bats` verifies all profile .txt references exist and no orphans
+  6. `test-integration.bats` runs `setup.sh --dry-run` for each profile, `--help`, unknown flag
+  7. `tests/contracts/api-parity.txt` maps Bash functions to PS equivalents with validation tests
+  8. All tests pass: `bats tests/*.bats` exits 0
+**Plans**: ~3 plans
+
+### Phase 18: Polish & OSS Health
+**Goal**: Add Pester unit tests for PowerShell modules, create SECURITY.md, format GitHub Releases, and produce demo GIF for README
+**Depends on**: Phase 17
+**Requirements**: TEST-10, OSS-01, OSS-02, OSS-03
+**Success Criteria** (what must be TRUE):
+  1. Pester tests exist for logging.psm1, errors.psm1, packages.psm1, progress.psm1 (~15-20 tests total)
+  2. `SECURITY.md` exists in repo root with responsible disclosure policy
+  3. GitHub Release for v4.0.0 formatted with changelog from tag
+  4. Demo GIF (asciinema + agg) or improved placeholder in README
+  5. Pester tests pass: `Invoke-Pester tests/pester/*.Tests.ps1` exits 0
+**Plans**: ~2 plans
+
 ## Progress
 
-All 3 milestones shipped. 48 plans executed across 14 phases.
+All 3 milestones shipped. 48 plans executed across 14 phases. v4.1 in progress.
 
 | Milestone | Phases | Plans | Shipped |
 |-----------|--------|-------|---------|
 | v1.0 MVP | 1-8.2 | 41 | 2026-02-08 |
 | v2.1 Feature Completion | 9-10.1 | 5 | 2026-02-17 |
 | v3.0 Quality & Parity | 11-14 | 7 | 2026-02-18 |
+| v4.1 Production Ready | 15-18 | ~9 | In progress |
 
 See `.planning/milestones/` for detailed archives.
 
@@ -270,4 +333,5 @@ See `.planning/milestones/` for detailed archives.
 *Milestone v1.0 complete: 2026-02-08*
 *Milestone v2.1 complete: 2026-02-17*
 *Milestone v3.0 complete: 2026-02-18 (tag v4.0.0)*
-*Total: 48 plans, 14 phases, 3 milestones*
+*Milestone v4.1 started: 2026-02-19*
+*Total: 48 plans shipped, ~9 planned for v4.1*

@@ -5,15 +5,15 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** Between milestones. v3.0 archived, next milestone TBD.
+**Current focus:** v4.1 Production Ready — robustez, segurança, testes para uso real por outros.
 
 ## Current Position
 
-Milestone: v3.0 Quality & Parity -- SHIPPED (tag v4.0.0, 2026-02-18)
-Status: Archived
-Last activity: 2026-02-18 -- Milestone v3.0 archived to .planning/milestones/
+Milestone: v4.1 Production Ready -- IN PROGRESS
+Status: Roadmap defined, Phase 15 ready to plan
+Last activity: 2026-02-19 -- Milestone v4.1 roadmap created (21 requirements, 4 phases)
 
-Progress: All 3 milestones complete (48/48 plans across 14 phases)
+Progress: 48/48 plans complete (v1.0-v3.0), ~9 plans estimated for v4.1
 
 ## Previous Milestone Performance
 
@@ -84,7 +84,7 @@ Recent decisions affecting current work:
 ### Pending Todos
 
 - [ ] Terminal screenshot (static PNG) for README hero image
-- [ ] Terminal demo video (asciinema + agg -> GIF) for README
+- [ ] Terminal demo video (asciinema + agg -> GIF) for README (OSS-03 in Phase 18)
 - [ ] Social preview image via socialify.git.ci
 
 ### Blockers/Concerns
@@ -95,10 +95,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-18
-Stopped at: Milestone v3.0 archived. Tag v4.0.0 created. Ready for next milestone.
+Last session: 2026-02-19
+Stopped at: Milestone v4.1 roadmap defined. Requirements + research complete.
 Resume file: None
-Next step: `/gsd:new-milestone` to start next milestone
+Next step: `/gsd:plan-phase 15` to plan Phase 15 (Data & Compatibility Fixes)
 
 ---
-*Milestone v3.0 Quality & Parity -- shipped 2026-02-18 (tag v4.0.0)*
+*Milestone v4.1 Production Ready -- started 2026-02-19*

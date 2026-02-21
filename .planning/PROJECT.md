@@ -36,9 +36,14 @@ All planned work complete. Codebase is production-ready with:
 - [x] Windows parity (CLI switches, step counters, CmdletBinding)
 - [x] Unit tests (37 bats) + lint runners
 
-### Next Milestone Goals
+### Next: v4.1 Production Ready (In Progress)
 
-To be defined via `/gsd:new-milestone`.
+- [ ] Corrigir Flatpak IDs (80% broken em flatpak.txt, 33% em flatpak-post.txt)
+- [ ] Bash 3.2 warn-not-block no macOS (chicken-and-egg com Homebrew)
+- [ ] Exit codes semânticos (0=sucesso, 1=parcial, 2=crítico) — substituir universal exit 0
+- [ ] safe_curl_sh() helper + ADR-009 (curl|sh trust model)
+- [ ] Expandir testes: 37 → ~120-140 (bats + Pester + contract + integration)
+- [ ] SECURITY.md, GitHub Releases, demo GIF
 
 ### Out of Scope
 
