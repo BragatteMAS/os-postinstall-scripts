@@ -206,11 +206,45 @@ setup_error_handling() {
 }
 
 #######################################
+# Safe curl|sh -- Download-then-execute
+#######################################
+
+# safe_curl_sh -- Download installer to temp file before executing.
+# Prevents partial download execution (the most practical curl|sh risk).
+# Usage: safe_curl_sh URL [script_args...]
+# Returns: exit code of the downloaded script, or 1 on download failure
+safe_curl_sh() {
+    local url="$1"
+    shift
+
+    if [[ -z "$url" ]]; then
+        log_error "safe_curl_sh: no URL provided"
+        return 1
+    fi
+
+    local tmp
+    tmp=$(mktemp "${TMPDIR:-/tmp}/installer-XXXXXX.sh")
+
+    if ! curl -fsSL "$url" -o "$tmp"; then
+        rm -f "$tmp"
+        log_error "Failed to download: $url"
+        return 1
+    fi
+
+    local rc=0
+    bash "$tmp" "$@" || rc=$?
+
+    rm -f "$tmp"
+    return "$rc"
+}
+
+#######################################
 # Export functions and variables
 #######################################
 export -f retry_with_backoff
 export -f record_failure show_failure_summary get_failure_count clear_failures
 export -f compute_exit_code
+export -f safe_curl_sh
 export -f create_temp_dir cleanup_temp_dir cleanup signal_cleanup setup_error_handling
 export EXIT_SUCCESS EXIT_PARTIAL_FAILURE EXIT_CRITICAL
 export TEMP_DIR
