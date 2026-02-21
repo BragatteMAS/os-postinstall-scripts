@@ -293,8 +293,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 16-01-PLAN.md — Exit code constants, compute_exit_code(), cleanup refactor, all child/parent semantic exits, ADR-001 amendment
-- [ ] 16-02-PLAN.md — safe_curl_sh() helper, 5 curl|sh migrations, ADR-009
+- [x] 16-01-PLAN.md — Exit code constants, compute_exit_code(), cleanup refactor, all child/parent semantic exits, ADR-001 amendment
+- [x] 16-02-PLAN.md — safe_curl_sh() helper, 5 curl|sh migrations, ADR-009
 
 ### Phase 17: Test Expansion - Bash
 **Goal**: Expand bats coverage from 37 to ~100+ tests covering the 4 untested core modules (platform, progress, dotfiles, interactive), add profile validation tests, integration tests, and Bash/PS contract parity file
@@ -309,7 +309,12 @@ Plans:
   6. `test-integration.bats` runs `setup.sh --dry-run` for each profile, `--help`, unknown flag
   7. `tests/contracts/api-parity.txt` maps Bash functions to PS equivalents with validation tests
   8. All tests pass: `bats tests/*.bats` exits 0
-**Plans**: ~3 plans
+**Plans**: 3 plans
+
+Plans:
+- [ ] 17-01-PLAN.md — Unit tests for platform.sh, progress.sh, and interactive.sh (~33-36 tests)
+- [ ] 17-02-PLAN.md — Unit tests for dotfiles.sh and data validation tests (~23-28 tests)
+- [ ] 17-03-PLAN.md — Integration tests for setup.sh CLI and Bash/PS contract parity file (~10-12 tests)
 
 ### Phase 18: Polish & OSS Health
 **Goal**: Add Pester unit tests for PowerShell modules, create SECURITY.md, format GitHub Releases, and produce demo GIF for README

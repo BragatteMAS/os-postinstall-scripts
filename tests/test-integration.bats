@@ -39,12 +39,9 @@ setup() {
     assert_output --partial "Detected:"
 }
 
-@test "setup.sh unknown flag shows error message" {
-    # NOTE: Cannot assert_failure due to EXIT trap bug (see 17-RESEARCH.md Pitfall 5).
-    # The EXIT trap's cleanup() overrides the exit 1 from parse_flags() with
-    # exit "${_worst_exit:-0}", resulting in exit code 0 instead of 1.
-    # Only check output content, not exit code.
+@test "setup.sh unknown flag shows error and exits non-zero" {
     run bash "$SETUP_SH" --invalid-flag
+    assert_failure
     assert_output --partial "Unknown option"
     assert_output --partial "--invalid-flag"
 }
