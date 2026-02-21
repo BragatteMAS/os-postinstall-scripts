@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: cargo.sh
 # Description: Install Cargo (Rust) packages for Linux (data-driven)

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: brew-cask.sh
 # Description: Install Homebrew casks for macOS (data-driven)

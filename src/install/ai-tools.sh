@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: ai-tools.sh
 # Description: Cross-platform AI tools installer with prefix-based dispatch

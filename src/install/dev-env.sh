@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: dev-env.sh
 # Description: Development environment orchestrator (fnm + uv + globals + SSH)

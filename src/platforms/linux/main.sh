@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: main.sh
 # Description: Main orchestrator for Linux post-installation
