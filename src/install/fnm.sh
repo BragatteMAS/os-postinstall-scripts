@@ -49,7 +49,7 @@ install_fnm() {
     log_info "Installing fnm (Fast Node Manager)..."
 
     # Install fnm via official script (--skip-shell prevents modifying shell configs)
-    if ! curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell; then
+    if ! safe_curl_sh "https://fnm.vercel.app/install" -- --skip-shell; then
         log_error "Failed to install fnm"
         record_failure "fnm"
         return 1

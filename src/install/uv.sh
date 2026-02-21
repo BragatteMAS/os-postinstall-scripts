@@ -49,7 +49,7 @@ install_uv() {
     log_info "Installing uv (Python package manager)..."
 
     # Install uv via official script
-    if ! curl -LsSf https://astral.sh/uv/install.sh | sh; then
+    if ! safe_curl_sh "https://astral.sh/uv/install.sh"; then
         log_error "Failed to install uv"
         record_failure "uv"
         return 1

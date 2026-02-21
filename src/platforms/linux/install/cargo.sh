@@ -53,7 +53,7 @@ ensure_rust_installed() {
     fi
 
     log_info "Rust not found, installing via rustup..."
-    if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; then
+    if safe_curl_sh "https://sh.rustup.rs" -- -y; then
         # Source cargo env for current session
         source "$HOME/.cargo/env" 2>/dev/null || true
         if command -v cargo &>/dev/null; then
@@ -124,8 +124,7 @@ ensure_binstall() {
     fi
 
     log_info "Installing cargo-binstall for faster downloads..."
-    if curl -L --proto '=https' --tlsv1.2 -sSf \
-        https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash; then
+    if safe_curl_sh "https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh"; then
         log_ok "cargo-binstall installed"
         return 0
     else

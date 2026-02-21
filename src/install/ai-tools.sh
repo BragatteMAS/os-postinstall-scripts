@@ -112,7 +112,7 @@ install_ai_tool() {
                     fi
 
                     log_info "Installing ollama via official install script..."
-                    if curl -fsSL https://ollama.com/install.sh | sh; then
+                    if safe_curl_sh "https://ollama.com/install.sh"; then
                         log_ok "Installed: ollama"
                         return 0
                     else
