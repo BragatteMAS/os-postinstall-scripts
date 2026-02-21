@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Roadmap defined, Phase 15 ready to plan
-Last activity: 2026-02-19 -- Milestone v4.1 roadmap created (21 requirements, 4 phases)
+Status: Phase 15 in progress, Plan 01 complete
+Last activity: 2026-02-21 -- Phase 15-01 executed (fix broken Flatpak IDs)
 
-Progress: 48/48 plans complete (v1.0-v3.0), ~9 plans estimated for v4.1
+Progress: 49/~57 plans complete (v1.0-v3.0: 48, v4.1: 1/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 48
+- Total plans completed: 49
 - Average duration: 2.4 min
-- Total execution time: 115 min
+- Total execution time: 116 min
 
 **By Phase:**
 
@@ -47,9 +47,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
 | 13-windows-parity | 2/2 | 6 min | 3 min |
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
+| 15-data-compatibility-fixes | 1/? | 1 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 12-02 (3 min), 13-01 (4 min), 13-02 (2 min), 14-02 (1 min), 14-01 (3 min)
+- Last 5 plans: 13-01 (4 min), 13-02 (2 min), 14-02 (1 min), 14-01 (3 min), 15-01 (1 min)
 - Trend: Stable at ~1-4 min
 
 *Updated after each plan completion*
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [14-01]: .shellcheckrc suppresses SC2034/SC1091 project-wide (export -f and dynamic source false positives)
 - [14-02]: EXTRA_PACKAGES/SKIP_PACKAGES documented with honest note that no installer consumes them yet
 - [14-02]: Troubleshooting uses existing collapsible <details> pattern with Problem/Solution structure
+- [15-01]: Skype removed from flatpak.txt (archived on Flathub July 2025)
+- [15-01]: TogglDesktop + Workflow removed from flatpak-post.txt (discontinued/archived, 404 on Flathub)
+- [15-01]: MasterPDFEditor correct ID uses underscore: net.code_industry.MasterPDFEditor
 
 ### Pending Todos
 
@@ -95,10 +99,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-19
-Stopped at: Milestone v4.1 roadmap defined. Requirements + research complete.
+Last session: 2026-02-21
+Stopped at: Completed 15-01-PLAN.md (fix broken Flatpak IDs)
 Resume file: None
-Next step: `/gsd:plan-phase 15` to plan Phase 15 (Data & Compatibility Fixes)
+Next step: Execute 15-02-PLAN.md (code compatibility fixes) or plan remaining Phase 15 work
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
