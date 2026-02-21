@@ -114,5 +114,10 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     install_uv
     install_python
 
-    exit 0
+    # Semantic exit code based on failure state
+    if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
+        exit "${EXIT_PARTIAL_FAILURE:-1}"
+    else
+        exit "${EXIT_SUCCESS:-0}"
+    fi
 fi

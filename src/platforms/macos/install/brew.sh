@@ -119,5 +119,9 @@ done
 # Summary
 show_failure_summary
 
-# Always exit 0 (per Phase 1 decision)
-exit 0
+# Semantic exit code based on failure state
+if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
+    exit "${EXIT_PARTIAL_FAILURE:-1}"
+else
+    exit "${EXIT_SUCCESS:-0}"
+fi

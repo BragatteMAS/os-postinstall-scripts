@@ -53,6 +53,9 @@ if [[ -z "${DATA_DIR:-}" || ! -d "${DATA_DIR}" ]]; then
     DATA_DIR="$(cd "${LINUX_DIR}/../../data" 2>/dev/null && pwd -P)"
 fi
 
+# Track worst exit code from child processes
+_worst_exit=0
+
 # Cleanup function
 cleanup() {
     local exit_code=$?
@@ -65,8 +68,8 @@ cleanup() {
         done < "$FAILURE_LOG"
     fi
 
-    [[ $exit_code -ne 0 ]] && log_info "Exiting ${SCRIPT_NAME} with code $exit_code"
-    exit $exit_code
+    [[ ${_worst_exit:-$exit_code} -ne 0 ]] && log_info "Exiting ${SCRIPT_NAME} with code ${_worst_exit:-$exit_code}"
+    exit ${_worst_exit:-$exit_code}
 }
 trap cleanup EXIT INT TERM
 
@@ -129,10 +132,12 @@ install_profile() {
         current_step=$((current_step + 1))
         log_info "[Step ${current_step}/${total_steps}] Setting up development environment..."
         bash "${INSTALL_DIR}/dev-env.sh"
+        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
 
         current_step=$((current_step + 1))
         log_info "[Step ${current_step}/${total_steps}] Installing Rust CLI tools..."
         bash "${INSTALL_DIR}/rust-cli.sh"
+        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
     fi
 
     # Read profile and dispatch to Linux-relevant installers
@@ -149,36 +154,43 @@ install_profile() {
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing APT packages..."
                 bash "${LINUX_DIR}/install/apt.sh"
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             apt-post.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing APT post-packages..."
                 bash "${LINUX_DIR}/install/apt.sh" --post
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             flatpak.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing Flatpak packages..."
                 bash "${LINUX_DIR}/install/flatpak.sh"
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             flatpak-post.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing Flatpak post-packages..."
                 bash "${LINUX_DIR}/install/flatpak.sh" --post
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             snap.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing Snap packages..."
                 bash "${LINUX_DIR}/install/snap.sh"
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             snap-post.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing Snap post-packages..."
                 bash "${LINUX_DIR}/install/snap.sh" --post
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             cargo.txt)
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing Cargo packages..."
                 bash "${LINUX_DIR}/install/cargo.sh"
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             npm.txt)
                 log_debug "Skipping npm.txt (handled by dev-env)"
@@ -187,6 +199,7 @@ install_profile() {
                 current_step=$((current_step + 1))
                 log_info "[Step ${current_step}/${total_steps}] Installing AI tools..."
                 bash "${INSTALL_DIR}/ai-tools.sh"
+                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
                 ;;
             brew.txt|brew-cask.txt)
                 # macOS-only - skip silently on Linux
@@ -201,6 +214,8 @@ install_profile() {
                 ;;
         esac
     done < "$profile_file"
+
+    return $_worst_exit
 }
 
 #######################################
