@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 16 in progress, Plan 01 complete
-Last activity: 2026-02-21 -- Phase 16-01 executed (semantic exit codes across all scripts)
+Status: Phase 16 in progress, Plan 02 complete
+Last activity: 2026-02-21 -- Phase 16-02 executed (safe_curl_sh and ADR-009)
 
-Progress: 51/~57 plans complete (v1.0-v3.0: 48, v4.1: 3/~9)
+Progress: 52/~57 plans complete (v1.0-v3.0: 48, v4.1: 4/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 51
+- Total plans completed: 52
 - Average duration: 2.4 min
-- Total execution time: 124 min
+- Total execution time: 126 min
 
 **By Phase:**
 
@@ -48,10 +48,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 13-windows-parity | 2/2 | 6 min | 3 min |
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
 | 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
-| 16-exit-codes-security | 1/? | 6 min | 6 min |
+| 16-exit-codes-security | 2/? | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 14-02 (1 min), 14-01 (3 min), 15-01 (1 min), 15-02 (2 min), 16-01 (6 min)
+- Last 5 plans: 14-01 (3 min), 15-01 (1 min), 15-02 (2 min), 16-01 (6 min), 16-02 (2 min)
 - Trend: Stable at ~1-6 min
 
 *Updated after each plan completion*
@@ -91,6 +91,9 @@ Recent decisions affecting current work:
 - [15-02]: verify_bash_version() warns and returns 0 on macOS Bash < 4 (no Bash 4+ features used)
 - [15-02]: node removed from brew.txt -- conflicts with fnm (src/install/fnm.sh)
 - [15-02]: main.ps1 ValidateSet includes empty string '' for interactive menu mode
+- [16-02]: safe_curl_sh() uses -fsSL flags with HTTPS URLs (no per-site --proto/--tlsv1.2 needed)
+- [16-02]: No checksum/GPG for curl|sh installers -- upstreams don't publish stable checksums (ADR-009)
+- [16-02]: DRY_RUN logic stays in callers, safe_curl_sh is a pure download-then-execute helper
 
 ### Pending Todos
 
@@ -107,9 +110,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 16-01-PLAN.md (semantic exit codes across all scripts)
+Stopped at: Completed 16-02-PLAN.md (safe_curl_sh and ADR-009 curl trust model)
 Resume file: None
-Next step: Execute Phase 16 Plan 02 (input validation / security hardening)
+Next step: Execute Phase 16 Plan 03 (if exists) or next phase
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
