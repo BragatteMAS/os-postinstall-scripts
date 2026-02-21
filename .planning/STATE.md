@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 15 in progress, Plan 01 complete
-Last activity: 2026-02-21 -- Phase 15-01 executed (fix broken Flatpak IDs)
+Status: Phase 15 in progress, Plan 02 complete
+Last activity: 2026-02-21 -- Phase 15-02 executed (Bash compat, pipefail, PS/brew fixes)
 
-Progress: 49/~57 plans complete (v1.0-v3.0: 48, v4.1: 1/~9)
+Progress: 50/~57 plans complete (v1.0-v3.0: 48, v4.1: 2/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 49
+- Total plans completed: 50
 - Average duration: 2.4 min
-- Total execution time: 116 min
+- Total execution time: 118 min
 
 **By Phase:**
 
@@ -47,10 +47,10 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 12-structure-dry-cleanup | 2/2 | 5 min | 2.5 min |
 | 13-windows-parity | 2/2 | 6 min | 3 min |
 | 14-testing-documentation | 2/2 | 4 min | 2 min |
-| 15-data-compatibility-fixes | 1/? | 1 min | 1 min |
+| 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 13-01 (4 min), 13-02 (2 min), 14-02 (1 min), 14-01 (3 min), 15-01 (1 min)
+- Last 5 plans: 13-02 (2 min), 14-02 (1 min), 14-01 (3 min), 15-01 (1 min), 15-02 (2 min)
 - Trend: Stable at ~1-4 min
 
 *Updated after each plan completion*
@@ -84,6 +84,9 @@ Recent decisions affecting current work:
 - [15-01]: Skype removed from flatpak.txt (archived on Flathub July 2025)
 - [15-01]: TogglDesktop + Workflow removed from flatpak-post.txt (discontinued/archived, 404 on Flathub)
 - [15-01]: MasterPDFEditor correct ID uses underscore: net.code_industry.MasterPDFEditor
+- [15-02]: verify_bash_version() warns and returns 0 on macOS Bash < 4 (no Bash 4+ features used)
+- [15-02]: node removed from brew.txt -- conflicts with fnm (src/install/fnm.sh)
+- [15-02]: main.ps1 ValidateSet includes empty string '' for interactive menu mode
 
 ### Pending Todos
 
@@ -100,9 +103,9 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 15-01-PLAN.md (fix broken Flatpak IDs)
+Stopped at: Completed 15-02-PLAN.md (Bash compat, pipefail, PS/brew fixes)
 Resume file: None
-Next step: Execute 15-02-PLAN.md (code compatibility fixes) or plan remaining Phase 15 work
+Next step: Plan remaining Phase 15 work or proceed to Phase 16
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
