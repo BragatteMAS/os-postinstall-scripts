@@ -1,21 +1,22 @@
 # Flatpak Post-Install Package List
 # Source: src/platforms/linux/post_install.sh
 # One package per line, comments start with #
+# All IDs use full reverse-DNS format (required by flatpak install)
 
 # System - Password Manager
 com.bitwarden.desktop
 
 # System - Permissions Manager
-flatseal
+com.github.tchx84.Flatseal
 
 # System - FTP/SQL Manager
-filezilla
+org.filezillaproject.Filezilla
 
 # System - GPU Info
-gpuviewer
+io.github.arunsivaramanneo.GPUViewer
 
 # System - Secure File Transfer
-OnionShare
+org.onionshare.OnionShare
 
 # System - Virtualization
 org.gnome.Boxes
@@ -27,7 +28,7 @@ de.haeckerfelix.Fragments
 fr.romainvigier.MetadataCleaner
 
 # Sound - Volume Control
-pavucontrol
+org.pulseaudio.pavucontrol
 
 # Sound - Music Streaming
 com.spotify.Client
@@ -48,7 +49,7 @@ org.inkscape.Inkscape
 org.kde.kdenlive
 
 # Video - Streaming
-obsproject.Studio
+com.obsproject.Studio
 
 # Video - Media Player
 org.videolan.VLC
@@ -60,10 +61,10 @@ org.blender.Blender
 com.valvesoftware.Steam
 
 # Communication - Video Conferencing
-zoom
+us.zoom.Zoom
 
 # Communication - Team Chat
-slack
+com.slack.Slack
 
 # Communication - Messaging
 org.telegram.desktop
@@ -75,17 +76,17 @@ org.chromium.Chromium
 io.gitlab.librewolf-community
 
 # Productivity - Cloud Storage
-dropbox
+com.dropbox.Client
 nz.mega.MEGAsync
 
 # Productivity - PDF/Documents
 org.kde.okular
-calibre
-openboard
+com.calibre_ebook.calibre
+ch.openboard.OpenBoard
 com.github.johnfactotum.Foliate
 
 # Productivity - Design/Fonts
-fontfinder
+io.github.mmstick.FontFinder
 org.gustavoperedo.FontDownloader
 io.github.lainsce.Colorway
 io.github.lainsce.Emulsion
@@ -93,20 +94,20 @@ io.github.lainsce.Emulsion
 # Productivity - Development
 com.visualstudio.code
 rest.insomnia.Insomnia
-meld
+org.gnome.meld
 
 # Productivity - Time Management
-com.toggl.TogglDesktop
-com.gitlab.cunidev.Workflow
+# TogglDesktop (com.toggl.TogglDesktop) removed -- discontinued, 404 on Flathub
+# Workflow (com.gitlab.cunidev.Workflow) removed -- archived Dec 2023, 404 on Flathub
 
 # Productivity - Writing
 org.texstudio.TeXstudio
 
 # Productivity - Focus/Audio
-blanket
+com.rafaelmardojai.Blanket
 
 # Productivity - File Organization
-organizer
+org.librehunt.Organizer
 
 # Research - Note Taking
 md.obsidian.Obsidian
@@ -121,4 +122,4 @@ org.pymol.PyMOL
 org.jaspstats.JASP
 
 # Research - Mathematics
-geogebra
+org.geogebra.GeoGebra
