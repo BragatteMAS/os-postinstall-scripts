@@ -272,7 +272,11 @@ Plans:
   4. `verify_bash_version()` warns but does NOT block on macOS with Bash 3.2
   5. `set -o pipefail` present in all scripts executed as subshell (not just setup.sh)
   6. PS `-Profile` parameter uses `[ValidateSet()]`, `Test-CargoInstalled` is multiline-safe, `node` removed from brew.txt, `fzf` added to brew.txt
-**Plans**: ~2 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Fix Flatpak IDs and remove discontinued apps (flatpak.txt, flatpak-post.txt)
+- [ ] 15-02-PLAN.md — Bash 3.2 warn-not-block, pipefail in all subshell scripts, PS ValidateSet, brew.txt fixes
 
 ### Phase 16: Exit Codes & Security
 **Goal**: Replace universal `exit 0` with semantic exit codes (0/1/2), propagate through parent-child chain, add download-then-execute helper for curl|sh, document trust model in ADR-009
