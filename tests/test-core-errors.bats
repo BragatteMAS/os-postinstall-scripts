@@ -107,3 +107,12 @@ teardown() {
     run compute_exit_code
     [ "$status" -eq 1 ]
 }
+
+@test "safe_curl_sh function is exported" {
+    declare -F safe_curl_sh
+}
+
+@test "safe_curl_sh fails gracefully with no URL" {
+    run safe_curl_sh
+    assert_failure
+}
