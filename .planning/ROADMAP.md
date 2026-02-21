@@ -257,7 +257,7 @@ Plans:
 ### v4.1 Production Ready (Phases 15-18)
 
 - [x] **Phase 15: Data & Compatibility Fixes** - Fix Flatpak IDs, remove discontinued apps, Bash 3.2 warn, pipefail, minor convergent fixes (completed 2026-02-21)
-- [ ] **Phase 16: Exit Codes & Security** - Semantic exit codes, propagation, safe_curl_sh helper, ADR-009
+- [x] **Phase 16: Exit Codes & Security** - Semantic exit codes, propagation, safe_curl_sh helper, ADR-009 (completed 2026-02-21)
 - [ ] **Phase 17: Test Expansion - Bash** - bats tests for 4 untested modules, profile validation, integration tests, contract parity
 - [ ] **Phase 18: Polish & OSS Health** - Pester tests for PS modules, SECURITY.md, GitHub Releases, demo GIF
 
@@ -275,8 +275,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 15-01-PLAN.md — Fix Flatpak IDs and remove discontinued apps (flatpak.txt, flatpak-post.txt)
-- [ ] 15-02-PLAN.md — Bash 3.2 warn-not-block, pipefail in all subshell scripts, PS ValidateSet, brew.txt fixes
+- [x] 15-01-PLAN.md — Fix Flatpak IDs and remove discontinued apps (flatpak.txt, flatpak-post.txt)
+- [x] 15-02-PLAN.md — Bash 3.2 warn-not-block, pipefail in all subshell scripts, PS ValidateSet, brew.txt fixes
 
 ### Phase 16: Exit Codes & Security
 **Goal**: Replace universal `exit 0` with semantic exit codes (0/1/2), propagate through parent-child chain, add download-then-execute helper for curl|sh, document trust model in ADR-009
@@ -290,7 +290,11 @@ Plans:
   5. `safe_curl_sh()` helper in src/core/ downloads to temp file before executing (5 call sites migrated)
   6. ADR-009 documents curl|sh trust model (HTTPS-only, no checksum — industry standard)
   7. ADR-001 amended to reflect semantic exit codes (preserving continue-on-failure intent)
-**Plans**: ~2 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] 16-01-PLAN.md — Exit code constants, compute_exit_code(), cleanup refactor, all child/parent semantic exits, ADR-001 amendment
+- [ ] 16-02-PLAN.md — safe_curl_sh() helper, 5 curl|sh migrations, ADR-009
 
 ### Phase 17: Test Expansion - Bash
 **Goal**: Expand bats coverage from 37 to ~100+ tests covering the 4 untested core modules (platform, progress, dotfiles, interactive), add profile validation tests, integration tests, and Bash/PS contract parity file
