@@ -66,8 +66,8 @@ function Test-CargoInstalled {
         [string]$PackageName
     )
 
-    $output = cargo install --list 2>$null
-    if ($output -match "^$([regex]::Escape($PackageName)) ") {
+    $output = (cargo install --list 2>$null) -join "`n"
+    if ($output -match "(?m)^$([regex]::Escape($PackageName)) ") {
         return $true
     }
 

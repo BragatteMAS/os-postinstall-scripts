@@ -17,6 +17,7 @@
 #######################################
 
 param(
+    [ValidateSet('minimal', 'developer', 'full')]
     [string]$Profile = 'developer',
     [switch]$DryRun,
     [switch]$Verbose,

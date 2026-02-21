@@ -23,6 +23,9 @@ zoxide
 git-delta
 starship
 
+# Terminal - Fuzzy Finder
+fzf
+
 # Dotfiles Manager
 chezmoi
 
@@ -32,4 +35,4 @@ bash
 
 # Development - Languages
 python
-node
+# node  -- managed by fnm (src/install/fnm.sh), Homebrew node conflicts with fnm

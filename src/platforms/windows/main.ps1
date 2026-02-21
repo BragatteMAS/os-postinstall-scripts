@@ -11,6 +11,7 @@
 # Non-Windows package files (apt.txt, brew.txt, etc.) silently skipped
 
 param(
+    [ValidateSet('', 'minimal', 'developer', 'full')]
     [string]$Profile = ''
 )
 
