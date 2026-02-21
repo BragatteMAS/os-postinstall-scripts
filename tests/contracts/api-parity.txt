@@ -1,0 +1,27 @@
+# tests/contracts/api-parity.txt
+# Bash/PowerShell API Parity Contract
+# Format: bash_module | bash_function | ps_module | ps_function | behavior
+#
+# This file documents the mapping between Bash and PowerShell implementations.
+# Bash has more granular functions; PS consolidates into fewer functions with parameters.
+# This is by design (see docs/adr/ADR-006).
+#
+# Modules with PS equivalents: logging, errors, packages, idempotent, progress
+# Modules without PS equivalents: platform (N/A), dotfiles (N/A), interactive (N/A)
+
+logging.sh  | log_ok "msg"             | logging.psm1    | Write-Log -Level OK -Message "msg"       | outputs [OK] prefix
+logging.sh  | log_error "msg"          | logging.psm1    | Write-Log -Level ERROR -Message "msg"    | outputs [ERROR] prefix to stderr
+logging.sh  | log_warn "msg"           | logging.psm1    | Write-Log -Level WARN -Message "msg"     | outputs [WARN] prefix
+logging.sh  | log_info "msg"           | logging.psm1    | Write-Log -Level INFO -Message "msg"     | outputs [INFO] prefix
+logging.sh  | log_debug "msg"          | logging.psm1    | Write-Log -Level DEBUG -Message "msg"    | silent unless VERBOSE=true
+logging.sh  | log_banner "n" "v"       | logging.psm1    | Write-Log -Level BANNER -Message "n"     | outputs === name === format
+errors.sh   | record_failure "pkg"     | errors.psm1     | Add-FailedItem -Item "pkg"               | increments failure count
+errors.sh   | show_failure_summary     | errors.psm1     | Show-FailureSummary                      | lists failed items or success msg
+errors.sh   | get_failure_count        | errors.psm1     | Get-FailureCount                         | returns integer count
+errors.sh   | clear_failures           | errors.psm1     | Clear-Failures                           | resets count to 0
+errors.sh   | compute_exit_code        | errors.psm1     | Get-ExitCode                             | 0=success, 1=partial failure
+packages.sh | load_packages "f.txt"    | packages.psm1   | Read-PackageFile -FileName "f.txt"       | reads package list, skips comments
+idempotent.sh | is_installed "cmd"     | idempotent.psm1 | Test-WinGetInstalled -PackageId "id"     | checks if package installed
+progress.sh | show_dry_run_banner      | progress.psm1   | Show-DryRunBanner                        | banner when DRY_RUN=true
+progress.sh | count_platform_steps     | progress.psm1   | Get-PlatformStepCount                    | count platform-relevant files
+progress.sh | show_completion_summary  | progress.psm1   | Show-CompletionSummary                   | end-of-run summary with duration
