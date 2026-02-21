@@ -1,50 +1,50 @@
 # Flatpak Package List
 # Source: platforms/linux/auto/auto_flat.sh
 # One package per line, comments start with #
-# Use full app IDs where applicable
+# All IDs use full reverse-DNS format (required by flatpak install)
 
 # System
-flatseal
-filezilla
+com.github.tchx84.Flatseal
+org.filezillaproject.Filezilla
 org.gnome.Boxes
 
 # Terminal
-vim.vim
+org.vim.Vim
 
 # Sound
-pavucontrol
+org.pulseaudio.pavucontrol
 
 # Video
-obsproject.Studio
+com.obsproject.Studio
 org.blender.Blender
 org.videolan.VLC
-zoom
+us.zoom.Zoom
 
 # Communication
-slack
-skype
+com.slack.Slack
+# Skype (com.skype.Client) removed -- archived on Flathub July 2025
 
 # Productivity - File Management
-dropbox
+com.dropbox.Client
 
 # Productivity - Documents
-masterpdf
+net.code_industry.MasterPDFEditor
 com.wps.Office
-calibre
+com.calibre_ebook.calibre
 
 # Productivity - Learning
-ankiweb
-geogebra
-openboard
+net.ankiweb.Anki
+org.geogebra.GeoGebra
+ch.openboard.OpenBoard
 
 # Productivity - Utilities
-blanket
-organizer
-meld
-gitkraken
+com.rafaelmardojai.Blanket
+org.librehunt.Organizer
+org.gnome.meld
+com.axosoft.GitKraken
 
 # Productivity - Stats
-jamovi
+org.jamovi.jamovi
 
 # Browser
-Epiphany
+org.gnome.Epiphany
