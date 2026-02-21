@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: snap.sh
 # Description: Install Snap packages for Linux (data-driven)

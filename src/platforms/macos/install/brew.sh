@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: brew.sh
 # Description: Install Homebrew formulae for macOS (data-driven)

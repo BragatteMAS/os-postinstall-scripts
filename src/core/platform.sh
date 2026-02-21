@@ -109,21 +109,25 @@ detect_platform() {
 
 #######################################
 # verify_bash_version()
-# Exits with instructions if Bash version < 4.0
+# Warns on macOS if Bash < 4.0, blocks on other platforms
 # Returns: 0 if OK, 1 if version too old
 #######################################
 verify_bash_version() {
     local major="${BASH_VERSINFO[0]:-0}"
 
     if [[ "$major" -lt 4 ]]; then
+        if [[ "${DETECTED_OS:-}" == "macos" ]]; then
+            log_warn "Bash ${DETECTED_BASH} detected (version 4.0+ recommended)"
+            log_warn "Homebrew will install Bash 5.x. Upgrade after setup:"
+            echo "  brew install bash"
+            echo "  sudo sh -c 'echo /opt/homebrew/bin/bash >> /etc/shells'"
+            echo "  chsh -s /opt/homebrew/bin/bash"
+            return 0
+        fi
         log_error "Bash version $DETECTED_BASH is too old. Version 4.0+ is required."
         echo ""
         echo "Upgrade instructions:"
-        if [[ "$DETECTED_OS" == "macos" ]]; then
-            echo "  brew install bash"
-            echo "  # Then add /opt/homebrew/bin/bash to /etc/shells"
-            echo "  # And run: chsh -s /opt/homebrew/bin/bash"
-        elif [[ "$DETECTED_OS" == "linux" ]]; then
+        if [[ "${DETECTED_OS:-}" == "linux" ]]; then
             echo "  sudo apt update && sudo apt install bash"
         else
             echo "  Please upgrade Bash to version 4.0 or later"

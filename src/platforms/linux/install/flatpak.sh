@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: flatpak.sh
 # Description: Install Flatpak packages for Linux (data-driven)

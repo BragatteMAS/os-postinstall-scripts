@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: rust-cli.sh
 # Description: Cross-platform Rust CLI tools installer (apt on Linux, brew on macOS)

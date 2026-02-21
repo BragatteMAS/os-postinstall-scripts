@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: homebrew.sh
 # Description: Install Homebrew package manager for macOS (idempotent)

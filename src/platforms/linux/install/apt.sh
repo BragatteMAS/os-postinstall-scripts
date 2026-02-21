@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 #######################################
 # Script: apt.sh
 # Description: Install APT packages for Linux (data-driven)
