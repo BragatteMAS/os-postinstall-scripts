@@ -10,7 +10,7 @@ Describe 'Write-Log' {
     BeforeEach {
         $env:NO_COLOR = '1'
         $env:VERBOSE = $null
-        Mock Write-Host {}
+        Mock Write-Host {} -ModuleName logging
     }
 
     AfterEach {
@@ -20,38 +20,38 @@ Describe 'Write-Log' {
 
     It 'Outputs [OK] tag for OK level' {
         Write-Log -Level OK -Message 'test'
-        Should -Invoke Write-Host -ParameterFilter { $Object -match '\[OK\]' }
+        Should -Invoke Write-Host -ModuleName logging -ParameterFilter { $Object -match '\[OK\]' }
     }
 
     It 'Outputs [ERROR] tag for ERROR level' {
         Write-Log -Level ERROR -Message 'test'
-        Should -Invoke Write-Host -ParameterFilter { $Object -match '\[ERROR\]' }
+        Should -Invoke Write-Host -ModuleName logging -ParameterFilter { $Object -match '\[ERROR\]' }
     }
 
     It 'Outputs [WARN] tag for WARN level' {
         Write-Log -Level WARN -Message 'test'
-        Should -Invoke Write-Host -ParameterFilter { $Object -match '\[WARN\]' }
+        Should -Invoke Write-Host -ModuleName logging -ParameterFilter { $Object -match '\[WARN\]' }
     }
 
     It 'Outputs [INFO] tag for INFO level' {
         Write-Log -Level INFO -Message 'test'
-        Should -Invoke Write-Host -ParameterFilter { $Object -match '\[INFO\]' }
+        Should -Invoke Write-Host -ModuleName logging -ParameterFilter { $Object -match '\[INFO\]' }
     }
 
     It 'Outputs === border === format for BANNER level' {
         Write-Log -Level BANNER -Message 'test'
-        Should -Invoke Write-Host -ParameterFilter { $Object -match '===' }
+        Should -Invoke Write-Host -ModuleName logging -ParameterFilter { $Object -match '===' }
     }
 
     It 'Suppresses DEBUG when VERBOSE is not true' {
         $env:VERBOSE = $null
         Write-Log -Level DEBUG -Message 'test'
-        Should -Invoke Write-Host -Times 0 -Scope It
+        Should -Invoke Write-Host -ModuleName logging -Times 0 -Scope It
     }
 
     It 'Shows DEBUG when VERBOSE=true' {
         $env:VERBOSE = 'true'
         Write-Log -Level DEBUG -Message 'test'
-        Should -Invoke Write-Host -Times 1 -Scope It
+        Should -Invoke Write-Host -ModuleName logging -Times 1 -Scope It
     }
 }
