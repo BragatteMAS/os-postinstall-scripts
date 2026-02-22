@@ -344,4 +344,4 @@ When reporting bugs, include:
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing to this project, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE).
