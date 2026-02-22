@@ -15,27 +15,10 @@
 
 </div>
 
-<!-- Demo GIF: record with `asciinema rec demo.cast && agg --theme monokai --font-size 16 --speed 2 demo.cast assets/demo.gif` -->
-
 <div align="center">
 
-```
-$ ./setup.sh --dry-run minimal
-[INFO] Starting OS Post-Install Scripts v4.0.0
-[WARN] =========================================
-[WARN]   DRY RUN MODE - No changes will be made
-[WARN] =========================================
-[INFO] Profile: minimal | Platform: Linux
-[INFO] [1/3] System packages...
-[OK]   apt: 12 packages would be installed
-[INFO] [2/3] Dotfiles...
-[OK]   4 symlinks would be created
-[INFO] [3/3] Shell configuration...
-[OK]   Starship prompt would be configured
-=== Setup Complete ===
-[INFO] Duration: 0m 2s
-[OK]   All sections completed successfully
-```
+<!-- Re-record: asciinema rec assets/demo.cast && agg --theme monokai --font-size 14 assets/demo.cast assets/demo.gif -->
+<img src="assets/demo.gif" alt="Dry-run preview of a minimal profile setup on macOS" width="700">
 
 *Dry-run preview of a minimal profile setup. [Record your own demo](CONTRIBUTING.md).*
 

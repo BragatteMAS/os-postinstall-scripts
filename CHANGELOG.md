@@ -5,6 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-02-22
+
+### Added
+- 105 new tests: 83 bats (platform, progress, dotfiles, interactive, profile validation, integration, contract parity) + 22 Pester (logging, errors, packages, progress modules)
+- `safe_curl_sh()` download-then-execute helper for all curl|sh sites (5 call sites migrated)
+- Semantic exit codes (0/1/2) via `errors.sh` and `errors.psm1` with `compute_exit_code()`
+- Exit code propagation through full parent-child orchestrator chain
+- `verify_bash_version()` warn-not-block for macOS Bash 3.2 compatibility
+- SECURITY.md with responsible disclosure policy and private vulnerability reporting
+- NOTICE file for Apache 2.0 attribution
+- `tests/contracts/bash-ps-parity.md` mapping 16 Bash↔PowerShell function pairs
+- Fork-ready documentation: submodule init instructions, Pester prerequisites, test commands
+
+### Changed
+- License migrated from MIT to Apache 2.0 (attribution requirement)
+- 36 broken Flatpak IDs corrected to valid reverse-DNS format across flatpak.txt and flatpak-post.txt
+- `pipefail` added to all 12 subshell scripts
+- README clone command now includes `--recurse-submodules`
+- ADR-001 amended to document semantic exit code strategy
+- ADR-009 added documenting curl|sh trust model
+
+### Removed
+- 3 discontinued apps archived (Skype, TogglDesktop, Workflow)
+
+### Fixed
+- EXIT trap bug: `cleanup()` now preserves non-zero exit codes
+- Pester v5 module-scoped mocking: added `-ModuleName` to all Write-Host mocks
+- SECURITY.md vs README vulnerability reporting contradiction resolved
+- Version badge updated from 3.3.0 to 4.1.0
+- `cargo.txt` duplicate entry removed
+- `brew.txt` trailing whitespace cleaned
+
+## [4.0.0] - 2026-02-18
+
+### Added
+- 37 bats-core unit tests covering logging.sh, errors.sh, packages.sh, idempotent.sh
+- Lint runners: `tools/lint.sh` (ShellCheck for 30+ files) and `tools/lint.ps1` (PSScriptAnalyzer)
+- Windows CLI switches: `-DryRun`, `-Verbose`, `-Unattended` matching Bash flag behavior
+- Windows `[Step X/Y]` progress counters and completion summary (profile, platform, duration, failures)
+- `[CmdletBinding()]` on all 12 exported PowerShell functions for native `-Verbose`/`-Debug` support
+- Shared `idempotent.psm1` module with `Test-WinGetInstalled`, `Test-NpmInstalled`, `Test-CargoInstalled`
+- README sections: EXTRA_PACKAGES/SKIP_PACKAGES customization, Windows Troubleshooting
+- GitHub Release v4.0.0
+
+### Changed
+- VERBOSE check uses `== "true"` instead of `-n` (boolean correctness in 5 locations)
+- NONINTERACTIVE/UNATTENDED unified via bridge in config.sh (6 downstream consumers)
+- Merged `src/installers/` into `src/install/` (single directory)
+- Color/format variables consolidated in logging.sh as SSoT (removed from platform.sh)
+- DATA_DIR readonly guard prevents re-source collision
+
+### Removed
+- `kite.kite` from winget.txt (discontinued 2022)
+- Duplicate `src/installers/` directory
+
+### Fixed
+- ARCHITECTURE.md corrected to reflect actual error handling strategy (no set -e, per ADR-001)
+- PowerShell duplicate idempotent check functions consolidated
+
 ## [3.3.0] - 2026-02-08
 
 ### Added
