@@ -15,11 +15,29 @@
 
 </div>
 
-<!-- Terminal demo GIF: record with asciinema + agg, save as assets/demo.gif -->
+<!-- Demo GIF: record with `asciinema rec demo.cast && agg --theme monokai --font-size 16 --speed 2 demo.cast assets/demo.gif` -->
 
 <div align="center">
 
-*Terminal demo recording coming soon.*
+```
+$ ./setup.sh --dry-run minimal
+[INFO] Starting OS Post-Install Scripts v4.0.0
+[WARN] =========================================
+[WARN]   DRY RUN MODE - No changes will be made
+[WARN] =========================================
+[INFO] Profile: minimal | Platform: Linux
+[INFO] [1/3] System packages...
+[OK]   apt: 12 packages would be installed
+[INFO] [2/3] Dotfiles...
+[OK]   4 symlinks would be created
+[INFO] [3/3] Shell configuration...
+[OK]   Starship prompt would be configured
+=== Setup Complete ===
+[INFO] Duration: 0m 2s
+[OK]   All sections completed successfully
+```
+
+*Dry-run preview of a minimal profile setup. [Record your own demo](CONTRIBUTING.md).*
 
 </div>
 
