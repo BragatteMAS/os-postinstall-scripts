@@ -27,16 +27,28 @@ Thank you for your interest in contributing. This document covers how to set up 
 ### Development Setup
 
 ```bash
-git clone https://github.com/BragatteMAS/os-postinstall-scripts.git
+git clone --recurse-submodules https://github.com/BragatteMAS/os-postinstall-scripts.git
 cd os-postinstall-scripts
 ```
 
+> **Already cloned without submodules?** Run: `git submodule update --init --recursive`
+
 ### Running Tests
 
+**Bash (120 tests — requires Bash 4+):**
+
 ```bash
-bash tests/test-dotfiles.sh
-bash tests/test-linux.sh
+./tests/lib/bats-core/bin/bats tests/*.bats
 ```
+
+**PowerShell (22 tests — requires pwsh + Pester v5):**
+
+```powershell
+# Install Pester if needed: Install-Module Pester -MinimumVersion 5.0 -Force
+Invoke-Pester tests/pester/*.Tests.ps1 -Output Detailed
+```
+
+**Legacy test scripts** (`tests/test-dotfiles.sh`, `tests/test-linux.sh`) still work but are not the canonical test suite.
 
 ### Dry-Run to Test Changes
 
@@ -84,8 +96,10 @@ os-postinstall-scripts/
 │   └── dotfiles/               # Dotfile templates
 │       ├── git/, zsh/, bash/, shared/, starship/
 └── tests/                      # Test suites
-    ├── test-dotfiles.sh
-    └── test-linux.sh
+    ├── *.bats                  #   120 Bash tests (bats-core)
+    ├── pester/*.Tests.ps1      #   22 PowerShell tests (Pester v5)
+    ├── contracts/              #   Bash/PS API parity mapping
+    └── lib/bats-core/          #   bats-core submodule
 ```
 
 ## Style Guide
@@ -325,7 +339,7 @@ Blank lines and lines starting with `#` are ignored by the package loader.
 This project uses structured development practices:
 
 - **GSD (Get Shit Done) workflow** -- phased development with research, planning, and execution stages
-- **Architecture Decision Records (ADRs)** -- 7 ADRs document key architectural choices (`.planning/adrs/`)
+- **Architecture Decision Records (ADRs)** -- 9 ADRs document key architectural choices (`.planning/adrs/`)
 - **Conventional Commits** -- all 430+ commits follow the conventional format
 - **Claude Code as development co-pilot** -- AI-assisted development across all 8 phases
 - **Data-driven architecture** -- package lists in text files, not hardcoded arrays
