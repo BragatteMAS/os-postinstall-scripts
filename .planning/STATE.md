@@ -10,8 +10,8 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- COMPLETE
-Status: All 4 phases (15-18) shipped, 9/9 plans complete
-Last activity: 2026-02-22 -- Milestone audit passed, documentation gaps fixed, archived
+Status: All 4 phases (15-18) shipped, 9/9 plans complete. OSS polish artifacts committed.
+Last activity: 2026-02-22 -- CHANGELOG v4.x, demo.gif, social-preview.png, README update
 
 Progress: 62 plans complete across 4 milestones (v1.0: 41, v2.1: 5, v3.0: 7, v4.1: 9)
 
@@ -36,10 +36,12 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-- [ ] Terminal screenshot (static PNG) for README hero image
-- [ ] Terminal demo video (asciinema + agg -> GIF) to replace README text placeholder
-- [ ] Social preview image via socialify.git.ci
-- [ ] CHANGELOG v4.x entries
+- [x] Terminal screenshot (static PNG) for README hero image
+- [x] Terminal demo video (asciinema + agg -> GIF) to replace README text placeholder
+- [x] Social preview image via socialify.git.ci (converted SVG→PNG 1280x640)
+- [x] CHANGELOG v4.x entries (v4.0.0 + v4.1.0)
+
+No pending todos.
 
 ### Blockers/Concerns
 
@@ -48,9 +50,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Milestone v4.1 complete. Archiving done.
+Stopped at: OSS polish artifacts committed. All todos cleared.
 Resume file: None
-Next step: /gsd:new-milestone or maintenance
+Next step: Upload social-preview.png to GitHub Settings > Social preview, then /gsd:new-milestone or maintenance
 
 ---
 *Milestone v4.1 Production Ready -- completed 2026-02-22*
