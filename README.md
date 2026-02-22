@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![Version: 3.3.0](https://img.shields.io/badge/Version-3.3.0-orange?style=flat)](CHANGELOG.md)
+[![Version: 4.1.0](https://img.shields.io/badge/Version-4.1.0-orange?style=flat)](CHANGELOG.md)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat)](LICENSE)
 [![Platforms: Linux | macOS | Windows](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS%20%7C%20Windows-informational?style=flat)](README.md)
 [![Shell: Bash 4.0+](https://img.shields.io/badge/Shell-Bash%204.0%2B-4EAA25?style=flat&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
@@ -71,7 +71,7 @@ Every fresh OS installation means hours of manual setup: installing packages, co
 ## Quick Start
 
 ```bash
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
+git clone --recurse-submodules https://github.com/BragatteMAS/os-postinstall-scripts
 cd os-postinstall-scripts
 
 # Preview first (recommended)
@@ -440,7 +440,7 @@ MCP (Model Context Protocol) servers are listed in `data/packages/ai-tools.txt` 
 
 ### Development Methodology
 
-This project was developed with Claude Code as a co-pilot across 430+ commits and 8 phases. The workflow uses the GSD (Get Stuff Done) methodology with structured planning, research, and execution phases. Seven Architecture Decision Records (ADRs) document key architectural choices. The badge "Built with Claude Code" reflects this AI-assisted development approach.
+This project was developed with Claude Code as a co-pilot across 430+ commits and 8 phases. The workflow uses the GSD (Get Stuff Done) methodology with structured planning, research, and execution phases. Nine Architecture Decision Records (ADRs) document key architectural choices. The badge "Built with Claude Code" reflects this AI-assisted development approach.
 
 ## Customization
 
@@ -564,7 +564,7 @@ Git user identity is separated into `~/.gitconfig.local` (created interactively 
 - The script never deletes files; it only creates symlinks and installs packages
 - Dry-run mode skips all sudo requests entirely
 
-For vulnerability reports, please open a [GitHub Issue](https://github.com/bragatte/os-postinstall-scripts/issues) with the `security` label.
+For vulnerability reports, see [SECURITY.md](SECURITY.md) for our responsible disclosure policy.
 
 ## Troubleshooting
 
