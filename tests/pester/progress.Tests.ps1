@@ -16,7 +16,8 @@ Describe 'Progress Module' {
         $env:DRY_RUN = $null
         $env:FAILURE_LOG = $null
         $env:NO_COLOR = '1'
-        Mock Write-Host {}
+        Mock Write-Host {} -ModuleName logging
+        Mock Write-Host {} -ModuleName progress
     }
 
     AfterEach {
@@ -29,14 +30,14 @@ Describe 'Progress Module' {
         It 'Is no-op when DRY_RUN is not true' {
             $env:DRY_RUN = $null
             Show-DryRunBanner
-            Should -Invoke Write-Host -Times 0 -Scope It
+            Should -Invoke Write-Host -ModuleName logging -Times 0 -Scope It
         }
 
         It 'Displays banner when DRY_RUN=true' {
             $env:DRY_RUN = 'true'
             Show-DryRunBanner
-            # 3 Write-Log calls -> 3 Write-Host calls with NO_COLOR=1
-            Should -Invoke Write-Host -Times 3 -Scope It
+            # 3 Write-Log calls -> 3 Write-Host calls in logging module with NO_COLOR=1
+            Should -Invoke Write-Host -ModuleName logging -Times 3 -Scope It
         }
     }
 
@@ -64,9 +65,9 @@ Describe 'Progress Module' {
 
             Show-CompletionSummary -Profile 'test' -Platform 'Test' -StartTime (Get-Date).AddSeconds(-5)
 
-            # Should invoke Write-Host at least 4 times:
-            # empty line + banner + profile + platform + duration + empty line + success + empty line
-            Should -Invoke Write-Host -Times 4 -Scope It
+            # logging module gets 5 Write-Host calls (1 BANNER + 3 INFO + 1 OK)
+            # progress module gets 3 direct Write-Host '' calls (empty lines)
+            Should -Invoke Write-Host -ModuleName logging -Times 4 -Scope It
         }
     }
 }
