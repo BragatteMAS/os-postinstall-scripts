@@ -259,7 +259,7 @@ Plans:
 - [x] **Phase 15: Data & Compatibility Fixes** - Fix Flatpak IDs, remove discontinued apps, Bash 3.2 warn, pipefail, minor convergent fixes (completed 2026-02-21)
 - [x] **Phase 16: Exit Codes & Security** - Semantic exit codes, propagation, safe_curl_sh helper, ADR-009 (completed 2026-02-21)
 - [x] **Phase 17: Test Expansion - Bash** - bats tests for 4 untested modules, profile validation, integration tests, contract parity (completed 2026-02-21)
-- [ ] **Phase 18: Polish & OSS Health** - Pester tests for PS modules, SECURITY.md, GitHub Releases, demo GIF
+- [x] **Phase 18: Polish & OSS Health** - Pester tests for PS modules, SECURITY.md, GitHub Releases, demo GIF (completed 2026-02-22)
 
 ### Phase 15: Data & Compatibility Fixes
 **Goal**: Fix broken Flatpak IDs, remove discontinued apps, resolve Bash 3.2 chicken-and-egg on macOS, add pipefail to all scripts, and apply minor convergent fixes
@@ -326,7 +326,11 @@ Plans:
   3. GitHub Release for v4.0.0 formatted with changelog from tag
   4. Demo GIF (asciinema + agg) or improved placeholder in README
   5. Pester tests pass: `Invoke-Pester tests/pester/*.Tests.ps1` exits 0
-**Plans**: ~2 plans
+**Plans**: 2 plans
+
+Plans:
+- [ ] 18-01-PLAN.md — Pester unit tests for logging, errors, packages, progress modules (21 tests)
+- [ ] 18-02-PLAN.md — SECURITY.md, GitHub Release v4.0.0, improved README demo placeholder
 
 ## Progress
 
