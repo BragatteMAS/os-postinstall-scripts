@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 Milestone: v4.1 Production Ready -- IN PROGRESS
-Status: Phase 17 verified, EXIT trap bug fixed, docs updated
-Last activity: 2026-02-21 -- Phase 17 verified (120 tests, 0 failures) + docs/PITFALLS.md created
+Status: Phase 18-02 complete (awaiting human-verify checkpoint)
+Last activity: 2026-02-22 -- 18-02 SECURITY.md + GitHub Release v4.0.0 + README demo placeholder
 
-Progress: 55/~57 plans complete (v1.0-v3.0: 48, v4.1: 7/~9)
+Progress: 56/~57 plans complete (v1.0-v3.0: 48, v4.1: 8/~9)
 
 ## Previous Milestone Performance
 
@@ -22,9 +22,9 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 55
+- Total plans completed: 56
 - Average duration: 2.5 min
-- Total execution time: 140 min
+- Total execution time: 142 min
 
 **By Phase:**
 
@@ -50,10 +50,11 @@ v1.0 + v2.1: 41 plans complete, 98 min total, 2.4 min avg
 | 15-data-compatibility-fixes | 2/? | 3 min | 1.5 min |
 | 16-exit-codes-security | 2/? | 8 min | 4 min |
 | 17-test-expansion-bash | 3/3 | 14 min | 4.7 min |
+| 18-polish-oss-health | 1/? | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 16-01 (6 min), 16-02 (2 min), 17-01 (2 min), 17-02 (2 min), 17-03 (10 min)
-- Trend: Stable at ~2-10 min (17-03 slower due to integration test execution)
+- Last 5 plans: 16-02 (2 min), 17-01 (2 min), 17-02 (2 min), 17-03 (10 min), 18-02 (2 min)
+- Trend: Stable at ~2-10 min
 
 *Updated after each plan completion*
 
@@ -106,11 +107,14 @@ Recent decisions affecting current work:
 - [17-03]: Contract validation cross-references Bash exports against source; PS side is informational
 - [17-fix]: EXIT trap bug fixed -- cleanup() now captures $? and uses max(trap_exit_code, _worst_exit)
 - [17-fix]: INT/TERM traps use signal_cleanup (separate from EXIT trap) preserving exit code 130
+- [18-02]: SECURITY.md uses GitHub private vulnerability reporting (not email)
+- [18-02]: v4.0.0 tag pushed to remote before release creation (was local-only)
+- [18-02]: README demo shows dry-run minimal profile output as realistic preview
 
 ### Pending Todos
 
 - [ ] Terminal screenshot (static PNG) for README hero image
-- [ ] Terminal demo video (asciinema + agg -> GIF) for README (OSS-03 in Phase 18)
+- [ ] Terminal demo video (asciinema + agg -> GIF) to replace README text placeholder
 - [ ] Social preview image via socialify.git.ci
 
 ### Blockers/Concerns
@@ -121,10 +125,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-21
-Stopped at: Phase 17 verified + docs updated (STATE, REQUIREMENTS, ROADMAP, docs/PITFALLS.md)
-Resume file: None
-Next step: Phase 18 (Polish & OSS Health: Pester tests, SECURITY.md, GitHub Releases, demo GIF)
+Last session: 2026-02-22
+Stopped at: 18-02 complete (checkpoint:human-verify pending)
+Resume file: .planning/phases/18-polish-oss-health/18-02-SUMMARY.md
+Next step: Approve 18-02 checkpoint, then continue Phase 18 (Pester tests in 18-01)
 
 ---
 *Milestone v4.1 Production Ready -- started 2026-02-19*
