@@ -166,7 +166,7 @@ See our comprehensive [Troubleshooting Guide](troubleshooting.md) for solutions 
 ### Project Information
 - **GitHub**: [github.com/BragatteMAS/os-postinstall-scripts](https://github.com/BragatteMAS/os-postinstall-scripts)
 - **Issues**: [Report bugs or request features](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-- **License**: MIT
+- **License**: Apache 2.0
 - **Changelog**: See [CHANGELOG.md](../CHANGELOG.md)
 
 ## Getting Help
