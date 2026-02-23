@@ -28,9 +28,9 @@ bash migrate-p10k.sh
 | Component | Description |
 |-----------|-------------|
 | CLI tools | bat, eza, fd, ripgrep, delta, zoxide, starship |
-| Starship prompt | Minimal config with 3 curated presets |
+| Starship prompt | Project config (default) + 3 alternative presets |
 | Nerd Font | JetBrainsMono Nerd Font (optional) |
-| Shell aliases | 40+ shortcuts for git, navigation, modern tools |
+| Shell aliases | 50+ shortcuts for git, navigation, modern tools |
 | Zsh plugins | autosuggestions, syntax-highlighting, completions |
 | p10k migration | Detect, backup, clean, and replace Powerlevel10k |
 
@@ -119,14 +119,14 @@ Key differences: slightly different git status symbols, same overall feel. Both 
 
 ## Standalone Usage
 
-These scripts work independently -- download just the `examples/terminal/` directory:
+The setup script sources aliases and starship config from the full repository (`data/dotfiles/`). Clone the complete repo for the best experience:
 
 ```bash
-# No project dependencies required
-curl -LO https://github.com/BragatteMAS/os-postinstall-scripts/archive/main.tar.gz
-tar xzf main.tar.gz --strip-components=2 os-postinstall-scripts-main/examples/terminal
-cd terminal && bash setup.sh
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+bash os-postinstall-scripts/terminal-setup.sh --interactive
 ```
+
+If `data/dotfiles/` is missing (e.g. downloaded only this directory), the script still works but skips shared aliases and uses the preset starship configs instead.
 
 Works on macOS (Homebrew) and Linux (apt). No CI/CD dependencies.
 

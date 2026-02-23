@@ -162,6 +162,7 @@ install_tools() {
             fi
         done
     elif [[ "$PKG" == "apt" ]]; then
+        local _missing_cargo=()
         local apt_pkgs=(bat fd-find ripgrep)
         run sudo apt update -qq
         for pkg in "${apt_pkgs[@]}"; do
@@ -177,7 +178,7 @@ install_tools() {
             if command -v cargo &>/dev/null; then
                 run cargo install eza
             else
-                log_warn "eza: needs cargo (curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh)"
+                _missing_cargo+=("eza")
             fi
         else
             log_ok "eza"
@@ -188,10 +189,15 @@ install_tools() {
             if command -v cargo &>/dev/null; then
                 run cargo install git-delta
             else
-                log_warn "delta: needs cargo"
+                _missing_cargo+=("delta")
             fi
         else
             log_ok "delta"
+        fi
+
+        if [[ ${#_missing_cargo[@]} -gt 0 ]]; then
+            log_warn "Skipped ${_missing_cargo[*]} — requires Rust (not installed)"
+            log_info "Install Rust first: visit https://rustup.rs then re-run this script"
         fi
 
         # zoxide
@@ -515,25 +521,31 @@ main() {
     setup_shell
 
     echo ""
-    log_ok "Done! Restart your terminal or run: exec \$SHELL"
+    echo -e "${BOLD}╔══════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}║${NC}  ${GREEN}Done!${NC} Close and reopen your terminal to apply.   ${BOLD}║${NC}"
     if [[ "$DO_FONT" == "true" ]]; then
-        echo ""
-        echo -e "${YELLOW}IMPORTANT:${NC} Set your terminal font to ${BOLD}JetBrainsMono Nerd Font${NC}"
-        echo ""
+        echo -e "${BOLD}║${NC}                                                  ${BOLD}║${NC}"
+        echo -e "${BOLD}║${NC}  ${YELLOW}Font:${NC} Set to ${BOLD}JetBrainsMono Nerd Font${NC}            ${BOLD}║${NC}"
         case "${TERM_PROGRAM:-}" in
             iTerm.app)
-                echo -e "  iTerm2:  ${BOLD}Settings > Profiles > Text > Font${NC}" ;;
+                echo -e "${BOLD}║${NC}  iTerm2: Settings > Profiles > Text > Font       ${BOLD}║${NC}" ;;
             Apple_Terminal)
-                echo -e "  Terminal.app:  ${BOLD}Settings > Profiles > Font > Change${NC}" ;;
+                echo -e "${BOLD}║${NC}  Terminal.app: Settings > Profiles > Font         ${BOLD}║${NC}" ;;
             WarpTerminal)
-                echo -e "  Warp:  ${BOLD}Settings > Appearance > Font${NC}" ;;
+                echo -e "${BOLD}║${NC}  Warp: Settings > Appearance > Font               ${BOLD}║${NC}" ;;
             vscode)
-                echo -e "  VS Code:  ${BOLD}Settings > terminal.integrated.fontFamily${NC} → 'JetBrainsMono Nerd Font'" ;;
+                echo -e "${BOLD}║${NC}  VS Code: terminal.integrated.fontFamily          ${BOLD}║${NC}" ;;
             *)
-                echo -e "  Open your terminal preferences and change the font." ;;
+                echo -e "${BOLD}║${NC}  Open terminal preferences and change the font.   ${BOLD}║${NC}" ;;
         esac
-        echo ""
     fi
+    if [[ "$DO_STARSHIP" == "true" ]]; then
+        echo -e "${BOLD}║${NC}                                                  ${BOLD}║${NC}"
+        echo -e "${BOLD}║${NC}  ${BLUE}Themes:${NC} cp ~/.config/starship/presets/<name>.toml ${BOLD}║${NC}"
+        echo -e "${BOLD}║${NC}          ~/.config/starship.toml                  ${BOLD}║${NC}"
+    fi
+    echo -e "${BOLD}╚══════════════════════════════════════════════════╝${NC}"
+    echo ""
     echo ""
 }
 
