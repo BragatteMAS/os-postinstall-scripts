@@ -123,6 +123,6 @@ cmd() {
 # -----------------------------------------------------------------------------
 # Auto-show welcome on interactive shell startup
 # -----------------------------------------------------------------------------
-if [[ $- == *i* ]] && [[ -z "${ZSH_EXECUTION_STRING:-}" ]] && [[ -z "${BASH_EXECUTION_STRING:-}" ]]; then
+if [[ $- == *i* ]] && [[ -z "${ZSH_EXECUTION_STRING:-}" ]]; then
     show_welcome
 fi
