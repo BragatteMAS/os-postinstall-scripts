@@ -85,12 +85,14 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# System-specific package manager
+# System update — bum (Brew/apt Update Manager)
 # -----------------------------------------------------------------------------
-if command -v apt &>/dev/null; then
-    alias update="sudo apt update && sudo apt upgrade"
-    alias cleanup="sudo apt autoremove && sudo apt autoclean"
-elif command -v brew &>/dev/null; then
-    alias update="brew update && brew upgrade"
-    alias cleanup="brew cleanup"
+if command -v brew &>/dev/null; then
+    alias bum="brew update && brew upgrade && brew cleanup && brew doctor 2>&1 | grep -v 'Please note'"
+elif command -v apt &>/dev/null; then
+    alias bum="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+elif command -v yum &>/dev/null; then
+    alias bum="sudo yum update -y"
+elif command -v pacman &>/dev/null; then
+    alias bum="sudo pacman -Syu"
 fi

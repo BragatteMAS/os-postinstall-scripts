@@ -52,7 +52,7 @@ h() {
             echo "GIT:  gs gd ga gc gp gl glo gb gco gsw gst"
             echo "FIND: fp (fzf preview)   af (alias search)"
             echo "RUST: bat fd rg fzf eza delta z"
-            echo "UTIL: h c path now df du duh ports update cleanup"
+            echo "UTIL: h c path now df du duh ports bum"
             echo ""
             echo "💡 h <topic>: nav | git | find | tools | util | all"
             ;;
@@ -106,8 +106,7 @@ h() {
             echo "  df/du     disk free/usage"
             echo "  duh       disk usage, 1 level deep"
             echo "  ports     show listening ports"
-            echo "  update    system update (brew/apt)"
-            echo "  cleanup   remove unused packages"
+            echo "  bum       full system update (brew/apt/yum/pacman)"
             ;;
         "all")
             h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h util
