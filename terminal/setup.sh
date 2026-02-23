@@ -139,7 +139,7 @@ ensure_deps() {
     local missing=()
 
     for dep in "${deps[@]}"; do
-        if ! dpkg -l "$dep" &>/dev/null 2>&1; then
+        if ! dpkg -s "$dep" &>/dev/null 2>&1; then
             missing+=("$dep")
         fi
     done
@@ -169,7 +169,7 @@ install_tools() {
         local apt_pkgs=(bat fd-find fzf ripgrep)
         run sudo apt update -qq
         for pkg in "${apt_pkgs[@]}"; do
-            if dpkg -l "$pkg" &>/dev/null 2>&1; then
+            if dpkg -s "$pkg" &>/dev/null 2>&1; then
                 log_ok "$pkg"
             else
                 run sudo apt install -y "$pkg"
