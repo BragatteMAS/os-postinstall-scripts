@@ -141,14 +141,9 @@ Don't need the full setup? Get the modern terminal experience in one command:
 
 ```bash
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
-bash os-postinstall-scripts/terminal-setup.sh
-```
-
-Or choose what to install with `--interactive`:
-
-```bash
-bash os-postinstall-scripts/terminal-setup.sh --interactive
-bash os-postinstall-scripts/terminal-setup.sh --dry-run  # preview first
+bash os-postinstall-scripts/terminal-setup.sh --interactive  # choose what to install
+bash os-postinstall-scripts/terminal-setup.sh --dry-run      # preview first
+bash os-postinstall-scripts/terminal-setup.sh                # install everything
 ```
 
 **What it does:**
@@ -157,7 +152,7 @@ bash os-postinstall-scripts/terminal-setup.sh --dry-run  # preview first
 |-----------|---------|
 | Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
 | CLI tools | bat, eza, fd, ripgrep, delta, zoxide, starship |
-| Prompt | Minimal Starship config (git branch, status, duration) |
+| Prompt | Starship config with git branch, status, duration + 4 switchable presets |
 | Aliases | 50+ shortcuts for git, navigation, modern tools |
 | Plugins | zsh-autosuggestions, syntax-highlighting, completions |
 | Platforms | Linux (apt) and macOS (brew) |

@@ -15,7 +15,7 @@
 #
 # From: https://github.com/BragatteMAS/os-postinstall-scripts
 #######################################
-set -euo pipefail
+set -o pipefail
 
 # ─── Script directory ────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
@@ -84,7 +84,7 @@ wizard() {
     ask "Nerd Font (JetBrainsMono)?" "y"                              || DO_FONT=false
     ask "CLI tools (bat, eza, fd, rg, delta, zoxide, starship)?" "y"  || DO_TOOLS=false
     ask "Starship prompt config?" "y"                                  || DO_STARSHIP=false
-    ask "Shell aliases (40+ shortcuts)?" "y"                           || DO_ALIASES=false
+    ask "Shell aliases (50+ shortcuts)?" "y"                           || DO_ALIASES=false
     if [[ "$SHELL_NAME" == "zsh" ]]; then
         ask "Zsh plugins (autosuggestions, syntax, completions)?" "y"  || DO_PLUGINS=false
     fi
@@ -231,31 +231,44 @@ install_tools() {
 }
 
 # ─── Nerd Font ───────────────────────────────────────────────────────
+# Only installs Regular, Bold, Italic, BoldItalic (~10 MB vs ~220 MB full cask)
 install_nerd_font() {
     log_info "Installing JetBrainsMono Nerd Font..."
 
+    local font_variants=(
+        "JetBrainsMonoNerdFont-Regular.ttf"
+        "JetBrainsMonoNerdFont-Bold.ttf"
+        "JetBrainsMonoNerdFont-Italic.ttf"
+        "JetBrainsMonoNerdFont-BoldItalic.ttf"
+    )
+
     if [[ "$PKG" == "brew" ]]; then
-        if brew list --cask font-jetbrains-mono-nerd-font &>/dev/null; then
-            log_ok "JetBrainsMono Nerd Font"
-        else
-            run brew install --cask font-jetbrains-mono-nerd-font
-        fi
+        local font_dir="${HOME}/Library/Fonts"
     elif [[ "$PKG" == "apt" ]]; then
         local font_dir="${HOME}/.local/share/fonts"
-        if fc-list 2>/dev/null | grep -qi "JetBrainsMono.*Nerd"; then
-            log_ok "JetBrainsMono Nerd Font"
-        else
-            local tmp_dir
-            tmp_dir=$(mktemp -d)
-            log_info "Downloading from GitHub releases..."
-            run curl -sSfL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" -o "${tmp_dir}/JetBrainsMono.zip"
-            run mkdir -p "$font_dir"
-            run unzip -qo "${tmp_dir}/JetBrainsMono.zip" -d "$font_dir"
-            run fc-cache -f
-            rm -rf "$tmp_dir"
-        fi
     fi
 
+    # Check if already installed
+    if [[ -f "${font_dir}/${font_variants[0]}" ]]; then
+        log_ok "JetBrainsMono Nerd Font"
+        return 0
+    fi
+
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    log_info "Downloading from GitHub releases..."
+    run curl -sSfL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" -o "${tmp_dir}/JetBrainsMono.zip"
+    run mkdir -p "$font_dir"
+
+    # Extract only the 4 variants needed for terminal use
+    for variant in "${font_variants[@]}"; do
+        run unzip -qo "${tmp_dir}/JetBrainsMono.zip" "$variant" -d "$font_dir"
+    done
+
+    # Refresh font cache (Linux only)
+    [[ "$PKG" == "apt" ]] && run fc-cache -f
+
+    rm -rf "$tmp_dir"
     log_ok "Nerd Font installed — see post-install instructions at the end"
 }
 
@@ -285,31 +298,30 @@ install_zsh_plugins() {
 
 # ─── Preset Selection ────────────────────────────────────────────────
 select_preset() {
+    local project_config="${SCRIPT_DIR}/../../data/dotfiles/starship/starship.toml"
     local preset_dir="${SCRIPT_DIR}/presets"
-
-    if [[ ! -d "$preset_dir" ]]; then
-        log_warn "Presets directory not found: $preset_dir"
-        log_info "Using inline fallback config"
-        return 1
-    fi
 
     echo ""
     echo -e "${BOLD}Available Starship presets:${NC}"
-    echo "  1) minimal    - Clean, fast, ASCII-safe (recommended)"
-    echo "  2) powerline  - Colored segments with arrows (Nerd Font required)"
-    echo "  3) p10k-alike - Closest match to p10k Lean style"
+    echo "  1) project    - The os-postinstall-scripts config (recommended)"
+    if [[ -d "$preset_dir" ]]; then
+        echo "  2) minimal    - Clean, fast, ASCII-safe"
+        echo "  3) powerline  - Colored segments with arrows (Nerd Font required)"
+        echo "  4) p10k-alike - Closest match to p10k Lean style"
+    fi
     echo ""
-    read -rp "Choose preset [1-3, default=1]: " choice
+    read -rp "Choose preset [default=1]: " choice
     choice="${choice:-1}"
 
     local preset_file
     case "$choice" in
-        1) preset_file="${preset_dir}/minimal.toml" ;;
-        2) preset_file="${preset_dir}/powerline.toml" ;;
-        3) preset_file="${preset_dir}/p10k-alike.toml" ;;
+        1) preset_file="$project_config" ;;
+        2) preset_file="${preset_dir}/minimal.toml" ;;
+        3) preset_file="${preset_dir}/powerline.toml" ;;
+        4) preset_file="${preset_dir}/p10k-alike.toml" ;;
         *)
-            log_warn "Invalid choice: $choice. Using minimal."
-            preset_file="${preset_dir}/minimal.toml"
+            log_warn "Invalid choice: $choice. Using project config."
+            preset_file="$project_config"
             ;;
     esac
 
@@ -321,18 +333,6 @@ select_preset() {
     local config_dir="${HOME}/.config"
     local config_file="${config_dir}/starship.toml"
 
-    # Backup existing starship.toml
-    if [[ -f "$config_file" ]]; then
-        local backup_file="${config_file}.bak.$(date +%Y-%m-%d)"
-        if [[ "$DRY_RUN" == "true" ]]; then
-            log_dry "Backup ${config_file} to ${backup_file}"
-        else
-            cp "$config_file" "$backup_file"
-            log_ok "Backed up existing starship.toml"
-        fi
-    fi
-
-    # Copy selected preset
     if [[ "$DRY_RUN" == "true" ]]; then
         log_dry "Copy $(basename "$preset_file") to ${config_file}"
     else
@@ -377,6 +377,7 @@ setup_starship() {
     log_info "Configuring starship prompt..."
     local config_dir="${HOME}/.config"
     local config_file="${config_dir}/starship.toml"
+    local project_config="${SCRIPT_DIR}/../../data/dotfiles/starship/starship.toml"
 
     run mkdir -p "$config_dir"
 
@@ -387,70 +388,28 @@ setup_starship() {
         run cp "$config_file" "$backup_file"
     fi
 
-    local preset_dir="${SCRIPT_DIR}/presets"
-
-    if [[ -d "$preset_dir" ]]; then
-        # Presets available: interactive selects, non-interactive copies minimal
-        if [[ "$INTERACTIVE" == "true" ]]; then
-            select_preset
-        else
-            if [[ "$DRY_RUN" != "true" ]]; then
-                cp "${preset_dir}/minimal.toml" "$config_file"
-                log_ok "Installed minimal preset (non-interactive default)"
-            else
-                log_dry "Copy minimal.toml to ${config_file}"
-            fi
-        fi
+    if [[ "$INTERACTIVE" == "true" ]]; then
+        select_preset
     else
-        # Inline TOML fallback when presets/ directory is missing
-        log_warn "Presets directory not found, using inline fallback"
-        if [[ "$DRY_RUN" != "true" ]]; then
-            cat > "$config_file" << 'EOF'
-"$schema" = "https://starship.rs/config-schema.json"
-
-format = """
-$directory\
-$git_branch\
-$git_status\
-$cmd_duration\
-$line_break\
-$character"""
-
-[directory]
-truncation_length = 3
-truncate_to_repo = true
-style = "bold cyan"
-
-[git_branch]
-format = "[$symbol$branch]($style) "
-symbol = " "
-style = "bold purple"
-
-[git_status]
-format = "[$all_status$ahead_behind]($style) "
-style = "bold red"
-
-[cmd_duration]
-min_time = 2000
-format = "[$duration]($style) "
-style = "bold yellow"
-
-[character]
-success_symbol = "[>](bold green)"
-error_symbol = "[>](bold red)"
-
-[package]
-disabled = true
-[nodejs]
-disabled = true
-[python]
-disabled = true
-[rust]
-disabled = true
-EOF
+        # Non-interactive: use project config (SSoT)
+        if [[ -f "$project_config" ]]; then
+            run cp "$project_config" "$config_file"
+            log_ok "Installed project starship config"
         else
-            log_dry "Write inline starship.toml to $config_file"
+            log_warn "Project starship.toml not found, skipping"
         fi
+    fi
+
+    # Copy all presets locally for easy switching later
+    local preset_dir="${SCRIPT_DIR}/presets"
+    local local_presets="${HOME}/.config/starship/presets"
+    if [[ -d "$preset_dir" ]]; then
+        run mkdir -p "$local_presets"
+        run cp "${preset_dir}"/*.toml "$local_presets/" 2>/dev/null
+        if [[ -f "$project_config" ]]; then
+            run cp "$project_config" "${local_presets}/project.toml"
+        fi
+        log_ok "Presets saved to ${local_presets}/ — switch with: cp ~/.config/starship/presets/<name>.toml ~/.config/starship.toml"
     fi
 }
 
@@ -466,8 +425,8 @@ setup_shell() {
     fi
 
     if [[ -f "$SHELL_RC" ]]; then
-        run cp "$SHELL_RC" "${SHELL_RC}.bak"
-        log_info "Backed up -> ${SHELL_RC}.bak"
+        run cp "$SHELL_RC" "${SHELL_RC}.bak.$(date +%Y-%m-%d)"
+        log_info "Backed up -> ${SHELL_RC}.bak.$(date +%Y-%m-%d)"
     fi
 
     if [[ "$DRY_RUN" != "true" ]]; then
@@ -491,21 +450,36 @@ setup_shell() {
             fi
         fi
 
-        # Dynamic lines (need variable interpolation)
-        cat >> "$SHELL_RC" <<DYNAMIC
+        # Plugins (only if user opted in)
+        if [[ "$DO_PLUGINS" == "true" && "$SHELL_NAME" == "zsh" ]]; then
+            cat >> "$SHELL_RC" <<'PLUGINS'
 
 # zsh plugins
-[[ -f "\$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "\$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-[[ -d "\$HOME/.zsh/zsh-completions/src" ]] && fpath=("\$HOME/.zsh/zsh-completions/src" \$fpath)
-[[ -f "\$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "\$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[[ -f "${HOME}/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOME}/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -d "${HOME}/.zsh/zsh-completions/src" ]] && fpath=("${HOME}/.zsh/zsh-completions/src" $fpath)
+[[ -f "${HOME}/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOME}/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+PLUGINS
+        fi
+
+        # Zoxide (only if tools were installed)
+        if [[ "$DO_TOOLS" == "true" ]]; then
+            cat >> "$SHELL_RC" <<ZOXIDE
 
 # zoxide (smarter cd)
 command -v zoxide &>/dev/null && eval "\$(zoxide init ${SHELL_NAME})"
+ZOXIDE
+        fi
+
+        # Starship prompt (only if user opted in)
+        if [[ "$DO_STARSHIP" == "true" ]]; then
+            cat >> "$SHELL_RC" <<STARSHIP
 
 # Starship prompt
 command -v starship &>/dev/null && eval "\$(starship init ${SHELL_NAME})"
-# --- end terminal-setup.sh ---
-DYNAMIC
+STARSHIP
+        fi
+
+        echo "# --- end terminal-setup.sh ---" >> "$SHELL_RC"
     else
         log_dry "Append aliases + plugins + starship init to $SHELL_RC"
     fi
