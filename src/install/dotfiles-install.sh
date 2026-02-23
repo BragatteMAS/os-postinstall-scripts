@@ -151,11 +151,41 @@ install_dotfiles() {
     )
 
     local failed=0
+    local skip_gitconfig=false
+
+    # Safeguard: warn before replacing an existing gitconfig that isn't our symlink
+    local gitconfig_target="${HOME}/.gitconfig"
+    if [[ -f "$gitconfig_target" ]] && [[ ! -L "$gitconfig_target" ]]; then
+        echo ""
+        log_warn "~/.gitconfig already exists with your git identity:"
+        git config --global user.name 2>/dev/null  | xargs -I{} echo "        user.name  = {}"
+        git config --global user.email 2>/dev/null | xargs -I{} echo "        user.email = {}"
+        echo ""
+        log_warn "Replacing it will symlink to this project's gitconfig."
+        log_warn "Your user.name/email will need to be reconfigured in ~/.gitconfig.local"
+        echo ""
+        if [[ -t 0 ]]; then
+            read -rp "$(echo -e "  ${BLUE:-}?${NC:-} Replace ~/.gitconfig? [y/N] ")" answer
+            if [[ ! "$answer" =~ ^[yYsS]$ ]]; then
+                log_info "Keeping your existing ~/.gitconfig"
+                skip_gitconfig=true
+            fi
+        else
+            log_info "Non-interactive mode — skipping gitconfig to protect existing config"
+            skip_gitconfig=true
+        fi
+    fi
 
     for mapping in "${symlink_map[@]}"; do
         local source_rel="${mapping%%:*}"
         local target="${mapping##*:}"
         local source="${DOTFILES_DATA}/${source_rel}"
+
+        # Skip gitconfig if user declined
+        if [[ "$skip_gitconfig" == "true" ]] && [[ "$target" == "$gitconfig_target" ]]; then
+            log_info "Skipped: ~/.gitconfig (preserved existing)"
+            continue
+        fi
 
         # Skip if source doesn't exist
         if [[ ! -f "$source" ]]; then
