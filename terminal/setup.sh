@@ -219,7 +219,7 @@ install_tools() {
             if [[ "${DRY_RUN:-}" == "true" ]]; then
                 log_dry "install starship via curl|sh"
             else
-                curl -sS https://starship.rs/install.sh | sh -s -- -y
+                curl -fsS https://starship.rs/install.sh | sh -s -- -y
             fi
         else
             log_ok "starship"

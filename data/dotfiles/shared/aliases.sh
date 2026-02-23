@@ -2,7 +2,7 @@
 # Requires bash or zsh — not compatible with sh/dash
 
 # Guard: skip silently if sourced by sh/dash
-[ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && return 0 2>/dev/null
+[ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && { return 0 2>/dev/null || exit 0; }
 
 # -----------------------------------------------------------------------------
 # Navigation
@@ -31,7 +31,7 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# Safety nets
+# Safety nets (interactive only — bypassed in scripts automatically)
 # -----------------------------------------------------------------------------
 alias rm="rm -i"
 alias cp="cp -i"
@@ -39,7 +39,7 @@ alias mv="mv -i"
 alias mkdir="mkdir -p"
 
 # -----------------------------------------------------------------------------
-# Git shortcuts
+# Git shortcuts (pattern: g + first letter(s) of subcommand)
 # -----------------------------------------------------------------------------
 alias g="git"
 alias gs="git status"
@@ -59,12 +59,6 @@ alias gco="git checkout"
 alias gcb="git checkout -b"
 alias gsw="git switch"
 alias gst="git stash"
-
-# -----------------------------------------------------------------------------
-# Modern tool shortcuts (safe — don't shadow POSIX commands)
-# -----------------------------------------------------------------------------
-command -v bat &>/dev/null && alias cat="bat --paging=never"
-command -v delta &>/dev/null && alias diff="delta"
 
 # -----------------------------------------------------------------------------
 # Utilities
@@ -89,7 +83,7 @@ fi
 # System update — sysup (primary), bum/upall (secondary)
 # -----------------------------------------------------------------------------
 if command -v brew &>/dev/null; then
-    sysup() { brew update && brew upgrade && brew cleanup && brew doctor 2>&1 | grep -v 'Please note'; }
+    sysup() { brew update && brew upgrade && brew cleanup && { brew doctor 2>&1 | grep -v 'Please note' || true; }; }
 elif command -v apt &>/dev/null; then
     sysup() { sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y; }
 elif command -v yum &>/dev/null; then
