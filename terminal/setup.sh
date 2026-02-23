@@ -375,7 +375,7 @@ offer_migration() {
     fi
 
     log_info "Running p10k migration..."
-    bash "${SCRIPT_DIR}/migrate-p10k.sh" ${DRY_RUN:+--dry-run}
+    bash "${SCRIPT_DIR}/migrate-p10k.sh" $( [[ "$DRY_RUN" == "true" ]] && echo "--dry-run" )
 }
 
 # ─── Starship Config ─────────────────────────────────────────────────
@@ -457,18 +457,20 @@ setup_shell() {
         fi
 
         # Functions: welcome, h(), cmd() (copy from SSoT, source from shell RC)
-        local functions_src="${SCRIPT_DIR}/../data/dotfiles/shared/functions.sh"
-        local functions_dst="${HOME}/.config/shell/functions.sh"
+        if [[ "$DO_ALIASES" == "true" ]]; then
+            local functions_src="${SCRIPT_DIR}/../data/dotfiles/shared/functions.sh"
+            local functions_dst="${HOME}/.config/shell/functions.sh"
 
-        if [[ -f "$functions_src" ]]; then
-            run mkdir -p "${HOME}/.config/shell"
-            run cp "$functions_src" "$functions_dst"
-            log_ok "Copied functions.sh to ${functions_dst}"
-            echo "" >> "$SHELL_RC"
-            echo "# Functions: welcome, help, search (managed by terminal-setup.sh)" >> "$SHELL_RC"
-            echo '[[ -f "${HOME}/.config/shell/functions.sh" ]] && source "${HOME}/.config/shell/functions.sh"' >> "$SHELL_RC"
-        else
-            log_warn "functions.sh not found at ${functions_src} — skipping functions"
+            if [[ -f "$functions_src" ]]; then
+                run mkdir -p "${HOME}/.config/shell"
+                run cp "$functions_src" "$functions_dst"
+                log_ok "Copied functions.sh to ${functions_dst}"
+                echo "" >> "$SHELL_RC"
+                echo "# Functions: welcome, help, search (managed by terminal-setup.sh)" >> "$SHELL_RC"
+                echo '[[ -f "${HOME}/.config/shell/functions.sh" ]] && source "${HOME}/.config/shell/functions.sh"' >> "$SHELL_RC"
+            else
+                log_warn "functions.sh not found at ${functions_src} — skipping functions"
+            fi
         fi
 
         # Plugins (only if user opted in)
@@ -536,32 +538,25 @@ main() {
     setup_shell
 
     echo ""
-    echo -e "${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}║${NC}  ${GREEN}Done!${NC} Close and reopen your terminal to apply.   ${BOLD}║${NC}"
+    echo -e "  ${GREEN}${BOLD}Done!${NC} Restart your terminal to apply."
+    echo ""
     if [[ "$DO_FONT" == "true" ]]; then
-        echo -e "${BOLD}║${NC}                                                  ${BOLD}║${NC}"
-        echo -e "${BOLD}║${NC}  ${YELLOW}Font:${NC} Set to ${BOLD}JetBrainsMono Nerd Font${NC}            ${BOLD}║${NC}"
+        echo -e "  ${YELLOW}Font${NC}  Set ${BOLD}JetBrainsMono Nerd Font${NC} in your terminal:"
         case "${TERM_PROGRAM:-}" in
-            iTerm.app)
-                echo -e "${BOLD}║${NC}  iTerm2: Settings > Profiles > Text > Font       ${BOLD}║${NC}" ;;
-            Apple_Terminal)
-                echo -e "${BOLD}║${NC}  Terminal.app: Settings > Profiles > Font         ${BOLD}║${NC}" ;;
-            WarpTerminal)
-                echo -e "${BOLD}║${NC}  Warp: Settings > Appearance > Font               ${BOLD}║${NC}" ;;
-            vscode)
-                echo -e "${BOLD}║${NC}  VS Code: terminal.integrated.fontFamily          ${BOLD}║${NC}" ;;
-            *)
-                echo -e "${BOLD}║${NC}  Open terminal preferences and change the font.   ${BOLD}║${NC}" ;;
+            iTerm.app)      echo -e "        iTerm2 > Settings > Profiles > Text > Font" ;;
+            Apple_Terminal) echo -e "        Terminal.app > Settings > Profiles > Font" ;;
+            WarpTerminal)   echo -e "        Warp > Settings > Appearance > Font" ;;
+            vscode)         echo -e "        VS Code > terminal.integrated.fontFamily" ;;
+            *)              echo -e "        Open your terminal preferences > Font" ;;
         esac
+        echo ""
     fi
     if [[ "$DO_STARSHIP" == "true" ]]; then
-        echo -e "${BOLD}║${NC}                                                  ${BOLD}║${NC}"
-        echo -e "${BOLD}║${NC}  ${BLUE}Themes:${NC} cp ~/.config/starship/presets/<name>.toml ${BOLD}║${NC}"
-        echo -e "${BOLD}║${NC}          ~/.config/starship.toml                  ${BOLD}║${NC}"
+        echo -e "  ${BLUE}Theme${NC} Switch anytime:"
+        echo -e "        cp ~/.config/starship/presets/${BOLD}<name>${NC}.toml ~/.config/starship.toml"
+        echo -e "        Available: project, minimal, powerline, p10k-alike"
+        echo ""
     fi
-    echo -e "${BOLD}╚══════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo ""
 }
 
 # ─── Entry point ─────────────────────────────────────────────────────
