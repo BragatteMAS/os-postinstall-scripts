@@ -1,8 +1,8 @@
 # ADR-008: Standalone Terminal Setup as Self-Contained Product
 
-**Status:** Accepted
-**Date:** 2026-02-08
-**Phases:** Post-Phase 8
+**Status:** Amended
+**Date:** 2026-02-08 (amended 2026-02-23)
+**Phases:** Post-Phase 8, amended post-v4.1
 
 ## Context
 
@@ -14,9 +14,9 @@ Create `examples/terminal-setup.sh` as a **self-contained, zero-dependency scrip
 
 Key design choices:
 
-1. **Self-contained** — all config (aliases, starship.toml, plugin URLs) embedded inline. No imports from `src/` or `data/`. Script works if downloaded alone.
+1. **SSoT over self-contained** *(amended 2026-02-23)* — aliases and starship config are sourced from `data/dotfiles/` (single source of truth). The script copies these to user's home at install time. If the repo is missing (standalone download), the script gracefully degrades with warnings.
 
-2. **Nerd Font auto-install** — JetBrainsMono Nerd Font installed via `brew install --cask` (macOS) or GitHub releases download (Linux), closing the most common "broken glyphs" issue.
+2. **Nerd Font selective install** *(amended 2026-02-23)* — Downloads only 4 font variants (Regular, Bold, Italic, BoldItalic ~10 MB) via GitHub releases on both macOS and Linux, instead of the full brew cask (~222 MB / 96 files).
 
 3. **Hybrid execution model** — default installs everything silently (good for automation, piping); `--interactive` flag opens a p10k-style wizard for component selection.
 
@@ -34,11 +34,11 @@ Key design choices:
 - Promotes the repo as a "terminal transformation" product, not just a setup script collection
 
 **Negative:**
-- Aliases and starship config are duplicated between `examples/terminal-setup.sh` and `data/dotfiles/`. Changes to one don't propagate to the other. This is intentional — terminal-setup.sh is a snapshot, data/dotfiles/ is the operational source.
-- Script grows with each feature (currently ~470 lines). May need splitting if it exceeds ~600 lines.
+- Script requires full repo clone for best experience (aliases + starship config from `data/dotfiles/`). Standalone download works but with degraded functionality.
+- Script grows with each feature (currently ~540 lines). May need splitting if it exceeds ~600 lines.
 
 **Trade-offs:**
-- Self-contained > DRY for this use case. The value of "download one file, run it" outweighs the cost of maintaining duplicate alias definitions.
+- *(Amended 2026-02-23)* SSoT > self-contained. The previous approach duplicated aliases/config inline, causing drift. Now `data/dotfiles/` is the single source, copied to user's home at install time. Graceful degradation preserves standalone usability.
 
 ## Alternatives Considered
 
