@@ -1,84 +1,304 @@
-# Starship Prompt Configuration
-# Managed by os-postinstall-scripts
-#
-# Reference: https://starship.rs/config/
-"$schema" = "https://starship.rs/config-schema.json"
+# starship-mas.toml — MAS Oceanic Theme
+# Author: BragatteMAS (https://github.com/BragatteMAS/os-postinstall-scripts)
 
-# Prompt format
+"$schema" = 'https://starship.rs/config-schema.json'
+
 format = """
+[░](#0c1824)[▒](#142d4a)[▓](#1e3a5f)\
+$os\
+[\uE0B0](bg:color_orange fg:color_bg3)\
+$username\
+[\uE0B0](bg:color_yellow fg:color_orange)\
 $directory\
+([\uE0B0](fg:color_yellow bg:color_aqua)\
 $git_branch\
-$git_status\
+$git_status)\
+([\uE0B0](fg:color_aqua bg:color_blue)\
+$c\
+$cpp\
+$rust\
+$golang\
+$nodejs\
+$bun\
+$deno\
+$php\
+$java\
+$kotlin\
+$scala\
+$haskell\
+$python\
+$rlang\
+$julia\
+$ruby\
+$lua\
+$nim\
+$elixir\
+$swift\
+$dart\
+$zig)\
+([\uE0B0](fg:color_blue bg:color_bg3)\
+$docker_context\
+$conda\
+$pixi\
+$jobs)\
+[▓](#1e3a5f)[▒](#142d4a)[░](#0c1824)\
+$fill\
+[░](#060d15)[▒](#0c1824)[▓](#172a45)\
+[\uE0B2](fg:color_bg3 bg:#172a45)\
 $cmd_duration\
-$line_break\
-$character"""
+$status\
+[\uE0B2](fg:color_bg1 bg:color_bg3)\
+$time\
+[▓](#172a45)[▒](#0c1824)[░](#060d15)\
+$line_break$character"""
 
-# Directory
-[directory]
-truncation_length = 3
-truncate_to_repo = true
-style = "bold cyan"
+palette = 'gruvbox_dark'
 
-# Git branch
-[git_branch]
-format = "[$symbol$branch]($style) "
+[palettes.gruvbox_dark]
+color_fg0 = '#d4e4f7'
+color_fg_dark = '#0c1824'
+color_bg1 = '#172a45'
+color_bg3 = '#1e3a5f'
+color_blue = '#2a6185'
+color_aqua = '#81c3d7'
+color_green = '#5cb85c'
+color_orange = '#4a86c8'
+color_purple = '#7b68ee'
+color_red = '#e06c75'
+color_yellow = '#a8d8ea'
+
+[fill]
 symbol = " "
-style = "bold purple"
 
-# Git status
+[os]
+disabled = false
+style = "bg:color_bg3 fg:color_fg0"
+format = '[ $symbol ]($style)'
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = "\uF314"
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = "\uF312"
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = "\uF300"
+Amazon = "\uF270"
+Android = "\uF17B"
+Arch = "󰣇"
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[username]
+show_always = true
+style_user = "bg:color_orange fg:color_fg_dark"
+style_root = "bg:color_orange fg:color_fg_dark"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:color_fg_dark bg:color_yellow"
+format = "[ \uF115 $path ]($style)[$read_only]($read_only_style)"
+truncation_length = 100
+truncate_to_repo = false
+truncation_symbol = "…/"
+read_only = " \uF023"
+read_only_style = "fg:color_fg_dark bg:color_yellow"
+
+[directory.substitutions]
+"Documents" = "󰈙 Documents"
+"Downloads" = "\uF019 Downloads"
+"Music" = "󰝚 Music"
+"Pictures" = "\uF030 Pictures"
+"Developer" = "󰲋 Developer"
+"GitHub" = "\uF113 GitHub"
+
+[git_branch]
+symbol = "\uF126"
+style = "bg:color_aqua"
+format = '[[ $symbol $branch ](fg:color_fg_dark bg:color_aqua)]($style)'
+truncation_length = 32
+truncation_symbol = "…"
+
 [git_status]
-format = "[$all_status$ahead_behind]($style) "
-style = "bold red"
-
-# Command duration
-[cmd_duration]
-min_time = 2000
-format = "[$duration]($style) "
-style = "bold yellow"
-
-# Prompt character
-[character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
-
-# ===== Disabled Modules =====
-# Keep prompt clean by disabling noisy modules
-
-[package]
-disabled = true
+style = "bg:color_aqua"
+format = '[[($all_status$ahead_behind )](fg:color_fg_dark bg:color_aqua)]($style)'
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+modified = "!${count}"
+staged = "+${count}"
+deleted = "✘${count}"
+untracked = "?${count}"
+stashed = "≡${count}"
 
 [nodejs]
-disabled = true
+symbol = "\uE718"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
-[python]
-disabled = true
+[bun]
+symbol = "\uE29A"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[deno]
+symbol = "\uE628"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[c]
+symbol = "\uE61E"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[cpp]
+symbol = "\uE61D"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [rust]
-disabled = true
+symbol = "\uE7A8"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [golang]
-disabled = true
-
-[java]
-disabled = true
-
-[ruby]
-disabled = true
+symbol = "\uE626"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [php]
-disabled = true
+symbol = "\uE608"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[java]
+symbol = "\uE738"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[kotlin]
+symbol = "\uE634"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[scala]
+symbol = "\uE737"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[haskell]
+symbol = "\uE61F"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[python]
+symbol = "\uE73C"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[rlang]
+symbol = "\U000F07D4"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[julia]
+symbol = "\uE624"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[ruby]
+symbol = "\uE791"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[lua]
+symbol = "\uE620"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[nim]
+symbol = "\uE677"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[elixir]
+symbol = "\uE62D"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[swift]
+symbol = "\uE755"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[dart]
+symbol = "\uE798"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+
+[zig]
+symbol = "\uE6A9"
+style = "bg:color_blue"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [docker_context]
-disabled = true
+symbol = "\uF308"
+style = "bg:color_bg3"
+format = '[[ $symbol( $context) ](fg:color_fg0 bg:color_bg3)]($style)'
 
-[kubernetes]
-disabled = true
+[conda]
+symbol = "\uE73C"
+style = "bg:color_bg3"
+format = '[[ $symbol( $environment) ](fg:color_fg0 bg:color_bg3)]($style)'
 
-[aws]
-disabled = true
+[pixi]
+style = "bg:color_bg3"
+format = '[[ $symbol( $version)( $environment) ](fg:color_fg0 bg:color_bg3)]($style)'
 
-[gcloud]
-disabled = true
+[jobs]
+symbol = "\uF013"
+style = "bg:color_bg3"
+format = '[[ $symbol( $number) ](fg:color_fg0 bg:color_bg3)]($style)'
+number_threshold = 1
 
-[azure]
+[time]
+disabled = false
+time_format = "%T"
+style = "bg:color_bg1"
+format = "[[ \uF017 $time ](fg:color_fg0 bg:color_bg1)]($style)"
+
+[cmd_duration]
+min_time = 10_000
+style = "bg:color_bg3"
+format = "[[ \uF252 $duration ](fg:color_fg0 bg:color_bg3)]($style)"
+
+[status]
+disabled = false
+style = "bg:color_bg3"
+format = '[[$symbol$maybe_int ](fg:color_green bg:color_bg3)]($style)'
+map_symbol = true
+symbol = "\uF00C"
+not_executable_symbol = "\uF00D"
+not_found_symbol = "\uF128"
+sigint_symbol = "\uF00D"
+signal_symbol = "\uF00D"
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = "[\u276F](bold fg:color_green)"
+error_symbol = "[\u276F](bold fg:color_red)"
+vimcmd_symbol = "[\u276E](bold fg:color_green)"
+vimcmd_replace_one_symbol = "[\u276E](bold fg:color_purple)"
+vimcmd_replace_symbol = "[\u276E](bold fg:color_purple)"
+vimcmd_visual_symbol = "[V](bold fg:color_yellow)"
+
+[package]
 disabled = true

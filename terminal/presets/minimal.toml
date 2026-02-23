@@ -1,10 +1,10 @@
 # Minimal Starship Preset
 # Clean, fast, ASCII-safe prompt — no Nerd Font required
 #
-# Matches the project default style from data/dotfiles/starship/starship.toml
+# Lightweight alternative to the project's MAS Oceanic Theme
 # Uses ASCII '>' character for cross-terminal compatibility
 #
-# Usage: cp minimal.toml ~/.config/starship.toml
+# Usage: cp ~/.config/starship/presets/minimal.toml ~/.config/starship.toml
 "$schema" = "https://starship.rs/config-schema.json"
 
 format = """

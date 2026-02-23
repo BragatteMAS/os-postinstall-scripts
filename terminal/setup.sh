@@ -304,12 +304,12 @@ install_zsh_plugins() {
 
 # ─── Preset Selection ────────────────────────────────────────────────
 select_preset() {
-    local project_config="${SCRIPT_DIR}/../../data/dotfiles/starship/starship.toml"
+    local project_config="${SCRIPT_DIR}/../data/dotfiles/starship/starship.toml"
     local preset_dir="${SCRIPT_DIR}/presets"
 
     echo ""
     echo -e "${BOLD}Available Starship presets:${NC}"
-    echo "  1) project    - The os-postinstall-scripts config (recommended)"
+    echo "  1) project    - MAS Oceanic Theme with powerline (recommended)"
     if [[ -d "$preset_dir" ]]; then
         echo "  2) minimal    - Clean, fast, ASCII-safe"
         echo "  3) powerline  - Colored segments with arrows (Nerd Font required)"
@@ -383,7 +383,7 @@ setup_starship() {
     log_info "Configuring starship prompt..."
     local config_dir="${HOME}/.config"
     local config_file="${config_dir}/starship.toml"
-    local project_config="${SCRIPT_DIR}/../../data/dotfiles/starship/starship.toml"
+    local project_config="${SCRIPT_DIR}/../data/dotfiles/starship/starship.toml"
 
     run mkdir -p "$config_dir"
 
@@ -441,7 +441,7 @@ setup_shell() {
 
         # Aliases (copy from SSoT, source from shell RC)
         if [[ "$DO_ALIASES" == "true" ]]; then
-            local aliases_src="${SCRIPT_DIR}/../../data/dotfiles/shared/aliases.sh"
+            local aliases_src="${SCRIPT_DIR}/../data/dotfiles/shared/aliases.sh"
             local aliases_dst="${HOME}/.config/shell/aliases.sh"
 
             if [[ -f "$aliases_src" ]]; then
@@ -454,6 +454,21 @@ setup_shell() {
             else
                 log_warn "aliases.sh not found at ${aliases_src} — skipping aliases"
             fi
+        fi
+
+        # Functions: welcome, h(), cmd() (copy from SSoT, source from shell RC)
+        local functions_src="${SCRIPT_DIR}/../data/dotfiles/shared/functions.sh"
+        local functions_dst="${HOME}/.config/shell/functions.sh"
+
+        if [[ -f "$functions_src" ]]; then
+            run mkdir -p "${HOME}/.config/shell"
+            run cp "$functions_src" "$functions_dst"
+            log_ok "Copied functions.sh to ${functions_dst}"
+            echo "" >> "$SHELL_RC"
+            echo "# Functions: welcome, help, search (managed by terminal-setup.sh)" >> "$SHELL_RC"
+            echo '[[ -f "${HOME}/.config/shell/functions.sh" ]] && source "${HOME}/.config/shell/functions.sh"' >> "$SHELL_RC"
+        else
+            log_warn "functions.sh not found at ${functions_src} — skipping functions"
         fi
 
         # Plugins (only if user opted in)
@@ -487,7 +502,7 @@ STARSHIP
 
         echo "# --- end terminal-setup.sh ---" >> "$SHELL_RC"
     else
-        log_dry "Append aliases + plugins + starship init to $SHELL_RC"
+        log_dry "Append aliases + functions + plugins + starship init to $SHELL_RC"
     fi
 }
 
