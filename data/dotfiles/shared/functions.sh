@@ -3,7 +3,7 @@
 # Source: https://github.com/BragatteMAS/os-postinstall-scripts
 
 # Guard: skip silently if sourced by sh/dash
-[ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && return 0 2>/dev/null
+[ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && { return 0 2>/dev/null || exit 0; }
 
 # -----------------------------------------------------------------------------
 # Emoji Toggle — set TERMINAL_EMOJI=false for ASCII-only output
@@ -18,7 +18,7 @@ _use_emoji() {
 }
 
 # -----------------------------------------------------------------------------
-# Welcome Message — shown once on first session, then via 'welcome'
+# Welcome Message — shown once on first session, hint on subsequent
 # -----------------------------------------------------------------------------
 show_welcome() {
     local current_time
@@ -33,7 +33,7 @@ show_welcome() {
         if _use_emoji; then
             git_branch=" | 🌿 $branch"
         else
-            git_branch=" | $branch"
+            git_branch=" | @$branch"
         fi
     fi
 
@@ -43,14 +43,14 @@ show_welcome() {
         echo "┃ 🚀 $current_time | 📁 $current_dir$git_branch"
         echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
         echo ""
-        echo "💡 h (help) | cmd <term> (search aliases) | h tools (CLI tools)"
+        echo "💡 h (help) | cmd <term> (search) | h tools (CLI tools)"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     else
         echo ""
-        echo "--- $current_time | $current_dir$git_branch ---"
+        echo "=== $current_time | $current_dir$git_branch ==="
         echo ""
-        echo "h (help) | cmd <term> (search aliases) | h tools (CLI tools)"
-        echo "---"
+        echo "h (help) | cmd <term> (search) | h tools (CLI tools)"
+        echo "==="
     fi
 }
 
@@ -62,7 +62,7 @@ show_welcome_compact() {
         if _use_emoji; then
             git_info=" | 🌿 $branch"
         else
-            git_info=" | $branch"
+            git_info=" | @$branch"
         fi
     fi
     if _use_emoji; then
@@ -86,12 +86,17 @@ h() {
     case "${1:-}" in
         ""|"help")
             [[ -n "$_e" ]] && echo "⚡ ESSENTIALS" || echo "ESSENTIALS"
-            echo "NAV:  .. ... .... .....  (up directories)"
-            echo "LIST: ls ll la lt        (eza if available)"
-            echo "GIT:  gs gd ga gc gp gl glo gb gco gcb gsw gst"
+            echo ""
+            echo "NAV:  .. ... ....        mkcd (mkdir+cd)"
+            echo "LIST: ls ll la lt lta    (eza if available)"
+            echo ""
+            echo "GIT:  g gs gd ga gc gp gpl gl glo gb gco gcb gsw gst"
+            echo "      (gs=status gd=diff ga=add gc=commit — h git for all)"
+            echo ""
             echo "FIND: preview (fzf)  aliases (search)  cmd <term>"
             echo "TOOL: bat fd rg fzf eza delta z    (h tools)"
-            echo "UTIL: h c path now df du duh ports sysup mkcd"
+            echo "UTIL: c path now df du duh ports sysup welcome"
+            echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
             [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
                            || echo "h <topic>: nav | git | find | tools | util | all"
@@ -100,7 +105,7 @@ h() {
             [[ -n "$_e" ]] && echo "🔍 Search & Preview:" || echo "Search & Preview:"
             echo "  preview   fzf file preview (with bat)"
             echo "  aliases   search aliases with fzf"
-            echo "  cmd <t>   search aliases by keyword"
+            echo "  cmd <t>   search aliases+functions by keyword"
             echo "  rg <t>    search file contents (ripgrep)"
             echo "  fd <t>    find files by name"
             echo "  z <dir>   jump to directory (zoxide)"
@@ -114,10 +119,12 @@ h() {
             echo "  ll        detailed list with git info"
             echo "  la        show hidden files"
             echo "  lt        tree view (2 levels)"
+            echo "  lta       tree view including hidden files"
             echo "  mkcd <d>  create directory and cd into it"
             ;;
         "git")
             [[ -n "$_e" ]] && echo "🌿 Git:" || echo "Git:"
+            echo "  g         git (bare)"
             echo "  gs        git status"
             echo "  gd/gds    git diff / --staged"
             echo "  ga/gap    git add / -p (patch)"
@@ -138,10 +145,14 @@ h() {
             echo "  delta     diff with syntax highlighting"
             echo "  z/zi      zoxide — smarter cd (learns your dirs)"
             echo "  starship  cross-shell prompt"
+            echo ""
+            echo "  Use bat/delta directly — they don't replace cat/diff."
             ;;
         "util")
             [[ -n "$_e" ]] && echo "🔧 Utilities:" || echo "Utilities:"
             echo "  h         this help"
+            echo "  welcome   show greeting message"
+            echo "  welcomec  compact greeting (one-liner)"
             echo "  c         clear"
             echo "  path      show \$PATH (one per line)"
             echo "  now       current date+time"
@@ -150,25 +161,28 @@ h() {
             echo "  ports     show listening ports"
             echo "  sysup     full system update (brew/apt/yum/pacman)"
             echo "  mkcd <d>  mkdir + cd in one step"
+            echo ""
+            echo "  Safety: rm/cp/mv ask before overwrite (-i flag)"
+            echo "  Emoji:  export TERMINAL_EMOJI=false for ASCII mode"
             ;;
         "all")
             h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h util
             ;;
         *)
             [[ -n "$_e" ]] && echo "❓ Unknown topic '$1'" || echo "Unknown topic '$1'"
-            [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | tools | util | all" \
-                           || echo "h <topic>: nav | git | tools | util | all"
+            [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
+                           || echo "h <topic>: nav | git | find | tools | util | all"
             ;;
     esac
 }
 
 # -----------------------------------------------------------------------------
-# Search aliases and functions by keyword
+# Search aliases AND functions by keyword
 # -----------------------------------------------------------------------------
 cmd() {
     local search="$1"
     if [[ -z "$search" ]]; then
-        echo "Usage: cmd <term>  (e.g. cmd git, cmd ls)"
+        echo "Usage: cmd <term>  (e.g. cmd git, cmd sysup)"
         return 1
     fi
     if _use_emoji; then
@@ -176,7 +190,12 @@ cmd() {
     else
         echo "Search '$search':"
     fi
-    alias | sed 's/^alias //' | grep -i "$search" | sed 's/^/  /' || true
+    # Search aliases (normalize bash/zsh output)
+    alias | sed 's/^alias //' | grep -Fi "$search" | sed 's/^/  /' || true
+    # Search functions (cross-shell, hide private _functions)
+    { declare -F 2>/dev/null || typeset +f 2>/dev/null; } \
+        | sed 's/^declare -f //' | grep -v '^_' \
+        | grep -Fi "$search" | sed 's/^/  fn: /' || true
 }
 
 # -----------------------------------------------------------------------------
@@ -195,15 +214,15 @@ if command -v fzf &>/dev/null; then
 fi
 
 # -----------------------------------------------------------------------------
-# mkcd — create directory and cd into it
+# mkcd — create directory and cd into it (must be sourced, not executed)
 # -----------------------------------------------------------------------------
 mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
 # -----------------------------------------------------------------------------
-# Auto-show welcome on first interactive session only
-# Subsequent sessions: silent. Type 'welcome' anytime.
+# Auto-show welcome on first interactive session
+# Subsequent sessions: subtle hint. Type 'welcome' for full greeting.
 # -----------------------------------------------------------------------------
 if [[ $- == *i* ]] && [[ -z "${ZSH_EXECUTION_STRING:-}" ]]; then
     _welcome_marker="${HOME}/.config/shell/.welcome_shown"
@@ -211,6 +230,13 @@ if [[ $- == *i* ]] && [[ -z "${ZSH_EXECUTION_STRING:-}" ]]; then
         show_welcome
         mkdir -p "${HOME}/.config/shell" 2>/dev/null
         touch "$_welcome_marker"
+    else
+        # Subsequent sessions: one-line reminder
+        if _use_emoji; then
+            echo "💡 h (help) | welcome (greeting)"
+        else
+            echo "h (help) | welcome (greeting)"
+        fi
     fi
     unset _welcome_marker
 fi
