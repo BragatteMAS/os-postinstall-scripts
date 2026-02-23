@@ -153,8 +153,8 @@ bash os-postinstall-scripts/terminal-setup.sh                # install everythin
 | Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
 | CLI tools | bat, eza, fd, fzf, ripgrep, delta, zoxide, starship |
 | Prompt | MAS Oceanic Theme (powerline, git, languages, status bar) + 3 presets |
-| Aliases | 50+ shortcuts for git, navigation, `bum` (system update) |
-| Functions | Welcome message, `h` (help), `fp` (fzf preview), `cmd` (search) |
+| Aliases | 50+ shortcuts for git, navigation, `sysup` (system update), `mkcd`, `gcb` |
+| Functions | Welcome message, `h` (help), `preview` (fzf), `aliases` (search), emoji toggle |
 | Plugins | zsh-autosuggestions, syntax-highlighting, completions |
 | Platforms | Linux (apt) and macOS (brew) |
 | Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |

@@ -30,8 +30,8 @@ bash migrate-p10k.sh
 | CLI tools | bat, eza, fd, fzf, ripgrep, delta, zoxide, starship |
 | Starship prompt | MAS Oceanic Theme (default) + 3 alternative presets |
 | Nerd Font | JetBrainsMono Nerd Font (optional) |
-| Shell aliases | 50+ shortcuts for git, navigation, `bum` (system update) |
-| Shell functions | Welcome message, `h` (help), `fp` (fzf preview), `cmd` (search) |
+| Shell aliases | 50+ shortcuts for git, navigation, `sysup` (system update), `mkcd`, `gcb` |
+| Shell functions | Welcome message, `h` (help), `preview` (fzf), `aliases` (search), emoji toggle |
 | Zsh plugins | autosuggestions, syntax-highlighting, completions |
 | p10k migration | Detect, backup, clean, and replace Powerlevel10k |
 

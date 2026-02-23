@@ -104,6 +104,9 @@ detect_platform() {
     case "$(uname -s)" in
         Linux*)  OS="linux" ;;
         Darwin*) OS="macos" ;;
+        CYGWIN*|MINGW*|MSYS*)
+                 log_error "Windows detected. Please run this inside WSL (Windows Subsystem for Linux)."
+                 exit 1 ;;
         *)       log_error "Unsupported OS: $(uname -s)"; exit 1 ;;
     esac
 
