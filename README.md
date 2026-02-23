@@ -158,7 +158,7 @@ bash os-postinstall-scripts/examples/terminal-setup.sh --dry-run  # preview firs
 | Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
 | CLI tools | bat, eza, fd, ripgrep, delta, zoxide, starship |
 | Prompt | Minimal Starship config (git branch, status, duration) |
-| Aliases | 40+ shortcuts for git, navigation, modern tools |
+| Aliases | 50+ shortcuts for git, navigation, modern tools |
 | Plugins | zsh-autosuggestions, syntax-highlighting, completions |
 | Platforms | Linux (apt) and macOS (brew) |
 | Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |

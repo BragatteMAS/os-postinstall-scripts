@@ -474,73 +474,21 @@ setup_shell() {
         echo "" >> "$SHELL_RC"
         echo "# --- terminal-setup.sh ---" >> "$SHELL_RC"
 
-        # Aliases block (only if user opted in)
+        # Aliases (copy from SSoT, source from shell RC)
         if [[ "$DO_ALIASES" == "true" ]]; then
-            cat >> "$SHELL_RC" << 'EOF'
+            local aliases_src="${SCRIPT_DIR}/../../data/dotfiles/shared/aliases.sh"
+            local aliases_dst="${HOME}/.config/shell/aliases.sh"
 
-# Navigation
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-
-# List (modern tools with fallback)
-if command -v eza &>/dev/null; then
-    alias ls="eza"
-    alias ll="eza -la --git --group-directories-first"
-    alias la="eza -a"
-    alias lt="eza --tree --level=2"
-else
-    alias ll="ls -lAh"
-    alias la="ls -A"
-fi
-
-# Safety nets
-alias rm="rm -i"
-alias cp="cp -i"
-alias mv="mv -i"
-alias mkdir="mkdir -pv"
-
-# Git shortcuts
-alias g="git"
-alias gs="git status"
-alias gd="git diff"
-alias ga="git add"
-alias gc="git commit"
-alias gp="git push"
-alias gpl="git pull"
-alias gl="git log --oneline -20"
-alias glo="git log --oneline --graph --all"
-alias gb="git branch"
-
-# Modern tool replacements (if available)
-command -v bat &>/dev/null && alias cat="bat --paging=never"
-command -v fd &>/dev/null && alias find="fd"
-command -v rg &>/dev/null && alias grep="rg"
-command -v delta &>/dev/null && alias diff="delta"
-
-# Utilities
-alias h="history"
-alias c="clear"
-alias path='echo $PATH | tr ":" "\n"'
-alias df="df -h"
-alias du="du -h"
-
-# Network (platform-aware)
-if command -v ss &>/dev/null; then
-    alias ports="ss -tulanp"
-else
-    alias ports="lsof -iTCP -sTCP:LISTEN -nP"
-fi
-
-# Package manager
-if command -v apt &>/dev/null; then
-    alias update="sudo apt update && sudo apt upgrade"
-    alias cleanup="sudo apt autoremove && sudo apt autoclean"
-elif command -v brew &>/dev/null; then
-    alias update="brew update && brew upgrade"
-    alias cleanup="brew cleanup"
-fi
-EOF
+            if [[ -f "$aliases_src" ]]; then
+                run mkdir -p "${HOME}/.config/shell"
+                run cp "$aliases_src" "$aliases_dst"
+                log_ok "Copied aliases.sh to ${aliases_dst}"
+                echo "" >> "$SHELL_RC"
+                echo "# Aliases (managed by terminal-setup.sh)" >> "$SHELL_RC"
+                echo '[[ -f "${HOME}/.config/shell/aliases.sh" ]] && source "${HOME}/.config/shell/aliases.sh"' >> "$SHELL_RC"
+            else
+                log_warn "aliases.sh not found at ${aliases_src} — skipping aliases"
+            fi
         fi
 
         # Dynamic lines (need variable interpolation)
