@@ -36,12 +36,12 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-- [ ] Terminal screenshot (static PNG) for README hero image — requires real terminal with starship config
+- [x] Terminal screenshot (static PNG) for README hero image
 - [x] Terminal demo video (asciinema + agg -> GIF) to replace README text placeholder
 - [x] Social preview image via socialify.git.ci (converted SVG→PNG 1280x640)
 - [x] CHANGELOG v4.x entries (v4.0.0 + v4.1.0)
 
-1 pending todo remaining.
+No pending todos.
 
 ### Blockers/Concerns
 
@@ -50,7 +50,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: OSS polish artifacts committed. 1 todo pending (terminal screenshot PNG).
+Stopped at: All OSS polish artifacts complete. Terminal screenshot added as README hero image.
 Resume file: None
 Next step: Upload social-preview.png to GitHub Settings > Social preview, then /gsd:new-milestone or maintenance
 

@@ -17,10 +17,9 @@
 
 <div align="center">
 
-<!-- Re-record: asciinema rec assets/demo.cast && agg --theme monokai --font-size 14 assets/demo.cast assets/demo.gif -->
-<img src="assets/demo.gif" alt="Dry-run preview of a minimal profile setup on macOS" width="700">
+<img src="assets/terminal-screenshot.png" alt="Terminal with starship prompt, custom aliases, and modern CLI tools" width="700">
 
-*Dry-run preview of a minimal profile setup. [Record your own demo](CONTRIBUTING.md).*
+*A fully configured terminal: starship prompt, 100+ aliases, and modern Rust CLI tools.*
 
 </div>
 
@@ -176,6 +175,15 @@ bash os-postinstall-scripts/examples/terminal-setup.sh --dry-run  # preview firs
 - **Error resilience** -- No `set -e`; failures are tracked and reported at the end, never halt the run
 - **Modern CLI tools** -- Replaces cat/ls/find/grep with bat/eza/fd/ripgrep via Cargo or Homebrew
 - **AI tools integration** -- Claude Code, Codex, Gemini CLI, Ollama, and MCP servers
+
+<div align="center">
+
+<!-- Re-record: asciinema rec assets/demo.cast && agg --theme monokai --font-size 14 assets/demo.cast assets/demo.gif -->
+<img src="assets/demo.gif" alt="Dry-run preview of a minimal profile setup on macOS" width="700">
+
+*Dry-run preview of a minimal profile setup. [Record your own demo](CONTRIBUTING.md).*
+
+</div>
 
 ## Platform Support
 

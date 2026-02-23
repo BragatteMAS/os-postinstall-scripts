@@ -256,7 +256,7 @@ install_nerd_font() {
         fi
     fi
 
-    log_warn "Set your terminal font to 'JetBrainsMono Nerd Font' in terminal preferences"
+    log_ok "Nerd Font installed — see post-install instructions at the end"
 }
 
 # ─── Zsh Plugins ──────────────────────────────────────────────────────
@@ -597,7 +597,20 @@ main() {
     if [[ "$DO_FONT" == "true" ]]; then
         echo ""
         echo -e "${YELLOW}IMPORTANT:${NC} Set your terminal font to ${BOLD}JetBrainsMono Nerd Font${NC}"
-        echo -e "           in your terminal preferences for icons to display correctly."
+        echo ""
+        case "${TERM_PROGRAM:-}" in
+            iTerm.app)
+                echo -e "  iTerm2:  ${BOLD}Settings > Profiles > Text > Font${NC}" ;;
+            Apple_Terminal)
+                echo -e "  Terminal.app:  ${BOLD}Settings > Profiles > Font > Change${NC}" ;;
+            WarpTerminal)
+                echo -e "  Warp:  ${BOLD}Settings > Appearance > Font${NC}" ;;
+            vscode)
+                echo -e "  VS Code:  ${BOLD}Settings > terminal.integrated.fontFamily${NC} → 'JetBrainsMono Nerd Font'" ;;
+            *)
+                echo -e "  Open your terminal preferences and change the font." ;;
+        esac
+        echo ""
     fi
     echo ""
 }
