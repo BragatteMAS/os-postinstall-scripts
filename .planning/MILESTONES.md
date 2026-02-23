@@ -1,5 +1,23 @@
 # Milestones
 
+## v4.2 Terminal UX Polish -- SHIPPED 2026-02-23
+
+**Commits:** 18 | **Files:** 23 changed (+1,848/-351) | **Tag:** v4.2.0
+
+**Delivered:** Terminal UX polish via 2 rounds of multi-agent review. Shell functions system, emoji toggle, cross-platform portability, 14 HIGH+MEDIUM safety/UX fixes, dpkg reliability.
+
+Key accomplishments:
+- Terminal setup promoted to root with MAS Oceanic Theme + shell functions
+- Removed cat=bat and diff=delta POSIX-shadowing aliases (pipe-breaking)
+- Cross-platform portability: bash, zsh, sh/dash guard, macOS, Linux, WSL
+- 14 HIGH+MEDIUM fixes from multi-agent review (leigo, power user, dev, UX)
+- Emoji toggle with locale auto-detection (TERMINAL_EMOJI env var)
+- dpkg -s for reliable Linux package detection
+
+Archive: [v4.2-ROADMAP.md](milestones/v4.2-ROADMAP.md) | [v4.2-REQUIREMENTS.md](milestones/v4.2-REQUIREMENTS.md)
+
+---
+
 ## v4.1 Production Ready -- SHIPPED 2026-02-22
 
 **Phases:** 15-18 | **Plans:** 9 | **Commits:** 38 | **Files:** 84 changed (+9,868/-168)
@@ -37,4 +55,4 @@ Archive: [v3.0-ROADMAP.md](milestones/v3.0-ROADMAP.md) | [v3.0-REQUIREMENTS.md](
 **Phases:** 1-8.2 | **Plans:** 41
 
 ---
-*Total: 4 milestones, 18 phases, 62 plans shipped*
+*Total: 5 milestones shipped*

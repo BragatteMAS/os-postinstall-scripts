@@ -5,13 +5,13 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** Facil de manter. Simplicidade e manutenibilidade superam features e cobertura.
-**Current focus:** All milestones complete. Ready for next milestone or maintenance.
+**Current focus:** v4.2 shipped. Ready for next milestone or maintenance.
 
 ## Current Position
 
-Milestone: v4.1 Production Ready -- COMPLETE
-Status: All 4 phases (15-18) shipped, 9/9 plans complete. OSS polish artifacts committed.
-Last activity: 2026-02-22 -- CHANGELOG v4.x, demo.gif, social-preview.png, README update
+Milestone: v4.2 Terminal UX Polish -- COMPLETE
+Status: 18 commits shipped. Terminal UX polish via 2 rounds of multi-agent review.
+Last activity: 2026-02-23 -- v4.2.0 tagged, GitHub Release created
 
 Progress: 62 plans complete across 4 milestones (v1.0: 41, v2.1: 5, v3.0: 7, v4.1: 9)
 
@@ -49,10 +49,10 @@ No pending todos.
 
 ## Session Continuity
 
-Last session: 2026-02-22
-Stopped at: All OSS polish artifacts complete. Terminal screenshot added as README hero image.
+Last session: 2026-02-23
+Stopped at: v4.2.0 milestone archived, GitHub Release created.
 Resume file: None
-Next step: Upload social-preview.png to GitHub Settings > Social preview, then /gsd:new-milestone or maintenance
+Next step: /gsd:new-milestone or maintenance
 
 ---
-*Milestone v4.1 Production Ready -- completed 2026-02-22*
+*Milestone v4.2 Terminal UX Polish -- completed 2026-02-23*

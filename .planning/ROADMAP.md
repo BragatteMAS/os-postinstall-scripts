@@ -10,6 +10,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 - v2.1 Feature Completion - Phases 9-10.1 (shipped 2026-02-17)
 - v3.0 Quality & Parity - Phases 11-14 (shipped 2026-02-18, tag v4.0.0) -- [archive](milestones/v3.0-ROADMAP.md)
 - v4.1 Production Ready - Phases 15-18 (shipped 2026-02-22, tag v4.1.0) -- [archive](milestones/v4.1-ROADMAP.md)
+- v4.2 Terminal UX Polish - Ad-hoc (shipped 2026-02-23, tag v4.2.0) -- [archive](milestones/v4.2-ROADMAP.md)
 
 ## Phases
 
@@ -58,7 +59,7 @@ This roadmap transforms the os-postinstall-scripts codebase from its current bro
 
 ## Progress
 
-All 4 milestones shipped. 62 plans executed across 18 phases.
+All 5 milestones shipped. 62 plans + 18 ad-hoc commits across 18 phases.
 
 | Milestone | Phases | Plans | Shipped |
 |-----------|--------|-------|---------|
@@ -66,6 +67,7 @@ All 4 milestones shipped. 62 plans executed across 18 phases.
 | v2.1 Feature Completion | 9-10.1 | 5 | 2026-02-17 |
 | v3.0 Quality & Parity | 11-14 | 7 | 2026-02-18 |
 | v4.1 Production Ready | 15-18 | 9 | 2026-02-22 |
+| v4.2 Terminal UX Polish | ad-hoc | 18 commits | 2026-02-23 |
 
 See `.planning/milestones/` for detailed archives.
 
@@ -75,4 +77,5 @@ See `.planning/milestones/` for detailed archives.
 *Milestone v2.1 complete: 2026-02-17*
 *Milestone v3.0 complete: 2026-02-18 (tag v4.0.0)*
 *Milestone v4.1 complete: 2026-02-22 (tag v4.1.0)*
-*Total: 62 plans shipped across 4 milestones*
+*Milestone v4.2 complete: 2026-02-23 (tag v4.2.0)*
+*Total: 5 milestones shipped*

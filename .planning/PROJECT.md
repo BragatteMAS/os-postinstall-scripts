@@ -10,8 +10,8 @@ Scripts de pos-instalacao multiplataforma (macOS, Linux, Windows) para configura
 
 ## Current State
 
-**Shipped:** v4.1 Production Ready (2026-02-22)
-**Total:** 4 milestones, 18 phases, 62 plans executed
+**Shipped:** v4.2 Terminal UX Polish (2026-02-23)
+**Total:** 5 milestones shipped (v1.0, v2.1, v3.0, v4.1, v4.2)
 **License:** Apache 2.0
 
 Production-ready codebase with:
@@ -58,11 +58,12 @@ Production-ready codebase with:
 
 ### Estado Atual
 
-Codebase production-ready (v4.1 shipped). 4 milestones completos:
+Codebase production-ready (v4.2 shipped). 5 milestones completos:
 - **v1.0 MVP:** Core infra, consolidation, dotfiles, platforms, UX, docs (41 plans)
 - **v2.1 Feature Completion:** Terminal blueprint, Windows installers (5 plans)
 - **v3.0 Quality & Parity:** Flags, DRY, Windows parity, testing (7 plans)
 - **v4.1 Production Ready:** Data fixes, exit codes, 142 tests, OSS health (9 plans)
+- **v4.2 Terminal UX Polish:** Shell functions, emoji toggle, 14 agent-review fixes, portability (18 commits)
 
 ### Principios (do CLAUDE.md)
 
@@ -112,4 +113,4 @@ O script detecta OS, pergunta perfil, executa. Idempotente (pode rodar multiplas
 | NO CI/CD | Owner decision -- tests are manual only | Accepted |
 
 ---
-*Last updated: 2026-02-22 after v4.1 milestone*
+*Last updated: 2026-02-23 after v4.2 milestone*
