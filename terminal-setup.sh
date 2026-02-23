@@ -1,0 +1,1 @@
+examples/terminal-setup.sh

@@ -141,14 +141,14 @@ Don't need the full setup? Get the modern terminal experience in one command:
 
 ```bash
 git clone https://github.com/BragatteMAS/os-postinstall-scripts
-bash os-postinstall-scripts/examples/terminal-setup.sh
+bash os-postinstall-scripts/terminal-setup.sh
 ```
 
 Or choose what to install with `--interactive`:
 
 ```bash
-bash os-postinstall-scripts/examples/terminal-setup.sh --interactive
-bash os-postinstall-scripts/examples/terminal-setup.sh --dry-run  # preview first
+bash os-postinstall-scripts/terminal-setup.sh --interactive
+bash os-postinstall-scripts/terminal-setup.sh --dry-run  # preview first
 ```
 
 **What it does:**
