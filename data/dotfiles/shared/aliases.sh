@@ -1,4 +1,8 @@
 # Aliases compatible with both zsh and bash
+# Requires bash or zsh — not compatible with sh/dash
+
+# Guard: skip silently if sourced by sh/dash
+[ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && return 0 2>/dev/null
 
 # -----------------------------------------------------------------------------
 # Navigation
@@ -19,7 +23,7 @@ if command -v eza &>/dev/null; then
     alias lta="eza --tree --level=2 -a"
 else
     # Fallback to ls with color
-    if ls --color=auto &>/dev/null 2>&1; then
+    if ls --color=auto /dev/null &>/dev/null; then
         alias ls="ls --color=auto"
     fi
     alias ll="ls -lAh"
@@ -32,7 +36,7 @@ fi
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
-alias mkdir="mkdir -pv"
+alias mkdir="mkdir -p"
 
 # -----------------------------------------------------------------------------
 # Git shortcuts
@@ -52,20 +56,21 @@ alias gl="git log --oneline -20"
 alias glo="git log --oneline --graph --all"
 alias gb="git branch"
 alias gco="git checkout"
+alias gcb="git checkout -b"
 alias gsw="git switch"
 alias gst="git stash"
 
 # -----------------------------------------------------------------------------
 # Modern tool shortcuts (safe — don't shadow POSIX commands)
 # -----------------------------------------------------------------------------
-command -v bat &>/dev/null && alias cat="bat --paging=never --plain"
+command -v bat &>/dev/null && alias cat="bat --paging=never"
 command -v delta &>/dev/null && alias diff="delta"
 
 # -----------------------------------------------------------------------------
 # Utilities
 # -----------------------------------------------------------------------------
 alias c="clear"
-alias path='echo $PATH | tr ":" "\n"'
+alias path='echo "$PATH" | tr ":" "\n"'
 alias now="date '+%Y-%m-%d %H:%M:%S'"
 
 # Disk usage
@@ -81,14 +86,16 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# System update — bum (Brew/apt Update Manager)
+# System update — sysup (primary), bum/upall (secondary)
 # -----------------------------------------------------------------------------
 if command -v brew &>/dev/null; then
-    alias bum="brew update && brew upgrade && brew cleanup && brew doctor 2>&1 | grep -v 'Please note'"
+    sysup() { brew update && brew upgrade && brew cleanup && brew doctor 2>&1 | grep -v 'Please note'; }
 elif command -v apt &>/dev/null; then
-    alias bum="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+    sysup() { sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y; }
 elif command -v yum &>/dev/null; then
-    alias bum="sudo yum update -y"
+    sysup() { sudo yum update -y; }
 elif command -v pacman &>/dev/null; then
-    alias bum="sudo pacman -Syu"
+    sysup() { sudo pacman -Syu; }
 fi
+bum() { sysup "$@"; }
+upall() { sysup "$@"; }
