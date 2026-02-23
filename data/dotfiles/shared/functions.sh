@@ -87,7 +87,7 @@ h() {
         ""|"help")
             [[ -n "$_e" ]] && echo "⚡ ESSENTIALS" || echo "ESSENTIALS"
             echo ""
-            echo "NAV:  .. ... ....        mkcd (mkdir+cd)"
+            echo "NAV:  .. ... .... .....  mkcd (mkdir+cd)"
             echo "LIST: ls ll la lt lta    (eza if available)"
             echo ""
             echo "GIT:  g gs gd ga gc gp gpl gl glo gb gco gcb gsw gst"
@@ -95,7 +95,7 @@ h() {
             echo ""
             echo "FIND: preview (fzf)  aliases (search)  cmd <term>"
             echo "TOOL: bat fd rg fzf eza delta z    (h tools)"
-            echo "UTIL: c path now df du duh ports sysup welcome"
+            echo "UTIL: h c path now df du duh ports sysup welcome"
             echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
             [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
@@ -115,6 +115,7 @@ h() {
             echo "  ..        cd .."
             echo "  ...       cd ../.."
             echo "  ....      cd ../../.."
+            echo "  .....     cd ../../../.."
             echo "  ls        eza (or ls --color)"
             echo "  ll        detailed list with git info"
             echo "  la        show hidden files"
@@ -208,9 +209,6 @@ if command -v fzf &>/dev/null; then
         fzf --preview "$preview_cmd" "$@"
     }
     aliases() { alias | fzf; }
-    # Legacy names for muscle memory
-    alias fp='preview'
-    alias af='aliases'
 fi
 
 # -----------------------------------------------------------------------------
