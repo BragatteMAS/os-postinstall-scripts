@@ -56,17 +56,14 @@ alias gsw="git switch"
 alias gst="git stash"
 
 # -----------------------------------------------------------------------------
-# Modern tool replacements (if available)
+# Modern tool shortcuts (safe — don't shadow POSIX commands)
 # -----------------------------------------------------------------------------
-command -v bat &>/dev/null && alias cat="bat --paging=never"
-command -v fd &>/dev/null && alias find="fd"
-command -v rg &>/dev/null && alias grep="rg"
+command -v bat &>/dev/null && alias cat="bat --paging=never --plain"
 command -v delta &>/dev/null && alias diff="delta"
 
 # -----------------------------------------------------------------------------
 # Utilities
 # -----------------------------------------------------------------------------
-alias h="history"
 alias c="clear"
 alias path='echo $PATH | tr ":" "\n"'
 alias now="date '+%Y-%m-%d %H:%M:%S'"
@@ -79,7 +76,6 @@ alias duh="du -h -d 1"
 # Network (platform-aware)
 if command -v ss &>/dev/null; then
     alias ports="ss -tulanp"
-    alias ip="ip -c"
 else
     alias ports="lsof -iTCP -sTCP:LISTEN -nP"
 fi

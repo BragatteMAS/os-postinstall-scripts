@@ -40,9 +40,7 @@ alias welcomec='show_welcome_compact'
 
 # -----------------------------------------------------------------------------
 # Help — h [topic]
-# Replaces the simpler alias h="history" from aliases.sh
 # -----------------------------------------------------------------------------
-unalias h 2>/dev/null
 h() {
     case "${1:-}" in
         ""|"help")
