@@ -82,7 +82,7 @@ wizard() {
     echo -e "${BOLD}Choose what to install:${NC}"
     echo ""
     ask "Nerd Font (JetBrainsMono)?" "y"                              || DO_FONT=false
-    ask "CLI tools (bat, eza, fd, rg, delta, zoxide, starship)?" "y"  || DO_TOOLS=false
+    ask "CLI tools (bat, eza, fd, fzf, rg, delta, zoxide, starship)?" "y"  || DO_TOOLS=false
     ask "Starship prompt config?" "y"                                  || DO_STARSHIP=false
     ask "Shell aliases (50+ shortcuts)?" "y"                           || DO_ALIASES=false
     if [[ "$SHELL_NAME" == "zsh" ]]; then
@@ -153,7 +153,7 @@ install_tools() {
     log_info "Installing modern CLI tools..."
 
     if [[ "$PKG" == "brew" ]]; then
-        local pkgs=(bat eza fd ripgrep git-delta zoxide starship)
+        local pkgs=(bat eza fd fzf ripgrep git-delta zoxide starship)
         for pkg in "${pkgs[@]}"; do
             if brew list "$pkg" &>/dev/null; then
                 log_ok "$pkg"
@@ -163,7 +163,7 @@ install_tools() {
         done
     elif [[ "$PKG" == "apt" ]]; then
         local _missing_cargo=()
-        local apt_pkgs=(bat fd-find ripgrep)
+        local apt_pkgs=(bat fd-find fzf ripgrep)
         run sudo apt update -qq
         for pkg in "${apt_pkgs[@]}"; do
             if dpkg -l "$pkg" &>/dev/null 2>&1; then
@@ -419,14 +419,43 @@ setup_starship() {
     fi
 }
 
+# ─── Update copied files ─────────────────────────────────────────────
+# Always copies latest versions — safe to re-run
+update_shell_files() {
+    local aliases_src="${SCRIPT_DIR}/../data/dotfiles/shared/aliases.sh"
+    local aliases_dst="${HOME}/.config/shell/aliases.sh"
+    local functions_src="${SCRIPT_DIR}/../data/dotfiles/shared/functions.sh"
+    local functions_dst="${HOME}/.config/shell/functions.sh"
+
+    if [[ "$DO_ALIASES" == "true" ]]; then
+        if [[ -f "$aliases_src" ]]; then
+            run mkdir -p "${HOME}/.config/shell"
+            run cp "$aliases_src" "$aliases_dst"
+            log_ok "Updated aliases.sh"
+        else
+            log_warn "aliases.sh not found at ${aliases_src}"
+        fi
+
+        if [[ -f "$functions_src" ]]; then
+            run cp "$functions_src" "$functions_dst"
+            log_ok "Updated functions.sh"
+        else
+            log_warn "functions.sh not found at ${functions_src}"
+        fi
+    fi
+}
+
 # ─── Shell RC ─────────────────────────────────────────────────────────
 setup_shell() {
     log_info "Configuring $SHELL_NAME ($SHELL_RC)..."
 
+    # Always update copied files (aliases.sh, functions.sh) to latest version
+    update_shell_files
+
     local marker="# --- terminal-setup.sh ---"
 
     if [[ -f "$SHELL_RC" ]] && grep -q "$marker" "$SHELL_RC"; then
-        log_ok "Already configured in $SHELL_RC"
+        log_ok "Shell RC already configured (source lines intact)"
         return 0
     fi
 
@@ -439,38 +468,16 @@ setup_shell() {
         echo "" >> "$SHELL_RC"
         echo "# --- terminal-setup.sh ---" >> "$SHELL_RC"
 
-        # Aliases (copy from SSoT, source from shell RC)
+        # Source lines for aliases and functions
         if [[ "$DO_ALIASES" == "true" ]]; then
-            local aliases_src="${SCRIPT_DIR}/../data/dotfiles/shared/aliases.sh"
-            local aliases_dst="${HOME}/.config/shell/aliases.sh"
+            cat >> "$SHELL_RC" <<'ALIASES_BLOCK'
 
-            if [[ -f "$aliases_src" ]]; then
-                run mkdir -p "${HOME}/.config/shell"
-                run cp "$aliases_src" "$aliases_dst"
-                log_ok "Copied aliases.sh to ${aliases_dst}"
-                echo "" >> "$SHELL_RC"
-                echo "# Aliases (managed by terminal-setup.sh)" >> "$SHELL_RC"
-                echo '[[ -f "${HOME}/.config/shell/aliases.sh" ]] && source "${HOME}/.config/shell/aliases.sh"' >> "$SHELL_RC"
-            else
-                log_warn "aliases.sh not found at ${aliases_src} — skipping aliases"
-            fi
-        fi
+# Aliases (managed by terminal-setup.sh)
+[[ -f "${HOME}/.config/shell/aliases.sh" ]] && source "${HOME}/.config/shell/aliases.sh"
 
-        # Functions: welcome, h(), cmd() (copy from SSoT, source from shell RC)
-        if [[ "$DO_ALIASES" == "true" ]]; then
-            local functions_src="${SCRIPT_DIR}/../data/dotfiles/shared/functions.sh"
-            local functions_dst="${HOME}/.config/shell/functions.sh"
-
-            if [[ -f "$functions_src" ]]; then
-                run mkdir -p "${HOME}/.config/shell"
-                run cp "$functions_src" "$functions_dst"
-                log_ok "Copied functions.sh to ${functions_dst}"
-                echo "" >> "$SHELL_RC"
-                echo "# Functions: welcome, help, search (managed by terminal-setup.sh)" >> "$SHELL_RC"
-                echo '[[ -f "${HOME}/.config/shell/functions.sh" ]] && source "${HOME}/.config/shell/functions.sh"' >> "$SHELL_RC"
-            else
-                log_warn "functions.sh not found at ${functions_src} — skipping functions"
-            fi
+# Functions: welcome, help, search (managed by terminal-setup.sh)
+[[ -f "${HOME}/.config/shell/functions.sh" ]] && source "${HOME}/.config/shell/functions.sh"
+ALIASES_BLOCK
         fi
 
         # Plugins (only if user opted in)
