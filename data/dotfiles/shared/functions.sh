@@ -50,10 +50,20 @@ h() {
             echo "NAV:  .. ... .... .....  (up directories)"
             echo "LIST: ls ll la lt        (eza if available)"
             echo "GIT:  gs gd ga gc gp gl glo gb gco gsw gst"
-            echo "RUST: bat fd rg eza delta z"
+            echo "FIND: fp (fzf preview)   af (alias search)"
+            echo "RUST: bat fd rg fzf eza delta z"
             echo "UTIL: h c path now df du duh ports update cleanup"
             echo ""
-            echo "💡 h <topic>: nav | git | tools | util | all"
+            echo "💡 h <topic>: nav | git | find | tools | util | all"
+            ;;
+        "find"|"search")
+            echo "🔍 Search & Preview:"
+            echo "  fp        fzf file preview (with bat)"
+            echo "  af        search aliases with fzf"
+            echo "  cmd <t>   search aliases by keyword"
+            echo "  rg <t>    search file contents (ripgrep)"
+            echo "  fd <t>    find files by name"
+            echo "  z <dir>   jump to directory (zoxide)"
             ;;
         "nav"|"ls")
             echo "📁 Navigation & Listing:"
@@ -100,7 +110,7 @@ h() {
             echo "  cleanup   remove unused packages"
             ;;
         "all")
-            h; echo ""; h nav; echo ""; h git; echo ""; h tools; echo ""; h util
+            h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h util
             ;;
         *)
             echo "❓ Unknown topic '$1'"
@@ -121,6 +131,18 @@ cmd() {
     echo "🔍 '$search':"
     alias | grep -i "$search" | sed 's/^/  /' || true
 }
+
+# -----------------------------------------------------------------------------
+# File preview with fzf + bat (requires fzf)
+# -----------------------------------------------------------------------------
+if command -v fzf &>/dev/null; then
+    fp() {
+        local preview_cmd="bat --color=always --style=numbers --line-range=:500 {}"
+        command -v bat &>/dev/null || preview_cmd="cat {}"
+        fzf --preview "$preview_cmd" "$@"
+    }
+    alias af='alias | fzf'
+fi
 
 # -----------------------------------------------------------------------------
 # Auto-show welcome on interactive shell startup
