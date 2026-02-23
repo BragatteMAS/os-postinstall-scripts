@@ -10,11 +10,11 @@ Users frequently want to replicate a modern terminal experience (CLI tools, prom
 
 ## Decision
 
-Create `examples/terminal-setup.sh` as a **self-contained, zero-dependency script** that delivers the terminal experience independently of the main setup flow.
+Promote terminal setup to **`terminal/setup.sh`** (root-level directory, not buried in `examples/`) as a first-class product that delivers the terminal experience independently of the main setup flow. Root entry point via `terminal-setup.sh` wrapper.
 
 Key design choices:
 
-1. **SSoT over self-contained** *(amended 2026-02-23)* — aliases and starship config are sourced from `data/dotfiles/` (single source of truth). The script copies these to user's home at install time. If the repo is missing (standalone download), the script gracefully degrades with warnings.
+1. **SSoT over self-contained** *(amended 2026-02-23)* — aliases, functions, and starship config (MAS Oceanic Theme) are sourced from `data/dotfiles/` (single source of truth). The script copies these to user's home at install time. If the repo is missing (standalone download), the script gracefully degrades with warnings.
 
 2. **Nerd Font selective install** *(amended 2026-02-23)* — Downloads only 4 font variants (Regular, Bold, Italic, BoldItalic ~10 MB) via GitHub releases on both macOS and Linux, instead of the full brew cask (~222 MB / 96 files).
 
@@ -30,7 +30,7 @@ Key design choices:
 
 **Positive:**
 - Most accessible entry point to the project (2 commands to a working terminal)
-- SSoT for terminal config within examples/ (aliases.sh removed as redundant)
+- SSoT for terminal config in `terminal/` (root-level, first-class product)
 - Promotes the repo as a "terminal transformation" product, not just a setup script collection
 
 **Negative:**

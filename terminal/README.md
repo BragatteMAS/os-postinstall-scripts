@@ -28,9 +28,10 @@ bash migrate-p10k.sh
 | Component | Description |
 |-----------|-------------|
 | CLI tools | bat, eza, fd, ripgrep, delta, zoxide, starship |
-| Starship prompt | Project config (default) + 3 alternative presets |
+| Starship prompt | MAS Oceanic Theme (default) + 3 alternative presets |
 | Nerd Font | JetBrainsMono Nerd Font (optional) |
 | Shell aliases | 50+ shortcuts for git, navigation, modern tools |
+| Shell functions | Welcome message, `h` (help), `cmd` (search aliases) |
 | Zsh plugins | autosuggestions, syntax-highlighting, completions |
 | p10k migration | Detect, backup, clean, and replace Powerlevel10k |
 
@@ -40,6 +41,7 @@ Three curated presets in `presets/`:
 
 | Preset | Style | Nerd Font | Best For |
 |--------|-------|-----------|----------|
+| project (default) | MAS Oceanic Theme, powerline, bidirectional | Yes | Full experience |
 | minimal | Clean, essentials only | No | Speed, compatibility |
 | powerline | Colored segments with arrows | Yes | Visual richness |
 | p10k-alike | Two-line, lean | No (recommended: Yes) | p10k users migrating |
@@ -133,7 +135,7 @@ Works on macOS (Homebrew) and Linux (apt). No CI/CD dependencies.
 ## Directory Structure
 
 ```
-examples/terminal/
+terminal/
   setup.sh           # One-command terminal setup (SSoT)
   migrate-p10k.sh    # p10k to Starship migration
   README.md          # This file
