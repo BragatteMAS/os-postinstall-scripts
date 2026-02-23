@@ -7,6 +7,7 @@ bat
 eza
 fd-find
 lsd
+yazi-fm
 
 # Terminal - Search
 ripgrep

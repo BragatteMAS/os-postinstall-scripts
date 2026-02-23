@@ -58,10 +58,10 @@ source "${CORE_DIR}/interactive.sh" || {
 RUST_CLI_TOOLS_APT=(bat eza fd-find ripgrep zoxide git-delta)
 
 # Brew package names (macOS) - some differ from apt names
-RUST_CLI_TOOLS_BREW=(bat eza fd ripgrep zoxide git-delta)
+RUST_CLI_TOOLS_BREW=(bat eza fd ripgrep zoxide git-delta yazi)
 
 # Human-readable names for display
-RUST_CLI_TOOLS_DISPLAY=(bat eza fd ripgrep zoxide delta)
+RUST_CLI_TOOLS_DISPLAY=(bat eza fd ripgrep zoxide delta yazi)
 
 #######################################
 # install_rust_tools_linux()
@@ -175,6 +175,7 @@ show_rust_summary() {
     log_info "  rg     > grep  (fast text search)"
     log_info "  zoxide > cd    (smart directory jumping)"
     log_info "  delta  > diff  (git-aware diff viewer)"
+    log_info "  yazi   > file  (terminal file manager)"
     echo ""
 }
 
@@ -205,7 +206,7 @@ fi
 log_banner "Rust CLI Tools"
 
 # Interactive selection
-show_category_menu "Rust CLI Tools" "bat, eza, fd, rg, zoxide, delta"
+show_category_menu "Rust CLI Tools" "bat, eza, fd, rg, zoxide, delta, yazi"
 menu_choice=$?
 
 case "$menu_choice" in

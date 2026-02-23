@@ -43,13 +43,13 @@ show_welcome() {
         echo "┃ 🚀 $current_time | 📁 $current_dir$git_branch"
         echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
         echo ""
-        echo "💡 h (help) | cmd <term> (search) | h tools (CLI tools)"
+        echo "💡 h (help) | h <term> (search) | cmd <term> (find aliases)"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     else
         echo ""
         echo "=== $current_time | $current_dir$git_branch ==="
         echo ""
-        echo "h (help) | cmd <term> (search) | h tools (CLI tools)"
+        echo "h (help) | h <term> (search) | cmd <term> (find aliases)"
         echo "==="
     fi
 }
@@ -85,94 +85,121 @@ h() {
 
     case "${1:-}" in
         ""|"help")
-            [[ -n "$_e" ]] && echo "⚡ ESSENTIALS" || echo "ESSENTIALS"
+            [[ -n "$_e" ]] && echo "⚡ QUICK REFERENCE" || echo "QUICK REFERENCE"
             echo ""
-            echo "NAV:  .. ... .... .....  mkcd (mkdir+cd)"
-            echo "LIST: ls ll la lt lta    (eza if available)"
+            echo "NAV:  .. ... ....    mkcd <dir>    yazi (file manager)"
+            echo "LIST: ls ll la lt lta (eza if installed)"
             echo ""
-            echo "GIT:  g gs gd ga gc gp gpl gl glo gb gco gcb gsw gst"
-            echo "      (gs=status gd=diff ga=add gc=commit — h git for all)"
+            echo "GIT:  gs gd ga gc gp gpl gl glo gb gco gcb gsw gst"
+            echo "      (pattern: g + first letters — h git for details)"
             echo ""
-            echo "FIND: preview (fzf)  aliases (search)  cmd <term>"
-            echo "TOOL: bat fd rg fzf eza delta z    (h tools)"
-            echo "UTIL: h c path now df du duh ports sysup welcome"
+            echo "FIND: preview (fzf+bat)  aliases (fzf)  cmd <term>"
+            echo "TOOL: bat fd rg eza delta z yazi starship  (h tools)"
+            echo "UTIL: c path now df duh ports sysup welcome"
             echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
-            [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
-                           || echo "h <topic>: nav | git | find | tools | util | all"
+            [[ -n "$_e" ]] && echo "💡 h <topic>   nav | git | find | tools | util | all" \
+                           || echo "h <topic>   nav | git | find | tools | util | all"
+            [[ -n "$_e" ]] && echo "💡 h <term>    search help — h fzf  h commit  h tree" \
+                           || echo "h <term>    search help — h fzf  h commit  h tree"
             ;;
         "find"|"search")
             [[ -n "$_e" ]] && echo "🔍 Search & Preview:" || echo "Search & Preview:"
-            echo "  preview   fzf file preview (with bat)"
-            echo "  aliases   search aliases with fzf"
-            echo "  cmd <t>   search aliases+functions by keyword"
-            echo "  rg <t>    search file contents (ripgrep)"
-            echo "  fd <t>    find files by name"
-            echo "  z <dir>   jump to directory (zoxide)"
+            echo "  preview         open fzf file browser with bat preview"
+            echo "                  → browse files, Enter to select"
+            echo "  aliases         browse all aliases with fzf"
+            echo "  cmd <term>      search aliases + functions by keyword"
+            echo "                  → cmd git  cmd update  cmd sysup"
+            echo "  rg <term>       search inside files (ripgrep)"
+            echo "                  → rg TODO  rg -i 'error' logs/"
+            echo "  fd <pattern>    find files by name"
+            echo "                  → fd '.py'  fd -e sh  fd config"
+            echo "  z <dir>         jump to frequent dir (zoxide)"
+            echo "                  → z proj  z doc  zi (interactive)"
+            echo ""
+            echo "  Requires: fzf (preview/aliases), bat (preview highlighting)"
             ;;
         "nav"|"ls")
             [[ -n "$_e" ]] && echo "📁 Navigation & Listing:" || echo "Navigation & Listing:"
-            echo "  ..        cd .."
-            echo "  ...       cd ../.."
-            echo "  ....      cd ../../.."
-            echo "  .....     cd ../../../.."
-            echo "  ls        eza (or ls --color)"
-            echo "  ll        detailed list with git info"
-            echo "  la        show hidden files"
-            echo "  lt        tree view (2 levels)"
-            echo "  lta       tree view including hidden files"
-            echo "  mkcd <d>  create directory and cd into it"
+            echo "  .. / ... / ....  go up 1/2/3 directories"
+            echo "  ls               list files (eza if installed)"
+            echo "  ll               detailed list with git info"
+            echo "  la               show hidden files"
+            echo "  lt               tree view (2 levels)"
+            echo "  lta              tree with hidden files"
+            echo "  mkcd <dir>       create directory and cd into it"
+            echo "                   → mkcd my-project"
+            echo "  yazi             terminal file manager (browse, preview, open)"
+            echo "                   → yazi  yazi ~/Documents"
             ;;
         "git")
-            [[ -n "$_e" ]] && echo "🌿 Git:" || echo "Git:"
-            echo "  g         git (bare)"
-            echo "  gs        git status"
-            echo "  gd/gds    git diff / --staged"
-            echo "  ga/gap    git add / -p (patch)"
-            echo "  gc/gca    git commit / --amend"
-            echo "  gp/gpl    git push / pull"
-            echo "  gf        git fetch"
-            echo "  gl/glo    git log --oneline / --graph --all"
-            echo "  gb/gco    git branch / checkout"
-            echo "  gcb <b>   git checkout -b (new branch)"
-            echo "  gsw/gst   git switch / stash"
-            ;;
-        "tools"|"rust")
-            [[ -n "$_e" ]] && echo "🦀 Modern CLI Tools:" || echo "Modern CLI Tools:"
-            echo "  bat       cat with syntax highlighting"
-            echo "  fd        find replacement (fast)"
-            echo "  rg        grep replacement (ripgrep)"
-            echo "  eza       ls replacement (colors, icons, git)"
-            echo "  delta     diff with syntax highlighting"
-            echo "  z/zi      zoxide — smarter cd (learns your dirs)"
-            echo "  starship  cross-shell prompt"
+            [[ -n "$_e" ]] && echo "🌿 Git Shortcuts:" || echo "Git Shortcuts:"
+            echo "  gs / gd / gds    status / diff / diff staged"
+            echo "  ga / gap         add / add -p (pick hunks)"
+            echo "  gc / gca         commit / commit --amend"
+            echo "  gp / gpl / gf    push / pull / fetch"
+            echo "  gl / glo         log oneline / graph all branches"
+            echo "  gb / gco / gcb   branch / checkout / new branch"
+            echo "  gsw / gst        switch / stash"
             echo ""
-            echo "  Use bat/delta directly — they don't replace cat/diff."
+            echo "  Pattern: g + first letters of git subcommand"
+            echo "  Example: gcb feature/login → git checkout -b feature/login"
+            ;;
+        "tools"|"rust"|"cli")
+            [[ -n "$_e" ]] && echo "🦀 Modern CLI Tools (Rust):" || echo "Modern CLI Tools (Rust):"
+            echo "  bat <file>       cat with syntax highlighting"
+            echo "                   → bat script.sh  bat -l json data.txt"
+            echo "  fd <pattern>     find files fast"
+            echo "                   → fd '.py'  fd -e sh  fd config"
+            echo "  rg <term>        search inside files (ripgrep)"
+            echo "                   → rg TODO  rg -i 'error' logs/"
+            echo "  eza              modern ls (aliased: ls ll la lt lta)"
+            echo "                   → ll (detailed)  lt (tree)  la (hidden)"
+            echo "  delta            git diff with syntax highlighting"
+            echo "                   → auto-used by git if configured"
+            echo "  z <dir>          smart cd — learns your directories"
+            echo "                   → z proj  z doc  zi (interactive)"
+            echo "  yazi             terminal file manager (TUI)"
+            echo "                   → yazi  yazi ~/Documents  (q to quit)"
+            echo "  starship         cross-shell prompt theme"
+            echo ""
+            echo "  Replaces: bat>cat  fd>find  rg>grep  eza>ls  delta>diff  z>cd"
             ;;
         "util")
             [[ -n "$_e" ]] && echo "🔧 Utilities:" || echo "Utilities:"
-            echo "  h         this help"
-            echo "  welcome   show greeting message"
-            echo "  welcomec  compact greeting (one-liner)"
-            echo "  c         clear"
-            echo "  path      show \$PATH (one per line)"
-            echo "  now       current date+time"
-            echo "  df/du     disk free/usage"
-            echo "  duh       disk usage, 1 level deep"
-            echo "  ports     show listening ports"
-            echo "  sysup     full system update (brew/apt/yum/pacman)"
-            echo "  mkcd <d>  mkdir + cd in one step"
+            echo "  h [topic]     this help (h nav/git/find/tools/util/all)"
+            echo "  h <term>      search all help — h fzf  h commit  h tree"
+            echo "  welcome       show full greeting message"
+            echo "  c             clear screen"
+            echo "  path          show \$PATH entries (one per line)"
+            echo "  now           current date+time (YYYY-MM-DD HH:MM:SS)"
+            echo "  df / du       disk free / disk usage"
+            echo "  duh           disk usage this dir (1 level deep)"
+            echo "  ports         show listening network ports"
+            echo "  sysup         full system update (brew/apt/yum/pacman)"
+            echo "                aliases: bum, upall"
             echo ""
-            echo "  Safety: rm/cp/mv ask before overwrite (-i flag)"
-            echo "  Emoji:  export TERMINAL_EMOJI=false for ASCII mode"
+            echo "  Safety: rm/cp/mv ask before overwrite (-i)"
+            echo "  Emoji: export TERMINAL_EMOJI=false for ASCII mode"
             ;;
         "all")
             h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h util
             ;;
         *)
-            [[ -n "$_e" ]] && echo "❓ Unknown topic '$1'" || echo "Unknown topic '$1'"
-            [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
-                           || echo "h <topic>: nav | git | find | tools | util | all"
+            # Search across all help topics
+            local _results
+            _results=$(
+                { h nav; h git; h find; h tools; h util; } 2>&1 \
+                | grep -i "${1}" || true
+            )
+            if [[ -n "$_results" ]]; then
+                [[ -n "$_e" ]] && echo "🔍 '$1':" || echo "'$1':"
+                echo "$_results"
+            else
+                [[ -n "$_e" ]] && echo "❓ No match for '$1'" || echo "No match for '$1'"
+                [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
+                               || echo "h <topic>: nav | git | find | tools | util | all"
+            fi
             ;;
     esac
 }
