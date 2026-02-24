@@ -70,7 +70,7 @@ show_welcome_compact() {
     else
         echo "$(date +%H:%M) | $(basename "$PWD")$git_info"
     fi
-    echo "h (help) | cmd <term> (search)"
+    echo "h (help) | h <term> (search) | cmd <term> (find aliases)"
 }
 
 alias welcome='show_welcome'
@@ -98,10 +98,8 @@ h() {
             echo "UTIL: c path now df duh ports sysup welcome"
             echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
-            [[ -n "$_e" ]] && echo "💡 h <topic>   nav | git | find | tools | util | all" \
-                           || echo "h <topic>   nav | git | find | tools | util | all"
-            [[ -n "$_e" ]] && echo "💡 h <term>    search help — h fzf  h commit  h tree" \
-                           || echo "h <term>    search help — h fzf  h commit  h tree"
+            [[ -n "$_e" ]] && echo "💡 h <word>    try: h nav  h fzf  h commit  h all" \
+                           || echo "h <word>    try: h nav  h fzf  h commit  h all"
             ;;
         "find"|"search")
             [[ -n "$_e" ]] && echo "🔍 Search & Preview:" || echo "Search & Preview:"
@@ -121,7 +119,7 @@ h() {
             ;;
         "nav"|"ls")
             [[ -n "$_e" ]] && echo "📁 Navigation & Listing:" || echo "Navigation & Listing:"
-            echo "  .. / ... / ....  go up 1/2/3 directories"
+            echo "  .. / ... / .... / .....  go up 1–4 directories"
             echo "  ls               list files (eza if installed)"
             echo "  ll               detailed list with git info"
             echo "  la               show hidden files"
@@ -134,6 +132,7 @@ h() {
             ;;
         "git")
             [[ -n "$_e" ]] && echo "🌿 Git Shortcuts:" || echo "Git Shortcuts:"
+            echo "  g                git (bare)"
             echo "  gs / gd / gds    status / diff / diff staged"
             echo "  ga / gap         add / add -p (pick hunks)"
             echo "  gc / gca         commit / commit --amend"
@@ -167,8 +166,7 @@ h() {
             ;;
         "util")
             [[ -n "$_e" ]] && echo "🔧 Utilities:" || echo "Utilities:"
-            echo "  h [topic]     this help (h nav/git/find/tools/util/all)"
-            echo "  h <term>      search all help — h fzf  h commit  h tree"
+            echo "  h <word>      help + search (h nav  h fzf  h commit  h all)"
             echo "  welcome       show full greeting message"
             echo "  c             clear screen"
             echo "  path          show \$PATH entries (one per line)"
@@ -190,7 +188,7 @@ h() {
             local _results
             _results=$(
                 { h nav; h git; h find; h tools; h util; } 2>&1 \
-                | grep -i "${1}" || true
+                | grep -Fi "${1}" || true
             )
             if [[ -n "$_results" ]]; then
                 [[ -n "$_e" ]] && echo "🔍 '$1':" || echo "'$1':"
