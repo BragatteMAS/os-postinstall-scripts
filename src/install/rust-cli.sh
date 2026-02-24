@@ -94,6 +94,11 @@ install_rust_tools_linux() {
         fi
     done
 
+    # yazi is not in apt repos — hint cargo path
+    if ! command -v yazi &>/dev/null; then
+        log_info "yazi: not in apt — install via: cargo install --locked yazi-fm"
+    fi
+
     return "$failed_count"
 }
 
