@@ -149,20 +149,22 @@ install_profile() {
 
     # Ensure Homebrew is installed first
     current_step=$((current_step + 1))
-    log_info "[Step ${current_step}/${total_steps}] Ensuring Homebrew is installed..."
+    show_progress "$current_step" "$total_steps" "Ensuring Homebrew is installed..."
     bash "${MACOS_DIR}/install/homebrew.sh" || return 1
 
     # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
-        log_info "[Step ${current_step}/${total_steps}] Setting up development environment..."
-        bash "${INSTALL_DIR}/dev-env.sh"
-        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+        show_progress "$current_step" "$total_steps" "Setting up development environment..."
+        if ! retry_with_backoff bash "${INSTALL_DIR}/dev-env.sh"; then
+            record_failure "dev-env"
+        fi
 
         current_step=$((current_step + 1))
-        log_info "[Step ${current_step}/${total_steps}] Installing Rust CLI tools..."
-        bash "${INSTALL_DIR}/rust-cli.sh"
-        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+        show_progress "$current_step" "$total_steps" "Installing Rust CLI tools..."
+        if ! retry_with_backoff bash "${INSTALL_DIR}/rust-cli.sh"; then
+            record_failure "rust-cli"
+        fi
     fi
 
     # Read profile and dispatch to macOS-relevant installers
@@ -177,21 +179,24 @@ install_profile() {
         case "$pkg_file" in
             brew.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing brew packages..."
-                bash "${MACOS_DIR}/install/brew.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing brew packages..."
+                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew.sh"; then
+                    record_failure "brew packages"
+                fi
                 ;;
             brew-cask.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing brew cask packages..."
-                bash "${MACOS_DIR}/install/brew-cask.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing brew cask packages..."
+                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh"; then
+                    record_failure "brew cask packages"
+                fi
                 ;;
             ai-tools.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing AI tools..."
-                bash "${INSTALL_DIR}/ai-tools.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing AI tools..."
+                if ! retry_with_backoff bash "${INSTALL_DIR}/ai-tools.sh"; then
+                    record_failure "AI tools"
+                fi
                 ;;
             apt.txt|apt-post.txt)
                 # Linux-only - skip silently on macOS

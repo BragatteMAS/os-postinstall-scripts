@@ -172,11 +172,20 @@ main() {
     echo ""
     echo -e "Tip: use ${YELLOW}--dry-run${NC} to preview without installing"
     echo ""
-    log_info "Profile: $profile"
 
-    # Detect platform
+    # Detect platform (needed by state detection)
     detect_platform
     log_ok "Detected: ${DETECTED_OS} ${DETECTED_VERSION:-} (${DETECTED_PKG:-unknown})"
+
+    # Check for previous installation (R6: state detection)
+    if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
+        if ! detect_previous_install; then
+            _SUMMARY_SHOWN=1  # suppress cleanup summary
+            exit 0
+        fi
+    fi
+
+    log_info "Profile: $profile"
 
     # Run verification sequence (defensive check for future changes)
     verify_all
@@ -228,6 +237,11 @@ main() {
             source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             install_dotfiles
         fi
+    fi
+
+    # Save install state for future runs (R6: state detection)
+    if [[ "${DRY_RUN:-}" != "true" ]]; then
+        save_install_state "$profile"
     fi
 
     # Show completion summary

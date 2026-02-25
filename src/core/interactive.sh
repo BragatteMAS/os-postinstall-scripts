@@ -26,6 +26,28 @@ if [[ -z "${_LOGGING_SOURCED:-}" ]]; then
 fi
 
 #######################################
+# read_with_timeout()
+# Read user input with visible timeout and safe default
+#
+# Args: $1 = prompt text, $2 = default value on timeout, $3 = timeout seconds (default 30)
+# Echoes: user answer (or default on timeout)
+# Returns: 0 = got input, 1 = timeout (used default)
+#######################################
+read_with_timeout() {
+    local prompt="$1" default="$2" timeout="${3:-30}"
+    local answer
+
+    read -r -t "$timeout" -p "${prompt} [${timeout}s → ${default}]: " answer || {
+        echo ""
+        log_warn "Timeout — using default: ${default}"
+        echo "$default"
+        return 1
+    }
+    echo "${answer:-$default}"
+    return 0
+}
+
+#######################################
 # show_category_menu()
 # Interactive menu for category-level install selection
 #
@@ -46,11 +68,8 @@ show_category_menu() {
     echo "  1) All"
     echo "  2) Choose individually"
     echo "  3) Skip"
-    read -r -t 30 -p "Select [1-3, timeout=30s → skip]: " choice || {
-        echo ""
-        log_warn "Timeout — skipping ${category} (no changes made)"
-        return 2
-    }
+    local choice
+    choice=$(read_with_timeout "Select [1-3]" "3")
 
     case "$choice" in
         1) return 0 ;;
@@ -76,11 +95,8 @@ ask_tool() {
         return 0
     fi
 
-    read -r -t 30 -p "Install ${tool}? [Y/n, timeout=30s → skip]: " answer || {
-        echo ""
-        log_warn "Timeout — skipping ${tool}"
-        return 1
-    }
+    local answer
+    answer=$(read_with_timeout "Install ${tool}? [Y/n]" "n")
 
     case "$answer" in
         [nN]*) return 1 ;;
@@ -91,4 +107,4 @@ ask_tool() {
 #######################################
 # Export functions for subshells
 #######################################
-export -f show_category_menu ask_tool
+export -f read_with_timeout show_category_menu ask_tool

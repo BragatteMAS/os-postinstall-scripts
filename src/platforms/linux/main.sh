@@ -127,14 +127,16 @@ install_profile() {
     # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
-        log_info "[Step ${current_step}/${total_steps}] Setting up development environment..."
-        bash "${INSTALL_DIR}/dev-env.sh"
-        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+        show_progress "$current_step" "$total_steps" "Setting up development environment..."
+        if ! retry_with_backoff bash "${INSTALL_DIR}/dev-env.sh"; then
+            record_failure "dev-env"
+        fi
 
         current_step=$((current_step + 1))
-        log_info "[Step ${current_step}/${total_steps}] Installing Rust CLI tools..."
-        bash "${INSTALL_DIR}/rust-cli.sh"
-        rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+        show_progress "$current_step" "$total_steps" "Installing Rust CLI tools..."
+        if ! retry_with_backoff bash "${INSTALL_DIR}/rust-cli.sh"; then
+            record_failure "rust-cli"
+        fi
     fi
 
     # Read profile and dispatch to Linux-relevant installers
@@ -149,54 +151,62 @@ install_profile() {
         case "$pkg_file" in
             apt.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing APT packages..."
-                bash "${LINUX_DIR}/install/apt.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing APT packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/apt.sh"; then
+                    record_failure "APT packages"
+                fi
                 ;;
             apt-post.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing APT post-packages..."
-                bash "${LINUX_DIR}/install/apt.sh" --post
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing APT post-packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/apt.sh" --post; then
+                    record_failure "APT post-packages"
+                fi
                 ;;
             flatpak.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing Flatpak packages..."
-                bash "${LINUX_DIR}/install/flatpak.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing Flatpak packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh"; then
+                    record_failure "Flatpak packages"
+                fi
                 ;;
             flatpak-post.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing Flatpak post-packages..."
-                bash "${LINUX_DIR}/install/flatpak.sh" --post
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing Flatpak post-packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh" --post; then
+                    record_failure "Flatpak post-packages"
+                fi
                 ;;
             snap.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing Snap packages..."
-                bash "${LINUX_DIR}/install/snap.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing Snap packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh"; then
+                    record_failure "Snap packages"
+                fi
                 ;;
             snap-post.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing Snap post-packages..."
-                bash "${LINUX_DIR}/install/snap.sh" --post
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing Snap post-packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh" --post; then
+                    record_failure "Snap post-packages"
+                fi
                 ;;
             cargo.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing Cargo packages..."
-                bash "${LINUX_DIR}/install/cargo.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing Cargo packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/cargo.sh"; then
+                    record_failure "Cargo packages"
+                fi
                 ;;
             npm.txt)
                 log_debug "Skipping npm.txt (handled by dev-env)"
                 ;;
             ai-tools.txt)
                 current_step=$((current_step + 1))
-                log_info "[Step ${current_step}/${total_steps}] Installing AI tools..."
-                bash "${INSTALL_DIR}/ai-tools.sh"
-                rc=$?; [[ $rc -gt $_worst_exit ]] && _worst_exit=$rc
+                show_progress "$current_step" "$total_steps" "Installing AI tools..."
+                if ! retry_with_backoff bash "${INSTALL_DIR}/ai-tools.sh"; then
+                    record_failure "AI tools"
+                fi
                 ;;
             brew.txt|brew-cask.txt)
                 # macOS-only - skip silently on Linux
