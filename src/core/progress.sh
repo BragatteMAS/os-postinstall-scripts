@@ -135,6 +135,14 @@ show_completion_summary() {
         log_ok "All sections completed successfully"
     fi
 
+    # Next steps (R3 + R4 from BMAD UX Research)
+    echo ""
+    echo "What's next:"
+    echo "  h           show all available commands"
+    echo "  h tools     see installed CLI tools with examples"
+    echo "  welcome     show terminal greeting"
+    echo ""
+    echo "Tip: open a NEW terminal to load aliases and functions"
     echo ""
 }
 

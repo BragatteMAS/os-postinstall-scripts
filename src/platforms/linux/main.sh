@@ -80,14 +80,10 @@ trap signal_cleanup INT TERM
 #######################################
 show_menu() {
     echo ""
-    echo -e "${BLUE}=======================================================${NC}"
-    echo -e "${BLUE}         Linux Post-Installation Script                ${NC}"
-    echo -e "${BLUE}=======================================================${NC}"
-    echo ""
     echo "Select installation profile:"
-    echo "  1. Minimal   (essential packages only)"
-    echo "  2. Developer (system + dev tools + AI)"
-    echo "  3. Full      (everything)"
+    echo "  1. Minimal   — essential system packages only"
+    echo "  2. Developer — adds dev tools, Rust CLIs, dotfiles"
+    echo "  3. Full      — everything + AI tools (Claude, etc)"
     echo "  0. Exit"
     echo ""
 }

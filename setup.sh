@@ -162,7 +162,16 @@ main() {
 
     local profile="${1:-$DEFAULT_PROFILE}"
 
-    log_banner "OS Post-Install Scripts"
+    echo ""
+    echo -e "${BLUE}=======================================================${NC}"
+    echo -e "${BLUE}     os-postinstall-scripts — Setup Wizard${NC}"
+    echo -e "${BLUE}=======================================================${NC}"
+    echo ""
+    echo "This wizard will set up your system with packages,"
+    echo "dev tools, CLI utilities, and shell configuration."
+    echo ""
+    echo -e "Tip: use ${YELLOW}--dry-run${NC} to preview without installing"
+    echo ""
     log_info "Profile: $profile"
 
     # Detect platform
