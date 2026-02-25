@@ -101,14 +101,10 @@ check_bash_upgrade() {
 #######################################
 show_menu() {
     echo ""
-    echo -e "${BLUE}=======================================================${NC}"
-    echo -e "${BLUE}         macOS Post-Installation Script                ${NC}"
-    echo -e "${BLUE}=======================================================${NC}"
-    echo ""
     echo "Select installation profile:"
-    echo "  1. Minimal   (essential tools only)"
-    echo "  2. Developer (system + dev tools)"
-    echo "  3. Full      (everything + AI tools)"
+    echo "  1. Minimal   — essential system packages only"
+    echo "  2. Developer — adds dev tools, Rust CLIs, dotfiles"
+    echo "  3. Full      — everything + AI tools (Claude, etc)"
     echo "  0. Exit"
     echo ""
 }

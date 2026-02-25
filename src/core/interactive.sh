@@ -46,13 +46,18 @@ show_category_menu() {
     echo "  1) All"
     echo "  2) Choose individually"
     echo "  3) Skip"
-    read -r -t 30 -p "Select [1-3]: " choice || choice=""
+    read -r -t 30 -p "Select [1-3, timeout=30s → skip]: " choice || {
+        echo ""
+        log_warn "Timeout — skipping ${category} (no changes made)"
+        return 2
+    }
 
     case "$choice" in
         1) return 0 ;;
         2) return 1 ;;
         3) return 2 ;;
-        *) return 0 ;;  # Default: install all
+        *) log_warn "Invalid choice '${choice}' — skipping ${category}"
+           return 2 ;;
     esac
 }
 
@@ -71,7 +76,11 @@ ask_tool() {
         return 0
     fi
 
-    read -r -t 30 -p "Install ${tool}? [Y/n]: " answer || answer=""
+    read -r -t 30 -p "Install ${tool}? [Y/n, timeout=30s → skip]: " answer || {
+        echo ""
+        log_warn "Timeout — skipping ${tool}"
+        return 1
+    }
 
     case "$answer" in
         [nN]*) return 1 ;;
