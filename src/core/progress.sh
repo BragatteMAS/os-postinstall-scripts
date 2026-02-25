@@ -38,6 +38,87 @@ show_dry_run_banner() {
 }
 
 #######################################
+# show_progress()
+# Display a visual progress bar with step counter
+# Args: $1 = current step, $2 = total steps, $3 = description
+# Output: [2/5] ████████░░░░░░░░░░░░ Installing tools
+#######################################
+show_progress() {
+    local step=$1 total=$2 name="$3"
+    local pct=$((step * 100 / total))
+    local filled=$((pct / 5))
+    local bar=""
+    for ((i=0; i<20; i++)); do
+        if [[ $i -lt $filled ]]; then
+            bar+="█"
+        else
+            bar+="░"
+        fi
+    done
+    echo -e "${BLUE}[${step}/${total}]${NC} ${bar} ${name}"
+}
+
+#######################################
+# save_install_state()
+# Persist installation metadata for future runs
+# Args: $1 = profile name
+# Creates: ~/.config/os-postinstall/state
+#######################################
+save_install_state() {
+    local profile="${1:-unknown}"
+    local state_dir="${HOME}/.config/os-postinstall"
+    local state_file="${state_dir}/state"
+
+    mkdir -p "$state_dir"
+    cat > "$state_file" <<EOF
+install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')
+profile=${profile}
+platform=${DETECTED_OS:-unknown}
+version=${SCRIPT_VERSION:-4.3}
+EOF
+    log_debug "Saved install state to ${state_file}"
+}
+
+#######################################
+# detect_previous_install()
+# Check for previous installation and offer resume/fresh/cancel
+# Returns: 0 = proceed, 1 = user cancelled
+# Side effect: may remove state file if user picks "fresh install"
+#######################################
+detect_previous_install() {
+    local state_file="${HOME}/.config/os-postinstall/state"
+
+    [[ ! -f "$state_file" ]] && return 0
+
+    # Source state file to get previous values
+    local install_date="" profile="" platform="" version=""
+    source "$state_file"
+
+    log_info "Previous installation detected"
+    echo "  Date:     ${install_date:-unknown}"
+    echo "  Profile:  ${profile:-unknown}"
+    echo "  Platform: ${platform:-unknown}"
+    echo "  Version:  ${version:-unknown}"
+    echo ""
+    echo "  1) Update (reinstall with current profile)"
+    echo "  2) Fresh install (ignore previous state)"
+    echo "  3) Cancel"
+
+    local choice
+    read -rp "Select [1-3]: " choice
+
+    case "$choice" in
+        1) return 0 ;;
+        2) rm -f "$state_file"
+           log_info "Starting fresh install"
+           return 0 ;;
+        3) log_info "Cancelled by user"
+           return 1 ;;
+        *) return 0 ;;
+    esac
+}
+
+#######################################
 # count_platform_steps()
 # Count how many package files in a profile are relevant to the given platform
 # Args: $1 = profile_file path, $2 = platform ("linux" or "macos")
@@ -149,4 +230,5 @@ show_completion_summary() {
 #######################################
 # Export functions for subshells
 #######################################
+export -f show_progress save_install_state detect_previous_install
 export -f show_dry_run_banner count_platform_steps show_completion_summary
