@@ -72,7 +72,7 @@ winget.txt
 flatpak.txt
 EOF
     run count_platform_steps "$profile" "macos"
-    assert_output "1"
+    assert_output "2"
 }
 
 @test "count_platform_steps returns 0 for missing file" {
