@@ -138,14 +138,14 @@ ensure_binstall() {
 #######################################
 # Cleanup function
 #######################################
+# shellcheck disable=SC2329  # invoked via trap
 cleanup() {
     local exit_code=$?
-    # Show failure summary if any
     if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
         log_warn "Failed packages: ${FAILED_ITEMS[*]}"
     fi
     log_debug "Cleaning up ${SCRIPT_NAME}..."
-    exit $exit_code
+    exit "$exit_code"
 }
 trap cleanup EXIT INT TERM
 
