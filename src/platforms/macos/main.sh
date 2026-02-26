@@ -14,8 +14,8 @@ SCRIPT_NAME=$(basename "$0")
 readonly SCRIPT_NAME
 
 # MACOS_DIR: the directory where THIS script lives
-# Note: We use MACOS_DIR instead of SCRIPT_DIR because packages.sh
-# overwrites SCRIPT_DIR with its own location (src/core/).
+# Named MACOS_DIR (not SCRIPT_DIR) to avoid readonly collisions
+# when multiple scripts in the source chain declare SCRIPT_DIR.
 MACOS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly MACOS_DIR
 
@@ -207,8 +207,11 @@ install_profile() {
                 log_debug "Skipping $pkg_file (Linux only)"
                 ;;
             cargo.txt)
-                # No macOS cargo installer yet - skip
-                log_debug "Skipping cargo.txt (no macOS installer)"
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing Cargo packages..."
+                if ! retry_with_backoff bash "${INSTALL_DIR}/cargo.sh"; then
+                    record_failure "Cargo packages"
+                fi
                 ;;
             npm.txt)
                 log_debug "Skipping npm.txt (handled by dev-env)"

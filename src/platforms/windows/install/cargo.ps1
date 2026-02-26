@@ -5,7 +5,7 @@
 # Author: Bragatte
 # Date: 2026-02-17
 #######################################
-# PowerShell equivalent of src/platforms/linux/install/cargo.sh
+# PowerShell equivalent of src/install/cargo.sh
 # Reads cargo.txt from data/packages/ and installs each package
 # Strategy: WinGet pre-built binary preferred, cargo install fallback
 # Packages with no Windows support are skipped (zellij)

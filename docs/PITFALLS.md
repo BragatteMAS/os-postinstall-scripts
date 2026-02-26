@@ -254,6 +254,36 @@ Declaradas em config.sh como arrays vazios, nunca consumidas por nenhum installe
 
 ---
 
+## 11. Senior Dev Review (v4.2 Post-Audit)
+
+### 11.1 cargo.txt Silently Skipped on macOS
+`macos/main.sh` skipped `cargo.txt` with a debug log, even though `cargo.sh` is cross-platform (uses `cargo install`, no Linux-specific code). Result: cargo packages never installed on macOS.
+
+**Fix:** Moved `cargo.sh` from `src/platforms/linux/install/` to `src/install/` (shared cross-platform location). Updated both `linux/main.sh` and `macos/main.sh` to dispatch cargo.txt. Updated `count_platform_steps()` to count cargo.txt for macOS.
+**Phase:** Post v4.2 audit
+
+### 11.2 Stale SCRIPT_DIR Comment in Platform Orchestrators
+`linux/main.sh` and `macos/main.sh` had comments saying "packages.sh overwrites SCRIPT_DIR" — but packages.sh was already fixed (uses `_PACKAGES_DIR` internally). Comments were misleading.
+
+**Fix:** Updated comments to explain the real reason: avoiding readonly collisions across sourced scripts.
+**Phase:** Post v4.2 audit
+
+### 11.3 Trap Chain Clarity (setup.sh vs platform main.sh)
+`setup.sh` defines a cleanup trap, then calls `bash "$linux_main"` which defines its own. Not a bug (subshell isolation), but the comment "prevent double summary" didn't explain the architecture.
+
+**Fix:** Replaced comment with clear explanation of orchestrator/subshell trap architecture and FAILURE_LOG cross-process propagation.
+**Phase:** Post v4.2 audit
+
+### 11.4 verify_all() Appeared Undefined — False Positive
+`setup.sh` calls `verify_all()` which lives in `src/core/platform.sh:299`. The source chain (`setup.sh` → `config.sh` → `platform.sh`) loads it correctly. No fix needed.
+**Phase:** Post v4.2 audit (documented only)
+
+### 11.5 terminal-setup.sh Root Wrapper — Not Orphan
+`terminal-setup.sh` at project root is a 1-line convenience wrapper: `exec bash terminal/setup.sh "$@"`. Intentional design for easy `bash terminal-setup.sh` invocation.
+**Phase:** Post v4.2 audit (documented only)
+
+---
+
 ## Summary
 
 | Categoria | Count | Severidade |
@@ -268,8 +298,9 @@ Declaradas em config.sh como arrays vazios, nunca consumidas por nenhum installe
 | PowerShell / Windows | 3 | HIGH |
 | Testing | 5 | MEDIUM |
 | Architecture | 2 | MEDIUM |
-| **Total** | **35** | |
+| Senior Dev Review (v4.2) | 5 | MEDIUM |
+| **Total** | **40** | |
 
 ---
 *Compiled from Phases 1-17 research, plans, summaries, verifications, and ADRs*
-*Last updated: 2026-02-21*
+*Last updated: 2026-02-25*
