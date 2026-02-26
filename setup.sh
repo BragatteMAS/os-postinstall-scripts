@@ -50,7 +50,9 @@ touch "$FAILURE_LOG"
 # Track worst exit code from child processes
 _worst_exit=0
 
-# Override cleanup trap to prevent double summary on normal exit
+# Override cleanup from errors.sh — setup.sh is the top-level orchestrator.
+# Platform main.sh scripts run in subshells (bash "$linux_main") so their
+# traps don't collide. Cross-process failures propagate via $FAILURE_LOG.
 cleanup() {
     local trap_exit_code=$?
     if [[ -z "${_SUMMARY_SHOWN:-}" ]]; then

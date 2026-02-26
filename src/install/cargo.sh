@@ -2,7 +2,7 @@
 set -o pipefail
 #######################################
 # Script: cargo.sh
-# Description: Install Cargo (Rust) packages for Linux (data-driven)
+# Description: Install Cargo (Rust) packages (cross-platform, data-driven)
 # Author: Bragatte
 # Date: 2026-02-05
 #######################################
@@ -14,23 +14,25 @@ SCRIPT_NAME=$(basename "$0")
 readonly SCRIPT_NAME
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
-# Source core utilities from src/core/
-source "${SCRIPT_DIR}/../../../core/logging.sh" || {
+# Source core utilities (src/install/ is sibling to src/core/)
+CORE_DIR="${SCRIPT_DIR}/../core"
+
+source "${CORE_DIR}/logging.sh" || {
     echo "[ERROR] Failed to load logging.sh" >&2
     exit 1
 }
 
-source "${SCRIPT_DIR}/../../../core/idempotent.sh" || {
+source "${CORE_DIR}/idempotent.sh" || {
     log_error "Failed to load idempotent.sh"
     exit 1
 }
 
-source "${SCRIPT_DIR}/../../../core/errors.sh" || {
+source "${CORE_DIR}/errors.sh" || {
     log_error "Failed to load errors.sh"
     exit 1
 }
 
-source "${SCRIPT_DIR}/../../../core/packages.sh" || {
+source "${CORE_DIR}/packages.sh" || {
     log_error "Failed to load packages.sh"
     exit 1
 }

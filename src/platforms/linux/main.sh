@@ -14,8 +14,8 @@ SCRIPT_NAME=$(basename "$0")
 readonly SCRIPT_NAME
 
 # LINUX_DIR: the directory where THIS script lives
-# Note: We use LINUX_DIR instead of SCRIPT_DIR because packages.sh
-# overwrites SCRIPT_DIR with its own location (src/core/).
+# Named LINUX_DIR (not SCRIPT_DIR) to avoid readonly collisions
+# when multiple scripts in the source chain declare SCRIPT_DIR.
 LINUX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly LINUX_DIR
 
@@ -194,7 +194,7 @@ install_profile() {
             cargo.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Cargo packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/cargo.sh"; then
+                if ! retry_with_backoff bash "${INSTALL_DIR}/cargo.sh"; then
                     record_failure "Cargo packages"
                 fi
                 ;;
