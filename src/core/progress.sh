@@ -92,6 +92,7 @@ detect_previous_install() {
 
     # Source state file to get previous values
     local install_date="" profile="" platform="" version=""
+    # shellcheck disable=SC1090
     source "$state_file"
 
     log_info "Previous installation detected"

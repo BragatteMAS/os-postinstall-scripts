@@ -137,9 +137,9 @@ compute_exit_code() {
         fail_count=${#FAILED_ITEMS[@]}
     fi
     if [[ "$fail_count" -gt 0 ]]; then
-        return $EXIT_PARTIAL_FAILURE
+        return "$EXIT_PARTIAL_FAILURE"
     fi
-    return $EXIT_SUCCESS
+    return "$EXIT_SUCCESS"
 }
 
 # clear_failures - Reset the failure list

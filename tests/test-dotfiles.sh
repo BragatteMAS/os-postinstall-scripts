@@ -161,7 +161,9 @@ test_path_to_backup_name_simple() {
     result=$(path_to_backup_name "${HOME}/.zshrc")
 
     # Should be: zshrc.bak.YYYY-MM-DD
-    local expected="zshrc.bak.$(date +%Y-%m-%d)"
+    local expected
+    expected="zshrc.bak.$(date +%Y-%m-%d)"
+    # shellcheck disable=SC2088
     assert_eq "$expected" "$result" "~/.zshrc converts to zshrc.bak.DATE"
 }
 
@@ -172,7 +174,9 @@ test_path_to_backup_name_nested() {
     result=$(path_to_backup_name "${HOME}/.config/git/ignore")
 
     # Should be: config-git-ignore.bak.YYYY-MM-DD
-    local expected="config-git-ignore.bak.$(date +%Y-%m-%d)"
+    local expected
+    expected="config-git-ignore.bak.$(date +%Y-%m-%d)"
+    # shellcheck disable=SC2088
     assert_eq "$expected" "$result" "~/.config/git/ignore converts to config-git-ignore.bak.DATE"
 }
 
@@ -233,14 +237,15 @@ test_backup_existing_file() {
 
     # Backup file should exist with correct naming pattern
     ((TESTS_RUN++))
-    local backup_pattern="gitconfig.bak.$(date +%Y-%m-%d)"
-    if ls "$BACKUP_DIR" | grep -q "$backup_pattern"; then
+    local backup_pattern
+    backup_pattern="gitconfig.bak.$(date +%Y-%m-%d)"
+    if find "$BACKUP_DIR" -maxdepth 1 -name "*${backup_pattern}*" 2>/dev/null | grep -q .; then
         ((TESTS_PASSED++))
         echo "[PASS] Backup file has correct naming pattern"
     else
         ((TESTS_FAILED++))
         echo "[FAIL] Backup file should match pattern: ${backup_pattern}"
-        echo "  Found: $(ls "$BACKUP_DIR")"
+        echo "  Found: $(find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -exec basename {} \; 2>/dev/null)"
     fi
 }
 
@@ -258,14 +263,14 @@ test_replace_existing_symlink_no_backup() {
 
     # Count backups before
     local backup_count_before=0
-    [[ -d "$BACKUP_DIR" ]] && backup_count_before=$(ls "$BACKUP_DIR" 2>/dev/null | wc -l | tr -d ' ')
+    [[ -d "$BACKUP_DIR" ]] && backup_count_before=$(find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l | tr -d ' ')
 
     # Replace with new symlink
     create_dotfile_symlink "$source2" "$target"
 
     # Count backups after
     local backup_count_after=0
-    [[ -d "$BACKUP_DIR" ]] && backup_count_after=$(ls "$BACKUP_DIR" 2>/dev/null | wc -l | tr -d ' ')
+    [[ -d "$BACKUP_DIR" ]] && backup_count_after=$(find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l | tr -d ' ')
 
     # Should not have created new backup
     assert_eq "$backup_count_before" "$backup_count_after" "No new backup for symlink replacement"

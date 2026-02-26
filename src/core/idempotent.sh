@@ -157,7 +157,8 @@ backup_if_exists() {
     # If file doesn't exist, nothing to backup
     [[ ! -e "$file" ]] && return 0
 
-    local backup_suffix=".bak.$(date +%Y-%m-%d)"
+    local backup_suffix
+    backup_suffix=".bak.$(date +%Y-%m-%d)"
     local backup_file="${file}${backup_suffix}"
 
     # If backup already exists today, add timestamp
