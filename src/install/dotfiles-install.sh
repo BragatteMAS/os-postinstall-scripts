@@ -157,6 +157,7 @@ install_dotfiles() {
     local gitconfig_target="${HOME}/.gitconfig"
     if [[ -f "$gitconfig_target" ]] && [[ ! -L "$gitconfig_target" ]]; then
         echo ""
+        # shellcheck disable=SC2088
         log_warn "~/.gitconfig already exists with your git identity:"
         git config --global user.name 2>/dev/null  | xargs -I{} echo "        user.name  = {}"
         git config --global user.email 2>/dev/null | xargs -I{} echo "        user.email = {}"

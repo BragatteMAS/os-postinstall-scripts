@@ -190,8 +190,7 @@ main() {
     log_info "Profile: $profile"
 
     # Run verification sequence (defensive check for future changes)
-    verify_all
-    if [[ $? -ne 0 ]]; then
+    if ! verify_all; then
         _worst_exit="${EXIT_CRITICAL:-2}"
     fi
 

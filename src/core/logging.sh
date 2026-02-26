@@ -155,7 +155,8 @@ log_debug() {
     fi
 
     local msg="$*"
-    local prefix="[$(_timestamp)] "
+    local prefix
+    prefix="[$(_timestamp)] "
 
     echo -e "${GRAY}[DEBUG]${NC} ${prefix}${msg}"
     _write_log "[DEBUG] ${prefix}${msg}"

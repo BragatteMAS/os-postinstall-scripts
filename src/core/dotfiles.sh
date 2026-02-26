@@ -45,7 +45,7 @@ path_to_backup_name() {
     local file="$1"
     [[ -z "$file" ]] && return 1
 
-    local name="${file#$HOME/}"      # Remove $HOME/
+    local name="${file#"$HOME"/}"      # Remove $HOME/
     name="${name#.}"                  # Remove leading dot
     name="${name//\//-}"              # Replace / with -
     echo "${name}.bak.$(date +%Y-%m-%d)"

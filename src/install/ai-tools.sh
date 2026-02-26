@@ -255,8 +255,8 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     fi
 
     # Install selected entries
-    local installed_count=0
-    local failed_count=0
+    installed_count=0
+    failed_count=0
 
     for entry in "${to_install[@]}"; do
         if install_ai_tool "$entry"; then
