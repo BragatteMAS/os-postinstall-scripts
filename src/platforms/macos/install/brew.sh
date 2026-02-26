@@ -80,6 +80,7 @@ _brew_formula_install() {
 #######################################
 # Cleanup function
 #######################################
+# shellcheck disable=SC2329  # invoked via trap
 cleanup() {
     local exit_code=$?
     if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then

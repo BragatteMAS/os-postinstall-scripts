@@ -189,13 +189,14 @@ show_rust_summary() {
 #######################################
 declare -a FAILED_ITEMS=()
 
+# shellcheck disable=SC2329  # invoked via trap
 cleanup() {
     local exit_code=$?
     if [[ ${#FAILED_ITEMS[@]} -gt 0 ]]; then
         log_warn "Failed tools: ${FAILED_ITEMS[*]}"
     fi
     log_debug "Cleaning up ${SCRIPT_NAME}..."
-    exit $exit_code
+    exit "$exit_code"
 }
 trap cleanup EXIT INT TERM
 

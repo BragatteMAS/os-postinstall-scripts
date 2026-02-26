@@ -88,10 +88,10 @@ setup_ssh_key() {
 #######################################
 # Cleanup
 #######################################
+# shellcheck disable=SC2329  # invoked via trap
 cleanup() {
     show_failure_summary
 }
-
 trap cleanup EXIT INT TERM
 
 #######################################
