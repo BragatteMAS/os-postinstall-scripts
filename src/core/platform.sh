@@ -21,6 +21,8 @@ export DETECTED_VERSION=""
 export DETECTED_PKG=""
 export DETECTED_ARCH=""
 export DETECTED_BASH=""
+export DETECTED_USER=""
+export DETECTED_HOME=""
 
 #######################################
 # Supported distros list
@@ -29,7 +31,7 @@ readonly SUPPORTED_DISTROS="ubuntu debian pop linuxmint elementary zorin"
 
 #######################################
 # detect_platform()
-# Detects OS, distro, package manager, architecture, and Bash version
+# Detects OS, distro, package manager, architecture, Bash version, and current user
 # Sets all DETECTED_* variables
 #######################################
 detect_platform() {
@@ -103,8 +105,20 @@ detect_platform() {
         DETECTED_BASH="unknown"
     fi
 
+    # Detect current user (cross-platform, handles sudo contexts)
+    case "$DETECTED_OS" in
+        windows)
+            DETECTED_USER="${USERNAME:-${USER:-$(whoami 2>/dev/null || echo "unknown")}}"
+            DETECTED_HOME="${USERPROFILE:-${HOME:-}}"
+            ;;
+        *)
+            DETECTED_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo "unknown")}"
+            DETECTED_HOME="${HOME:-$(eval echo ~"$DETECTED_USER" 2>/dev/null || echo "unknown")}"
+            ;;
+    esac
+
     # Export all variables
-    export DETECTED_OS DETECTED_DISTRO DETECTED_VERSION DETECTED_PKG DETECTED_ARCH DETECTED_BASH
+    export DETECTED_OS DETECTED_DISTRO DETECTED_VERSION DETECTED_PKG DETECTED_ARCH DETECTED_BASH DETECTED_USER DETECTED_HOME
 }
 
 #######################################
