@@ -8,13 +8,37 @@ curl
 wget
 htop
 tree
+tmux
 
 # Development - Build Tools
 cmake
 pkg-config
 openssl
+shellcheck
 
-# Terminal - Rust Tools (also available via cargo)
+# Development - Languages & Runtimes
+python
+go
+rust
+r
+node
+uv
+pipx
+
+# Development - Git Tools
+gh
+lazygit
+jj
+diff-so-fancy
+
+# Development - Linters & Formatters
+biome
+
+# Terminal - Multiplexer & File Manager
+zellij
+yazi
+
+# Terminal - Rust CLI Tools (also available via cargo)
 bat
 eza
 fd
@@ -22,9 +46,40 @@ ripgrep
 zoxide
 git-delta
 starship
+procs
+sd
+dust
+tokei
 
 # Terminal - Fuzzy Finder
 fzf
+
+# Terminal - Recording
+asciinema
+
+# Data & Documents
+duckdb
+pandoc
+typst
+csvkit
+gnuplot
+
+# Media & OCR
+ffmpeg
+imagemagick
+tesseract
+
+# AI Tools
+claude-squad
+
+# Web & Network
+aria2
+trafilatura
+sshpass
+
+# Accessibility & Calendar
+espeak-ng
+gcalcli
 
 # Dotfiles Manager
 chezmoi
@@ -33,6 +88,5 @@ chezmoi
 zsh
 bash
 
-# Development - Languages
-python
-# node  -- managed by fnm (src/install/fnm.sh), Homebrew node conflicts with fnm
+# Archive
+sevenzip
