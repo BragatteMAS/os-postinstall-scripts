@@ -213,6 +213,13 @@ install_profile() {
                     record_failure "Cargo packages"
                 fi
                 ;;
+            macos-defaults.txt)
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Applying macOS system defaults..."
+                if ! bash "${MACOS_DIR}/install/defaults.sh"; then
+                    record_failure "macOS defaults"
+                fi
+                ;;
             npm.txt)
                 log_debug "Skipping npm.txt (handled by dev-env)"
                 ;;
@@ -225,6 +232,12 @@ install_profile() {
                 ;;
         esac
     done < "$profile_file"
+
+    # Run post-install hooks
+    source "${MACOS_DIR}/../../core/hooks.sh" 2>/dev/null || true
+    if type run_hooks &>/dev/null; then
+        run_hooks "macos"
+    fi
 
     return $_worst_exit
 }

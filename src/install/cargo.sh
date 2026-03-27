@@ -37,6 +37,11 @@ source "${CORE_DIR}/packages.sh" || {
     exit 1
 }
 
+source "${CORE_DIR}/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # Cargo Helper Functions
 #######################################
@@ -99,6 +104,7 @@ cargo_install() {
     if command -v cargo-binstall &>/dev/null; then
         if cargo binstall -y --no-confirm "$pkg" 2>/dev/null; then
             log_ok "Installed via binstall: $pkg"
+            save_package_state "cargo" "$pkg" "${PROFILE_NAME:-unknown}"
             return 0
         fi
     fi
@@ -106,6 +112,7 @@ cargo_install() {
     # Fallback to cargo install
     if cargo install "$pkg" 2>/dev/null; then
         log_ok "Installed: $pkg"
+        save_package_state "cargo" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_error "Failed to install: $pkg"

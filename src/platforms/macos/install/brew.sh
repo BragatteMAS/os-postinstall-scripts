@@ -35,6 +35,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../../core/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # Verify Homebrew is available
 #######################################
@@ -70,6 +75,7 @@ _brew_formula_install() {
     log_info "Installing: $pkg"
     if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install "$pkg" 2>/dev/null; then
         log_ok "Installed: $pkg"
+        save_package_state "brew" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_error "Failed to install: $pkg"

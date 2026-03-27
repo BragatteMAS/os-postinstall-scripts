@@ -1,0 +1,8 @@
+# Test fixture: valid defaults file
+# Format: domain|key|type|value
+
+# Section A
+com.test.app|boolKey|bool|true
+com.test.app|intKey|int|42
+com.test.app|floatKey|float|1.5
+com.test.app|stringKey|string|hello

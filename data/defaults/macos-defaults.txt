@@ -1,0 +1,59 @@
+# macOS System Defaults
+# Declarative macOS preferences management (inspired by nix-darwin system.defaults)
+#
+# Format: domain|key|type|value
+# Types: bool, int, float, string
+# Lines starting with # are comments, blank lines ignored
+#
+# Idempotent: only writes if current value differs from declared value
+# Backup: current values are saved before changes for rollback
+#
+# Minimum macOS version tested: 13.0 (Ventura)
+
+# ── Dock ─────────────────────────────────────────────
+com.apple.dock|autohide|bool|true
+com.apple.dock|autohide-delay|float|0
+com.apple.dock|autohide-time-modifier|float|0.5
+com.apple.dock|show-recents|bool|false
+com.apple.dock|tilesize|int|48
+com.apple.dock|mineffect|string|scale
+com.apple.dock|orientation|string|left
+com.apple.dock|launchanim|bool|false
+com.apple.dock|mru-spaces|bool|false
+
+# ── Finder ───────────────────────────────────────────
+com.apple.finder|AppleShowAllExtensions|bool|true
+com.apple.finder|ShowPathbar|bool|true
+com.apple.finder|ShowStatusBar|bool|true
+com.apple.finder|_FXShowPosixPathInTitle|bool|true
+com.apple.finder|FXDefaultSearchScope|string|SCcf
+com.apple.finder|FXEnableExtensionChangeWarning|bool|false
+com.apple.finder|AppleShowAllFiles|bool|true
+
+# ── Keyboard ─────────────────────────────────────────
+NSGlobalDomain|ApplePressAndHoldEnabled|bool|false
+NSGlobalDomain|KeyRepeat|int|2
+NSGlobalDomain|InitialKeyRepeat|int|15
+
+# ── Trackpad ─────────────────────────────────────────
+com.apple.driver.AppleBluetoothMultitouch.trackpad|Clicking|bool|true
+com.apple.driver.AppleBluetoothMultitouch.trackpad|TrackpadThreeFingerDrag|bool|true
+com.apple.AppleMultitouchTrackpad|Clicking|bool|true
+com.apple.AppleMultitouchTrackpad|TrackpadThreeFingerDrag|bool|true
+
+# ── Screenshots ──────────────────────────────────────
+com.apple.screencapture|location|string|~/Screenshots
+com.apple.screencapture|type|string|png
+com.apple.screencapture|disable-shadow|bool|true
+
+# ── Security ─────────────────────────────────────────
+com.apple.screensaver|askForPassword|int|1
+com.apple.screensaver|askForPasswordDelay|int|0
+
+# ── Misc ─────────────────────────────────────────────
+NSGlobalDomain|AppleShowScrollBars|string|Always
+NSGlobalDomain|NSAutomaticSpellingCorrectionEnabled|bool|false
+NSGlobalDomain|NSAutomaticCapitalizationEnabled|bool|false
+NSGlobalDomain|NSAutomaticDashSubstitutionEnabled|bool|false
+NSGlobalDomain|NSAutomaticQuoteSubstitutionEnabled|bool|false
+NSGlobalDomain|NSAutomaticPeriodSubstitutionEnabled|bool|false

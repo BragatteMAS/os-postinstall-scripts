@@ -15,7 +15,10 @@ os-postinstall-scripts/
 │   │   ├── packages.sh       # Data-driven package loading from txt files
 │   │   ├── progress.sh       # Step counter and DRY_RUN banner
 │   │   ├── interactive.sh    # User prompts and menu helpers
-│   │   └── dotfiles.sh       # Symlink manager with backup system
+│   │   ├── dotfiles.sh       # Symlink manager with backup system
+│   │   ├── defaults.sh       # macOS system defaults manager
+│   │   ├── hooks.sh          # Post-install hook runner
+│   │   └── state.sh          # Package state tracking, drift detection
 │   ├── install/               # Tool-specific installers (cross-platform)
 │   │   ├── ai-tools.sh       # AI CLI tools (Claude, Gemini, Codex, Ollama)
 │   │   ├── rust-cli.sh       # Rust CLI tools via cargo-binstall
@@ -55,8 +58,13 @@ os-postinstall-scripts/
 │   │   ├── apt-post.txt, snap-post.txt, flatpak-post.txt, brew-cask.txt
 │   │   └── profiles/         # Profile composition files
 │   │       ├── minimal.txt   # References: apt
-│   │       ├── developer.txt # References: apt, cargo, npm, brew
-│   │       └── full.txt      # References: all package lists
+│   │       ├── developer.txt # References: apt, cargo, npm, brew, macos-defaults
+│   │       └── full.txt      # References: all package lists + macos-defaults
+│   ├── defaults/              # macOS system defaults (pipe-delimited)
+│   │   └── macos-defaults.txt # domain|key|type|value entries
+│   ├── hooks/                 # Post-install hook scripts (sorted execution)
+│   │   ├── 90-macos-restart-dock.sh
+│   │   └── 91-macos-restart-finder.sh
 │   └── dotfiles/              # Dotfiles source (symlinked to $HOME)
 │       ├── zsh/              # zshrc, plugins.sh, functions.sh
 │       ├── bash/             # bashrc
@@ -127,6 +135,14 @@ os-postinstall-scripts/
 - Purpose: Source files symlinked to $HOME by dotfiles.sh
 - Pattern: Organized by tool (zsh/, git/, shared/, starship/)
 
+**data/defaults/:**
+- Purpose: Declarative macOS system preferences (pipe-delimited)
+- Pattern: Loaded by `load_defaults_file()` from defaults.sh
+
+**data/hooks/:**
+- Purpose: Post-install hook scripts executed after installation
+- Pattern: Sorted by filename (numeric prefix), platform-filtered by naming convention
+
 ## Key File Locations
 
 **Entry Points:**
@@ -138,6 +154,9 @@ os-postinstall-scripts/
 - `src/core/packages.sh`: Data-driven package loading
 - `src/core/platform.sh`: OS detection (detect_os, detect_distro, detect_arch)
 - `src/core/dotfiles.sh`: Symlink manager with backup
+- `src/core/defaults.sh`: macOS system defaults with backup/restore
+- `src/core/hooks.sh`: Post-install hook runner with platform filtering
+- `src/core/state.sh`: Package state tracking and drift detection
 
 **Configuration:**
 - `config.sh`: User-facing configuration options

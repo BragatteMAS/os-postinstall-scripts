@@ -22,7 +22,7 @@
 
 **Core Modules:**
 - Location: `src/core/`
-- Contains: platform.sh, logging.sh, errors.sh, idempotent.sh, packages.sh, progress.sh, interactive.sh, dotfiles.sh
+- Contains: platform.sh, logging.sh, errors.sh, idempotent.sh, packages.sh, progress.sh, interactive.sh, dotfiles.sh, defaults.sh, hooks.sh, state.sh
 - Depends on: Nothing (foundational layer)
 - Used by: All other layers
 
@@ -37,8 +37,8 @@
 - Depends on: Core modules (packages.sh, logging.sh)
 
 **Data Layer:**
-- Location: `data/packages/`, `data/dotfiles/`
-- Contains: Package lists (txt), dotfiles (shell configs, git config, starship)
+- Location: `data/packages/`, `data/dotfiles/`, `data/defaults/`, `data/hooks/`
+- Contains: Package lists (txt), dotfiles (shell configs, git config, starship), macOS defaults, post-install hooks
 - Depends on: Nothing (pure data)
 
 ## Data Flow

@@ -1,0 +1,14 @@
+# Test fixture: malformed defaults file
+
+# Missing value field (only 3 columns)
+com.test.app|boolKey|bool
+
+# Unknown type
+com.test.app|key2|badtype|value
+
+# Valid line (should still be loaded)
+com.test.app|goodKey|string|works
+
+# Empty fields
+||string|value
+com.test.app||int|5

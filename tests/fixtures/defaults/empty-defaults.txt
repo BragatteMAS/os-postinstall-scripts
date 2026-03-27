@@ -1,0 +1,5 @@
+# Test fixture: empty defaults file (only comments)
+# This file has no actual default entries
+#
+# Just comments and blank lines
+

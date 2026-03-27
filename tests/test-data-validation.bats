@@ -7,6 +7,7 @@ load 'lib/bats-assert/load'
 setup() {
     PROFILES_DIR="${BATS_TEST_DIRNAME}/../data/packages/profiles"
     PACKAGES_DIR="${BATS_TEST_DIRNAME}/../data/packages"
+    DEFAULTS_DIR="${BATS_TEST_DIRNAME}/../data/defaults"
 }
 
 # =========================================================
@@ -28,8 +29,9 @@ setup() {
         while IFS= read -r line || [[ -n "$line" ]]; do
             line="${line#"${line%%[![:space:]]*}"}"
             [[ -z "$line" || "$line" == \#* ]] && continue
-            [ -f "${PACKAGES_DIR}/${line}" ] || \
-                fail "Profile $(basename "$profile") references '${line}' but ${PACKAGES_DIR}/${line} does not exist"
+            # Check in packages/ first, then defaults/ for cross-directory references
+            [ -f "${PACKAGES_DIR}/${line}" ] || [ -f "${DEFAULTS_DIR}/${line}" ] || \
+                fail "Profile $(basename "$profile") references '${line}' but file not found in packages/ or defaults/"
         done < "$profile"
     done
 }
