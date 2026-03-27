@@ -3,29 +3,48 @@
 # One package per line, comments start with #
 
 # Terminal
+ghostty
 iterm2
 warp
 
-# Editors
+# Editors & IDEs
 visual-studio-code
+cursor
+positron
+rstudio
 
 # Browsers
 firefox
 brave-browser
+google-chrome
 
 # Communication
 slack
 zoom
 discord
 
+# AI
+claude
+chatgpt
+
 # Productivity
 obsidian
 notion
+spotify
+google-drive
 
 # Development
 docker
+docker-desktop
 github
+responsively
+cmux
 
-# Utilities
+# Utilities - Window & Menu Bar
 rectangle
 raycast
+hiddenbar
+caffeine
+clop
+maccy
+appcleaner
