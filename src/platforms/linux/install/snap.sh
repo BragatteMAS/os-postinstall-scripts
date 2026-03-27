@@ -35,6 +35,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../../core/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # Snap Helper Functions
 #######################################
@@ -82,6 +87,7 @@ snap_install() {
         else
             log_ok "Installed: $pkg"
         fi
+        save_package_state "snap" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_warn "Package not found or install failed: $pkg"

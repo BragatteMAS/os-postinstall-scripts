@@ -35,6 +35,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../../core/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # APT Helper Functions
 #######################################
@@ -86,6 +91,7 @@ apt_hardened_install() {
 
     if retry_with_backoff "${apt_cmd[@]}"; then
         log_ok "Installed: $pkg"
+        save_package_state "apt" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_warn "Package not found or install failed: $pkg"

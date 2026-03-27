@@ -35,6 +35,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../../core/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # Flatpak Helper Functions
 #######################################
@@ -87,6 +92,7 @@ flatpak_install() {
 
     if retry_with_backoff flatpak install flathub "$app_id" -y --noninteractive; then
         log_ok "Installed: $app_id"
+        save_package_state "flatpak" "$app_id" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_warn "Package not found or install failed: $app_id"

@@ -35,6 +35,11 @@ source "${SCRIPT_DIR}/../../../core/packages.sh" || {
     exit 1
 }
 
+source "${SCRIPT_DIR}/../../../core/state.sh" || {
+    log_error "Failed to load state.sh"
+    exit 1
+}
+
 #######################################
 # Verify Homebrew is available
 #######################################
@@ -79,6 +84,7 @@ _brew_cask_install() {
     log_info "Installing: $cask"
     if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install --cask "$cask" 2>/dev/null; then
         log_ok "Installed: $cask"
+        save_package_state "brew-cask" "$cask" "${PROFILE_NAME:-unknown}"
         return 0
     else
         log_error "Failed to install: $cask"

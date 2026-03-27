@@ -171,6 +171,9 @@ bash os-postinstall-scripts/terminal-setup.sh                # install everythin
 - **Error resilience** -- No `set -e`; failures are tracked and reported at the end, never halt the run
 - **Modern CLI tools** -- Replaces cat/ls/find/grep with bat/eza/fd/ripgrep via Cargo or Homebrew
 - **AI tools integration** -- Claude Code, Codex, Gemini CLI, Ollama, and MCP servers
+- **macOS system defaults** -- Declarative Dock, Finder, keyboard, trackpad preferences with backup/restore
+- **Post-install hooks** -- Extensible hook scripts for custom post-install actions (platform-filtered)
+- **Drift detection** -- Tracks installed packages and warns when packages are removed from lists
 
 <div align="center">
 
@@ -320,7 +323,7 @@ os-postinstall-scripts/
 ├── setup.ps1                   # PowerShell entry point (Windows)
 ├── config.sh                   # User configuration and paths
 ├── src/
-│   ├── core/                   # Shared utilities (8 modules)
+│   ├── core/                   # Shared utilities (11 modules)
 │   │   ├── logging.sh          #   Color output, log levels
 │   │   ├── platform.sh         #   OS/arch detection, verification
 │   │   ├── errors.sh           #   Failure tracking, retry, cleanup
@@ -328,14 +331,17 @@ os-postinstall-scripts/
 │   │   ├── idempotent.sh       #   Safe-repeat checks, PATH dedup
 │   │   ├── dotfiles.sh         #   Symlink manager, backup/restore
 │   │   ├── packages.sh         #   Package file loader
-│   │   └── interactive.sh      #   Category menus, user prompts
+│   │   ├── interactive.sh      #   Category menus, user prompts
+│   │   ├── defaults.sh         #   macOS system defaults manager
+│   │   ├── hooks.sh            #   Post-install hook runner
+│   │   └── state.sh            #   Package state tracking, drift detection
 │   ├── platforms/
 │   │   ├── linux/
 │   │   │   ├── main.sh         #   Linux orchestrator
 │   │   │   └── install/        #   apt.sh, flatpak.sh, snap.sh, cargo.sh
 │   │   ├── macos/
 │   │   │   ├── main.sh         #   macOS orchestrator
-│   │   │   └── install/        #   homebrew.sh, brew.sh, brew-cask.sh
+│   │   │   └── install/        #   homebrew.sh, brew.sh, brew-cask.sh, defaults.sh
 │   │   └── windows/
 │   │       ├── main.ps1        #   Windows orchestrator
 │   │       ├── core/           #   logging.psm1, errors.psm1, packages.psm1
@@ -355,6 +361,11 @@ os-postinstall-scripts/
 │   │   ├── cargo.txt           #   30 crates
 │   │   ├── winget.txt          #   36 packages
 │   │   └── ...                 #   12 files total
+│   ├── defaults/               # macOS system defaults (pipe-delimited)
+│   │   └── macos-defaults.txt  #   Dock, Finder, Keyboard, Trackpad, etc.
+│   ├── hooks/                  # Post-install hook scripts
+│   │   ├── 90-macos-restart-dock.sh
+│   │   └── 91-macos-restart-finder.sh
 │   └── dotfiles/               # Dotfile templates
 │       ├── zsh/zshrc
 │       ├── bash/bashrc
@@ -511,6 +522,9 @@ These are self-contained snapshots — the operational dotfiles live in `data/do
 |--------|-------------|
 | `dotfiles` | Install dotfiles symlinks and zsh plugins |
 | `unlink` | Remove dotfiles symlinks and restore backups |
+| `defaults` | Apply macOS system defaults from data file (macOS only) |
+| `defaults-restore` | Restore macOS defaults from backup (macOS only) |
+| `drift` | Show package drift report (detects removed packages) |
 
 **Windows flags** (PowerShell):
 

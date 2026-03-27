@@ -208,7 +208,7 @@ install_profile() {
                     record_failure "AI tools"
                 fi
                 ;;
-            brew.txt|brew-cask.txt)
+            brew.txt|brew-cask.txt|macos-defaults.txt)
                 # macOS-only - skip silently on Linux
                 log_debug "Skipping $pkg_file (macOS only)"
                 ;;
@@ -221,6 +221,12 @@ install_profile() {
                 ;;
         esac
     done < "$profile_file"
+
+    # Run post-install hooks
+    source "${LINUX_DIR}/../../core/hooks.sh" 2>/dev/null || true
+    if type run_hooks &>/dev/null; then
+        run_hooks "linux"
+    fi
 
     return $_worst_exit
 }

@@ -11,8 +11,11 @@
 #   -h, --help        Show this help message
 #
 # Actions:
-#   dotfiles - Install dotfiles symlinks and zsh plugins
-#   unlink   - Remove dotfiles symlinks and restore backups
+#   dotfiles         - Install dotfiles symlinks and zsh plugins
+#   unlink           - Remove dotfiles symlinks and restore backups
+#   defaults         - Apply macOS system defaults (macOS only)
+#   defaults-restore - Restore macOS defaults from backup
+#   drift            - Show package drift report
 #
 # Profiles: minimal, developer, full
 #
@@ -131,8 +134,11 @@ main() {
             echo "  -h, --help        Show this help message"
             echo ""
             echo "Actions:"
-            echo "  dotfiles  Install dotfiles symlinks and zsh plugins"
-            echo "  unlink    Remove dotfiles symlinks and restore backups"
+            echo "  dotfiles          Install dotfiles symlinks and zsh plugins"
+            echo "  unlink            Remove dotfiles symlinks and restore backups"
+            echo "  defaults          Apply macOS system defaults (macOS only)"
+            echo "  defaults-restore  Restore macOS defaults from backup"
+            echo "  drift             Show package drift report"
             echo ""
             echo "Profiles:"
             echo "  minimal    Essential tools only"
@@ -158,6 +164,51 @@ main() {
         unlink)
             source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             remove_dotfiles
+            exit $?
+            ;;
+        defaults)
+            detect_platform
+            if [[ "${DETECTED_OS}" != "macos" ]]; then
+                log_error "defaults action is macOS only"
+                exit 1
+            fi
+            bash "${SRC_DIR}/platforms/macos/install/defaults.sh"
+            exit $?
+            ;;
+        defaults-restore)
+            detect_platform
+            if [[ "${DETECTED_OS}" != "macos" ]]; then
+                log_error "defaults-restore action is macOS only"
+                exit 1
+            fi
+            source "${CORE_DIR}/defaults.sh"
+            local backups
+            backups=$(list_backups)
+            if [[ -z "$backups" ]]; then
+                log_error "No defaults backups found"
+                exit 1
+            fi
+            echo "Available backups:"
+            local i=1
+            local backup_files=()
+            while IFS= read -r bf; do
+                echo "  ${i}. $(basename "$bf") ($(date -r "$bf" '+%Y-%m-%d %H:%M'))"
+                backup_files+=("$bf")
+                i=$((i + 1))
+            done <<< "$backups"
+            echo ""
+            read -rp "Select backup to restore (1-$((i-1))): " choice
+            if [[ "$choice" -ge 1 && "$choice" -lt "$i" ]] 2>/dev/null; then
+                restore_defaults_from_backup "${backup_files[$((choice-1))]}"
+                exit $?
+            else
+                log_error "Invalid selection"
+                exit 1
+            fi
+            ;;
+        drift)
+            source "${CORE_DIR}/state.sh"
+            show_drift_report
             exit $?
             ;;
     esac

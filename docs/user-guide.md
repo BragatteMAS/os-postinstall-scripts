@@ -8,9 +8,9 @@ Complete guide for using OS Post-Install Scripts to set up your development envi
 2. [Quick Start](#quick-start)
 3. [Installation Methods](#installation-methods)
 4. [Using Profiles](#using-profiles)
-5. [Script Components](#script-components)
-6. [Customization](#customization)
-7. [Advanced Usage](#advanced-usage)
+5. [macOS System Defaults](#macos-system-defaults)
+6. [Drift Detection](#drift-detection)
+7. [Post-Install Hooks](#post-install-hooks)
 8. [Maintenance](#maintenance)
 
 ## Overview
@@ -114,6 +114,45 @@ For granular control:
 ## Using Profiles
 
 For detailed information about each installation profile, see the [Installation Profiles Guide](installation-profiles.md).
+
+## macOS System Defaults
+
+Apply declarative macOS preferences (Dock, Finder, keyboard, trackpad, screenshots, security):
+
+```bash
+# Preview what would change
+./setup.sh --dry-run defaults
+
+# Apply system defaults
+./setup.sh defaults
+
+# Restore previous values from backup
+./setup.sh defaults-restore
+```
+
+Defaults are defined in `data/defaults/macos-defaults.txt` (pipe-delimited: `domain|key|type|value`). Edit this file to customize which preferences are applied.
+
+Backups are saved automatically to `~/.config/os-postinstall/defaults-backup-*.txt` before applying changes.
+
+## Drift Detection
+
+Track which packages were installed by this tool and detect when packages are removed from data files:
+
+```bash
+./setup.sh drift
+```
+
+This compares the current package lists (`data/packages/*.txt`) against the state file (`~/.config/os-postinstall/package-state.txt`). Drift detection is **warn-only** -- it never auto-removes packages.
+
+## Post-Install Hooks
+
+Custom shell scripts in `data/hooks/` run automatically after installation. Hooks are platform-filtered by naming convention:
+
+- `*-macos-*` -- runs only on macOS
+- `*-linux-*` -- runs only on Linux
+- No platform marker -- runs on all platforms
+
+Hooks execute in sorted order (use numeric prefixes like `90-`, `91-`).
 
 ## Maintenance
 
