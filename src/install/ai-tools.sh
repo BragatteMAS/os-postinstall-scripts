@@ -66,7 +66,21 @@ install_ai_tool() {
 
     case "$prefix" in
         npm)
-            # Check Node.js availability first
+            # In dry-run, node may not be installed yet (dev-env.sh also skipped) — just report
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_info "[DRY_RUN] Would npm install -g: $tool"
+                return 0
+            fi
+
+            # Try loading fnm if node not in PATH (dev-env.sh runs in a subprocess whose PATH dies on exit)
+            if ! command -v node &>/dev/null; then
+                if [[ -d "${HOME}/.local/share/fnm" ]]; then
+                    export PATH="${HOME}/.local/share/fnm:${PATH}"
+                    eval "$(fnm env 2>/dev/null)" || true
+                fi
+            fi
+
+            # Check Node.js availability
             if ! command -v node &>/dev/null; then
                 log_warn "Node.js not found, skipping npm tool: $tool"
                 return 1
@@ -79,11 +93,6 @@ install_ai_tool() {
             # Check if already installed globally
             if npm list -g "$tool" &>/dev/null; then
                 log_debug "Already installed: $tool"
-                return 0
-            fi
-
-            if [[ "${DRY_RUN:-}" == "true" ]]; then
-                log_info "[DRY_RUN] Would npm install -g: $tool"
                 return 0
             fi
 
