@@ -339,10 +339,22 @@ Blank lines and lines starting with `#` are ignored by the package loader.
 This project uses structured development practices:
 
 - **GSD (Get Shit Done) workflow** -- phased development with research, planning, and execution stages
-- **Architecture Decision Records (ADRs)** -- 9 ADRs document key architectural choices (`.planning/adrs/`)
+- **Architecture Decision Records (ADRs)** -- key architectural choices documented inline
 - **Conventional Commits** -- all 430+ commits follow the conventional format
 - **Claude Code as development co-pilot** -- AI-assisted development across all 8 phases
 - **Data-driven architecture** -- package lists in text files, not hardcoded arrays
+
+## Project Policies
+
+### NO CI/CD Automation
+
+This project does **not** use CI/CD automation. Tests, lint checks, and validations are run **manually** by contributors before submitting PRs. There are no GitHub Actions workflows, no pre-commit hooks, and no automated pipelines.
+
+**Rationale**: explicit owner decision to keep the project simple, transparent, and free of infrastructure overhead. Contributors are responsible for running locally before opening a PR:
+
+- `tools/lint.sh` (ShellCheck)
+- `bats tests/`
+- `bash tools/validate-profiles.sh`
 
 ## Reporting Issues
 
