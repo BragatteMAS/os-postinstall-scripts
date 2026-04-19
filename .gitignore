@@ -55,3 +55,6 @@ tests/results/*.log
 # Project documentation (NOT ignored - these are versionable)
 !CHANGELOG.md
 !README.md
+
+# Internal GSD workflow state (not for external consumers)
+.planning/
