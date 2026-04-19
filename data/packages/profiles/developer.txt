@@ -15,7 +15,6 @@ winget.txt
 # Cross-platform
 cargo.txt
 npm.txt
-ai-tools.txt
 
 # macOS defaults (skipped on Linux/Windows)
 macos-defaults.txt
