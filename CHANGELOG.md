@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.2] - 2026-04-18
+
+### Fixed
+- `developer` profile no longer ships AI/MCP tooling — removed `ai-tools.txt`
+  from `data/packages/profiles/developer.txt`. Restores the contract declared
+  in `config.sh:12` ("developer: System + development tools (cargo, npm)").
+  Regression introduced by commit `b1af359` (Feb 2026).
+
+### Added
+- `tools/validate-profiles.sh` — manual validator that catches profile
+  contamination regressions. Manual only per project policy (no CI/CD).
+
+### Changed
+- **History sanitization** (2026-04-18): absolute personal paths
+  (`~/...`) removed from historical commits via
+  `git filter-repo`. Paths replaced with `$PROJECT_ROOT` for the repo root
+  and `~/` for other home references. The personal email
+  `marcelobragatte@gmail.com` is public (GitHub profile) and was
+  intentionally kept.
+- **`.planning/` no longer tracked**: internal GSD workflow state moved to
+  `.gitignore`. Previously-tracked files removed from the index.
+
+### Notes for existing clones
+If you cloned before 2026-04-18, run:
+
+    git fetch origin && git reset --hard origin/main
+
+to sync with the rewritten history. Forks are unaffected — fork owners must
+rebase independently.
+
 ## [4.1.0] - 2026-02-22
 
 ### Added
