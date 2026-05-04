@@ -35,33 +35,37 @@ select_profile_interactive() {
     local choice profile confirm pkg_count
     local p
 
+    # NOTE: All UI output is redirected to stderr (>&2) because callers use
+    # command substitution: profile=$(select_profile_interactive ...).
+    # Only the final selected profile name is echoed to stdout — that is the
+    # function's return value. Without this, the menu would be swallowed by $().
     while true; do
-        echo ""
-        echo "Choose installation profile:"
-        echo ""
+        echo "" >&2
+        echo "Choose installation profile:" >&2
+        echo "" >&2
 
         for p in minimal developer full; do
             pkg_count=$(count_packages_in_profile "$p" "$platform" 2>/dev/null || echo "?")
             case "$p" in
                 minimal)
-                    printf "  1) %-12s ~5 min,  %s packages\n" "minimal" "$pkg_count"
-                    echo   "                Modern Rust CLI baseline only (bat, eza, rg, fd, zoxide, delta + 14 more)"
+                    printf "  1) %-12s ~5 min,  %s packages\n" "minimal" "$pkg_count" >&2
+                    echo   "                Modern Rust CLI baseline only (bat, eza, rg, fd, zoxide, delta + 14 more)" >&2
                     ;;
                 developer)
-                    printf "  2) %-12s ~15 min, %s packages  (default)\n" "developer" "$pkg_count"
-                    echo   "                Neutral dev env: editors, Docker/OrbStack, browsers (Firefox+Chromium),"
-                    echo   "                Rust dev tools, GUI apps defensible to most devs"
+                    printf "  2) %-12s ~15 min, %s packages  (default)\n" "developer" "$pkg_count" >&2
+                    echo   "                Neutral dev env: editors, Docker/OrbStack, browsers (Firefox+Chromium)," >&2
+                    echo   "                Rust dev tools, GUI apps defensible to most devs" >&2
                     ;;
                 full)
-                    printf "  3) %-12s ~30 min, %s packages\n" "full" "$pkg_count"
-                    echo   "                developer + curator's pick (Chrome, Zen, Cursor, Claude, ChatGPT,"
-                    echo   "                AI/MCP tools, design apps) — opinionated"
+                    printf "  3) %-12s ~30 min, %s packages\n" "full" "$pkg_count" >&2
+                    echo   "                developer + curator's pick (Chrome, Zen, Cursor, Claude, ChatGPT," >&2
+                    echo   "                AI/MCP tools, design apps) — opinionated" >&2
                     ;;
             esac
-            echo ""
+            echo "" >&2
         done
-        echo "  c) cancel and exit"
-        echo ""
+        echo "  c) cancel and exit" >&2
+        echo "" >&2
 
         read -r -p "Choice [1/2/3/c, default=2]: " choice
         choice="${choice:-2}"
@@ -72,20 +76,20 @@ select_profile_interactive() {
             3|full)                      profile="full" ;;
             c|C|cancel|q|Q|quit|exit|x|X) return 1 ;;
             *)
-                echo ""
-                echo "Invalid choice: '${choice}' — try 1, 2, 3, or c."
+                echo "" >&2
+                echo "Invalid choice: '${choice}' — try 1, 2, 3, or c." >&2
                 continue
                 ;;
         esac
 
         # Confirmation step (with back option)
         pkg_count=$(count_packages_in_profile "$profile" "$platform" 2>/dev/null || echo "?")
-        echo ""
-        printf "Selected: %s (~%s packages on %s)\n" "$profile" "$pkg_count" "$platform"
+        echo "" >&2
+        printf "Selected: %s (~%s packages on %s)\n" "$profile" "$pkg_count" "$platform" >&2
         if [[ "${DRY_RUN:-}" == "true" ]]; then
-            echo "Mode: DRY-RUN — no changes will be made, only preview"
+            echo "Mode: DRY-RUN — no changes will be made, only preview" >&2
         fi
-        echo ""
+        echo "" >&2
         read -r -p "Proceed? [Y/n/b=back]: " confirm
         confirm="${confirm:-Y}"
 
