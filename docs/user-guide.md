@@ -1,250 +1,214 @@
-# 📚 OS Post-Install Scripts User Guide
+# User Guide
 
-Complete guide for using OS Post-Install Scripts to set up your development environment quickly and efficiently.
+Complete reference for daily use after the first install. For getting started, see [`quick-start.md`](quick-start.md).
 
-## Table of Contents
+## Contents
 
 1. [Overview](#overview)
-2. [Quick Start](#quick-start)
-3. [Installation Methods](#installation-methods)
-4. [Using Profiles](#using-profiles)
-5. [macOS System Defaults](#macos-system-defaults)
-6. [Drift Detection](#drift-detection)
-7. [Post-Install Hooks](#post-install-hooks)
-8. [Maintenance](#maintenance)
+2. [Install methods](#install-methods)
+3. [Profiles](#profiles)
+4. [macOS system defaults](#macos-system-defaults)
+5. [Dotfiles](#dotfiles)
+6. [Drift detection](#drift-detection)
+7. [Post-install hooks](#post-install-hooks)
+8. [Customization](#customization)
+9. [Maintenance](#maintenance)
+10. [Troubleshooting](#troubleshooting)
 
 ## Overview
 
-### What is OS Post-Install Scripts?
+A cross-platform post-install toolkit that turns a fresh OS into a development environment. Two-step flow: `bootstrap.{sh,ps1}` installs prereqs, `setup.{sh,ps1}` runs the chosen profile.
 
-A comprehensive collection of scripts that automatically configure a fresh operating system installation with development tools, modern CLI utilities, and optimized shell configurations. Save hours of manual setup with our battle-tested installation scripts.
+### Key features
 
-### Key Features
+- **Two-command setup**: `./bootstrap.sh && ./setup.sh` (mirrored on Windows with `.ps1`)
+- **Profile-based**: `minimal` / `developer` / `full` driven by plain text package lists
+- **Cross-platform**: Linux (apt + flatpak + snap), macOS (Homebrew + Cask), Windows 10/11 (WinGet)
+- **Modern CLI baseline**: Rust replacements for `cat`/`ls`/`find`/`grep`/`cd`/`diff` via `data/packages.csv`
+- **Idempotent**: safe to re-run; skips already-installed packages
+- **Dry-run**: `--dry-run` previews everything without changes
+- **Backup-aware**: dotfiles backed up before any symlink
 
-1. **One-Command Setup**: Get a complete dev environment in minutes
-2. **Profile-Based Installation**: Choose pre-configured setups for your role
-3. **Cross-Platform**: Works on Linux, macOS, and Windows (WSL)
-4. **Modern Tools**: Includes Rust-powered CLI tools that replace traditional Unix utilities
-5. **Safe Operations**: Never forces package manager locks, validates inputs
-6. **Customizable**: Modular design lets you install only what you need
+### Supported platforms
 
-### What Gets Installed
+| OS | Package managers | Architectures |
+|----|------------------|---------------|
+| Ubuntu / Pop!_OS / Linux Mint (Debian-based) | APT, Snap, Flatpak, Cargo, npm | x86_64, arm64 |
+| macOS 12+ | Homebrew, Brew Cask, Cargo, npm | Intel + Apple Silicon |
+| Windows 10/11 | WinGet | x86_64 |
 
-- **Development Tools**: Git, Docker, VS Code, multiple programming languages
-- **Modern CLI**: bat (cat), eza (ls), ripgrep (grep), fd (find), and more
-- **Shell Enhancement**: Zsh with Oh My Zsh, Starship prompt, 1700+ lines of optimizations
-- **Productivity Apps**: Browsers, communication tools, media players
-- **System Utilities**: Package managers, system monitors, backup tools
+WSL2 is supported via the Linux path; native Windows via `setup.ps1`.
 
-## Quick Start
+## Install methods
 
-### Fastest Installation
-
-```bash
-# One-line install (uses developer profile)
-curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
-```
-
-### Recommended: Profile-Based Install
+### Profile-based (recommended)
 
 ```bash
-# Clone and choose your profile
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
-cd os-postinstall-scripts
-./setup.sh
+./bootstrap.sh           # one time per machine
+./setup.sh --dry-run     # preview
+./setup.sh developer     # install
 ```
 
-### Manual Control
+The profile arg is positional. Without it, the default `developer` runs.
+
+### Single sub-action (no full profile)
+
+`setup.sh` accepts named actions for partial workflows:
 
 ```bash
-# Interactive menu-driven installation
-./setup.sh
+./setup.sh dotfiles            # only symlink dotfiles
+./setup.sh unlink              # remove dotfile symlinks (restore backups)
+./setup.sh defaults            # apply macOS system defaults (macOS only)
+./setup.sh defaults-restore    # restore macOS defaults from backup
+./setup.sh drift               # detect installed-but-not-listed packages
 ```
 
-### System Requirements
+### Direct installer (advanced)
 
-- **OS**: Ubuntu 20.04+, Fedora 36+, macOS 12+, or Windows 11 (WSL2)
-- **RAM**: 4GB minimum (8GB recommended)
-- **Disk**: 10GB free space
-- **Network**: Internet connection required
-- **Permissions**: sudo/admin access
-
-## Installation Methods
-
-### Method 1: Profile-Based Installation (Recommended)
-
-Profiles are pre-configured sets of tools for specific use cases:
+For surgical use, sub-installers can be invoked directly. They source `config.sh` themselves:
 
 ```bash
-./setup.sh
+bash src/install/dev-env.sh    # mise + fnm + uv (interactive: skip what you don't want)
+bash src/install/ai-tools.sh   # Claude Code, Codex, Gemini CLI, Ollama (full profile only)
+bash src/install/uv.sh         # Just Python via uv
 ```
 
-Available profiles:
-- **minimal**: Essential system packages only
-- **developer**: Full development environment (default)
-- **full**: Everything including extra packages
+## Profiles
 
-### Method 2: Interactive Menu
+| Profile | Time | Packages (macOS) | Use when |
+|---------|------|------------------|----------|
+| `minimal` | ~5 min | ~20 | want only the Rust CLI baseline |
+| `developer` (default) | ~15 min | ~79 | want a neutral dev env defensible to most devs |
+| `full` | ~30 min | ~181 | want everything including curator's personal pick (browsers, AI editors, design apps) |
+
+Per-package details: [`installation-profiles.md`](installation-profiles.md).
+
+## macOS system defaults
+
+Declarative system preferences (Dock, Finder, keyboard, trackpad, screenshots, security) — 34 settings defined in `data/defaults/macos-defaults.txt`.
 
 ```bash
-./setup.sh
+./setup.sh --dry-run defaults    # preview
+./setup.sh defaults              # apply
+./setup.sh defaults-restore      # restore from backup
 ```
 
-Presents an interactive menu:
-1. Minimal (essential packages only)
-2. Developer (system + dev tools + AI)
-3. Full (everything)
-0. Exit
+File format is pipe-delimited:
+```
+domain|key|type|value
+NSGlobalDomain|AppleShowAllExtensions|bool|true
+```
 
-### Method 3: Individual Scripts
+Backups are saved to `~/.config/os-postinstall/defaults-backup-*.txt` before applying. Restore reads the most recent.
 
-For granular control:
+## Dotfiles
+
+Symlink-based with automatic backup before overwriting:
 
 ```bash
-# Just modern CLI tools (csv:rust-cli — 19 Rust replacements for Unix)
-./setup.sh minimal
-
-# Just Python with UV
-./src/install/uv.sh
-
-# Just development environment (mise + fnm + uv)
-./src/install/dev-env.sh
+./setup.sh dotfiles    # install symlinks (backups go to ~/.dotfiles-backup/)
+./setup.sh unlink      # restore originals from backups
 ```
 
-Rust tools live in `data/packages.csv` (Onda 5). After installation, browse
-the catalog with `h rust-cli` / `h rust-dev` / `h rust-data` / `h rust-tui` /
-`h rust-shell`. Direct lookup via `h <toolname>` (e.g. `h ast-grep`).
+Managed paths:
 
-## Using Profiles
+| Source | Target |
+|--------|--------|
+| `data/dotfiles/zsh/zshrc` | `~/.zshrc` |
+| `data/dotfiles/bash/bashrc` | `~/.bashrc` |
+| `data/dotfiles/git/gitconfig` | `~/.gitconfig` |
+| `data/dotfiles/git/gitignore` | `~/.config/git/ignore` |
+| `data/dotfiles/starship/starship.toml` | `~/.config/starship.toml` |
 
-For detailed information about each installation profile, see the [Installation Profiles Guide](installation-profiles.md).
+Git user identity (`user.name`, `user.email`) is collected interactively and stored in `~/.gitconfig.local` (sourced by the repo-managed `~/.gitconfig`), so the shared config stays generic.
 
-## macOS System Defaults
+## Drift detection
 
-Apply declarative macOS preferences (Dock, Finder, keyboard, trackpad, screenshots, security):
-
-```bash
-# Preview what would change
-./setup.sh --dry-run defaults
-
-# Apply system defaults
-./setup.sh defaults
-
-# Restore previous values from backup
-./setup.sh defaults-restore
-```
-
-Defaults are defined in `data/defaults/macos-defaults.txt` (pipe-delimited: `domain|key|type|value`). Edit this file to customize which preferences are applied.
-
-Backups are saved automatically to `~/.config/os-postinstall/defaults-backup-*.txt` before applying changes.
-
-## Drift Detection
-
-Track which packages were installed by this tool and detect when packages are removed from data files:
+Compare currently installed packages against `data/packages/*.txt` lists:
 
 ```bash
 ./setup.sh drift
 ```
 
-This compares the current package lists (`data/packages/*.txt`) against the state file (`~/.config/os-postinstall/package-state.txt`). Drift detection is **warn-only** -- it never auto-removes packages.
+Reads state from `~/.config/os-postinstall/package-state.txt`. **Warn-only** — never auto-removes anything.
 
-## Post-Install Hooks
+## Post-install hooks
 
-Custom shell scripts in `data/hooks/` run automatically after installation. Hooks are platform-filtered by naming convention:
+Custom shell scripts in `data/hooks/` run after `setup.sh` completes. Filenames control ordering and platform:
 
-- `*-macos-*` -- runs only on macOS
-- `*-linux-*` -- runs only on Linux
-- No platform marker -- runs on all platforms
+- `90-macos-restart-dock.sh` — `90-` orders execution; `-macos-` filters to macOS only
+- `91-macos-restart-finder.sh` — runs after `90-` on macOS
 
-Hooks execute in sorted order (use numeric prefixes like `90-`, `91-`).
+Naming pattern: `<NN>-<os>?-<name>.sh`. Linux markers: `-linux-`. No marker = all platforms.
+
+## Customization
+
+### Add packages without forking
+
+Edit `data/packages/<source>.txt` (one package per line, `#` for comments):
+
+```bash
+# data/packages/apt.txt
+my-custom-package
+```
+
+Then re-run `./setup.sh` (idempotent — skips already-installed).
+
+### Custom profile
+
+```bash
+# data/packages/profiles/myprofile.txt
+apt.txt
+brew.txt
+csv:rust-cli
+```
+
+Run `./setup.sh myprofile`.
+
+### EXTRA_PACKAGES / SKIP_PACKAGES (config.sh)
+
+Two arrays in `config.sh` for per-run overrides without editing package files:
+
+```bash
+EXTRA_PACKAGES=(neovim tmux) ./setup.sh
+SKIP_PACKAGES=(snapd kite) ./setup.sh
+EXTRA_PACKAGES=(neovim) SKIP_PACKAGES=(snapd) ./setup.sh
+```
+
+### Add a new dotfile to manage
+
+1. Place file in `data/dotfiles/<topic>/`
+2. Add mapping in `src/install/dotfiles-install.sh` (see `symlink_map` array)
+3. Run `./setup.sh dotfiles`
 
 ## Maintenance
 
-### Keeping Scripts Updated
+### Update the toolkit
 
 ```bash
-# Pull latest changes
 git pull
-
-# Check current version
-git describe --tags
-
-# See what's new
-cat CHANGELOG.md
+git describe --tags    # current version
+cat CHANGELOG.md       # what changed
 ```
 
-### Version Management
+### Re-run after package list changes
 
-We use semantic versioning (MAJOR.MINOR.PATCH). See our [Versioning Guide](versioning-guide.md) for:
-- When to bump version numbers
-- Pre-release versioning (alpha, beta)
-- How versions relate to features and fixes
-- Integration with roadmap planning
+After editing `data/packages/*.txt` upstream:
 
-### Contributing Updates
-
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on:
-- Creating pull requests
-- Testing your changes
-- Following code standards
-- Updating documentation
+```bash
+./setup.sh             # idempotent — installs additions, skips existing
+./setup.sh drift       # see what's now in your system that isn't listed
+```
 
 ## Troubleshooting
 
-See our comprehensive [Troubleshooting Guide](troubleshooting.md) for solutions to common issues:
-- Installation problems
-- Shell configuration issues
-- Package manager errors
-- Platform-specific problems
+- Top 5 issues: [`README.md` §Troubleshooting](../README.md#troubleshooting)
+- Full guide: [`troubleshooting.md`](troubleshooting.md)
+- 35 cataloged pitfalls: [`PITFALLS.md`](PITFALLS.md)
 
-## Additional Resources
+## Resources
 
-### Documentation
-- [Quick Start Guide](quick-start.md) - Get started fast
-- [Installation Profiles](installation-profiles.md) - Choose your setup
-- [Modern CLI Tools](modern-cli-tools.md) - Master new tools
-- [Shell Customization](shell-customization.md) - Personalize your environment
-- [Troubleshooting](troubleshooting.md) - Fix common issues
-
-### Project Information
-- **GitHub**: [github.com/BragatteMAS/os-postinstall-scripts](https://github.com/BragatteMAS/os-postinstall-scripts)
-- **Issues**: [Report bugs or request features](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-- **License**: Apache 2.0
-- **Changelog**: See [CHANGELOG.md](../CHANGELOG.md)
-
-## Getting Help
-
-1. **Check Documentation First**
-   - This guide and linked documentation
-   - README.md for quick overview
-   - Troubleshooting guide for issues
-
-2. **Search Existing Issues**
-   - [GitHub Issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
-   - Someone may have already solved your problem
-
-3. **Create New Issue**
-   - Use issue templates
-   - Include system information
-   - Provide error messages
-   - Describe what you expected vs what happened
-
-4. **Community**
-   - Star the repo if you find it useful
-   - Share with others who might benefit
-   - Contribute improvements back
-
-## Conclusion
-
-OS Post-Install Scripts transforms the tedious task of setting up a new development environment into a simple, automated process. Whether you're:
-
-- Setting up a new machine
-- Standardizing team environments
-- Learning modern CLI tools
-- Exploring different development stacks
-
-These scripts save you hours of manual configuration while ensuring consistency and following best practices.
-
-**Remember**: Start with a profile that fits your needs, and customize from there. The scripts are modular and safe to run multiple times.
-
-Happy coding! 🚀
+- GitHub: [github.com/BragatteMAS/os-postinstall-scripts](https://github.com/BragatteMAS/os-postinstall-scripts)
+- Issues / feature requests: [github.com/BragatteMAS/os-postinstall-scripts/issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)
+- License: Apache 2.0 — [`LICENSE`](../LICENSE)
+- Changelog: [`CHANGELOG.md`](../CHANGELOG.md)

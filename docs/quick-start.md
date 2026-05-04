@@ -1,172 +1,96 @@
-# 🚀 Quick Start Guide
+# Quick Start
 
-Welcome to OS Post-Install Scripts! This guide will get you up and running in minutes.
+> The README has the 5-step install. This guide adds: **how to choose a profile**, **what runs under the hood**, and **what to do after install**.
 
-## 🎯 Choose Your Path
-
-### Option 1: Profile-Based Installation (NEW! ⭐)
-
-Perfect if you want a customized setup based on your role:
+## Two-step install (any OS)
 
 ```bash
-# Clone the repository
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
-cd os-postinstall-scripts
-
-# Run profile-based setup
-./setup.sh
+git clone https://github.com/BragatteMAS/os-postinstall-scripts && cd os-postinstall-scripts
+./bootstrap.sh                # macOS/Linux: prereqs (Homebrew, Bash 4+, build-essential)
+./setup.sh --dry-run          # preview
+./setup.sh                    # install (default: developer)
 ```
 
-Available profiles:
-- **minimal** - Essential system packages only
-- **developer** - Full development environment (default)
-- **full** - Everything including extra packages
+Windows uses `bootstrap.ps1` + `setup.ps1` — see [README §Quick Start](../README.md#quick-start).
 
-### Option 2: Traditional Interactive Setup
+## Choosing a profile
 
-For maximum control over what gets installed:
+| If you... | Pick |
+|-----------|------|
+| Want only the modern Rust CLI baseline (`bat`, `eza`, `rg`, `fd`, `zoxide`, `delta` + 14 more) | `minimal` (~5 min, ~20 packages) |
+| Want a neutral dev environment — VS Code, Sublime, Docker/OrbStack, browsers (Firefox/Chromium), Rust dev tools, GUI apps defensible to most devs | `developer` (~15 min, ~79 packages on macOS) |
+| Want everything including the curator's personal pick — Chrome/Zen/Brave, Cursor, Claude Desktop, ChatGPT, Affinity, CapCut, AI/MCP tools | `full` (~30 min, ~181 packages on macOS) |
 
-```bash
-# Clone and run interactive setup
-git clone https://github.com/BragatteMAS/os-postinstall-scripts
-cd os-postinstall-scripts
-./setup.sh
-```
-
-You'll see a menu like this:
-```
-Sistema Detectado:
-  OS: linux
-  Distro: ubuntu 22.04
-  Arch: x86_64
-
-Opções de Instalação:
-  1) 🦀 Instalar apenas ferramentas Rust
-  2) 📦 Instalar ferramentas do sistema (apt/brew/etc)
-  3) 🔧 Configuração completa (Rust + Sistema + Configs)
-  4) 🐍 Instalar Python com UV
-  5) 🐳 Instalar Docker/Podman
-  6) 📁 Sincronizar dotfiles
-  7) 🏃 Setup rápido (essenciais)
-  8) 🔍 Verificar ferramentas instaladas
-  9) ❌ Sair
-```
-
-### Option 3: One-Line Install
-
-The fastest way if you trust us:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/main/setup.sh | bash
-```
-
-## 📋 System Requirements
-
-### Supported Operating Systems
-- ✅ **Ubuntu** 20.04, 22.04, 24.04
-- ✅ **Pop!_OS** 20.04+
-- ✅ **Linux Mint** 20+
-- ✅ **Fedora** 36+
-- ✅ **Arch Linux** (latest)
-- ✅ **macOS** 12+ (Monterey and newer)
-- ✅ **Windows 11** (via PowerShell)
-- ✅ **WSL2** (Windows Subsystem for Linux)
-
-### Minimum Requirements
-- **RAM**: 4GB (8GB recommended)
-- **Disk Space**: 10GB free
-- **Internet**: Required for downloads
-- **Permissions**: sudo/admin access
-
-## 🎯 Common Use Cases
-
-### "I just want modern CLI tools"
 ```bash
 ./setup.sh minimal
-```
-
-The `minimal` profile ships the Rust CLI baseline (`csv:rust-cli` in
-`data/packages.csv`):
-- `bat` (better cat)
-- `eza` (better ls)
-- `fd` (better find)
-- `ripgrep` (better grep)
-- `zoxide` (better cd)
-- 14 more (run `h rust-cli` after install for the full list)
-
-Need more categories? `./setup.sh developer` adds `rust-dev` and `rust-data`;
-`./setup.sh full` adds `rust-tui` and `rust-shell` on top.
-
-### "I need a full dev environment ASAP"
-```bash
-./setup.sh minimal
-```
-
-### "I'm setting up multiple machines"
-```bash
-# Use the same profile on all machines
-./setup.sh --dry-run developer  # Preview first
-./setup.sh developer            # Then install
-```
-
-### "I want everything"
-```bash
+./setup.sh developer    # default if no arg
 ./setup.sh full
 ```
 
-## ⚡ What Happens During Installation?
+Per-package details: [`installation-profiles.md`](installation-profiles.md). The package count shown in your completion summary is computed from the actual lists in `data/packages/`.
 
-1. **System Detection** - We identify your OS and architecture
-2. **Package Updates** - System packages are updated (safely!)
-3. **Tool Installation** - Selected tools are installed
-4. **Configuration** - Shell and tool configs are applied
-5. **Verification** - Installation is tested
+## What `bootstrap` and `setup` actually do
 
-## 🛡️ Safety Features
+**`bootstrap.{sh,ps1}`** — runs once per machine. Verifies and installs:
 
-- **No forced operations** - We wait for package managers, never force
-- **Backup creation** - Your existing configs are backed up
-- **Idempotent** - Safe to run multiple times
-- **Validation** - All inputs are sanitized
-- **Dry run mode** - Preview changes before applying
+- macOS: Xcode CLT, Homebrew, Bash 4+ (system Bash is 3.2 — too old), git submodules
+- Linux (Debian/Ubuntu/Pop!_OS/Mint): git, curl, build-essential, ca-certificates via apt
+- Windows: winget verification, Git via winget
 
-## 🆘 Troubleshooting
+After bootstrap, all the tooling `setup` expects is present.
 
-### "Installation seems stuck"
-The script might be waiting for a package manager lock. This is normal - we wait safely instead of forcing.
+**`setup.{sh,ps1}`** — driven by `data/packages/profiles/<profile>.txt`, dispatches to:
 
-### "Permission denied"
-Make sure to run with proper permissions:
+1. Platform-specific installers (apt / brew / brew-cask / winget / flatpak / snap)
+2. Cross-platform Rust CLI tools via `data/packages.csv` (`csv:rust-cli`, `csv:rust-dev`, etc.)
+3. AI tools (only in `full`): Claude Code, Codex, Gemini CLI, Ollama
+4. Dev environment: mise + fnm + uv (interactive: skip what you don't want)
+5. macOS system defaults (only on macOS, only `developer`/`full`)
+6. Post-install hooks in `data/hooks/`
+
+Idempotent at every step — re-running skips already-installed packages.
+
+## After install
+
 ```bash
-chmod +x setup.sh
-./setup.sh
+exec zsh -l         # reload shell to pick up aliases/functions
+h                   # show help reference (alias defined by dotfiles)
+h rust-cli          # list installed Rust CLI tools
+h ai                # list installed AI tools (full profile only)
+mcpl list           # list configured MCP servers (full profile only)
 ```
 
-### "Command not found after installation"
-Reload your shell configuration:
+The first `exec zsh -l` is required to load aliases configured by the dotfiles step.
+
+## Common follow-ups
+
+| Task | Command |
+|------|---------|
+| Re-run safely (idempotent) | `./setup.sh` (any profile) |
+| Apply only the dotfiles | `./setup.sh dotfiles` |
+| Roll back dotfile symlinks | `./setup.sh unlink` |
+| Apply macOS system defaults only | `./setup.sh defaults` (macOS) |
+| Restore macOS defaults from backup | `./setup.sh defaults-restore` (macOS) |
+| Detect packages no longer in lists | `./setup.sh drift` |
+
+## Need only a nice terminal (no full setup)?
+
+**macOS / Linux:**
 ```bash
-source ~/.bashrc  # or ~/.zshrc
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+bash os-postinstall-scripts/terminal-setup.sh --interactive
 ```
 
-### "I want to undo changes"
-Check for backup files:
-```bash
-ls ~/.*.bak  # Your original configs
+**Windows:**
+```powershell
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+powershell -ExecutionPolicy Bypass -File os-postinstall-scripts\examples\terminal-setup.ps1
 ```
 
-## 📖 Next Steps
+Installs Nerd Font + modern CLI tools (bat/eza/fd/rg/zoxide/starship) + zsh plugins + aliases (Bash/zsh on macOS/Linux; PowerShell + WinGet on Windows). ~3 min. No system defaults, no GUI apps, no AI tools.
 
-- 📚 Read the full [User Guide](user-guide.md)
-- 🛠️ Learn about [Modern CLI Tools](modern-cli-tools.md)
-- 🤝 [Contribute](../CONTRIBUTING.md) to the project
+## Stuck?
 
-## 💡 Pro Tips
-
-1. **Start minimal** - You can always add more tools later
-2. **Use profiles** - They're tested configurations that work well together
-3. **Read the output** - The script explains what it's doing
-4. **Check versions** - Run with `--help` to see all options
-
----
-
-Need help? Open an issue on [GitHub](https://github.com/BragatteMAS/os-postinstall-scripts/issues)!
+- Common issues: [`troubleshooting.md`](troubleshooting.md)
+- 35 cataloged pitfalls with workarounds: [`PITFALLS.md`](PITFALLS.md)
+- Open an issue: [github.com/BragatteMAS/os-postinstall-scripts/issues](https://github.com/BragatteMAS/os-postinstall-scripts/issues)

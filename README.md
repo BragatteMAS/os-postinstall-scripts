@@ -46,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1 -Profile developer
 
 > Don't have Git yet? `winget install Git.Git`, restart PowerShell, then clone.
 
-> Just want a nice terminal (modern CLI tools, prompt, aliases) without the full setup? See `terminal-setup.sh`.
+> Just want a nice terminal (modern CLI tools, prompt, aliases) without the full setup? See `terminal-setup.sh` (macOS/Linux) or `examples/terminal-setup.ps1` (Windows).
 
 ## Profiles
 
