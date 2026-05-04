@@ -126,13 +126,23 @@ declare -a FAILED_ITEMS=()
 
 log_banner "Homebrew Formulae Installer"
 
+# Determine which formula file to use — mirror brew-cask.sh's two-pass dispatch.
+# Without this, every wave (base / developer / full) was loading brew.txt and
+# the developer/full formulae (mise, jq, gh, postgresql@17, ...) silently
+# never installed.
+pkg_file="brew.txt"
+case "${1:-}" in
+    --developer) pkg_file="brew-developer.txt" ;;
+    --full)      pkg_file="brew-full.txt" ;;
+esac
+
 # Load packages from data file
-if ! load_packages "brew.txt"; then
-    log_error "Failed to load brew packages from data/packages/brew.txt"
+if ! load_packages "$pkg_file"; then
+    log_error "Failed to load brew packages from data/packages/$pkg_file"
     exit 1
 fi
 
-log_info "Loaded ${#PACKAGES[@]} formulae from brew.txt"
+log_info "Loaded ${#PACKAGES[@]} formulae from $pkg_file"
 
 # Install formulae
 log_info "Installing ${#PACKAGES[@]} Homebrew formulae..."
