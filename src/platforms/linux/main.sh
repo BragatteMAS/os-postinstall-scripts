@@ -126,10 +126,15 @@ install_profile() {
     local current_step=0
 
     # For developer/full: install dev environment FIRST (Node.js + Python for AI tools)
+    # NOTE: dev-env.sh is an orchestrator with side effects (mise/fnm/uv installers,
+    # interactive prompts). retry_with_backoff is for atomic transient ops — wrapping
+    # an orchestrator multiplies failures (each retry re-records the same failed
+    # sub-installer). Atomic curl/brew calls inside the orchestrator handle their
+    # own retry semantics where it matters.
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
         show_progress "$current_step" "$total_steps" "Setting up development environment..."
-        if ! retry_with_backoff bash "${INSTALL_DIR}/dev-env.sh"; then
+        if ! bash "${INSTALL_DIR}/dev-env.sh"; then
             record_failure "dev-env"
         fi
     fi
