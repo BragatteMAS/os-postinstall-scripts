@@ -284,6 +284,14 @@ show_completion_summary() {
         else
             show_failure_summary
         fi
+
+        # Point to the brew install log if it captured anything — lets the user
+        # diagnose silent failures (manual-install conflicts, network, etc.).
+        if [[ -n "${BREW_LOG:-}" && -f "$BREW_LOG" && -s "$BREW_LOG" ]]; then
+            echo "  Diagnostic log: $BREW_LOG"
+            echo "  (open it for the brew stderr of every failed install)"
+            echo ""
+        fi
     else
         log_ok "All sections completed successfully"
     fi

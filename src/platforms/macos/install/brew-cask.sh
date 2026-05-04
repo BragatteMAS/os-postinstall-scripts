@@ -66,6 +66,7 @@ _is_cask_installed() {
 # _brew_cask_install - Install a single Homebrew cask
 # Args: $1 = cask name
 # Returns: 0 on success, 1 on failure
+# Side effects: appends brew stderr to ${BREW_LOG:-/dev/null} for diagnosis.
 _brew_cask_install() {
     local cask="$1"
 
@@ -82,14 +83,39 @@ _brew_cask_install() {
     fi
 
     log_info "Installing: $cask"
-    if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install --cask "$cask" 2>/dev/null; then
+
+    # Capture stderr to a per-package buffer so we can:
+    #   1) classify the failure (manual-install conflict vs network vs cask name)
+    #   2) append it to BREW_LOG for postmortem
+    #   3) surface a meaningful reason in the failure summary
+    local err_buf rc=0
+    err_buf=$(HOMEBREW_NO_INSTALL_UPGRADE=1 brew install --cask "$cask" 2>&1 >/dev/null) || rc=$?
+
+    if [[ -n "${BREW_LOG:-}" ]]; then
+        {
+            echo "=== brew install --cask $cask (rc=$rc) ==="
+            [[ -n "$err_buf" ]] && echo "$err_buf"
+        } >> "$BREW_LOG" 2>/dev/null
+    fi
+
+    if (( rc == 0 )); then
         log_ok "Installed: $cask"
         save_package_state "brew-cask" "$cask" "${PROFILE_NAME:-unknown}"
         return 0
-    else
-        log_error "Failed to install: $cask"
-        return 1
     fi
+
+    # Classify failure for the summary
+    local reason="exit $rc"
+    if grep -qE "It seems there is already an App at|already exists" <<<"$err_buf"; then
+        reason="app exists at /Applications (installed manually before brew)"
+    elif grep -qiE "no available formula|cask .* is unavailable|Cask '.*' is unavailable" <<<"$err_buf"; then
+        reason="cask name not found in any tap"
+    elif grep -qiE "could not be found|404|connection|network|timeout|resolve" <<<"$err_buf"; then
+        reason="network error"
+    fi
+
+    log_error "Failed to install: $cask ($reason)"
+    return 1
 }
 
 #######################################

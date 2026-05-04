@@ -73,14 +73,34 @@ _brew_formula_install() {
     fi
 
     log_info "Installing: $pkg"
-    if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install "$pkg" 2>/dev/null; then
+
+    # Capture stderr to BREW_LOG so silent failures (network, formula not found,
+    # tap missing) can be diagnosed after the run.
+    local err_buf rc=0
+    err_buf=$(HOMEBREW_NO_INSTALL_UPGRADE=1 brew install "$pkg" 2>&1 >/dev/null) || rc=$?
+
+    if [[ -n "${BREW_LOG:-}" ]]; then
+        {
+            echo "=== brew install $pkg (rc=$rc) ==="
+            [[ -n "$err_buf" ]] && echo "$err_buf"
+        } >> "$BREW_LOG" 2>/dev/null
+    fi
+
+    if (( rc == 0 )); then
         log_ok "Installed: $pkg"
         save_package_state "brew" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
-    else
-        log_error "Failed to install: $pkg"
-        return 1
     fi
+
+    local reason="exit $rc"
+    if grep -qiE "no available formula|formula .* is unavailable" <<<"$err_buf"; then
+        reason="formula name not found in any tap"
+    elif grep -qiE "404|connection|network|timeout|resolve" <<<"$err_buf"; then
+        reason="network error"
+    fi
+
+    log_error "Failed to install: $pkg ($reason)"
+    return 1
 }
 
 #######################################

@@ -51,6 +51,11 @@ setup_error_handling
 export FAILURE_LOG="${TEMP_DIR}/failures.log"
 touch "$FAILURE_LOG"
 
+# Capture brew stderr per-package so silent failures (App already exists, cask
+# unavailable, network errors) can be diagnosed after the run.
+export BREW_LOG="${TEMP_DIR}/brew-install.log"
+touch "$BREW_LOG"
+
 # Track worst exit code from child processes
 _worst_exit=0
 
