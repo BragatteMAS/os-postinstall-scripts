@@ -18,11 +18,32 @@ Transform your command line experience with blazing-fast Rust-powered tools that
 ## 🚀 Installation
 
 ### All Tools at Once
+
+The Rust CLI baseline ships with the `minimal` profile (and above):
+
 ```bash
-./src/install/rust-cli.sh
+./setup.sh minimal     # csv:rust-cli (19 modern Unix replacements)
+./setup.sh developer   # + csv:rust-dev (cargo extensions, ast-grep, ruff) + csv:rust-data (qsv, jaq)
+./setup.sh full        # + csv:rust-tui (helix, yazi, zellij) + csv:rust-shell (atuin, mise, topgrade)
 ```
 
-### Individual Tools
+The catalog lives in `data/packages.csv` (53 Rust tools across 5 categories).
+Each row declares both `brew` and `cargo` source with a `prefer` column —
+the installer respects your preference and falls back automatically.
+
+### Browse what's installed
+
+```bash
+h rust-cli          # Modern Unix replacements (this guide)
+h rust-dev          # Dev tools (cargo extensions, ast-grep, ruff, ...)
+h rust-data         # Data wrangling (qsv, jaq, jql, ...)
+h rust-tui          # TUI applications (helix, yazi, zellij, ...)
+h rust-shell        # Shell integrations (starship, atuin, nu, ...)
+h <toolname>        # Direct lookup by name (e.g. h ast-grep)
+```
+
+### Individual Tools (cargo direct)
+
 ```bash
 cargo install bat eza fd-find ripgrep zoxide dust bottom sd
 ```

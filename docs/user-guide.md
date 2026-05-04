@@ -101,15 +101,19 @@ Presents an interactive menu:
 For granular control:
 
 ```bash
-# Just modern CLI tools
-./src/install/rust-cli.sh
+# Just modern CLI tools (csv:rust-cli — 19 Rust replacements for Unix)
+./setup.sh minimal
 
 # Just Python with UV
 ./src/install/uv.sh
 
-# Just development environment
+# Just development environment (mise + fnm + uv)
 ./src/install/dev-env.sh
 ```
+
+Rust tools live in `data/packages.csv` (Onda 5). After installation, browse
+the catalog with `h rust-cli` / `h rust-dev` / `h rust-data` / `h rust-tui` /
+`h rust-shell`. Direct lookup via `h <toolname>` (e.g. `h ast-grep`).
 
 ## Using Profiles
 

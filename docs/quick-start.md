@@ -82,16 +82,20 @@ curl -sSL https://raw.githubusercontent.com/BragatteMAS/os-postinstall-scripts/m
 
 ### "I just want modern CLI tools"
 ```bash
-./src/install/rust-cli.sh
+./setup.sh minimal
 ```
 
-This installs:
+The `minimal` profile ships the Rust CLI baseline (`csv:rust-cli` in
+`data/packages.csv`):
 - `bat` (better cat)
 - `eza` (better ls)
 - `fd` (better find)
 - `ripgrep` (better grep)
 - `zoxide` (better cd)
-- And more!
+- 14 more (run `h rust-cli` after install for the full list)
+
+Need more categories? `./setup.sh developer` adds `rust-dev` and `rust-data`;
+`./setup.sh full` adds `rust-tui` and `rust-shell` on top.
 
 ### "I need a full dev environment ASAP"
 ```bash

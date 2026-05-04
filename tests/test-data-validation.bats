@@ -8,6 +8,7 @@ setup() {
     PROFILES_DIR="${BATS_TEST_DIRNAME}/../data/packages/profiles"
     PACKAGES_DIR="${BATS_TEST_DIRNAME}/../data/packages"
     DEFAULTS_DIR="${BATS_TEST_DIRNAME}/../data/defaults"
+    CSV_FILE="${BATS_TEST_DIRNAME}/../data/packages.csv"
 }
 
 # =========================================================
@@ -29,6 +30,15 @@ setup() {
         while IFS= read -r line || [[ -n "$line" ]]; do
             line="${line#"${line%%[![:space:]]*}"}"
             [[ -z "$line" || "$line" == \#* ]] && continue
+            # csv:<category> entries — validate against data/packages.csv (Onda 5)
+            if [[ "$line" == csv:* ]]; then
+                local cat="${line#csv:}"
+                [ -f "$CSV_FILE" ] || \
+                    fail "Profile $(basename "$profile") references '${line}' but data/packages.csv is missing"
+                awk -F',' -v cat="$cat" 'NR>1 && $1==cat {found=1} END{exit !found}' "$CSV_FILE" || \
+                    fail "Profile $(basename "$profile") references '${line}' but no rows with category=$cat in data/packages.csv"
+                continue
+            fi
             # Check in packages/ first, then defaults/ for cross-directory references
             [ -f "${PACKAGES_DIR}/${line}" ] || [ -f "${DEFAULTS_DIR}/${line}" ] || \
                 fail "Profile $(basename "$profile") references '${line}' but file not found in packages/ or defaults/"
