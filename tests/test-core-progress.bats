@@ -123,3 +123,62 @@ EOF
     assert_output --partial "minimal"
     assert_output --partial "macos"
 }
+
+# ── count_packages_in_profile ────────────────────────────────────
+
+# Helper: build a minimal DATA_DIR layout with 1 profile, 2 package files,
+# and a packages.csv for csv:rust-cli resolution.
+_setup_pkg_data() {
+    DATA_DIR="${BATS_TEST_TMPDIR}/data"
+    mkdir -p "$DATA_DIR/packages/profiles"
+    cat > "$DATA_DIR/packages/profiles/test-profile.txt" <<'EOF'
+apt.txt
+brew.txt
+csv:rust-cli
+EOF
+    cat > "$DATA_DIR/packages/apt.txt" <<'EOF'
+# Linux essentials
+git
+curl
+build-essential
+EOF
+    cat > "$DATA_DIR/packages/brew.txt" <<'EOF'
+# macOS base
+bat
+eza
+fd
+zoxide
+ripgrep
+EOF
+    cat > "$DATA_DIR/packages.csv" <<'EOF'
+# Cross-source rust tools
+category,name,brew,cargo
+rust-cli,bat,bat,bat
+rust-cli,eza,eza,eza
+rust-cli,fd,fd,fd
+rust-dev,cargo-watch,cargo-watch,cargo-watch
+EOF
+    export DATA_DIR
+}
+
+@test "count_packages_in_profile counts macos packages (skips apt) plus csv:rust-cli" {
+    _setup_pkg_data
+    run count_packages_in_profile "test-profile" "macos"
+    # 5 brew packages + 3 rust-cli rows = 8 (apt skipped on macos)
+    assert_output "8"
+}
+
+@test "count_packages_in_profile counts linux packages (skips brew) plus csv:rust-cli" {
+    _setup_pkg_data
+    run count_packages_in_profile "test-profile" "linux"
+    # 3 apt packages + 3 rust-cli rows = 6 (brew skipped on linux)
+    assert_output "6"
+}
+
+@test "count_packages_in_profile returns 0 for missing profile" {
+    DATA_DIR="${BATS_TEST_TMPDIR}/data"
+    mkdir -p "$DATA_DIR/packages/profiles"
+    export DATA_DIR
+    run count_packages_in_profile "nonexistent" "macos"
+    assert_output "0"
+}
