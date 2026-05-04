@@ -82,6 +82,10 @@ trap signal_cleanup INT TERM
 # Parse CLI flags
 #-----------------------------------------------
 parse_flags() {
+    # Accepts flags in any position relative to positional args.
+    # Previously broke at the first non-flag, so `setup.sh developer --dry-run`
+    # silently ignored --dry-run and ran a real install.
+    REMAINING_ARGS=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -n|--dry-run)
@@ -98,7 +102,13 @@ parse_flags() {
                 shift
                 ;;
             -h|--help)
-                # Help is handled inside main(), just pass through
+                # Pass --help through so main() can render it
+                REMAINING_ARGS+=("$1")
+                shift
+                ;;
+            --)
+                shift
+                REMAINING_ARGS+=("$@")
                 break
                 ;;
             -*)
@@ -108,12 +118,11 @@ parse_flags() {
                 exit 1
                 ;;
             *)
-                break  # Non-flag argument = action or profile
+                REMAINING_ARGS+=("$1")
+                shift
                 ;;
         esac
     done
-    # Return remaining args for main()
-    REMAINING_ARGS=("$@")
 }
 
 #-----------------------------------------------
