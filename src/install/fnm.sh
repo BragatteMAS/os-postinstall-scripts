@@ -36,8 +36,10 @@ fi
 
 #######################################
 # install_fnm()
-# Installs fnm via official curl script
-# Idempotent: skips if already installed
+# Prefers `brew install fnm` for centralized package management.
+# Falls back to the official curl installer when brew is unavailable
+# (e.g. some Linux runners without Homebrew).
+# Idempotent: skips if already installed.
 #######################################
 install_fnm() {
     # Idempotent check
@@ -47,28 +49,36 @@ install_fnm() {
     fi
 
     if [[ "${DRY_RUN:-}" == "true" ]]; then
-        log_info "[DRY_RUN] Would install fnm"
+        log_info "[DRY_RUN] Would install fnm (brew preferred, curl fallback)"
         return 0
     fi
 
-    log_info "Installing fnm (Fast Node Manager)..."
+    # Prefer brew when available — single source of truth for package mgmt.
+    if command -v brew &>/dev/null; then
+        log_info "Installing fnm via brew..."
+        if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install fnm; then
+            log_ok "fnm installed: $(fnm --version)"
+            return 0
+        fi
+        log_warn "brew install fnm failed — falling back to curl installer"
+    fi
 
-    # Install fnm via official script (--skip-shell prevents modifying shell configs)
-    if ! safe_curl_sh "https://fnm.vercel.app/install" -- --skip-shell; then
+    log_info "Installing fnm via official script..."
+    # NOTE: do not insert `--` separator — the fnm installer rejects it as
+    # "Unrecognized argument --" and aborts before processing real flags.
+    if ! safe_curl_sh "https://fnm.vercel.app/install" --skip-shell; then
         log_error "Failed to install fnm"
         record_failure "fnm"
         return 1
     fi
 
-    # Add fnm to PATH for current session
+    # Add fnm to PATH for current session (curl installer drops it here)
     export PATH="$HOME/.local/share/fnm:$PATH"
 
-    # Source fnm env for current session
     if command -v fnm &>/dev/null; then
         eval "$(fnm env)"
     fi
 
-    # Verify installation
     if ! command -v fnm &>/dev/null; then
         log_error "fnm installation failed - command not found after install"
         record_failure "fnm"
@@ -117,39 +127,42 @@ install_node_lts() {
 
 #######################################
 # install_global_npm()
-# Installs global npm packages: pnpm, bun
+# Installs pnpm and bun. Prefers brew (centralized package mgmt) and
+# falls back to `npm install -g` only when brew is unavailable.
+# Bun ships via a dedicated tap (oven-sh/bun); brew handles the tap
+# automatically for the qualified formula name.
 #######################################
 install_global_npm() {
-    if ! command -v npm &>/dev/null; then
-        log_warn "npm not available - cannot install global packages"
-        return 0
-    fi
-
     if [[ "${DRY_RUN:-}" == "true" ]]; then
-        log_info "[DRY_RUN] Would npm install -g: pnpm, bun"
+        log_info "[DRY_RUN] Would install pnpm + bun (brew preferred, npm fallback)"
         return 0
     fi
 
-    log_info "Installing global npm packages..."
+    local _have_brew=0
+    command -v brew &>/dev/null && _have_brew=1
 
-    # Install pnpm
+    # --- pnpm ---
     if command -v pnpm &>/dev/null; then
         log_debug "pnpm already installed: $(pnpm --version)"
-    elif npm install -g pnpm; then
-        log_ok "pnpm installed: $(pnpm --version 2>/dev/null || echo 'version unknown')"
+    elif (( _have_brew )) && HOMEBREW_NO_INSTALL_UPGRADE=1 brew install pnpm; then
+        log_ok "pnpm installed via brew: $(pnpm --version 2>/dev/null || echo 'version unknown')"
+    elif command -v npm &>/dev/null && npm install -g pnpm; then
+        log_ok "pnpm installed via npm: $(pnpm --version 2>/dev/null || echo 'version unknown')"
     else
-        log_warn "Failed to install pnpm globally"
-        record_failure "pnpm (global npm)"
+        log_warn "Failed to install pnpm (brew + npm both unavailable or failed)"
+        record_failure "pnpm"
     fi
 
-    # Install bun
+    # --- bun (formula lives in oven-sh/bun tap) ---
     if command -v bun &>/dev/null; then
         log_debug "bun already installed: $(bun --version)"
-    elif npm install -g bun; then
-        log_ok "bun installed: $(bun --version 2>/dev/null || echo 'version unknown')"
+    elif (( _have_brew )) && HOMEBREW_NO_INSTALL_UPGRADE=1 brew install oven-sh/bun/bun; then
+        log_ok "bun installed via brew: $(bun --version 2>/dev/null || echo 'version unknown')"
+    elif command -v npm &>/dev/null && npm install -g bun; then
+        log_ok "bun installed via npm: $(bun --version 2>/dev/null || echo 'version unknown')"
     else
-        log_warn "Failed to install bun globally"
-        record_failure "bun (global npm)"
+        log_warn "Failed to install bun (brew + npm both unavailable or failed)"
+        record_failure "bun"
     fi
 
     return 0
