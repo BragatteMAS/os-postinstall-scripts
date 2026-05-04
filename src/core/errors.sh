@@ -71,10 +71,19 @@ retry_with_backoff() {
 # Array to track failed items (packages, operations, etc.)
 declare -a FAILED_ITEMS=()
 
-# record_failure - Add an item to the failure list
+# record_failure - Add an item to the failure list (deduplicated)
 # Usage: record_failure "package-name"
+# Dedup: a name recorded twice in the same process (e.g. retried orchestrator
+# scripts that re-run install_fnm on each attempt) appears only once in the
+# summary. Cross-process FAILURE_LOG keeps appending — readers can dedup there.
 record_failure() {
     local item="${1:-unknown}"
+
+    # Dedup within the current process
+    local existing
+    for existing in "${FAILED_ITEMS[@]}"; do
+        [[ "$existing" == "$item" ]] && return 0
+    done
     FAILED_ITEMS+=("$item")
 
     # Cross-process: append to shared log if available
