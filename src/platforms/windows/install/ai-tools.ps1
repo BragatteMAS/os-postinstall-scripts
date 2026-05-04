@@ -6,7 +6,7 @@
 # Date: 2026-02-17
 #######################################
 # PowerShell equivalent of src/install/ai-tools.sh
-# Reads ai-tools.txt from data/packages/ and dispatches by prefix:
+# Reads ai-tools-full.txt from data/packages/ and dispatches by prefix:
 #   npm:  -> npm install -g
 #   curl: -> WinGet equivalent on Windows (ollama -> Ollama.Ollama)
 #   npx:  -> skip (runs on demand)
@@ -38,7 +38,7 @@ function Install-AiTool {
         uv: skipped (runs on demand via uvx)
         bare words: skipped (informational only)
     .PARAMETER Entry
-        The entry from ai-tools.txt (e.g., "npm:@anthropic-ai/claude-code").
+        The entry from ai-tools-full.txt (e.g., "npm:@anthropic-ai/claude-code").
     #>
     param(
         [Parameter(Mandatory = $true)]
@@ -166,7 +166,7 @@ if ($Packages.Count -eq 0) {
     exit 0
 }
 
-Write-Log -Level INFO -Message "Loaded $($Packages.Count) entries from ai-tools.txt"
+Write-Log -Level INFO -Message "Loaded $($Packages.Count) entries from ai-tools-full.txt"
 
 # Install each tool via prefix dispatch
 foreach ($entry in $Packages) {

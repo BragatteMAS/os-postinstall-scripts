@@ -257,10 +257,16 @@ Declaradas em config.sh como arrays vazios, nunca consumidas por nenhum installe
 ## 11. Senior Dev Review (v4.2 Post-Audit)
 
 ### 11.1 cargo.txt Silently Skipped on macOS
-`macos/main.sh` skipped `cargo.txt` with a debug log, even though `cargo.sh` is cross-platform (uses `cargo install`, no Linux-specific code). Result: cargo packages never installed on macOS.
+`macos/main.sh` skipped `cargo.txt` with a debug log, even though `cargo.sh` was cross-platform. Result: cargo packages never installed on macOS.
 
-**Fix:** Moved `cargo.sh` from `src/platforms/linux/install/` to `src/install/` (shared cross-platform location). Updated both `linux/main.sh` and `macos/main.sh` to dispatch cargo.txt. Updated `count_platform_steps()` to count cargo.txt for macOS.
+**Fix:** Moved `cargo.sh` to `src/install/` (shared). Updated dispatchers to handle cargo.txt on both Linux and macOS.
 **Phase:** Post v4.2 audit
+
+**Update (v5.0.0 / Onda 5):** Both `cargo.sh` and `cargo.txt` were removed entirely.
+Rust tools now live in `data/packages.csv` and are installed via `src/core/csv.sh`
+(`install_csv_category()`), which respects per-row `prefer` (brew/cargo) with
+cross-source fallback. The dispatcher uses `csv:rust-cli`/`rust-dev`/etc. as
+profile entries. Idempotent via binary-in-PATH check.
 
 ### 11.2 Stale SCRIPT_DIR Comment in Platform Orchestrators
 `linux/main.sh` and `macos/main.sh` had comments saying "packages.sh overwrites SCRIPT_DIR" — but packages.sh was already fixed (uses `_PACKAGES_DIR` internally). Comments were misleading.

@@ -7,9 +7,11 @@
 #######################################
 # PowerShell equivalent of src/platforms/linux/main.sh
 # Dual-mode: $Profile param for unattended, interactive menu otherwise
-# Reads profile file directly, dispatches winget*.txt, npm-developer.txt, ai-tools-full.txt to platform installers
-# Non-Windows package files (apt*.txt, brew*.txt, csv:rust-*) silently skipped
-# Windows is now tri-level: winget.txt (base), winget-developer.txt (dev+full), winget-full.txt (full only)
+# Reads profile file directly, dispatches winget*.txt (tri-level), npm-developer.txt,
+# ai-tools-full.txt to platform installers.
+# Non-Windows package files (apt*.txt, brew*.txt) silently skipped.
+# csv:rust-* entries skipped (Windows CSV runner not implemented yet).
+# Windows tri-level: winget.txt (base), winget-developer.txt (dev+full), winget-full.txt (full only).
 
 param(
     [ValidateSet('', 'minimal', 'developer', 'full')]
@@ -54,7 +56,7 @@ function Show-Menu {
 # Install-Profile
 # Install packages for a given profile
 # Reads profile file directly (no Read-Profile abstraction)
-# Dispatches winget.txt, cargo.txt, npm.txt, ai-tools.txt to platform installers, skips non-Windows files
+# Dispatches winget*.txt (tri-level), npm-developer.txt, ai-tools-full.txt; skips non-Windows files
 #######################################
 function Install-Profile {
     param(

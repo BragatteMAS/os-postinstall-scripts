@@ -80,9 +80,7 @@ Assert-Pass "errors.psm1 exists" {
 Assert-Pass "setup.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/setup.ps1")) { throw "missing" }
 }
-Assert-Pass "cargo.ps1 exists" {
-    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/cargo.ps1")) { throw "missing" }
-}
+# cargo.ps1 removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
 Assert-Pass "npm.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/npm.ps1")) { throw "missing" }
 }

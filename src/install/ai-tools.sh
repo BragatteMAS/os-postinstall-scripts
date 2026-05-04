@@ -49,7 +49,7 @@ source "${CORE_DIR}/interactive.sh" || {
 # install_ai_tool()
 # Install a single AI tool based on its prefix
 #
-# Args: $1 = entry from ai-tools.txt (e.g., "npm:@anthropic-ai/claude-code")
+# Args: $1 = entry from ai-tools-full.txt (e.g., "npm:@anthropic-ai/claude-code")
 # Returns: 0 on success/skip, 1 on failure
 #######################################
 install_ai_tool() {

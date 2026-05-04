@@ -35,7 +35,8 @@ function Get-PlatformStepCount {
         Count how many package files in a profile are relevant to Windows.
     .DESCRIPTION
         Reads a profile file and counts entries that map to Windows installers
-        (winget.txt, cargo.txt, npm.txt, ai-tools.txt).
+        (winget.txt, winget-developer.txt, winget-full.txt, npm-developer.txt,
+        ai-tools-full.txt). Non-Windows files (apt*, brew*, csv:rust-*) skipped.
     .PARAMETER ProfileFile
         Path to the profile file.
     .OUTPUTS

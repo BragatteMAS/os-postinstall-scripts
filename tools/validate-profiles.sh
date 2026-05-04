@@ -2,7 +2,10 @@
 # tools/validate-profiles.sh — manual profile contract validator
 #
 # Purpose: prevent regression where package files leak between profiles
-# (e.g. ai-tools.txt contaminating developer.txt).
+# (e.g. -full files appearing in developer; -developer files in minimal).
+# Validates the convention: <source>.txt = base, <source>-developer.txt = dev+full,
+# <source>-full.txt = full only. csv:<category> entries validated against
+# data/packages.csv rows.
 #
 # This is a MANUAL check. Per project policy (see CLAUDE.md: "NO CI/CD
 # Automation"), it is never wired into hooks, GitHub Actions, or pre-commit.

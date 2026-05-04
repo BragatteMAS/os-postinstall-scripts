@@ -232,29 +232,39 @@ apt-developer.txt             # Linux dev extras
 brew.txt                      # macOS base
 brew-cask-developer.txt       # macOS GUI apps (dev defaults)
 winget.txt                    # Windows
-cargo-developer.txt           # Cross-platform Rust crates
+winget-developer.txt          # Windows dev extras
 npm-developer.txt             # Cross-platform npm globals
 flatpak-developer.txt         # Linux flatpaks
 snap-developer.txt            # Linux snaps
+csv:rust-cli                  # Cross-platform Rust modern Unix replacements
+csv:rust-dev                  # Cross-platform Rust dev tools
+csv:rust-data                 # Cross-platform Rust data wrangling
 ```
 
 **Full** (`data/packages/profiles/full.txt`) — everything from developer + Bragatte's pick:
 ```
 apt.txt                       # Linux base
 apt-developer.txt             # Linux dev extras
+apt-full.txt                  # Linux personal tweaks
 brew.txt                      # macOS base
 brew-developer.txt            # macOS dev formulae
 brew-full.txt                 # macOS Bragatte personal formulae
 brew-cask-developer.txt       # macOS GUI apps (dev defaults)
 brew-cask-full.txt            # macOS GUI apps (Bragatte personal pick)
-winget.txt                    # Windows
-cargo-developer.txt           # Rust crates
+winget.txt                    # Windows base
+winget-developer.txt          # Windows dev extras
+winget-full.txt               # Windows personal pick
 npm-developer.txt             # npm globals
 ai-tools-full.txt             # AI/MCP tools (full only)
 flatpak-developer.txt         # Linux flatpaks
 flatpak-full.txt              # Linux flatpak full extras
 snap-developer.txt            # Linux snaps
 snap-full.txt                 # Linux snap full extras
+csv:rust-cli                  # Rust modern Unix replacements
+csv:rust-dev                  # Rust dev tools
+csv:rust-data                 # Rust data wrangling
+csv:rust-tui                  # Rust TUI applications
+csv:rust-shell                # Rust shell integrations
 ```
 
 </details>
@@ -264,23 +274,28 @@ snap-full.txt                 # Linux snap full extras
 
 Counts will be updated after curation completes.
 
-| File | Used In |
-|------|---------|
+| File / Source | Used In |
+|---------------|---------|
 | `apt.txt` | minimal, developer, full |
 | `apt-developer.txt` | developer, full |
+| `apt-full.txt` | full only |
 | `brew.txt` | minimal, developer, full |
 | `brew-developer.txt` | developer, full (macOS dev formulae) |
 | `brew-full.txt` | full only (macOS Bragatte personal formulae) |
 | `brew-cask-developer.txt` | developer, full |
 | `brew-cask-full.txt` | full only |
-| `cargo-developer.txt` | developer, full |
 | `npm-developer.txt` | developer, full |
 | `winget.txt` | minimal, developer, full |
+| `winget-developer.txt` | developer, full |
+| `winget-full.txt` | full only |
 | `flatpak-developer.txt` | developer, full |
 | `flatpak-full.txt` | full only |
 | `snap-developer.txt` | developer, full |
 | `snap-full.txt` | full only |
 | `ai-tools-full.txt` | full only |
+| `data/packages.csv` (rows with `category=rust-cli`) | minimal, developer, full |
+| `data/packages.csv` (rows with `category=rust-dev`, `rust-data`) | developer, full |
+| `data/packages.csv` (rows with `category=rust-tui`, `rust-shell`) | full only |
 
 </details>
 
@@ -369,6 +384,7 @@ os-postinstall-scripts/
 │       ├── ai-tools.sh         #   Claude, Codex, Gemini, Ollama
 │       └── dotfiles-install.sh #   Dotfiles symlink installer
 ├── data/
+│   ├── packages.csv            # Cross-source SSoT for Rust tools (Onda 5)
 │   ├── packages/               # Package lists (named by profile membership)
 │   │   ├── profiles/           #   minimal.txt, developer.txt, full.txt
 │   │   ├── apt.txt             #   base (all profiles)
@@ -376,7 +392,6 @@ os-postinstall-scripts/
 │   │   ├── brew.txt            #   base (all profiles)
 │   │   ├── brew-cask-developer.txt  # dev + full
 │   │   ├── brew-cask-full.txt  #   full only (Bragatte's personal pick)
-│   │   ├── cargo-developer.txt #   dev + full
 │   │   ├── ai-tools-full.txt   #   full only
 │   │   └── ...                 #   See "Package files reference" above
 │   ├── defaults/               # macOS system defaults (pipe-delimited)
@@ -452,7 +467,7 @@ The developer and full profiles install AI-powered development tools:
 | Gemini CLI | `npm install -g @google/gemini-cli` | Google AI CLI |
 | Ollama | `curl` installer | Local LLM runtime |
 
-MCP (Model Context Protocol) servers are listed in `data/packages/ai-tools.txt` and include context7, fetch, sequential-thinking, and others. These are installed via `npx` for on-demand execution.
+MCP (Model Context Protocol) servers are managed externally via `mcpl` (MCP Launchpad — installed via `uv tool install mcpl`). Run `mcpl list` to see configured servers and `mcpl install <server>` to add new ones. Common MCPs: context7, fetch, supabase, serena, sequential-thinking, kubb, markitdown, playwright, browsermcp, firecrawl. Run `h ai` after install for the full list.
 
 ### Development Methodology
 
@@ -477,7 +492,7 @@ Create a new file in `data/packages/profiles/`:
 ```bash
 # data/packages/profiles/custom.txt
 apt.txt
-cargo-developer.txt
+csv:rust-cli
 ```
 
 Then run: `./setup.sh custom`
