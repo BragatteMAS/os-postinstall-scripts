@@ -1,0 +1,83 @@
+# brew-developer.txt
+# Homebrew formulae — developer + full
+# Curated dev defaults beyond brew.txt baseline. Defensible to most devs.
+#
+# Run with `./setup.sh developer` or `./setup.sh full`.
+# For Bragatte's personal pick (taps externos, niche tools), see brew-full.txt.
+#
+# Note on Rust tools: bat, eza, fd, ripgrep, zoxide, git-delta, dust, procs,
+# sd, tokei, starship, yazi, zellij, helix, nushell, hyperfine, bottom
+# live in data/packages.csv (rust-cli/rust-tui/rust-shell categories) — Onda 5.
+
+# Runtimes (mise gerencia versions, mas brew installa toolchain base)
+python
+node
+go
+rust
+r
+
+# Tool version orchestrator (mise = preferred path; manages Python/Node/Ruby/Go/R)
+mise
+
+# Python tooling
+# uv = preferred (Python package manager + isolated tools via `uv tool install`)
+# pipx = fallback ONLY if a tool fails via uv (rare; documented in functions.sh `h ai`)
+uv
+pipx
+
+# Build / lint
+cmake
+pkg-config
+openssl
+shellcheck
+biome
+
+# Universal data tools
+jq
+
+# Task runner (Rust — lives here for setup speed; mainstream)
+just
+
+# Git tools
+gh
+lazygit
+jj
+diff-so-fancy
+
+# Terminal multiplexer (mainstream — coexists com zellij em CSV)
+tmux
+
+# Directory tree
+tree
+
+# Fuzzy finder (Go, exception — universal in workflow)
+fzf
+
+# Markdown TUI render (Go, exception — best-in-class)
+glow
+
+# Terminal recording
+asciinema
+
+# Docs / data
+pandoc
+typst
+duckdb
+csvkit
+gnuplot
+
+# Media (universal)
+ffmpeg
+imagemagick
+tesseract
+
+# Network / archive
+aria2
+sevenzip
+
+# Dotfile manager (Go, exception — mainstream)
+chezmoi
+
+# zsh plugins (universal UX)
+zsh-autosuggestions
+zsh-syntax-highlighting

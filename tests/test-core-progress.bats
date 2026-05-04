@@ -54,9 +54,9 @@ teardown() {
 # Test profile
 apt.txt
 brew.txt
-cargo.txt
+csv:rust-cli
 winget.txt
-flatpak.txt
+flatpak-developer.txt
 EOF
     run count_platform_steps "$profile" "linux"
     assert_output "3"
@@ -67,9 +67,9 @@ EOF
     cat > "$profile" <<'EOF'
 apt.txt
 brew.txt
-cargo.txt
+csv:rust-cli
 winget.txt
-flatpak.txt
+flatpak-developer.txt
 EOF
     run count_platform_steps "$profile" "macos"
     assert_output "2"

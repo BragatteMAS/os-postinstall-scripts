@@ -50,7 +50,7 @@ test_script_exists() {
 
 test_script_exists "setup.sh"
 test_script_exists "config.sh"
-test_script_exists "src/install/rust-cli.sh"
+# rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
 test_script_exists "src/install/uv.sh"
 test_script_exists "src/install/dev-env.sh"
 test_script_exists "src/platforms/linux/main.sh"
@@ -72,7 +72,7 @@ test_script_executable() {
 }
 
 test_script_executable "setup.sh"
-test_script_executable "src/install/rust-cli.sh"
+# rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv
 test_script_executable "src/platforms/linux/main.sh"
 test_script_executable "src/platforms/linux/post_install.sh"
 

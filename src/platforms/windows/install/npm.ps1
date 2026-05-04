@@ -87,7 +87,7 @@ if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
 }
 
 # Load packages from data file
-$Packages = Read-PackageFile -FileName 'npm.txt'
+$Packages = Read-PackageFile -FileName 'npm-developer.txt'
 
 if ($Packages.Count -eq 0) {
     Write-Log -Level WARN -Message 'No packages to install'

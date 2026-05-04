@@ -2,6 +2,14 @@
 
 Profiles control what gets installed. Each profile is a list of package files dispatched to platform-specific installers.
 
+## File naming convention
+
+| Suffix | Included in | Purpose |
+|--------|-------------|---------|
+| `<source>.txt` | minimal + developer + full | Base — universal essentials |
+| `<source>-developer.txt` | developer + full | Dev defaults (not in minimal) |
+| `<source>-full.txt` | full only | Bragatte's personal pick |
+
 ## Available Profiles
 
 ### minimal
@@ -15,28 +23,28 @@ Profiles control what gets installed. Each profile is a list of package files di
 | Windows | `winget.txt` |
 
 ### developer (default)
-**For:** Full development environment
-**What it installs:** Everything in minimal, plus dev tools, modern CLI, and AI tools
+**For:** Full development environment with curated dev defaults
+**Editorial stance:** Opinionated but defensible to most devs (modern Rust CLI baseline, Firefox+Chromium, core tools)
 
 | Platform | Packages |
 |----------|----------|
-| Linux | `apt.txt`, `apt-post.txt`, `flatpak.txt`, `snap.txt` |
-| macOS | `brew.txt`, `brew-cask.txt` |
+| Linux | `apt.txt`, `apt-developer.txt`, `flatpak-developer.txt`, `snap-developer.txt` |
+| macOS | `brew.txt`, `brew-cask-developer.txt` |
 | Windows | `winget.txt` |
-| Cross-platform | `cargo.txt`, `npm.txt`, `ai-tools.txt` |
+| Cross-platform | `npm-developer.txt`, `csv:rust-cli`, `csv:rust-dev`, `csv:rust-data` (from `data/packages.csv`) |
 
-Also runs `src/install/dev-env.sh` (Node.js via fnm) and `src/install/rust-cli.sh` (bat, eza, ripgrep, etc.)
+Also runs `src/install/dev-env.sh` (Node.js via fnm + Python via uv, mise preferred orchestrator). Rust tools resolve from `data/packages.csv` via `csv.sh`.
 
 ### full
-**For:** Everything including post-install extras
-**What it installs:** Everything in developer, plus additional Flatpak and Snap packages
+**For:** Bragatte's personal stack — everything from developer + personal picks
+**Editorial stance:** Bragatte's complete personal setup. **Don't run this if you want neutral dev defaults — use `developer` instead.** Includes specific browsers (Chrome, Zen, Brave, Opera), AI editors (Cursor, Claude, ChatGPT), and domain-specific tools.
 
 | Platform | Packages |
 |----------|----------|
-| Linux | All from developer + `flatpak-post.txt`, `snap-post.txt` |
-| macOS | Same as developer |
+| Linux | All developer + `flatpak-full.txt`, `snap-full.txt` |
+| macOS | All developer + `brew-developer.txt`, `brew-full.txt`, `brew-cask-full.txt` |
 | Windows | Same as developer |
-| Cross-platform | Same as developer |
+| Cross-platform | All developer + `ai-tools-full.txt` |
 
 ## Usage
 
@@ -66,15 +74,16 @@ Profiles are plain text files in `data/packages/profiles/`. Each line references
 ```
 # data/packages/profiles/developer.txt
 apt.txt
-apt-post.txt
+apt-developer.txt
 brew.txt
-brew-cask.txt
+brew-cask-developer.txt
 winget.txt
-cargo.txt
-npm.txt
-ai-tools.txt
-flatpak.txt
-snap.txt
+npm-developer.txt
+flatpak-developer.txt
+snap-developer.txt
+csv:rust-cli
+csv:rust-dev
+csv:rust-data
 ```
 
 The platform handler (`src/platforms/linux/main.sh`, etc.) reads the profile and dispatches only the relevant package files for your OS. Linux ignores `brew.txt`, macOS ignores `apt.txt`, etc.
@@ -94,24 +103,29 @@ Create a new `.txt` file in `data/packages/profiles/`:
 ```bash
 # data/packages/profiles/my-profile.txt
 apt.txt
-cargo.txt
+csv:rust-cli
 ```
 
 Then run: `./setup.sh my-profile`
 
 ## Package Lists
 
-All package lists live in `data/packages/`. Edit them to add or remove individual packages:
+All package lists live in `data/packages/`. Suffix indicates profile membership:
 
-| File | Format | Contents |
-|------|--------|----------|
-| `apt.txt` | APT | System utilities, dev tools, desktop apps |
-| `apt-post.txt` | APT | Additional system packages |
-| `brew.txt` | Homebrew | macOS CLI tools |
-| `brew-cask.txt` | Homebrew Cask | macOS GUI apps |
-| `cargo.txt` | Cargo | Rust CLI tools (bat, eza, ripgrep, etc.) |
-| `npm.txt` | npm | Node.js global packages |
-| `ai-tools.txt` | Mixed | AI development tools |
-| `flatpak.txt` | Flatpak | Linux sandboxed apps |
-| `snap.txt` | Snap | Linux snap packages |
-| `winget.txt` | Winget | Windows packages |
+| File | Profiles | Format | Contents |
+|------|----------|--------|----------|
+| `apt.txt` | min/dev/full | APT | Linux base — system utilities, core dev tools |
+| `apt-developer.txt` | dev/full | APT | Linux dev extras |
+| `brew.txt` | min/dev/full | Homebrew | macOS base CLI |
+| `brew-developer.txt` | dev/full | Homebrew | macOS dev formulae |
+| `brew-full.txt` | full only | Homebrew | macOS Bragatte personal formulae |
+| `brew-cask-developer.txt` | dev/full | Homebrew Cask | macOS GUI apps (dev defaults) |
+| `brew-cask-full.txt` | full only | Homebrew Cask | macOS GUI apps (Bragatte's pick) |
+| `data/packages.csv` (rows with category=rust-*) | dev/full | Brew/Cargo | Rust CLI tools — installer chooses brew or cargo per `prefer` column |
+| `npm-developer.txt` | dev/full | npm | Node.js global packages |
+| `ai-tools-full.txt` | full only | Mixed | AI/MCP development tools |
+| `flatpak-developer.txt` | dev/full | Flatpak | Linux sandboxed apps |
+| `flatpak-full.txt` | full only | Flatpak | Linux flatpak full extras |
+| `snap-developer.txt` | dev/full | Snap | Linux snap packages |
+| `snap-full.txt` | full only | Snap | Linux snap full extras |
+| `winget.txt` | min/dev/full | Winget | Windows packages |

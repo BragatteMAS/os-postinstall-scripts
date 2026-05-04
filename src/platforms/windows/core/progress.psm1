@@ -57,11 +57,12 @@ function Get-PlatformStepCount {
         Where-Object { $_ -ne '' -and -not $_.StartsWith('#') }
 
     foreach ($entry in $entries) {
-        switch ($entry) {
-            'winget.txt'    { $count++ }
-            'cargo.txt'     { $count++ }
-            'npm.txt'       { $count++ }
-            'ai-tools.txt'  { $count++ }
+        switch -Regex ($entry) {
+            '^winget\.txt$'           { $count++ }
+            '^winget-developer\.txt$' { $count++ }
+            '^winget-full\.txt$'      { $count++ }
+            '^npm-developer\.txt$'    { $count++ }
+            '^ai-tools-full\.txt$'    { $count++ }
         }
     }
 

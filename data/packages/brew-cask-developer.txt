@@ -1,0 +1,54 @@
+# brew-cask-developer.txt
+# Homebrew casks — developer + full
+# Universal dev defaults (Bragatte's curated opinion, defensible to most devs).
+#
+# Run with `./setup.sh developer` or `./setup.sh full`.
+# For Bragatte's personal pick (Chrome, Zen, Brave, Cursor, etc.) see brew-cask-full.txt.
+
+# Browsers — 2 engines (Blink + Gecko) for dev web testing
+firefox
+chromium
+
+# Window management & launcher
+rectangle
+alt-tab
+raycast
+
+# Editor + terminal (mainstream open-source defaults)
+visual-studio-code
+warp
+
+# Notes & research
+obsidian
+zotero
+
+# Dev tools
+docker-desktop
+dbeaver-community
+insomnia
+github
+
+# Password manager
+bitwarden
+
+# macOS utilities (mainstream)
+appcleaner
+caffeine
+
+# Office & media
+libreoffice
+iina
+
+# Communication (mainstream dev/work)
+slack
+
+# Cloud sync
+google-drive
+
+# Data science (R/Python)
+positron
+rstudio
+
+# Fonts (sane defaults for terminal + icons)
+font-jetbrains-mono-nerd-font
+font-symbols-only-nerd-font

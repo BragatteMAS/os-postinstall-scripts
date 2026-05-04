@@ -123,10 +123,11 @@ declare -a FAILED_ITEMS=()
 
 log_banner "Flatpak Package Installer"
 
-# Parse --post arg for two-pass install
-pkg_file="flatpak.txt"
-if [[ "${1:-}" == "--post" ]]; then
-    pkg_file="flatpak-post.txt"
+# Parse --full arg for two-pass install
+pkg_file="flatpak-developer.txt"
+if [[ "${1:-}" == "--full" || "${1:-}" == "--post" ]]; then
+    # --post kept as alias for backwards-compat
+    pkg_file="flatpak-full.txt"
 fi
 
 # Check if flatpak is available

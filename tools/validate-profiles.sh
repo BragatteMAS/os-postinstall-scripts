@@ -73,41 +73,48 @@ mapfile -t DEVELOPER < <(profile_entries developer)
 mapfile -t FULL      < <(profile_entries full)
 
 # ---------------------------------------------------------------------------
-# Rule 2 — Contract from config.sh:
-#   minimal   = essential system packages only
-#   developer = system + dev tools (cargo, npm) — NO AI tools
-#   full      = everything including AI/MCP tools
+# Rule 2 — Naming convention reflects profile membership:
+#   <source>.txt              base — included by every profile that uses this source
+#   <source>-developer.txt    developer + full only (not in minimal)
+#   <source>-full.txt         full only (Bragatte's personal pick)
 # ---------------------------------------------------------------------------
-bold "[2/5] minimal profile stays minimal (no dev/ai tools)"; echo
-for forbidden in cargo.txt npm.txt ai-tools.txt; do
-  if contains "$forbidden" "${MINIMAL[@]}"; then
-    fail "minimal.txt must NOT include $forbidden"
-  else
-    pass "minimal does not include $forbidden"
+bold "[2/5] minimal profile stays minimal (no -developer or -full files)"; echo
+for entry in "${MINIMAL[@]}"; do
+  if [[ "$entry" == *-developer.txt || "$entry" == *-full.txt ]]; then
+    fail "minimal.txt must NOT include $entry (only base <source>.txt allowed in minimal)"
   fi
 done
+pass "minimal contains only base <source>.txt entries"
 echo
 
-bold "[3/5] developer profile excludes AI tools"; echo
-if contains "ai-tools.txt" "${DEVELOPER[@]}"; then
-  fail "developer.txt must NOT include ai-tools.txt (AI is the 'full' differentiator)"
-else
-  pass "developer does not leak ai-tools.txt"
-fi
-for required in cargo.txt npm.txt; do
+bold "[3/5] developer profile excludes -full files (those are Bragatte's pick)"; echo
+for entry in "${DEVELOPER[@]}"; do
+  if [[ "$entry" == *-full.txt ]]; then
+    fail "developer.txt must NOT include $entry (-full is full-only)"
+  fi
+done
+pass "developer does not leak -full files"
+for required in npm-developer.txt; do
   if contains "$required" "${DEVELOPER[@]}"; then
     pass "developer includes $required"
   else
     fail "developer.txt must include $required"
   fi
 done
+
+# Rust tools moved to data/packages.csv (Onda 5) — developer must include csv:rust-cli at minimum
+if contains "csv:rust-cli" "${DEVELOPER[@]}"; then
+  pass "developer includes csv:rust-cli (Rust baseline)"
+else
+  fail "developer.txt must include csv:rust-cli"
+fi
 echo
 
 bold "[4/5] full profile delivers the AI differentiator"; echo
-if contains "ai-tools.txt" "${FULL[@]}"; then
-  pass "full includes ai-tools.txt"
+if contains "ai-tools-full.txt" "${FULL[@]}"; then
+  pass "full includes ai-tools-full.txt"
 else
-  fail "full.txt must include ai-tools.txt"
+  fail "full.txt must include ai-tools-full.txt"
 fi
 echo
 
@@ -117,16 +124,31 @@ echo
 # Most entries live in data/packages/, but a few have dedicated sibling
 # directories handled by special loaders. Keep this allowlist in sync with
 # src/core/defaults.sh and src/platforms/*/main.sh when you add a new one.
+#
+# csv:<category> entries are resolved against data/packages.csv (column 1).
 # ---------------------------------------------------------------------------
 declare -A SPECIAL_LOCATIONS=(
   ["macos-defaults.txt"]="$REPO_ROOT/data/defaults/macos-defaults.txt"
 )
+CSV_FILE="$REPO_ROOT/data/packages.csv"
 
 bold "[5/5] All referenced package files exist on disk"; echo
 missing_before=$errors
 for profile in minimal developer full; do
   while IFS= read -r entry; do
     [[ -z "$entry" ]] && continue
+    # csv:<category> entries — validate against data/packages.csv
+    if [[ "$entry" == csv:* ]]; then
+      cat_name="${entry#csv:}"
+      if [[ ! -f "$CSV_FILE" ]]; then
+        fail "$profile.txt references $entry but data/packages.csv is missing"
+        continue
+      fi
+      if ! awk -F',' -v cat="$cat_name" 'NR>1 && $1==cat {found=1} END{exit !found}' "$CSV_FILE"; then
+        fail "$profile.txt references $entry but no rows with category=$cat_name in data/packages.csv"
+      fi
+      continue
+    fi
     special="${SPECIAL_LOCATIONS[$entry]:-}"
     if [[ -n "$special" && -f "$special" ]]; then
       continue  # resolved via allowlist

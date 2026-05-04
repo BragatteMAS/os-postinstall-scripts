@@ -1,27 +1,44 @@
-# Full profile - all packages including AI tools
+# Full profile - everything from developer + Bragatte's personal pick
 # Platform-agnostic: each main.sh filters to relevant files
+#
+# Naming convention:
+#   <source>.txt              base — included by every profile that uses this source
+#   <source>-developer.txt    developer + full only (not in minimal)
+#   <source>-full.txt         full only (Bragatte's personal pick)
 
 # Linux
 apt.txt
-apt-post.txt
+apt-developer.txt
+apt-full.txt
 
 # macOS
 brew.txt
-brew-cask.txt
+brew-developer.txt
+brew-full.txt
+brew-cask-developer.txt
+brew-cask-full.txt
 
 # Windows
 winget.txt
+winget-developer.txt
+winget-full.txt
 
 # Cross-platform
-cargo.txt
-npm.txt
-ai-tools.txt
+npm-developer.txt
+ai-tools-full.txt
+
+# Cross-platform Rust tools (CSV-driven, all 5 categories)
+csv:rust-cli
+csv:rust-dev
+csv:rust-data
+csv:rust-tui
+csv:rust-shell
 
 # macOS defaults (skipped on Linux/Windows)
 macos-defaults.txt
 
 # Linux-only (skipped on macOS)
-flatpak.txt
-flatpak-post.txt
-snap.txt
-snap-post.txt
+flatpak-developer.txt
+flatpak-full.txt
+snap-developer.txt
+snap-full.txt

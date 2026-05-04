@@ -9,3 +9,6 @@ brew.txt
 
 # Windows
 winget.txt
+
+# Cross-platform Rust CLI baseline (modern Unix replacements)
+csv:rust-cli

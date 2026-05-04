@@ -1,24 +1,34 @@
 # Developer profile - system + development tools
 # Platform-agnostic: each main.sh filters to relevant files
+#
+# Naming convention:
+#   <source>.txt              base — included by every profile that uses this source
+#   <source>-developer.txt    developer + full only (not in minimal)
+#   <source>-full.txt         full only (Bragatte's personal pick)
 
 # Linux
 apt.txt
-apt-post.txt
+apt-developer.txt
 
 # macOS
 brew.txt
-brew-cask.txt
+brew-cask-developer.txt
 
 # Windows
 winget.txt
+winget-developer.txt
 
 # Cross-platform
-cargo.txt
-npm.txt
+npm-developer.txt
+
+# Cross-platform Rust tools (CSV-driven, prefer=brew default)
+csv:rust-cli
+csv:rust-dev
+csv:rust-data
 
 # macOS defaults (skipped on Linux/Windows)
 macos-defaults.txt
 
 # Linux-only (skipped on macOS)
-flatpak.txt
-snap.txt
+flatpak-developer.txt
+snap-developer.txt

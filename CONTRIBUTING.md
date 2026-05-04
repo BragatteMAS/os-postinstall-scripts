@@ -82,8 +82,8 @@ os-postinstall-scripts/
 │   │   ├── macos/              #   macOS orchestrator and installers
 │   │   └── windows/            #   Windows modules (PowerShell)
 │   ├── install/                # Cross-platform tool installers
-│   │   ├── rust-cli.sh         #   Rust CLI tools (bat, eza, fd, ripgrep, etc.)
-│   │   ├── fnm.sh              #   fnm + Node.js LTS + pnpm + bun
+│   │   # rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
+│   │   ├── fnm.sh              #   fnm + Node.js LTS + pnpm + bun (mise preferred)
 │   │   ├── uv.sh              #   uv + Python
 │   │   ├── ai-tools.sh         #   AI/MCP tools (Claude, Codex, Ollama, etc.)
 │   │   └── dev-env.sh          #   Dev environment orchestrator
@@ -91,7 +91,9 @@ os-postinstall-scripts/
 │       └── dotfiles-install.sh #   Dotfiles deployment
 ├── data/
 │   ├── packages/               # Package lists (one per line, # for comments)
-│   │   ├── apt.txt, brew.txt, cargo.txt, npm.txt, winget.txt, ...
+│   │   ├── apt.txt, brew.txt, winget.txt          # base (all profiles)
+│   │   ├── *-developer.txt                        # developer + full
+│   │   ├── *-full.txt                             # full only (Bragatte's personal pick)
 │   │   └── profiles/           #   minimal.txt, developer.txt, full.txt
 │   └── dotfiles/               # Dotfile templates
 │       ├── git/, zsh/, bash/, shared/, starship/
@@ -308,7 +310,7 @@ Note: `src/**/*.sh` glob requires `shopt -s globstar` which is not portable. Use
 
 ## Adding Packages
 
-1. Edit the appropriate file in `data/packages/` (e.g., `apt.txt`, `brew.txt`, `cargo.txt`)
+1. Edit the appropriate file in `data/packages/`. Naming convention reflects profile: `<source>.txt` (all profiles), `<source>-developer.txt` (dev + full), `<source>-full.txt` (full only).
 2. Add one package per line. Use `#` for comments
 3. If the package belongs to a specific profile, ensure the package file is listed in the corresponding profile under `data/packages/profiles/`
 4. Test with `./setup.sh --dry-run` to verify the package is picked up correctly

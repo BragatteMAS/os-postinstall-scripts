@@ -1,92 +1,21 @@
-# Homebrew Formulae List
-# Source: Common macOS development tools
-# One package per line, comments start with #
+# brew.txt
+# Homebrew formulae — base (minimal + developer + full)
+# Universal essentials. Other formulae live in brew-developer.txt or brew-full.txt.
+#
+# Naming convention:
+#   brew.txt              base — included by every macOS profile (this file)
+#   brew-developer.txt    developer + full
+#   brew-full.txt         full only (Bragatte's personal pick)
+#
+# Cross-platform conceptual parity:
+#   git, curl, wget, bash, zsh → apt has equivalents, winget has equivalents.
+#   Linux/Windows lists currently legacy mono — see CHANGELOG "Known asymmetry".
 
-# System - Utilities
+# Network / file transfer
 git
 curl
 wget
-htop
-tree
-tmux
 
-# Development - Build Tools
-cmake
-pkg-config
-openssl
-shellcheck
-
-# Development - Languages & Runtimes
-python
-go
-rust
-r
-node
-uv
-pipx
-
-# Development - Git Tools
-gh
-lazygit
-jj
-diff-so-fancy
-
-# Development - Linters & Formatters
-biome
-
-# Terminal - Multiplexer & File Manager
-zellij
-yazi
-
-# Terminal - Rust CLI Tools (also available via cargo)
-bat
-eza
-fd
-ripgrep
-zoxide
-git-delta
-starship
-procs
-sd
-dust
-tokei
-
-# Terminal - Fuzzy Finder
-fzf
-
-# Terminal - Recording
-asciinema
-
-# Data & Documents
-duckdb
-pandoc
-typst
-csvkit
-gnuplot
-
-# Media & OCR
-ffmpeg
-imagemagick
-tesseract
-
-# AI Tools
-claude-squad
-
-# Web & Network
-aria2
-trafilatura
-sshpass
-
-# Accessibility & Calendar
-espeak-ng
-gcalcli
-
-# Dotfiles Manager
-chezmoi
-
-# Shell
-zsh
+# Shells (bash 4+ required by setup.sh; zsh is the modern default)
 bash
-
-# Archive
-sevenzip
+zsh

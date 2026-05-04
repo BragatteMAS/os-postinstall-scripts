@@ -1,0 +1,31 @@
+# ai-tools-full.txt
+# AI tools — full only (Bragatte uses heavily)
+#
+# DON'T run `./setup.sh full` if you want neutral dev defaults.
+# Use `./setup.sh developer` instead.
+#
+# Format: prefix:package-name (npm:, curl:, bun:, uv:, pipx:)
+#
+# MCPs (Model Context Protocol) are managed externally via mcpl
+# (MCP Launchpad — install via `uv tool install mcpl`, then `mcpl install <server>`).
+# Run `h ai` for runtime help. See docs/migration-m1-to-m5.md for setup.
+
+# AI CLI clients (via npm)
+npm:@anthropic-ai/claude-code
+npm:@openai/codex
+npm:@google/gemini-cli
+npm:@github/copilot
+
+# AI CLI alternative (via bun — opencode is bun-distributed)
+bun:opencode-ai
+
+# Local LLM runtime (via curl install script)
+curl:ollama
+
+# AI workflow tools (via uv)
+uv:claude-monitor
+uv:specify-cli
+
+# Utility (via uv — uv first, pipx only as fallback if uv ever fails)
+uv:markitdown
+uv:fastapi-mcp

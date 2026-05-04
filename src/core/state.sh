@@ -209,13 +209,16 @@ show_drift_report() {
     local drift_found=0
 
     # Manager → data file mapping
+    # Uses the file most representative of "what this manager installs by default"
+    # for drift detection. brew uses brew.txt (base) since drift checks
+    # against installed-on-request which captures the union.
+    # cargo: removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*).
     local -A manager_files=(
         [brew]="brew.txt"
-        [brew-cask]="brew-cask.txt"
+        [brew-cask]="brew-cask-developer.txt"
         [apt]="apt.txt"
-        [flatpak]="flatpak.txt"
-        [snap]="snap.txt"
-        [cargo]="cargo.txt"
+        [flatpak]="flatpak-developer.txt"
+        [snap]="snap-developer.txt"
     )
 
     local manager data_file

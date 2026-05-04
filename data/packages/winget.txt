@@ -1,66 +1,18 @@
-# Winget Package List
-# Source: platforms/windows/win11.ps1
-# One package per line, comments start with #
+# winget.txt
+# WinGet packages — base (minimal + developer + full)
+# Universal essentials for any Windows dev. Other packages live in
+# winget-developer.txt or winget-full.txt.
+#
+# Naming convention:
+#   winget.txt              base — included by every Windows profile (this file)
+#   winget-developer.txt    developer + full
+#   winget-full.txt         full only (Bragatte's personal pick)
+
+# Version control
+Git.Git
 
 # Terminal
 Microsoft.WindowsTerminal
 
-# Editors
-JackieLiu.NotepadsApp
+# Editor
 Microsoft.VisualStudioCode
-
-# Development - BI
-Microsoft.PowerBI
-
-# Development - Git
-Git.Git
-GitHub.GitHubDesktop
-GitHub.cli
-
-# Development - WSL
-Canonical.Ubuntu
-
-# Development - Data Science
-Anaconda.Anaconda3
-RStudio.RStudio
-
-# Cloud Storage
-Dropbox.Dropbox
-Mega.MEGASync
-
-# Browsers
-BraveSoftware.BraveBrowser
-Mozilla.Firefox
-Google.Chrome
-
-# Productivity - Knowledge
-Zotero.Zotero
-Obsidian.Obsidian
-Notion.Notion
-ClickUp.ClickUp
-
-# Productivity - Data
-UniversityOfWaikato.Weka
-
-# Productivity - Utilities
-Microsoft.PowerToys
-Toggl.TogglDesktop
-Skillbrains.lightshot
-Balena.Etcher
-
-# Media - Video
-OBSProject.OBSStudio
-Iriun.IriunWebcam
-HandBrake.HandBrake
-VideoLAN.VLC
-
-# Communication
-SlackTechnologies.Slack
-Zoom.Zoom
-Telegram.TelegramDesktop.Beta
-Spotify.Spotify
-
-# Gaming
-EpicGames.EpicGamesLauncher
-Valve.Steam
-Nvidia.GeForceExperience

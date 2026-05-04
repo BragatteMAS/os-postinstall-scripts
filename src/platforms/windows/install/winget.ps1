@@ -12,6 +12,13 @@
 
 $ErrorActionPreference = 'Continue'
 
+# Accept which winget file to load (winget.txt | winget-developer.txt | winget-full.txt)
+param(
+    [Parameter(Mandatory = $false)]
+    [ValidateSet('winget.txt', 'winget-developer.txt', 'winget-full.txt')]
+    [string]$PackageFile = 'winget.txt'
+)
+
 # Import core modules
 Import-Module "$PSScriptRoot/../core/logging.psm1" -Force
 Import-Module "$PSScriptRoot/../core/packages.psm1" -Force

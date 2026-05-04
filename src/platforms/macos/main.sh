@@ -45,6 +45,11 @@ source "${MACOS_DIR}/../../core/progress.sh" || {
     exit 1
 }
 
+source "${MACOS_DIR}/../../core/csv.sh" || {
+    log_error "Failed to load csv.sh"
+    exit 1
+}
+
 # Cross-platform installers directory
 INSTALL_DIR="${MACOS_DIR}/../../install"
 
@@ -140,9 +145,10 @@ install_profile() {
     total_steps=$(count_platform_steps "$profile_file" "macos")
     total_steps=$((total_steps + 1))
 
-    # For developer/full: dev-env + rust-cli run before dispatch loop
+    # For developer/full: dev-env runs before dispatch loop
+    # (Rust CLI tools moved to CSV-driven csv:rust-* dispatch in Onda 5)
     if [[ "$profile_name" != "minimal" ]]; then
-        total_steps=$((total_steps + 2))
+        total_steps=$((total_steps + 1))
     fi
 
     local current_step=0
@@ -152,18 +158,12 @@ install_profile() {
     show_progress "$current_step" "$total_steps" "Ensuring Homebrew is installed..."
     bash "${MACOS_DIR}/install/homebrew.sh" || return 1
 
-    # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
+    # For developer/full: install dev environment FIRST (Node.js + Python for AI tools)
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
         show_progress "$current_step" "$total_steps" "Setting up development environment..."
         if ! retry_with_backoff bash "${INSTALL_DIR}/dev-env.sh"; then
             record_failure "dev-env"
-        fi
-
-        current_step=$((current_step + 1))
-        show_progress "$current_step" "$total_steps" "Installing Rust CLI tools..."
-        if ! retry_with_backoff bash "${INSTALL_DIR}/rust-cli.sh"; then
-            record_failure "rust-cli"
         fi
     fi
 
@@ -179,40 +179,61 @@ install_profile() {
         case "$pkg_file" in
             brew.txt)
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing brew packages..."
+                show_progress "$current_step" "$total_steps" "Installing brew packages (base)..."
                 if ! retry_with_backoff bash "${MACOS_DIR}/install/brew.sh"; then
                     record_failure "brew packages"
                 fi
                 ;;
-            brew-cask.txt)
+            brew-developer.txt)
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing brew developer packages..."
+                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew.sh" --developer; then
+                    record_failure "brew developer packages"
+                fi
+                ;;
+            brew-full.txt)
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing brew full extras..."
+                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew.sh" --full; then
+                    record_failure "brew full extras"
+                fi
+                ;;
+            brew-cask-developer.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing brew cask packages..."
                 if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh"; then
                     record_failure "brew cask packages"
                 fi
                 ;;
-            ai-tools.txt)
+            brew-cask-full.txt)
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing brew cask full extras..."
+                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh" --full; then
+                    record_failure "brew cask full extras"
+                fi
+                ;;
+            ai-tools-full.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing AI tools..."
                 if ! retry_with_backoff bash "${INSTALL_DIR}/ai-tools.sh"; then
                     record_failure "AI tools"
                 fi
                 ;;
-            apt.txt|apt-post.txt)
+            apt.txt|apt-developer.txt|apt-full.txt)
                 # Linux-only - skip silently on macOS
                 log_debug "Skipping $pkg_file (Linux only)"
                 ;;
-            flatpak.txt|flatpak-post.txt|snap.txt|snap-post.txt)
-                # Linux-only - skip silently on macOS
-                log_debug "Skipping $pkg_file (Linux only)"
-                ;;
-            cargo.txt)
+            csv:rust-*)
+                local _csv_cat="${pkg_file#csv:}"
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing Cargo packages..."
-                if ! retry_with_backoff bash "${INSTALL_DIR}/cargo.sh"; then
-                    record_failure "Cargo packages"
-                fi
+                show_progress "$current_step" "$total_steps" "Installing CSV category: $_csv_cat..."
+                install_csv_category "$_csv_cat" || record_failure "csv:$_csv_cat"
                 ;;
+            flatpak-developer.txt|flatpak-full.txt|snap-developer.txt|snap-full.txt)
+                # Linux-only - skip silently on macOS
+                log_debug "Skipping $pkg_file (Linux only)"
+                ;;
+            # cargo-developer.txt removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
             macos-defaults.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Applying macOS system defaults..."
@@ -220,8 +241,8 @@ install_profile() {
                     record_failure "macOS defaults"
                 fi
                 ;;
-            npm.txt)
-                log_debug "Skipping npm.txt (handled by dev-env)"
+            npm-developer.txt)
+                log_debug "Skipping npm-developer.txt (handled by dev-env)"
                 ;;
             winget.txt)
                 # Windows-only - skip silently on macOS

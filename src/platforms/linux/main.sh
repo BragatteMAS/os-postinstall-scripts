@@ -117,25 +117,20 @@ install_profile() {
     local total_steps
     total_steps=$(count_platform_steps "$profile_file" "linux")
 
-    # For developer/full: dev-env + rust-cli run before dispatch loop
+    # For developer/full: dev-env runs before dispatch loop
+    # (Rust CLI tools moved to CSV-driven csv:rust-* dispatch in Onda 5)
     if [[ "$profile_name" != "minimal" ]]; then
-        total_steps=$((total_steps + 2))
+        total_steps=$((total_steps + 1))
     fi
 
     local current_step=0
 
-    # For developer/full: install dev tools FIRST (provides Node.js for AI tools)
+    # For developer/full: install dev environment FIRST (Node.js + Python for AI tools)
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
         show_progress "$current_step" "$total_steps" "Setting up development environment..."
         if ! retry_with_backoff bash "${INSTALL_DIR}/dev-env.sh"; then
             record_failure "dev-env"
-        fi
-
-        current_step=$((current_step + 1))
-        show_progress "$current_step" "$total_steps" "Installing Rust CLI tools..."
-        if ! retry_with_backoff bash "${INSTALL_DIR}/rust-cli.sh"; then
-            record_failure "rust-cli"
         fi
     fi
 
@@ -156,61 +151,68 @@ install_profile() {
                     record_failure "APT packages"
                 fi
                 ;;
-            apt-post.txt)
+            apt-developer.txt)
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing APT post-packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/apt.sh" --post; then
-                    record_failure "APT post-packages"
+                show_progress "$current_step" "$total_steps" "Installing APT developer packages..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/apt.sh" --developer; then
+                    record_failure "APT developer packages"
                 fi
                 ;;
-            flatpak.txt)
+            apt-full.txt)
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing APT full extras..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/apt.sh" --full; then
+                    record_failure "APT full extras"
+                fi
+                ;;
+            flatpak-developer.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Flatpak packages..."
                 if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh"; then
                     record_failure "Flatpak packages"
                 fi
                 ;;
-            flatpak-post.txt)
+            flatpak-full.txt)
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing Flatpak post-packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh" --post; then
-                    record_failure "Flatpak post-packages"
+                show_progress "$current_step" "$total_steps" "Installing Flatpak full extras..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh" --full; then
+                    record_failure "Flatpak full extras"
                 fi
                 ;;
-            snap.txt)
+            snap-developer.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Snap packages..."
                 if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh"; then
                     record_failure "Snap packages"
                 fi
                 ;;
-            snap-post.txt)
+            snap-full.txt)
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing Snap post-packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh" --post; then
-                    record_failure "Snap post-packages"
+                show_progress "$current_step" "$total_steps" "Installing Snap full extras..."
+                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh" --full; then
+                    record_failure "Snap full extras"
                 fi
                 ;;
-            cargo.txt)
-                current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing Cargo packages..."
-                if ! retry_with_backoff bash "${INSTALL_DIR}/cargo.sh"; then
-                    record_failure "Cargo packages"
-                fi
+            # cargo-developer.txt removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
+            npm-developer.txt)
+                log_debug "Skipping npm-developer.txt (handled by dev-env)"
                 ;;
-            npm.txt)
-                log_debug "Skipping npm.txt (handled by dev-env)"
-                ;;
-            ai-tools.txt)
+            ai-tools-full.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing AI tools..."
                 if ! retry_with_backoff bash "${INSTALL_DIR}/ai-tools.sh"; then
                     record_failure "AI tools"
                 fi
                 ;;
-            brew.txt|brew-cask.txt|macos-defaults.txt)
+            brew.txt|brew-developer.txt|brew-full.txt|brew-cask-developer.txt|brew-cask-full.txt|macos-defaults.txt)
                 # macOS-only - skip silently on Linux
                 log_debug "Skipping $pkg_file (macOS only)"
+                ;;
+            csv:rust-*)
+                _csv_cat="${pkg_file#csv:}"
+                current_step=$((current_step + 1))
+                show_progress "$current_step" "$total_steps" "Installing CSV category: $_csv_cat..."
+                install_csv_category "$_csv_cat" || record_failure "csv:$_csv_cat"
                 ;;
             winget.txt)
                 # Windows-only - skip silently on Linux

@@ -1,0 +1,31 @@
+# winget-full.txt
+# WinGet packages — full only (Bragatte's personal pick)
+#
+# DON'T run `./setup.ps1 -Profile full` if you want neutral dev defaults.
+# Use `./setup.ps1 -Profile developer` instead.
+
+# Browser personal preference
+BraveSoftware.BraveBrowser
+
+# Cloud storage personal
+Dropbox.Dropbox
+Mega.MEGASync
+
+# Productivity personal
+Notion.Notion
+ClickUp.ClickUp
+Toggl.TogglDesktop
+
+# Utilities personal
+Skillbrains.lightshot
+Balena.Etcher
+JackieLiu.NotepadsApp
+
+# Media / recording personal
+OBSProject.OBSStudio
+Iriun.IriunWebcam
+Spotify.Spotify
+
+# Communication personal
+Zoom.Zoom
+Telegram.TelegramDesktop.Beta

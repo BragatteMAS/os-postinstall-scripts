@@ -58,3 +58,6 @@ tests/results/*.log
 
 # Internal GSD workflow state (not for external consumers)
 .planning/
+
+# Personal migration snapshots (host inventory, never published)
+.migration/

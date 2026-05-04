@@ -136,9 +136,78 @@ install_ai_tool() {
             esac
             ;;
 
-        npx|uv)
-            log_debug "Skipping $prefix tool (runs on demand): $tool"
+        npx)
+            log_debug "Skipping npx tool (runs on demand): $tool"
             return 0
+            ;;
+
+        bun)
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_info "[DRY_RUN] Would bun add -g: $tool"
+                return 0
+            fi
+            if ! command -v bun &>/dev/null; then
+                log_warn "bun not found, skipping: $tool"
+                return 1
+            fi
+            if bun pm ls -g 2>/dev/null | grep -q "$tool"; then
+                log_debug "Already installed: $tool"
+                return 0
+            fi
+            log_info "Installing bun tool: $tool"
+            if bun add -g "$tool"; then
+                log_ok "Installed: $tool"
+                return 0
+            else
+                log_warn "Failed to install: $tool"
+                return 1
+            fi
+            ;;
+
+        uv)
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_info "[DRY_RUN] Would uv tool install: $tool"
+                return 0
+            fi
+            if ! command -v uv &>/dev/null; then
+                log_warn "uv not found, skipping: $tool"
+                return 1
+            fi
+            if uv tool list 2>/dev/null | grep -q "^$tool "; then
+                log_debug "Already installed: $tool"
+                return 0
+            fi
+            log_info "Installing uv tool: $tool"
+            if uv tool install "$tool"; then
+                log_ok "Installed: $tool"
+                return 0
+            else
+                log_warn "Failed to install: $tool"
+                return 1
+            fi
+            ;;
+
+        pipx)
+            if [[ "${DRY_RUN:-}" == "true" ]]; then
+                log_info "[DRY_RUN] Would pipx install: $tool"
+                return 0
+            fi
+            if ! command -v pipx &>/dev/null; then
+                log_warn "pipx not found, skipping: $tool"
+                return 1
+            fi
+            if pipx list 2>/dev/null | grep -q "package $tool"; then
+                log_debug "Already installed: $tool"
+                return 0
+            fi
+            log_info "Installing pipx tool: $tool"
+            if pipx install "$tool"; then
+                log_ok "Installed: $tool"
+                return 0
+            else
+                log_warn "Failed to install: $tool"
+                return 1
+            fi
             ;;
 
         *)
@@ -231,18 +300,20 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
             ;;
     esac
 
-    # Load packages from ai-tools.txt
-    if ! load_packages "ai-tools.txt"; then
-        log_error "Failed to load ai-tools.txt"
+    # Load packages from ai-tools-full.txt
+    if ! load_packages "ai-tools-full.txt"; then
+        log_error "Failed to load ai-tools-full.txt"
         exit 0
     fi
 
-    log_debug "Loaded ${#PACKAGES[@]} entries from ai-tools.txt"
+    log_debug "Loaded ${#PACKAGES[@]} entries from ai-tools-full.txt"
 
-    # Build list of installable entries (npm: and curl: only)
+    # Build list of installable entries (npm:, curl:, bun:, uv:, pipx:)
     declare -a installable=()
     for entry in "${PACKAGES[@]}"; do
-        if [[ "$entry" == npm:* || "$entry" == curl:* ]]; then
+        if [[ "$entry" == npm:* || "$entry" == curl:* || \
+              "$entry" == bun:* || "$entry" == uv:*  || \
+              "$entry" == pipx:* ]]; then
             installable+=("$entry")
         fi
     done

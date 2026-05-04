@@ -5,6 +5,75 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`data/packages.csv` — CSV-driven Rust tool catalog (Onda 5)**: 52 Rust tools
+  in 5 categories (`rust-cli`, `rust-dev`, `rust-data`, `rust-tui`, `rust-shell`).
+  Schema: `category,name,brew,cargo,binary,prefer,description`. Resolves the
+  brew↔cargo duplication via per-row `prefer` column with fallback. Idempotent
+  via binary-in-PATH check.
+- **`src/core/csv.sh`**: `install_csv_category()` reads CSV and installs each
+  entry respecting `prefer` (brew or cargo) with cross-source fallback.
+- **`h rust-cli` / `h rust-dev` / `h rust-data` / `h rust-tui` / `h rust-shell`**:
+  shell helpers in `data/dotfiles/shared/functions.sh` that read the CSV via
+  symlink (`~/.config/os-postinstall/packages.csv`) and list tools with
+  descriptions. Plus `h <toolname>` does direct lookup in the CSV (e.g.
+  `h ast-grep` shows category, brew/cargo source, binary, prefer, description).
+- **`h ai`** topic in shell helpers: lists AI CLI tools (claude, codex, gemini,
+  copilot, opencode, ollama, etc.) and documents MCP management via `mcpl`.
+- **`mise`** in `brew-developer.txt` as preferred tool version orchestrator.
+  `dev-env.sh` now offers mise install as first step (fnm/uv kept as fallback).
+- **Profile file `apt-full.txt`** for Linux personal pick (Bragatte). Linux now
+  has tri-level structure matching macOS.
+- **Three new package files** for macOS tri-level: `brew-developer.txt`,
+  `brew-full.txt`, `brew-cask-full.txt`.
+
+### Changed
+- **AI tools migrate from pipx to uv** (`markitdown`, `fastapi-mcp`). pipx
+  remains in `brew-developer.txt` as documented fallback only if uv ever fails.
+- **`ai-tools.sh` extended with `bun:`, `uv:`, `pipx:` prefix cases** (was
+  npm/curl only). Loads from `ai-tools-full.txt` (was `ai-tools.txt`).
+- **`apt.sh`, `flatpak.sh`, `snap.sh`, `brew-cask.sh` accept `--developer` /
+  `--full` flags** (`-post` kept as backwards-compat alias).
+- **Profile naming convention** updated globally — see breaking change below.
+
+### Removed (Onda 5 cleanup)
+- **`src/install/rust-cli.sh`** — Rust tools moved to `data/packages.csv`.
+- **`src/install/cargo.sh`** — replaced by `src/core/csv.sh::install_csv_category`.
+- **`data/packages/cargo-developer.txt`** — replaced by `csv:rust-*` entries.
+- Refs to `rust-cli.sh` and `cargo-developer.txt` cleaned up across:
+  `linux/main.sh`, `macos/main.sh`, `state.sh`, `progress.sh`, `validate-profiles.sh`,
+  `macos-inventory.sh`, `tests/test-core-progress.bats`, `tests/test-linux.sh`,
+  `tests/test_harness.sh`, `tests/pester/progress.Tests.ps1`, README, CONTRIBUTING,
+  `docs/installation-profiles.md`.
+
+### Changed (refactor — Onda 1 of curation cycle)
+- **Package file naming reflects profile membership** (breaking, internal):
+  Renamed all package files so the suffix indicates which profiles include the file.
+  `<source>.txt` = base (all profiles), `<source>-developer.txt` = dev + full,
+  `<source>-full.txt` = full only (Bragatte's personal pick).
+  - `apt-post.txt` → `apt-developer.txt`
+  - `brew-cask.txt` → `brew-cask-developer.txt`
+  - `cargo.txt` → `cargo-developer.txt`
+  - `npm.txt` → `npm-developer.txt`
+  - `flatpak.txt` → `flatpak-developer.txt`
+  - `flatpak-post.txt` → `flatpak-full.txt`
+  - `snap.txt` → `snap-developer.txt`
+  - `snap-post.txt` → `snap-full.txt`
+  - `ai-tools.txt` → `ai-tools-full.txt`
+  - New files (full-only): `brew-developer.txt`, `brew-full.txt`, `brew-cask-full.txt`
+- Installer scripts (`apt.sh`, `flatpak.sh`, `snap.sh`, `brew-cask.sh`) accept
+  new flag `--developer`/`--full`. Old flag `--post` kept as backwards-compat alias.
+- Dispatchers in `src/platforms/{linux,macos}/main.sh` and `src/core/progress.sh`
+  updated to recognize the new naming.
+- `tools/validate-profiles.sh` rewritten to validate the new naming convention.
+- `docs/installation-profiles.md`, `README.md`, `CONTRIBUTING.md` updated.
+
+### Migration note for forks
+If you forked before this commit, update your `profile.txt` files to use the
+new names. The file rename was performed via `git mv` so history is preserved.
+
 ## [4.2.2] - 2026-04-18
 
 ### Fixed

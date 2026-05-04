@@ -47,14 +47,16 @@ Describe 'Progress Module' {
             $result | Should -Be 0
         }
 
-        It 'Counts Windows-relevant entries' {
-            # winget.txt, cargo.txt, npm.txt, ai-tools.txt are Windows-relevant
-            # apt.txt, brew.txt are not
-            @('winget.txt', 'apt.txt', 'cargo.txt', 'npm.txt', '# comment', '', 'ai-tools.txt', 'brew.txt') |
+        It 'Counts Windows-relevant entries (tri-level winget)' {
+            # winget.txt, winget-developer.txt, winget-full.txt, npm-developer.txt,
+            # ai-tools-full.txt are Windows-relevant.
+            # apt.txt, brew.txt, csv:* are not (Linux/cross-platform).
+            @('winget.txt', 'winget-developer.txt', 'winget-full.txt', 'apt.txt', 'csv:rust-cli',
+              'npm-developer.txt', '# comment', '', 'ai-tools-full.txt', 'brew.txt') |
                 Set-Content (Join-Path $TestDrive 'test-profile.txt')
 
             $result = Get-PlatformStepCount -ProfileFile (Join-Path $TestDrive 'test-profile.txt')
-            $result | Should -Be 4
+            $result | Should -Be 5
         }
     }
 

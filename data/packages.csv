@@ -1,0 +1,69 @@
+# data/packages.csv — Cross-source SSoT for Rust tools (Onda 5 pilot)
+# Schema: category,name,brew,cargo,binary,prefer,description
+#
+# When binary == name, leave binary empty.
+# When a source isn't available, leave that column empty (at least one of brew/cargo must be filled).
+#
+# Categories per profile (referenced via csv:<category> in profile.txt):
+#   minimal:    rust-cli
+#   developer:  rust-cli, rust-dev, rust-data
+#   full:       rust-cli, rust-dev, rust-data, rust-tui, rust-shell
+#
+# Editorial principle: prefer Rust where mature alternative exists.
+# When prefer=brew: install via brew (binary), fallback cargo if absent.
+# When prefer=cargo: install via cargo, fallback brew if absent.
+# Idempotent: skip if `binary` (or name) already in PATH.
+
+category,name,brew,cargo,binary,prefer,description
+rust-cli,bat,bat,bat,,brew,Cat with syntax highlighting
+rust-cli,eza,eza,eza,,brew,Modern ls (icons + git status)
+rust-cli,fd,fd,fd-find,fd,brew,Modern find (intuitive syntax)
+rust-cli,ripgrep,ripgrep,ripgrep,rg,brew,Fast text search (respects gitignore)
+rust-cli,zoxide,zoxide,zoxide,,brew,Smart cd (frequency-based)
+rust-cli,git-delta,git-delta,git-delta,delta,brew,Git diff with syntax highlighting
+rust-cli,dust,dust,du-dust,dust,brew,Modern du (visual disk usage)
+rust-cli,procs,procs,procs,,brew,Modern ps (colored process list)
+rust-cli,sd,sd,sd,,brew,Modern sed (intuitive find/replace)
+rust-cli,tokei,tokei,tokei,,brew,Code statistics (lines per language)
+rust-cli,bottom,bottom,bottom,btm,brew,Modern top/htop visual
+rust-cli,hyperfine,hyperfine,hyperfine,,brew,Command-line benchmarking
+rust-cli,tealdeer,tealdeer,tealdeer,tldr,brew,tldr-pages in Rust
+rust-cli,choose,choose-rust,choose,choose,brew,Modern cut/awk for simple cases
+rust-cli,xh,xh,xh,,brew,HTTP client (httpie-style)
+rust-cli,ouch,ouch,ouch,,brew,Universal archive (extract/compress any format)
+rust-cli,jless,jless,jless,,brew,JSON viewer (interactive)
+rust-cli,bandwhich,bandwhich,bandwhich,,brew,Network bandwidth by process
+rust-cli,gping,gping,gping,,brew,Ping with TUI graph
+rust-dev,cargo-watch,,cargo-watch,cargo-watch,cargo,Auto-rerun cargo on file change
+rust-dev,cargo-edit,,cargo-edit,cargo-edit,cargo,cargo add/upgrade/rm subcommands
+rust-dev,cargo-update,,cargo-update,cargo-install-update,cargo,Update installed crates
+rust-dev,cargo-audit,,cargo-audit,cargo-audit,cargo,Security audit Cargo.lock
+rust-dev,cargo-binstall,,cargo-binstall,cargo-binstall,cargo,Faster install via binary releases
+rust-dev,cargo-expand,,cargo-expand,cargo-expand,cargo,Show macro expansion
+rust-dev,bacon,bacon,bacon,,brew,Background Rust code checker
+rust-dev,gitui,gitui,gitui,,brew,Git terminal UI
+rust-dev,ast-grep,ast-grep,ast-grep,sg,brew,Structural code search/refactor (AST-based)
+rust-dev,ruff,ruff,ruff,,brew,Python linter (10-100x faster than flake8)
+rust-dev,mdbook,mdbook,mdbook,,brew,Markdown book generator (Rust book style)
+rust-dev,cargo-cache,,cargo-cache,cargo-cache,cargo,Cargo cache cleanup
+rust-dev,cargo-deny,,cargo-deny,cargo-deny,cargo,License + security policy enforcement
+rust-dev,gix,gitoxide,gitoxide-core,gix,brew,Git in Rust (alternative to git)
+rust-dev,watchexec,watchexec,watchexec-cli,watchexec,brew,Generic file watcher (re-run any cmd)
+rust-data,qsv,qsv,qsv,,brew,CSV swiss-army (50+ subcommands)
+rust-data,jaq,jaq,jaq,,brew,jq rewrite in Rust (compatible syntax, faster)
+rust-data,jql,,jql,jql,cargo,JSON query language
+rust-data,htmlq,,htmlq,htmlq,cargo,Extract data from HTML by CSS selector
+rust-data,fclones,fclones,fclones,,brew,Find duplicate files (parallel hashing)
+rust-tui,helix,helix,helix-term,hx,brew,Modal editor (Vim-style)
+rust-tui,yazi,yazi,yazi-fm,yazi,brew,File manager TUI (Vim-style)
+rust-tui,zellij,zellij,zellij,,brew,Terminal multiplexer (modern)
+rust-tui,broot,broot,broot,br,brew,Directory tree TUI navegável
+rust-tui,mprocs,mprocs,mprocs,,brew,Multi-process TUI (run+watch many cmds)
+rust-tui,mdcat,mdcat,mdcat,,brew,Markdown render no terminal
+rust-tui,presenterm,presenterm,presenterm,,brew,Markdown slides no terminal
+rust-tui,television,television,television,tv,brew,Fuzzy finder TUI with rich preview
+rust-shell,starship,starship,starship,,brew,Cross-shell prompt
+rust-shell,nushell,nushell,nu,nu,brew,Modern shell with structured data
+rust-shell,atuin,atuin,atuin,,brew,Shell history in SQLite with sync
+rust-shell,topgrade,topgrade,topgrade,,brew,Unified updater (brew/cargo/rustup/etc.)
+rust-shell,pueue,pueue,pueue,,brew,Task queue daemon for shell jobs

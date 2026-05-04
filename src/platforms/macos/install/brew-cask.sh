@@ -115,13 +115,19 @@ declare -a FAILED_ITEMS=()
 
 log_banner "Homebrew Cask Installer"
 
+# Determine which cask file to use (two-pass support: developer/full)
+pkg_file="brew-cask-developer.txt"
+if [[ "${1:-}" == "--full" ]]; then
+    pkg_file="brew-cask-full.txt"
+fi
+
 # Load packages from data file
-if ! load_packages "brew-cask.txt"; then
-    log_error "Failed to load cask packages from data/packages/brew-cask.txt"
+if ! load_packages "$pkg_file"; then
+    log_error "Failed to load cask packages from data/packages/$pkg_file"
     exit 1
 fi
 
-log_info "Loaded ${#PACKAGES[@]} casks from brew-cask.txt"
+log_info "Loaded ${#PACKAGES[@]} casks from $pkg_file"
 
 # Install casks
 log_info "Installing ${#PACKAGES[@]} Homebrew casks..."

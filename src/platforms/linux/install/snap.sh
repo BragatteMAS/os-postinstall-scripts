@@ -118,10 +118,11 @@ declare -a FAILED_ITEMS=()
 
 log_banner "Snap Package Installer"
 
-# Parse --post arg for two-pass install
-pkg_file="snap.txt"
-if [[ "${1:-}" == "--post" ]]; then
-    pkg_file="snap-post.txt"
+# Parse --full arg for two-pass install
+pkg_file="snap-developer.txt"
+if [[ "${1:-}" == "--full" || "${1:-}" == "--post" ]]; then
+    # --post kept as alias for backwards-compat
+    pkg_file="snap-full.txt"
 fi
 
 # Check if snap is available

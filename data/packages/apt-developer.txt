@@ -1,0 +1,39 @@
+# apt-developer.txt
+# APT packages — developer + full
+# Curated dev defaults beyond apt.txt baseline. Defensible to most Linux devs.
+#
+# Run with `./setup.sh developer` or `./setup.sh full`.
+# For Bragatte's personal pick (folder tweaks, etc.), see apt-full.txt.
+
+# System utilities
+synaptic
+gdebi
+htop
+gufw
+timeshift
+neofetch
+
+# Terminal emulator (Rust — modern default)
+alacritty
+
+# File manager (Cinnamon — default in Pop!_OS / Mint)
+nemo
+
+# Containers & virtualization (universal dev)
+docker.io
+virtualbox-qt
+
+# Media tools
+ffmpeg
+flameshot
+arandr
+simplescreenrecorder
+
+# GNOME tweaks (mainstream Ubuntu/Pop_OS)
+gnome-tweaks
+gnome-shell-extensions
+gnome-shell-extension-prefs
+
+# Productivity / research
+xpad
+pspp

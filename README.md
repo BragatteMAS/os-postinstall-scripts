@@ -210,6 +210,14 @@ bash os-postinstall-scripts/terminal-setup.sh                # install everythin
 
 Profiles are plain text files listing which package files to process. Each platform orchestrator filters for its relevant files.
 
+**File naming convention** reflects which profiles include each file:
+
+| Suffix | Included in | Use |
+|--------|-------------|-----|
+| `<source>.txt` | minimal + developer + full | Base — universal essentials |
+| `<source>-developer.txt` | developer + full | Dev defaults (not in minimal) |
+| `<source>-full.txt` | full only | Bragatte's personal pick (don't run if you want neutral defaults — use `developer` instead) |
+
 **Minimal** (`data/packages/profiles/minimal.txt`):
 ```
 apt.txt          # Linux
@@ -219,53 +227,60 @@ winget.txt       # Windows
 
 **Developer** (`data/packages/profiles/developer.txt`):
 ```
-apt.txt          # Linux
-apt-post.txt     # Linux
-brew.txt         # macOS
-brew-cask.txt    # macOS
-winget.txt       # Windows
-cargo.txt        # Cross-platform
-npm.txt          # Cross-platform
-ai-tools.txt     # Cross-platform
-flatpak.txt      # Linux
-snap.txt         # Linux
+apt.txt                       # Linux base
+apt-developer.txt             # Linux dev extras
+brew.txt                      # macOS base
+brew-cask-developer.txt       # macOS GUI apps (dev defaults)
+winget.txt                    # Windows
+cargo-developer.txt           # Cross-platform Rust crates
+npm-developer.txt             # Cross-platform npm globals
+flatpak-developer.txt         # Linux flatpaks
+snap-developer.txt            # Linux snaps
 ```
 
-**Full** (`data/packages/profiles/full.txt`):
+**Full** (`data/packages/profiles/full.txt`) — everything from developer + Bragatte's pick:
 ```
-apt.txt          # Linux
-apt-post.txt     # Linux
-brew.txt         # macOS
-brew-cask.txt    # macOS
-winget.txt       # Windows
-cargo.txt        # Cross-platform
-npm.txt          # Cross-platform
-ai-tools.txt     # Cross-platform
-flatpak.txt      # Linux
-flatpak-post.txt # Linux
-snap.txt         # Linux
-snap-post.txt    # Linux
+apt.txt                       # Linux base
+apt-developer.txt             # Linux dev extras
+brew.txt                      # macOS base
+brew-developer.txt            # macOS dev formulae
+brew-full.txt                 # macOS Bragatte personal formulae
+brew-cask-developer.txt       # macOS GUI apps (dev defaults)
+brew-cask-full.txt            # macOS GUI apps (Bragatte personal pick)
+winget.txt                    # Windows
+cargo-developer.txt           # Rust crates
+npm-developer.txt             # npm globals
+ai-tools-full.txt             # AI/MCP tools (full only)
+flatpak-developer.txt         # Linux flatpaks
+flatpak-full.txt              # Linux flatpak full extras
+snap-developer.txt            # Linux snaps
+snap-full.txt                 # Linux snap full extras
 ```
 
 </details>
 
 <details>
-<summary><b>Package counts per file</b></summary>
+<summary><b>Package files reference</b></summary>
 
-| File | Packages | Used In |
-|------|:--------:|---------|
-| `apt.txt` | 46 | All Linux profiles |
-| `apt-post.txt` | 34 | Developer, Full |
-| `brew.txt` | 19 | All macOS profiles |
-| `brew-cask.txt` | 14 | Developer, Full |
-| `cargo.txt` | 30 | Developer, Full |
-| `npm.txt` | 7 | Developer, Full |
-| `winget.txt` | 36 | All Windows profiles |
-| `flatpak.txt` | 24 | Developer, Full |
-| `flatpak-post.txt` | 49 | Full |
-| `snap.txt` | 21 | Developer, Full |
-| `snap-post.txt` | 7 | Full |
-| `ai-tools.txt` | 11 | Developer, Full |
+Counts will be updated after curation completes.
+
+| File | Used In |
+|------|---------|
+| `apt.txt` | minimal, developer, full |
+| `apt-developer.txt` | developer, full |
+| `brew.txt` | minimal, developer, full |
+| `brew-developer.txt` | developer, full (macOS dev formulae) |
+| `brew-full.txt` | full only (macOS Bragatte personal formulae) |
+| `brew-cask-developer.txt` | developer, full |
+| `brew-cask-full.txt` | full only |
+| `cargo-developer.txt` | developer, full |
+| `npm-developer.txt` | developer, full |
+| `winget.txt` | minimal, developer, full |
+| `flatpak-developer.txt` | developer, full |
+| `flatpak-full.txt` | full only |
+| `snap-developer.txt` | developer, full |
+| `snap-full.txt` | full only |
+| `ai-tools-full.txt` | full only |
 
 </details>
 
@@ -347,20 +362,23 @@ os-postinstall-scripts/
 │   │       ├── core/           #   logging.psm1, errors.psm1, packages.psm1
 │   │       └── install/        #   winget.ps1
 │   └── install/                # Cross-platform installers
-│       ├── rust-cli.sh         #   bat, eza, fd, rg, delta, zoxide
-│       ├── dev-env.sh          #   fnm + uv orchestrator, SSH keys
+│       ├── csv.sh              #   CSV-driven Rust tool installer (Onda 5)
+│       ├── dev-env.sh          #   mise + fnm + uv orchestrator, SSH keys
 │       ├── fnm.sh              #   Node.js via fnm
 │       ├── uv.sh              #   Python via uv
 │       ├── ai-tools.sh         #   Claude, Codex, Gemini, Ollama
 │       └── dotfiles-install.sh #   Dotfiles symlink installer
 ├── data/
-│   ├── packages/               # Package lists (one file per manager)
+│   ├── packages/               # Package lists (named by profile membership)
 │   │   ├── profiles/           #   minimal.txt, developer.txt, full.txt
-│   │   ├── apt.txt             #   46 packages
-│   │   ├── brew.txt            #   19 formulae
-│   │   ├── cargo.txt           #   30 crates
-│   │   ├── winget.txt          #   36 packages
-│   │   └── ...                 #   12 files total
+│   │   ├── apt.txt             #   base (all profiles)
+│   │   ├── apt-developer.txt   #   dev + full
+│   │   ├── brew.txt            #   base (all profiles)
+│   │   ├── brew-cask-developer.txt  # dev + full
+│   │   ├── brew-cask-full.txt  #   full only (Bragatte's personal pick)
+│   │   ├── cargo-developer.txt #   dev + full
+│   │   ├── ai-tools-full.txt   #   full only
+│   │   └── ...                 #   See "Package files reference" above
 │   ├── defaults/               # macOS system defaults (pipe-delimited)
 │   │   └── macos-defaults.txt  #   Dock, Finder, Keyboard, Trackpad, etc.
 │   ├── hooks/                  # Post-install hook scripts
@@ -459,7 +477,7 @@ Create a new file in `data/packages/profiles/`:
 ```bash
 # data/packages/profiles/custom.txt
 apt.txt
-cargo.txt
+cargo-developer.txt
 ```
 
 Then run: `./setup.sh custom`

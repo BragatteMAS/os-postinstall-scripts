@@ -1,0 +1,8 @@
+# apt-full.txt
+# APT packages — full only (Bragatte's personal pick)
+#
+# DON'T run `./setup.sh full` if you want neutral dev defaults.
+# Use `./setup.sh developer` instead.
+
+# GNOME folder color tweak (personal aesthetic)
+folder-color

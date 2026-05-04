@@ -7,8 +7,9 @@
 #######################################
 # PowerShell equivalent of src/platforms/linux/main.sh
 # Dual-mode: $Profile param for unattended, interactive menu otherwise
-# Reads profile file directly, dispatches winget.txt, cargo.txt, npm.txt, ai-tools.txt to platform installers
-# Non-Windows package files (apt.txt, brew.txt, etc.) silently skipped
+# Reads profile file directly, dispatches winget*.txt, npm-developer.txt, ai-tools-full.txt to platform installers
+# Non-Windows package files (apt*.txt, brew*.txt, csv:rust-*) silently skipped
+# Windows is now tri-level: winget.txt (base), winget-developer.txt (dev+full), winget-full.txt (full only)
 
 param(
     [ValidateSet('', 'minimal', 'developer', 'full')]
@@ -83,33 +84,44 @@ function Install-Profile {
 
     # Dispatch based on package file type (PLATFORM FILTERING)
     foreach ($pkgFile in $entries) {
-        switch ($pkgFile) {
-            'winget.txt' {
+        switch -Regex ($pkgFile) {
+            '^winget\.txt$' {
                 $currentStep++
-                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet packages..."
-                & "$WindowsDir/install/winget.ps1"
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet base packages..."
+                & "$WindowsDir/install/winget.ps1" -PackageFile 'winget.txt'
                 if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
-            'cargo.txt' {
+            '^winget-developer\.txt$' {
                 $currentStep++
-                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing Cargo packages..."
-                & "$WindowsDir/install/cargo.ps1"
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet developer packages..."
+                & "$WindowsDir/install/winget.ps1" -PackageFile 'winget-developer.txt'
                 if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
-            'npm.txt' {
+            '^winget-full\.txt$' {
+                $currentStep++
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing WinGet full extras..."
+                & "$WindowsDir/install/winget.ps1" -PackageFile 'winget-full.txt'
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
+            }
+            '^npm-developer\.txt$' {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing NPM global packages..."
                 & "$WindowsDir/install/npm.ps1"
                 if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
-            'ai-tools.txt' {
+            '^ai-tools-full\.txt$' {
                 $currentStep++
                 Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing AI tools..."
                 & "$WindowsDir/install/ai-tools.ps1"
                 if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
+            '^csv:rust-' {
+                # Rust tools are managed via data/packages.csv (Onda 5).
+                # Windows CSV runner not implemented yet — skip silently.
+                Write-Log -Level DEBUG -Message "Skipping $pkgFile (Windows CSV runner not implemented)"
+            }
             default {
-                # Non-Windows package files (apt.txt, brew.txt, etc.): skip silently
+                # Non-Windows package files (apt.txt, brew.txt, cargo-*.txt, etc.): skip silently
                 Write-Log -Level DEBUG -Message "Skipping $pkgFile (not a Windows package file)"
             }
         }

@@ -122,10 +122,13 @@ declare -a FAILED_ITEMS=()
 
 log_banner "APT Package Installer"
 
-# Determine which package file to use (two-pass support)
+# Determine which package file to use (three-pass support)
 pkg_file="apt.txt"
-if [[ "${1:-}" == "--post" ]]; then
-    pkg_file="apt-post.txt"
+if [[ "${1:-}" == "--developer" || "${1:-}" == "--post" ]]; then
+    # --post kept as alias for backwards-compat in case scripts pass it
+    pkg_file="apt-developer.txt"
+elif [[ "${1:-}" == "--full" ]]; then
+    pkg_file="apt-full.txt"
 fi
 
 # Non-interactive mode: keep existing config files on package upgrades

@@ -159,7 +159,7 @@ function Show-AiSummary {
 Write-Log -Level BANNER -Message 'AI Coding Tools'
 
 # Load packages from data file
-$Packages = Read-PackageFile -FileName 'ai-tools.txt'
+$Packages = Read-PackageFile -FileName 'ai-tools-full.txt'
 
 if ($Packages.Count -eq 0) {
     Write-Log -Level WARN -Message 'No packages to install'

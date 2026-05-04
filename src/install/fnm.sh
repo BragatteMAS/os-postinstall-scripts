@@ -4,6 +4,11 @@
 # Description: Cross-platform fnm (Fast Node Manager) installer with Node LTS and global npm packages
 # Author: Bragatte
 # Date: 2026-02-06
+#
+# NOTE (2026-05): mise (in dev-env.sh) is the preferred orchestrator for tool
+# versions. fnm is kept here as a reliable fallback for users who don't install
+# mise, and to bootstrap Node before mise is available. When mise is present,
+# user projects with .nvmrc / .tool-versions are picked up by mise transparently.
 #######################################
 
 # Prevent multiple sourcing

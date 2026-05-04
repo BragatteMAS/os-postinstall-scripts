@@ -1,0 +1,39 @@
+# brew-full.txt
+# Homebrew formulae — full only (Bragatte's personal pick)
+#
+# DON'T run `./setup.sh full` if you want neutral dev defaults.
+# Use `./setup.sh developer` instead.
+#
+# These are external taps, niche tools, and personal-use formulae specific
+# to Bragatte's workflow (bioinfo, AI heavy, custom-tap experiments).
+
+# AI / Claude ecosystem
+claude-squad
+anomalyco/tap/opencode
+tw93/tap/mole
+yakitrak/yakitrak/obsidian-cli
+worktrunk
+
+# Calendar / voice / niche scripting
+gcalcli
+espeak-ng
+
+# Dev infra (databases + Java)
+postgresql@17
+redis
+openjdk
+
+# Bioinfo / GIS
+gdal
+udunits
+librsvg
+resvg
+rig
+
+# Network niche
+cloudflared
+trafilatura
+
+# Custom / experimental taps
+dmno-dev/tap/varlock
+valkyrie00/bbrew/bbrew

@@ -1,0 +1,32 @@
+# winget-developer.txt
+# WinGet packages — developer + full
+# Curated dev defaults for Windows. Defensible to most Windows devs.
+
+# Windows-specific dev essentials
+Microsoft.PowerToys
+Canonical.Ubuntu
+
+# Git tooling
+GitHub.cli
+GitHub.GitHubDesktop
+
+# Browsers (paridade com brew/apt: Firefox + Chromium-equivalent)
+Mozilla.Firefox
+Google.Chrome
+
+# Notes & research (paridade com brew-cask-developer)
+Obsidian.Obsidian
+Zotero.Zotero
+
+# Communication (mainstream)
+SlackTechnologies.Slack
+
+# Media (universal)
+VideoLAN.VLC
+HandBrake.HandBrake
+
+# Data science
+RStudio.RStudio
+
+# BI tooling (developer-tier)
+Microsoft.PowerBI

@@ -95,12 +95,55 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 #######################################
+# install_mise()
+# Install mise (preferred tool version orchestrator).
+# Coexists with fnm/uv as a non-breaking enhancement.
+#######################################
+install_mise() {
+    if command -v mise &>/dev/null; then
+        log_debug "mise already installed: $(mise --version 2>/dev/null)"
+        return 0
+    fi
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would install mise via brew/curl"
+        return 0
+    fi
+    if command -v brew &>/dev/null; then
+        log_info "Installing mise via brew..."
+        if brew install mise; then
+            log_ok "mise installed"
+            return 0
+        fi
+    fi
+    # Fallback to official install script
+    log_info "Installing mise via official install script..."
+    if curl -fsSL https://mise.run | sh; then
+        log_ok "mise installed (~/.local/bin/mise)"
+        return 0
+    fi
+    log_warn "mise install failed — fnm/uv fallback paths still work"
+    return 1
+}
+
+#######################################
 # Main
 #######################################
 log_banner "Development Environment"
 
-# --- Node.js category (fnm + pnpm + bun) ---
-show_category_menu "Node.js" "fnm + Node LTS + pnpm + bun"
+# --- mise (preferred orchestrator — non-breaking, optional) ---
+show_category_menu "mise" "Tool version orchestrator (Python/Node/Ruby/Go versions)"
+mise_choice=$?
+
+if [[ $mise_choice -eq 0 ]]; then
+    install_mise
+elif [[ $mise_choice -eq 1 ]]; then
+    if ask_tool "mise (preferred path; coexists with fnm/uv)"; then
+        install_mise
+    fi
+fi
+
+# --- Node.js category (fnm fallback path; mise preferred when available) ---
+show_category_menu "Node.js" "fnm + Node LTS + pnpm + bun (mise preferred when present)"
 node_choice=$?
 
 if [[ $node_choice -eq 0 ]]; then

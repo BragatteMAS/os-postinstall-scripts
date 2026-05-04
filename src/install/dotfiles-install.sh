@@ -133,6 +133,48 @@ EOF
 }
 
 #######################################
+# install_packages_csv_symlink()
+# Symlinks data/packages.csv to ~/.config/os-postinstall/packages.csv so the
+# `h rust-*` and `h <toolname>` helpers in functions.sh can read the catalog.
+# Safe to re-run: updates the link if it points elsewhere.
+#######################################
+install_packages_csv_symlink() {
+    local csv_source="${REPO_ROOT}/data/packages.csv"
+    local csv_target="${HOME}/.config/os-postinstall/packages.csv"
+    local csv_dir
+    csv_dir="$(dirname "$csv_target")"
+
+    if [[ ! -f "$csv_source" ]]; then
+        log_warn "packages.csv not found in repo: $csv_source"
+        return 0
+    fi
+
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Would symlink $csv_source → $csv_target"
+        return 0
+    fi
+
+    mkdir -p "$csv_dir"
+
+    if [[ -L "$csv_target" ]]; then
+        local current
+        current=$(readlink "$csv_target")
+        if [[ "$current" == "$csv_source" ]]; then
+            log_debug "packages.csv symlink already correct"
+            return 0
+        fi
+        rm "$csv_target"
+    fi
+
+    if ln -s "$csv_source" "$csv_target"; then
+        log_ok "Symlinked packages.csv → ~/.config/os-postinstall/packages.csv"
+    else
+        log_warn "Failed to symlink packages.csv"
+        return 1
+    fi
+}
+
+#######################################
 # install_dotfiles()
 # Creates symlinks for all dotfiles
 #######################################
@@ -206,6 +248,9 @@ install_dotfiles() {
 
     # Install essential zsh plugins
     install_zsh_plugins
+
+    # Symlink packages.csv (powers `h rust-*` helpers — Onda 5)
+    install_packages_csv_symlink
 
     # Setup git user if gitconfig was linked
     if [[ -L "${HOME}/.gitconfig" ]]; then

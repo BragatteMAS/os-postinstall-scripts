@@ -77,6 +77,29 @@ alias welcome='show_welcome'
 alias welcomec='show_welcome_compact'
 
 # -----------------------------------------------------------------------------
+# CSV-driven tool catalog (Onda 5)
+# Reads data/packages.csv (symlinked to ~/.config/os-postinstall/packages.csv
+# by dotfiles-install.sh). Powers `h rust-*` and `h <toolname>` lookups.
+# -----------------------------------------------------------------------------
+_OS_POSTINSTALL_CSV="${OS_POSTINSTALL_CSV:-$HOME/.config/os-postinstall/packages.csv}"
+
+_h_csv_category() {
+    if [[ ! -f "$_OS_POSTINSTALL_CSV" ]]; then
+        echo "  (CSV not installed at $_OS_POSTINSTALL_CSV)"
+        echo "  Run: ./setup.sh dotfiles  to create the symlink"
+        return 1
+    fi
+    LC_ALL=C awk -F',' -v cat="$1" '
+        /^#/ { next }
+        NR==1 || $1=="category" { next }
+        $1 == cat {
+            bin = ($5 == "" ? $2 : $5)
+            printf "  %-15s %s\n", bin, $7
+        }
+    ' "$_OS_POSTINSTALL_CSV"
+}
+
+# -----------------------------------------------------------------------------
 # Help — h [topic]
 # -----------------------------------------------------------------------------
 h() {
@@ -95,11 +118,12 @@ h() {
             echo ""
             echo "FIND: preview (fzf+bat)  aliases (fzf)  cmd <term>"
             echo "TOOL: bat fd rg eza delta z yazi starship  (h tools)"
+            echo "AI:   claude codex gemini copilot opencode ollama  (h ai)"
             echo "UTIL: c path now df duh ports sysup welcome"
             echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
-            [[ -n "$_e" ]] && echo "💡 h <word>    try: h nav  h fzf  h commit  h all" \
-                           || echo "h <word>    try: h nav  h fzf  h commit  h all"
+            [[ -n "$_e" ]] && echo "💡 h <word>    try: h nav  h ai  h fzf  h commit  h all" \
+                           || echo "h <word>    try: h nav  h ai  h fzf  h commit  h all"
             ;;
         "find"|"search")
             [[ -n "$_e" ]] && echo "🔍 Search & Preview:" || echo "Search & Preview:"
@@ -145,24 +169,35 @@ h() {
             echo "  Example: gcb feature/login → git checkout -b feature/login"
             ;;
         "tools"|"rust"|"cli")
-            [[ -n "$_e" ]] && echo "🦀 Modern CLI Tools (Rust):" || echo "Modern CLI Tools (Rust):"
-            echo "  bat <file>       cat with syntax highlighting"
-            echo "                   → bat script.sh  bat -l json data.txt"
-            echo "  fd <pattern>     find files fast"
-            echo "                   → fd '.py'  fd -e sh  fd config"
-            echo "  rg <term>        search inside files (ripgrep)"
-            echo "                   → rg TODO  rg -i 'error' logs/"
-            echo "  eza              modern ls (aliased: ls ll la lt lta)"
-            echo "                   → ll (detailed)  lt (tree)  la (hidden)"
-            echo "  delta            git diff with syntax highlighting"
-            echo "                   → auto-used by git if configured"
-            echo "  z <dir>          smart cd — learns your directories"
-            echo "                   → z proj  z doc  zi (interactive)"
-            echo "  yazi             terminal file manager (TUI)"
-            echo "                   → yazi  yazi ~/Documents  (q to quit)"
-            echo "  starship         cross-shell prompt theme"
+            [[ -n "$_e" ]] && echo "🦀 Modern CLI Tools (Rust) — sub-topics:" || echo "Modern CLI Tools (Rust) — sub-topics:"
+            echo "  h rust-cli      Modern Unix replacements (bat, eza, fd, rg, ...)"
+            echo "  h rust-dev      Dev tools (cargo extensions, ast-grep, ruff, ...)"
+            echo "  h rust-data     Data wrangling (qsv, jaq, jql, ...)"
+            echo "  h rust-tui      TUI applications (helix, yazi, zellij, ...)"
+            echo "  h rust-shell    Shell integrations (starship, atuin, nu, ...)"
             echo ""
-            echo "  Replaces: bat>cat  fd>find  rg>grep  eza>ls  delta>diff  z>cd"
+            echo "  Quick: bat>cat  fd>find  rg>grep  eza>ls  delta>diff  z>cd"
+            echo "  Lookup any tool: h <name>     (e.g. h ast-grep, h ouch, h atuin)"
+            ;;
+        "rust-cli")
+            [[ -n "$_e" ]] && echo "🦀 Modern Unix replacements:" || echo "Modern Unix replacements:"
+            _h_csv_category rust-cli
+            ;;
+        "rust-dev")
+            [[ -n "$_e" ]] && echo "🦀 Rust dev tools (cargo extensions + AI-friendly):" || echo "Rust dev tools:"
+            _h_csv_category rust-dev
+            ;;
+        "rust-data")
+            [[ -n "$_e" ]] && echo "🦀 Rust data wrangling tools:" || echo "Rust data tools:"
+            _h_csv_category rust-data
+            ;;
+        "rust-tui")
+            [[ -n "$_e" ]] && echo "🦀 Rust TUI applications:" || echo "Rust TUI apps:"
+            _h_csv_category rust-tui
+            ;;
+        "rust-shell")
+            [[ -n "$_e" ]] && echo "🦀 Rust shell integrations:" || echo "Rust shell:"
+            _h_csv_category rust-shell
             ;;
         "util")
             [[ -n "$_e" ]] && echo "🔧 Utilities:" || echo "Utilities:"
@@ -180,14 +215,60 @@ h() {
             echo "  Safety: rm/cp/mv ask before overwrite (-i)"
             echo "  Emoji: export TERMINAL_EMOJI=false for ASCII mode"
             ;;
+        "ai"|"llm")
+            [[ -n "$_e" ]] && echo "🤖 AI Tools & MCPs:" || echo "AI Tools & MCPs:"
+            echo "  claude            Anthropic Claude Code CLI (npm)"
+            echo "  codex             OpenAI Codex CLI (npm)"
+            echo "  gemini            Google Gemini CLI (npm)"
+            echo "  copilot           GitHub Copilot CLI (npm)"
+            echo "  opencode          OpenCode open-source alt (bun)"
+            echo "  ollama            Local LLM runtime"
+            echo "  claude-monitor    Token + cost monitor (ccm/cmonitor)"
+            echo "  specify           specify-cli (project specs)"
+            echo "  markitdown        Convert files to markdown for LLM context (uv)"
+            echo ""
+            echo "  MCPs (Model Context Protocol) — managed via mcpl:"
+            echo "    mcpl list                 show configured MCPs"
+            echo "    mcpl install <server>     add MCP server"
+            echo "    mcpl call <s> <t> <args>  invoke MCP tool directly"
+            echo "    mcpl inspect <s> <t>      view tool schema"
+            echo ""
+            echo "  Common MCPs: context7, fetch, supabase, serena,"
+            echo "    sequential-thinking, kubb, markitdown, playwright,"
+            echo "    browsermcp, firecrawl, convex, obsidian, digitalocean,"
+            echo "    shadcn-ui, excalidraw, notebooklm"
+            ;;
         "all")
-            h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h util
+            h; echo ""; h nav; echo ""; h git; echo ""; h find; echo ""; h tools; echo ""; h ai; echo ""; h util
             ;;
         *)
-            # Search across all help topics
+            # Try CSV lookup first (h <toolname> → catalog entry)
+            if [[ -f "$_OS_POSTINSTALL_CSV" ]]; then
+                local _csv_match
+                _csv_match=$(LC_ALL=C awk -F',' -v name="$1" '
+                    /^#/ { next }
+                    NR==1 || $1=="category" { next }
+                    $2 == name {
+                        printf "  category:    %s\n", $1
+                        printf "  brew:        %s\n", ($3 == "" ? "—" : $3)
+                        printf "  cargo:       %s\n", ($4 == "" ? "—" : $4)
+                        printf "  binary:      %s\n", ($5 == "" ? $2 : $5)
+                        printf "  prefer:      %s\n", $6
+                        printf "  description: %s\n", $7
+                        found=1
+                    }
+                    END { exit !found }
+                ' "$_OS_POSTINSTALL_CSV")
+                if [[ -n "$_csv_match" ]]; then
+                    [[ -n "$_e" ]] && echo "📦 $1:" || echo "$1:"
+                    echo "$_csv_match"
+                    return 0
+                fi
+            fi
+            # Fallback: search across all help topics
             local _results
             _results=$(
-                { h nav; h git; h find; h tools; h util; } 2>&1 \
+                { h nav; h git; h find; h tools; h ai; h util; } 2>&1 \
                 | grep -Fi "${1}" || true
             )
             if [[ -n "$_results" ]]; then
@@ -195,8 +276,10 @@ h() {
                 echo "$_results"
             else
                 [[ -n "$_e" ]] && echo "❓ No match for '$1'" || echo "No match for '$1'"
-                [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | util | all" \
-                               || echo "h <topic>: nav | git | find | tools | util | all"
+                [[ -n "$_e" ]] && echo "💡 h <topic>: nav | git | find | tools | ai | util | all" \
+                               || echo "h <topic>: nav | git | find | tools | ai | util | all"
+                [[ -n "$_e" ]] && echo "💡 h <name>: any tool from packages.csv (rust-*)" \
+                               || echo "h <name>: any tool from packages.csv (rust-*)"
             fi
             ;;
     esac

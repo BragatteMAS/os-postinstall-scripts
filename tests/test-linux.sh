@@ -51,7 +51,8 @@ assert_pass "apt.sh syntax" bash -n src/platforms/linux/install/apt.sh
 assert_pass "flatpak.sh syntax" bash -n src/platforms/linux/install/flatpak.sh
 assert_pass "snap.sh syntax" bash -n src/platforms/linux/install/snap.sh
 assert_pass "linux main.sh syntax" bash -n src/platforms/linux/main.sh
-assert_pass "rust-cli.sh syntax" bash -n src/install/rust-cli.sh
+# rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
+# assert_pass "rust-cli.sh syntax" bash -n src/install/rust-cli.sh
 assert_pass "dev-env.sh syntax" bash -n src/install/dev-env.sh
 assert_pass "fnm.sh syntax" bash -n src/install/fnm.sh
 assert_pass "uv.sh syntax" bash -n src/install/uv.sh
@@ -70,7 +71,8 @@ assert_pass "LINUX_DIR used" grep -q "LINUX_DIR" src/platforms/linux/main.sh
 assert_pass "retry logic" grep -q "retry_with_backoff" src/platforms/linux/install/apt.sh
 assert_pass "Flathub remote" grep -q "flathub" src/platforms/linux/install/flatpak.sh
 assert_pass "classic confinement" grep -q "classic" src/platforms/linux/install/snap.sh
-assert_pass "platform branching" grep -q "DETECTED_OS" src/install/rust-cli.sh
+# rust-cli.sh removed — replaced by data/packages.csv (csv:rust-*)
+# assert_pass "platform branching" grep -q "DETECTED_OS" src/install/rust-cli.sh
 assert_pass "fnm URL" grep -q "fnm.vercel.app" src/install/fnm.sh
 assert_pass "uv URL" grep -q "astral.sh" src/install/uv.sh
 assert_pass "npm install" grep -q "npm install -g" src/install/ai-tools.sh

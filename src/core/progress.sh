@@ -147,20 +147,20 @@ count_platform_steps() {
         case "$platform" in
             linux)
                 case "$pkg_file" in
-                    apt.txt|apt-post.txt)          count=$((count + 1)) ;;
-                    flatpak.txt|flatpak-post.txt)  count=$((count + 1)) ;;
-                    snap.txt|snap-post.txt)        count=$((count + 1)) ;;
-                    cargo.txt)                     count=$((count + 1)) ;;
-                    ai-tools.txt)                  count=$((count + 1)) ;;
+                    apt.txt|apt-developer.txt|apt-full.txt) count=$((count + 1)) ;;
+                    flatpak-developer.txt|flatpak-full.txt) count=$((count + 1)) ;;
+                    snap-developer.txt|snap-full.txt)     count=$((count + 1)) ;;
+                    ai-tools-full.txt)                    count=$((count + 1)) ;;
+                    csv:rust-*)                           count=$((count + 1)) ;;
                 esac
                 ;;
             macos)
                 case "$pkg_file" in
-                    brew.txt)              count=$((count + 1)) ;;
-                    brew-cask.txt)         count=$((count + 1)) ;;
-                    cargo.txt)             count=$((count + 1)) ;;
-                    ai-tools.txt)          count=$((count + 1)) ;;
+                    brew.txt|brew-developer.txt|brew-full.txt) count=$((count + 1)) ;;
+                    brew-cask-developer.txt|brew-cask-full.txt) count=$((count + 1)) ;;
+                    ai-tools-full.txt)     count=$((count + 1)) ;;
                     macos-defaults.txt)    count=$((count + 1)) ;;
+                    csv:rust-*)            count=$((count + 1)) ;;
                 esac
                 ;;
         esac

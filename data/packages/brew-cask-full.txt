@@ -1,0 +1,49 @@
+# brew-cask-full.txt
+# Homebrew casks — full only (Bragatte's personal pick)
+#
+# DON'T run `./setup.sh full` if you want neutral dev defaults.
+# Use `./setup.sh developer` instead.
+#
+# These are Bragatte's specific browser, AI editor, communication, and
+# personal-use choices. Keeps `brew-cask-developer.txt` neutral for other devs.
+
+# Browsers (personal preferences, in priority order: chrome > zen > brave > opera)
+google-chrome
+zen-browser
+brave-browser
+opera
+
+# AI editors & desktop clients
+cursor
+claude
+claude-code@latest
+chatgpt
+antigravity
+
+# Communication (personal)
+discord
+meetingbar
+
+# macOS utilities (personal preferences)
+hiddenbar
+clop
+
+# Media & lazer
+spotify
+
+# Hardware-specific
+logi-options+
+
+# Voice & recording
+wispr-flow
+loom
+
+# Design & creativity (Affinity has free tier — Figma alt)
+affinity
+capcut
+zed
+numi
+karabiner-elements
+
+# Font extra (Sketchybar-specific, niche)
+font-sketchybar-app-font
