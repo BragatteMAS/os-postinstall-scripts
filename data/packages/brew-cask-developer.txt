@@ -16,6 +16,7 @@ raycast
 
 # Editor + terminal (mainstream open-source defaults)
 visual-studio-code
+sublime-text
 warp
 
 # Notes & research
@@ -24,6 +25,7 @@ zotero
 
 # Dev tools
 docker-desktop
+orbstack
 dbeaver-community
 insomnia
 github
@@ -48,6 +50,10 @@ google-drive
 # Data science (R/Python)
 positron
 rstudio
+
+# Design & creativity (open-source)
+inkscape
+gimp
 
 # Fonts (sane defaults for terminal + icons)
 font-jetbrains-mono-nerd-font
