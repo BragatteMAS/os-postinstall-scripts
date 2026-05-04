@@ -41,6 +41,7 @@ source "${CORE_DIR}/logging.sh"
 source "${CORE_DIR}/platform.sh"
 source "${CORE_DIR}/errors.sh"
 source "${CORE_DIR}/progress.sh"
+source "${CORE_DIR}/wizard.sh"
 
 # Setup colors and error handling
 setup_colors
@@ -213,8 +214,6 @@ main() {
             ;;
     esac
 
-    local profile="${1:-$DEFAULT_PROFILE}"
-
     echo ""
     echo -e "${BLUE}=======================================================${NC}"
     echo -e "${BLUE}     os-postinstall-scripts — Setup Wizard${NC}"
@@ -226,9 +225,25 @@ main() {
     echo -e "Tip: use ${YELLOW}--dry-run${NC} to preview without installing"
     echo ""
 
-    # Detect platform (needed by state detection)
+    # Detect platform first — needed by wizard package counts AND state detection
     detect_platform
     log_ok "Detected: ${DETECTED_OS} ${DETECTED_VERSION:-} (${DETECTED_PKG:-unknown})"
+
+    # Resolve profile: explicit CLI arg > interactive wizard > DEFAULT_PROFILE
+    local profile="${1:-}"
+    if [[ -z "$profile" ]]; then
+        if [[ -t 0 && "${UNATTENDED:-}" != "true" && "${NONINTERACTIVE:-}" != "true" ]]; then
+            # Interactive: launch profile-selection wizard
+            if ! profile=$(select_profile_interactive "${DETECTED_OS}"); then
+                log_info "Setup cancelled by user"
+                _SUMMARY_SHOWN=1
+                exit 0
+            fi
+        else
+            # Non-interactive (CI, pipes, --unattended): use default
+            profile="${DEFAULT_PROFILE:-developer}"
+        fi
+    fi
 
     # Check for previous installation (R6: state detection)
     if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
