@@ -85,7 +85,9 @@ install_csv_category() {
     fi
 
     local total=0 installed=0 failed=0
-    while IFS='|' read -r name brew_pkg cargo_pkg binary prefer description; do
+    # Read CSV rows on FD 3 so brew/cargo subprocesses don't drain stdin and
+    # consume rows that should be the next iteration of the loop.
+    while IFS='|' read -r name brew_pkg cargo_pkg binary prefer description <&3; do
         [[ -z "$name" ]] && continue
         total=$((total + 1))
         local bin="${binary:-$name}"
@@ -133,7 +135,7 @@ install_csv_category() {
             failed=$((failed + 1))
             type record_failure &>/dev/null && record_failure "$name (csv:$category)"
         fi
-    done < <(read_csv_category "$category" "$csv_file")
+    done 3< <(read_csv_category "$category" "$csv_file")
 
     log_info "csv:$category — $installed installed, $failed failed (total $total)"
     return $((failed > 0 ? 1 : 0))
