@@ -171,6 +171,65 @@ count_platform_steps() {
 }
 
 #######################################
+# count_packages_in_profile()
+# Count ACTUAL packages a profile installs on a platform (not file dispatches).
+# Args: $1 = profile name (minimal/developer/full), $2 = platform
+# Echoes: integer total package count (0 if profile/data missing)
+# Used by show_completion_summary to make profile size differentials visible.
+#######################################
+count_packages_in_profile() {
+    local profile_name="$1"
+    local platform="$2"
+    local profile_file="${DATA_DIR:-}/packages/profiles/${profile_name}.txt"
+    local total=0
+    local pkg_file
+
+    if [[ -z "${DATA_DIR:-}" || ! -f "$profile_file" ]]; then
+        echo "0"
+        return 0
+    fi
+
+    while IFS= read -r pkg_file || [[ -n "$pkg_file" ]]; do
+        pkg_file="${pkg_file#"${pkg_file%%[![:space:]]*}"}"
+        [[ -z "$pkg_file" || "$pkg_file" == \#* ]] && continue
+
+        # CSV directive: count rows for that category in packages.csv
+        if [[ "$pkg_file" == csv:* ]]; then
+            local csv_path="${DATA_DIR}/packages.csv"
+            local category="${pkg_file#csv:}"
+            if [[ -f "$csv_path" ]]; then
+                local csv_count
+                csv_count=$(grep -cE "^${category}," "$csv_path" 2>/dev/null || echo 0)
+                total=$((total + csv_count))
+            fi
+            continue
+        fi
+
+        # Skip system-defaults entries (not packages)
+        [[ "$pkg_file" == "macos-defaults.txt" ]] && continue
+
+        # Filter by platform relevance
+        local skip=false
+        case "$platform" in
+            linux)   case "$pkg_file" in brew*|winget*) skip=true ;; esac ;;
+            macos)   case "$pkg_file" in apt*|flatpak*|snap*|winget*) skip=true ;; esac ;;
+            windows) case "$pkg_file" in apt*|brew*|flatpak*|snap*|npm-developer.txt) skip=true ;; esac ;;
+        esac
+        [[ "$skip" == "true" ]] && continue
+
+        # Count non-empty non-comment lines in package file
+        local f="${DATA_DIR}/packages/${pkg_file}"
+        if [[ -f "$f" ]]; then
+            local count
+            count=$(grep -cvE '^#|^$' "$f" 2>/dev/null || echo 0)
+            total=$((total + count))
+        fi
+    done < "$profile_file"
+
+    echo "$total"
+}
+
+#######################################
 # show_completion_summary()
 # Display a rich end-of-run summary with profile, platform, duration, and results
 # Args: $1 = profile name, $2 = platform
@@ -201,6 +260,16 @@ show_completion_summary() {
 
     log_info "Profile:  ${profile}"
     log_info "Platform: ${platform}"
+
+    # Show package count to make profile-size differentials visible (UX clarity).
+    if type count_packages_in_profile >/dev/null 2>&1; then
+        local pkg_count
+        pkg_count=$(count_packages_in_profile "$profile" "$platform" 2>/dev/null)
+        if [[ -n "$pkg_count" && "$pkg_count" != "0" ]]; then
+            log_info "Packages: ${pkg_count}"
+        fi
+    fi
+
     log_info "Duration: ${mins}m ${secs}s"
     echo ""
 
@@ -234,4 +303,4 @@ show_completion_summary() {
 # Export functions for subshells
 #######################################
 export -f show_progress save_install_state detect_previous_install
-export -f show_dry_run_banner count_platform_steps show_completion_summary
+export -f show_dry_run_banner count_platform_steps count_packages_in_profile show_completion_summary
