@@ -31,8 +31,10 @@ fi
 
 #######################################
 # install_uv()
-# Installs uv via official curl script
-# Idempotent: skips if already installed
+# Prefers `brew install uv` for centralized package management.
+# Falls back to the official curl installer when brew is unavailable
+# (e.g. some Linux runners without Homebrew).
+# Idempotent: skips if already installed.
 #######################################
 install_uv() {
     # Idempotent check
@@ -42,23 +44,30 @@ install_uv() {
     fi
 
     if [[ "${DRY_RUN:-}" == "true" ]]; then
-        log_info "[DRY_RUN] Would install uv"
+        log_info "[DRY_RUN] Would install uv (brew preferred, curl fallback)"
         return 0
     fi
 
-    log_info "Installing uv (Python package manager)..."
+    # Prefer brew when available — single source of truth for package mgmt.
+    if command -v brew &>/dev/null; then
+        log_info "Installing uv via brew..."
+        if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install uv; then
+            log_ok "uv installed: $(uv --version)"
+            return 0
+        fi
+        log_warn "brew install uv failed — falling back to curl installer"
+    fi
 
-    # Install uv via official script
+    log_info "Installing uv via official script..."
     if ! safe_curl_sh "https://astral.sh/uv/install.sh"; then
         log_error "Failed to install uv"
         record_failure "uv"
         return 1
     fi
 
-    # Add to PATH for current session
+    # Add to PATH for current session (curl installer drops it here)
     export PATH="$HOME/.local/bin:$PATH"
 
-    # Verify installation
     if ! command -v uv &>/dev/null; then
         log_error "uv installation failed - command not found after install"
         record_failure "uv"
