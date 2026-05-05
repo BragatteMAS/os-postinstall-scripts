@@ -153,15 +153,26 @@ install_global_npm() {
         record_failure "pnpm"
     fi
 
-    # --- bun (formula lives in oven-sh/bun tap) ---
+    # --- bun (formula lives in third-party tap oven-sh/bun) ---
+    # Tap explicitly before install: brew's auto-tap can fail silently behind
+    # proxies / restricted networks, leaving the install with a generic error.
     if command -v bun &>/dev/null; then
         log_debug "bun already installed: $(bun --version)"
-    elif (( _have_brew )) && HOMEBREW_NO_INSTALL_UPGRADE=1 brew install oven-sh/bun/bun; then
-        log_ok "bun installed via brew: $(bun --version 2>/dev/null || echo 'version unknown')"
+    elif (( _have_brew )); then
+        brew tap oven-sh/bun >/dev/null 2>&1 || \
+            log_warn "Could not tap oven-sh/bun — brew install may fall back to npm"
+        if HOMEBREW_NO_INSTALL_UPGRADE=1 brew install oven-sh/bun/bun; then
+            log_ok "bun installed via brew: $(bun --version 2>/dev/null || echo 'version unknown')"
+        elif command -v npm &>/dev/null && npm install -g bun; then
+            log_ok "bun installed via npm: $(bun --version 2>/dev/null || echo 'version unknown')"
+        else
+            log_warn "Failed to install bun (brew + npm both failed)"
+            record_failure "bun"
+        fi
     elif command -v npm &>/dev/null && npm install -g bun; then
         log_ok "bun installed via npm: $(bun --version 2>/dev/null || echo 'version unknown')"
     else
-        log_warn "Failed to install bun (brew + npm both unavailable or failed)"
+        log_warn "Failed to install bun (brew + npm both unavailable)"
         record_failure "bun"
     fi
 

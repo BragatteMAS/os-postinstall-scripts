@@ -5,6 +5,66 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0] - 2026-05-05
+
+Diagnostic + brew-centralization release driven by a real-world full
+install on macOS (Deney) where ~56 dev/full formulae and most casks
+silently never installed. Root causes traced, fixed, and pinned by tests.
+
+### Added
+- **`BREW_LOG="${TEMP_DIR}/brew-install.log"`** — captures stderr of every
+  `brew install [--cask]` per package. The completion summary now points to
+  this file when failures exist, ending the era of "Failed to install: X"
+  with no reason.
+- **Failure classification for cask installs** in `brew-cask.sh`. Errors are
+  matched into a human-readable reason and surfaced inline:
+  `(app exists at /Applications)`, `(cask name not found in any tap)`,
+  `(network error)`. Same treatment lighter on `brew.sh` for formulae.
+- **Trophy-style regression suite** (`tests/test-regressions.bats` +
+  additions to `test-integration.bats` and `test-core-errors.bats`):
+  15 tests, each named with the commit it guards. Integration tests share
+  one cached dry-run via `setup_file` to keep the suite fast.
+
+### Changed
+- **fnm/uv/pnpm/bun installers prefer `brew install`** before falling back
+  to curl/npm. Centralizes package management on Homebrew (single source of
+  truth, idempotency, upgrade/uninstall via the same toolchain). Linux
+  runners without brew transparently use the existing curl/npm fallback.
+- **`brew tap oven-sh/bun` runs explicitly before `brew install bun`** to
+  avoid silent failures when brew's auto-tap can't reach the third-party
+  source (proxies, restricted networks).
+- **`record_failure` deduplicates within a process**. When a retried
+  orchestrator re-recorded the same name on each attempt, the failure
+  appeared N times in the summary; now it appears once.
+- **`dev-env.sh` is no longer wrapped in `retry_with_backoff`** by the
+  platform main scripts. Retrying an orchestrator with side effects
+  multiplied failures and re-prompted interactive questions; atomic curl
+  / brew calls inside the orchestrator handle their own retry where it
+  matters.
+
+### Fixed
+- **`brew.sh` respects `--developer` and `--full` flags** (`fa03a06`).
+  Used to hardcode `load_packages "brew.txt"` and so loaded the same 5
+  base formulae three times — the developer/full waves (mise, jq, gh,
+  postgresql@17, ...) silently never installed.
+- **`parse_flags` accepts flags in any position** (`c44301d`). Previously
+  `setup.sh developer --dry-run` silently dropped `--dry-run` and ran a
+  real install, because parsing broke at the first non-flag.
+- **CSV row reader uses FD 3** (`e24dc9a`). `while read; done < <(awk ...)`
+  was being drained by brew/cargo subprocesses inside the loop, which
+  consumed CSV rows that should have been the next iteration. Visible as
+  CSV pipe fragments interleaved with brew output, plus silently skipped
+  packages.
+- **fnm install no longer passes a stray `--`** to the official installer
+  (`b4c2d10`). The fnm script rejected it as `Unrecognized argument --`
+  and aborted before processing real flags — fnm never installed on
+  fresh machines.
+- **Wizard menu is visible to users** (`02a73b2`). `select_profile_interactive`
+  printed the menu via `echo` to stdout, but the caller used
+  `profile=$(select_profile_interactive ...)` — command substitution
+  swallowed the entire menu. All UI now goes to stderr; only the chosen
+  profile remains on stdout as the function's return value.
+
 ## [5.0.0] - 2026-05-04
 
 ### Notes for existing forks
