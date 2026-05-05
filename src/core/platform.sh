@@ -262,6 +262,48 @@ check_internet() {
 }
 
 #######################################
+# check_disk_space()
+# Aborts (or warns + asks) when free space on /Applications is below the
+# `full` profile's footprint (~5GB plus headroom). Hits silent install
+# failures mid-run; better to fail upfront.
+# Args:  $1 = required GiB (default: 10)
+# Returns: 0 if OK or user continues, 1 if user cancels
+#######################################
+check_disk_space() {
+    local required_gib="${1:-10}"
+    local mount="/" free_gib=0
+
+    # macOS df reports 1024-blocks by default with -k; -g would be GB.
+    # Use df -k for portability; convert KiB → GiB integer.
+    local free_kib
+    free_kib=$(df -k "$mount" 2>/dev/null | awk 'NR==2 {print $4}')
+    if [[ -z "$free_kib" || "$free_kib" =~ [^0-9] ]]; then
+        log_debug "check_disk_space: could not parse df output — skipping"
+        return 0
+    fi
+    free_gib=$((free_kib / 1024 / 1024))
+
+    if (( free_gib >= required_gib )); then
+        log_debug "Disk: ${free_gib} GiB free on $mount (>= ${required_gib} required)"
+        return 0
+    fi
+
+    log_warn "Low disk space: ${free_gib} GiB free on $mount (recommended >= ${required_gib} GiB)."
+    log_warn "Full profile installs ~5 GiB; running out mid-install leaves a partial state."
+
+    if [[ ! -t 0 ]]; then
+        log_warn "Non-interactive mode. Continuing anyway..."
+        return 0
+    fi
+
+    read -rp "Continue with low disk space? [y/N] " response
+    case "$response" in
+        [yY]|[yY][eE][sS]) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+#######################################
 # request_sudo()
 # Requests sudo access upfront
 # Skips if DRY_RUN=true or if running as root
@@ -345,6 +387,11 @@ verify_all() {
 
     # Check internet connection
     if ! check_internet; then
+        return 1
+    fi
+
+    # Check disk space (aborts mid-run failures from a full install)
+    if ! check_disk_space; then
         return 1
     fi
 

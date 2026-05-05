@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.3] - 2026-05-05
+
+Pre-flight breadth release. Closes the last gaps in pre-install validation
+so a fresh install on a new machine can be gated upfront instead of
+discovering registry/disk problems mid-run.
+
+### Added
+- **`check_disk_space()`** in `src/core/platform.sh`, plugged into
+  `verify_all()`. Aborts (interactive) or warns (non-interactive) when
+  free space on `/` is below 10 GiB. Full profile installs ~5 GiB; running
+  out mid-install leaves a partial state.
+- **AI-tools registry validation** in `tools/preflight-brew-names.sh`.
+  For every entry in `data/packages/ai-tools-full.txt`, hits the
+  appropriate registry (`registry.npmjs.org` for `npm:` and `bun:`,
+  `pypi.org` for `uv:`/`pipx:`, the official URL for `curl:ollama`) and
+  flags missing/renamed packages before they fail at install time.
+
 ## [5.1.2] - 2026-05-05
 
 UX visibility release. Idempotent skips were already happening but

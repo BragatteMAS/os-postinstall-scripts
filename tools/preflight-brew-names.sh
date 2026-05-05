@@ -213,6 +213,51 @@ for ref in "${SCRIPT_REFS[@]}"; do
     esac
 done
 
+# ── Validate AI tool registry names ──────────────────────────────
+# ai-tools-full.txt entries are like "npm:<pkg>", "bun:<pkg>", "uv:<pkg>",
+# "curl:ollama". We hit the relevant registry with a HEAD request — same
+# class of bug as cask-name-not-found, just for npm/PyPI.
+
+AI_TOOLS_FILE="${DATA_DIR}/ai-tools-full.txt"
+
+if [[ -f "$AI_TOOLS_FILE" ]]; then
+    (( QUIET )) || echo
+    (( QUIET )) || echo "Validating ai-tools-full.txt registry names:"
+
+    while read -r entry; do
+        [[ -z "$entry" ]] && continue
+        prefix="${entry%%:*}"
+        pkg="${entry#*:}"
+        case "$prefix" in
+            npm|bun)
+                # Bun shares the npm registry; same URL works for both.
+                url="https://registry.npmjs.org/${pkg}"
+                ;;
+            uv|pipx)
+                url="https://pypi.org/pypi/${pkg}/json"
+                ;;
+            curl)
+                # Hardcoded resolution per ai-tools.sh::curl handler.
+                case "$pkg" in
+                    ollama) url="https://ollama.com/install.sh" ;;
+                    *) (( QUIET )) || printf "  [skip]    curl:%s — no preflight URL configured\n" "$pkg"; continue ;;
+                esac
+                ;;
+            *)
+                (( QUIET )) || printf "  [skip]    %s — unknown prefix\n" "$entry"
+                continue
+                ;;
+        esac
+
+        if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
+            (( QUIET )) || printf "  [OK]      %-7s %s\n" "$prefix" "$pkg"
+        else
+            FAIL+=("$prefix:$pkg (registry HEAD failed at $url)")
+            printf "  [FAIL]    %-7s %s — registry not reachable\n" "$prefix" "$pkg"
+        fi
+    done < <(read_pkg_file "$AI_TOOLS_FILE")
+fi
+
 # ── Summary ─────────────────────────────────────────────────────
 
 echo
