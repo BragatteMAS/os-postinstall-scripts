@@ -38,6 +38,23 @@ teardown() {
     [ "$(get_failure_count)" -eq 3 ]
 }
 
+@test "[regression] record_failure dedupes the same name within one process" {
+    # Caught by '515368f'. Symptom on Deney's run: fnm appeared 3× in the
+    # failure summary because retry_with_backoff re-ran dev-env.sh three times
+    # and each retry called record_failure "fnm".
+    record_failure "fnm"
+    record_failure "fnm"
+    record_failure "fnm"
+    [ "$(get_failure_count)" -eq 1 ]
+}
+
+@test "[regression] record_failure keeps distinct names" {
+    record_failure "fnm"
+    record_failure "fnm"
+    record_failure "uv"
+    [ "$(get_failure_count)" -eq 2 ]
+}
+
 @test "clear_failures resets count to zero" {
     record_failure "pkg-a"
     record_failure "pkg-b"
