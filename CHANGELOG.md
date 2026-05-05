@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1] - 2026-05-05
+
+Pre-flight tooling so the `full` profile can be validated against an
+inventory snapshot before running `setup.sh` on a fresh machine.
+
+### Added
+- **`tools/preflight-brew-names.sh`** — read-only validator that diffs the
+  macOS `full` profile against the M1 inventory snapshot in
+  `.migration/MacBook-Pro-de-Fundacao-4-snapshot/`, computes the exact set
+  of formulae/casks that will actually install on a fresh machine, and
+  runs `brew info` on each name to classify the result as ok / not-found /
+  third-party-tap / tap-not-added. Exits non-zero on any name that won't
+  resolve, so it's usable as a pre-flight gate. Also covers hardcoded
+  brew references inside install scripts (fnm, uv, pnpm, mise,
+  oven-sh/bun/bun) that aren't listed in any `.txt` profile.
+- **E2E regression test for `BREW_LOG`** (`tests/test-regressions.bats`):
+  stubs `brew`, runs `_brew_cask_install` through it, and asserts the log
+  file contains both the `=== brew install --cask <name> (rc=N) ===`
+  header and the captured stderr verbatim. Closes the observability loop
+  that the prior classification tests left open.
+
 ## [5.1.0] - 2026-05-05
 
 Diagnostic + brew-centralization release driven by a real-world full
