@@ -39,7 +39,7 @@ fi
 install_uv() {
     # Idempotent check
     if command -v uv &>/dev/null; then
-        log_debug "uv already installed: $(uv --version)"
+        log_info "[skip] uv already installed: $(uv --version)"
         return 0
     fi
 

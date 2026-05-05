@@ -158,11 +158,26 @@ log_info "Loaded ${#PACKAGES[@]} casks from $pkg_file"
 # Install casks
 log_info "Installing ${#PACKAGES[@]} Homebrew casks..."
 
+# Per-wave outcome counters — distinguishes newly installed / skipped / failed.
+_n_installed=0
+_n_skipped=0
+_n_failed=0
+
 for cask in "${PACKAGES[@]}"; do
-    if ! _brew_cask_install "$cask"; then
+    if _is_cask_installed "$cask"; then
+        log_info "[skip] $cask (already installed)"
+        _n_skipped=$((_n_skipped + 1))
+        continue
+    fi
+    if _brew_cask_install "$cask"; then
+        _n_installed=$((_n_installed + 1))
+    else
+        _n_failed=$((_n_failed + 1))
         record_failure "$cask"
     fi
 done
+
+log_info "Summary ($pkg_file): ${_n_installed} installed, ${_n_skipped} skipped, ${_n_failed} failed"
 
 # Summary
 show_failure_summary

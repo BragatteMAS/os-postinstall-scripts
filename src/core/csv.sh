@@ -84,7 +84,7 @@ install_csv_category() {
         return 1
     fi
 
-    local total=0 installed=0 failed=0
+    local total=0 installed=0 skipped=0 failed=0
     # Read CSV rows on FD 3 so brew/cargo subprocesses don't drain stdin and
     # consume rows that should be the next iteration of the loop.
     while IFS='|' read -r name brew_pkg cargo_pkg binary prefer description <&3; do
@@ -94,8 +94,8 @@ install_csv_category() {
 
         # Idempotent: skip if binary already in PATH
         if command -v "$bin" >/dev/null 2>&1; then
-            log_debug "Already in PATH: $bin (csv:$category/$name)"
-            installed=$((installed + 1))
+            log_info "[skip] $name (already in PATH as $bin)"
+            skipped=$((skipped + 1))
             continue
         fi
 
@@ -137,7 +137,7 @@ install_csv_category() {
         fi
     done 3< <(read_csv_category "$category" "$csv_file")
 
-    log_info "csv:$category — $installed installed, $failed failed (total $total)"
+    log_info "Summary (csv:$category): $installed installed, $skipped skipped, $failed failed (total $total)"
     return $((failed > 0 ? 1 : 0))
 }
 

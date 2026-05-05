@@ -44,7 +44,7 @@ fi
 install_fnm() {
     # Idempotent check
     if command -v fnm &>/dev/null; then
-        log_debug "fnm already installed: $(fnm --version)"
+        log_info "[skip] fnm already installed: $(fnm --version)"
         return 0
     fi
 
@@ -143,7 +143,7 @@ install_global_npm() {
 
     # --- pnpm ---
     if command -v pnpm &>/dev/null; then
-        log_debug "pnpm already installed: $(pnpm --version)"
+        log_info "[skip] pnpm already installed: $(pnpm --version)"
     elif (( _have_brew )) && HOMEBREW_NO_INSTALL_UPGRADE=1 brew install pnpm; then
         log_ok "pnpm installed via brew: $(pnpm --version 2>/dev/null || echo 'version unknown')"
     elif command -v npm &>/dev/null && npm install -g pnpm; then
@@ -157,7 +157,7 @@ install_global_npm() {
     # Tap explicitly before install: brew's auto-tap can fail silently behind
     # proxies / restricted networks, leaving the install with a generic error.
     if command -v bun &>/dev/null; then
-        log_debug "bun already installed: $(bun --version)"
+        log_info "[skip] bun already installed: $(bun --version)"
     elif (( _have_brew )); then
         brew tap oven-sh/bun >/dev/null 2>&1 || \
             log_warn "Could not tap oven-sh/bun — brew install may fall back to npm"

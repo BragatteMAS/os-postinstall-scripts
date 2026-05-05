@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.2] - 2026-05-05
+
+UX visibility release. Idempotent skips were already happening but
+hidden behind `log_debug` (only visible with `VERBOSE=true`), so users
+running `setup.sh full` on a machine with most packages already installed
+saw only progress bars and no per-package confirmation.
+
+### Changed
+- **Per-package skip is now visible by default** in `brew.sh`,
+  `brew-cask.sh`, `csv.sh`, `dev-env.sh`, `fnm.sh`, `uv.sh`. Format:
+  `[skip] <name> (already installed)`.
+- **Per-wave summary line** prints at the end of each formula/cask/csv
+  wave: `Summary (brew-developer.txt): N installed, M skipped, K failed`.
+  CSV pipeline now distinguishes `installed` (newly installed this run)
+  from `skipped` (already in PATH) — previously they were merged under
+  one counter.
+
+No behavior change to install logic — strictly observability.
+
 ## [5.1.1] - 2026-05-05
 
 Pre-flight tooling so the `full` profile can be validated against an

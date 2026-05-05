@@ -101,7 +101,7 @@ trap cleanup EXIT INT TERM
 #######################################
 install_mise() {
     if command -v mise &>/dev/null; then
-        log_debug "mise already installed: $(mise --version 2>/dev/null)"
+        log_info "[skip] mise already installed: $(mise --version 2>/dev/null)"
         return 0
     fi
     if [[ "${DRY_RUN:-}" == "true" ]]; then

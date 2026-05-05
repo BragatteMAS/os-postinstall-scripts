@@ -147,11 +147,27 @@ log_info "Loaded ${#PACKAGES[@]} formulae from $pkg_file"
 # Install formulae
 log_info "Installing ${#PACKAGES[@]} Homebrew formulae..."
 
+# Track per-wave outcome so the summary distinguishes "newly installed",
+# "skipped because already present" and "failed".
+_n_installed=0
+_n_skipped=0
+_n_failed=0
+
 for pkg in "${PACKAGES[@]}"; do
-    if ! _brew_formula_install "$pkg"; then
+    if is_brew_installed "$pkg"; then
+        log_info "[skip] $pkg (already installed)"
+        _n_skipped=$((_n_skipped + 1))
+        continue
+    fi
+    if _brew_formula_install "$pkg"; then
+        _n_installed=$((_n_installed + 1))
+    else
+        _n_failed=$((_n_failed + 1))
         record_failure "$pkg"
     fi
 done
+
+log_info "Summary ($pkg_file): ${_n_installed} installed, ${_n_skipped} skipped, ${_n_failed} failed"
 
 # Summary
 show_failure_summary
