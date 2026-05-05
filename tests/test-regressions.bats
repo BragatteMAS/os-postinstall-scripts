@@ -147,3 +147,44 @@ _run_cask_install_with_brew_stderr() {
     assert_failure
     assert_output --partial "network error"
 }
+
+@test "[8466ff3] cask install writes header + stderr to BREW_LOG" {
+    # Validates the diagnostic path E2E: BREW_LOG must be appended with a
+    # "=== brew install --cask <name> (rc=N) ===" header followed by the
+    # actual brew stderr. Without this, observability silently does nothing.
+    local brew_log
+    brew_log="$(mktemp)"
+    bash -c '
+        unset _LOGGING_SOURCED _ERRORS_SOURCED _IDEMPOTENT_SOURCED
+        source "'"$REPO_ROOT"'/src/core/logging.sh"
+        source "'"$REPO_ROOT"'/src/core/errors.sh"
+        source "'"$REPO_ROOT"'/src/core/idempotent.sh" 2>/dev/null
+        save_package_state() { :; }
+        load_packages() { PACKAGES=(); }
+        export -f save_package_state load_packages
+
+        brew() {
+            if [[ "$1" == "list" ]]; then return 1; fi
+            echo "Error: It seems there is already an App at /Applications/X.app." >&2
+            return 1
+        }
+        export -f brew
+
+        eval "$(awk "/^_is_cask_installed\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/macos/install/brew-cask.sh")"
+        eval "$(awk "/^_brew_cask_install\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/macos/install/brew-cask.sh")"
+
+        unset DRY_RUN
+        # _brew_cask_install returns 1 by design (install failed). Swallow
+        # the exit so bash -c does not fail the bats test — we only care
+        # whether the diagnostic write happened.
+        BREW_LOG="'"$brew_log"'" _brew_cask_install rectangle >/dev/null 2>&1 || true
+        exit 0
+    '
+
+    # Header line with command + return code
+    grep -qE "^=== brew install --cask rectangle \(rc=1\) ===$" "$brew_log"
+    # Original stderr captured verbatim
+    grep -q "It seems there is already an App at /Applications/X.app" "$brew_log"
+
+    rm -f "$brew_log"
+}
