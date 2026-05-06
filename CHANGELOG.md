@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-05-06
+
+Doc consolidation + preflight performance. Driven by user feedback that
+separate runbook files (`tools/M5-RUNBOOK.md`, `tools/ATUIN-RUNBOOK.md`)
+were getting lost — out-of-sight, out-of-mind. README is the single
+entry point now.
+
+### Added
+- **README.md `Workflows` section** with two collapsed `<details>`
+  blocks: full M5 migration runbook and Atuin shell-history sync guide.
+  Recovery cookbook for codex/claude-code/gemini-cli npm-tool failures
+  is embedded inside the migration block.
+- Preflight tool now reports `total registry checks` and `parallelism`
+  in the header.
+
+### Changed
+- **`tools/preflight-brew-names.sh` parallelized** with `xargs -P 10`.
+  Sequential 35s → 6.6s end-to-end (5.3× speedup). Worker function
+  `classify_one` handles formula/cask/npm/bun/uv/curl in one place;
+  `PREFLIGHT_PARALLELISM=N` env var tunes concurrency.
+- README version badge bumped to 5.2.0.
+
+### Removed
+- **`tools/M5-RUNBOOK.md`** and **`tools/ATUIN-RUNBOOK.md`** — content
+  folded into README's `Workflows` section. Single source of truth so
+  ops docs are visible from the front page.
+
+### Notes
+- Group selector with `gum` (`setup.sh --groups`) was scoped out of this
+  release — needs design iteration in v5.3.0.
+
 ## [5.1.4] - 2026-05-06
 
 UX gap closure + ai-tools tag pinning. Driven by a second-pass review

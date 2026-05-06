@@ -2,20 +2,18 @@
 #######################################
 # tools/preflight-brew-names.sh
 #
-# Validates every brew formula and cask referenced by the macOS `full` profile
-# *before* running setup.sh on a fresh machine (e.g. M5). Combines two checks:
+# Validates every brew/cask/npm/PyPI name referenced by the macOS `full`
+# profile *before* running setup.sh on a fresh machine. Combines:
 #
-#   1) Diff profile against the M1 inventory snapshot to compute the exact set
-#      of packages that will actually be installed on M5 (the rest will be
-#      idempotent skips).
-#   2) For each "will install" name, run `brew info` to confirm:
-#        - the formula/cask exists in some tap,
-#        - whether it lives in a third-party tap (auto-tap may fail behind
-#          proxies),
-#        - whether it requires a host architecture or macOS version different
-#          from the current host.
+#   1) Diff macOS `full` profile against the M1 inventory snapshot to
+#      compute the exact set of items that will actually run an install
+#      on a fresh machine (the rest will be idempotent skips).
+#   2) For each "will install" name, hit the relevant registry (brew
+#      info / npm / PyPI / curl URL) to confirm it resolves now.
 #
-# Read-only; no install side effects.
+# Read-only; no install side effects. Parallelized — runs ~30+ checks
+# concurrently via xargs -P, taking ~5s instead of the ~35s sequential
+# version.
 #
 # Usage:
 #   bash tools/preflight-brew-names.sh           # full report
@@ -27,6 +25,7 @@ set -u
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 DATA_DIR="${REPO_ROOT}/data/packages"
 SNAPSHOT_DIR="${REPO_ROOT}/.migration/MacBook-Pro-de-Fundacao-4-snapshot"
+PARALLELISM="${PREFLIGHT_PARALLELISM:-10}"
 QUIET=0
 [[ "${1:-}" == "--quiet" ]] && QUIET=1
 
@@ -37,60 +36,108 @@ fi
 
 # ── Helpers ──────────────────────────────────────────────────────
 
-# Reads a brew-*.txt / brew-cask-*.txt and prints non-comment, non-blank lines.
 read_pkg_file() {
     grep -v "^[[:space:]]*#" "$1" 2>/dev/null | grep -v "^[[:space:]]*$" || true
 }
 
-# Reads the M1 inventory snapshot and prints just package names.
-# Snapshot format: "name version" (cask) or "name" (formula); skip header lines.
 read_inventory_names() {
     grep -v "^[[:space:]]*#" "$1" 2>/dev/null | awk 'NF { print $1 }' || true
 }
 
-# diff_profile_minus_inventory PROFILE_FILE INVENTORY_FILE
-# Prints the names present in PROFILE but not in INVENTORY.
-diff_profile_minus_inventory() {
-    local profile="$1" inventory="$2"
-    comm -23 \
-        <(read_pkg_file "$profile" | sort -u) \
-        <(read_inventory_names "$inventory" | sort -u)
+# Strip a trailing "@<tag>" from a package spec for registry lookup.
+# Tags are resolved at install time — registry URL must point to bare pkg.
+#   @openai/codex@latest → @openai/codex
+#   codex@latest         → codex
+#   @openai/codex        → @openai/codex (unchanged)
+strip_tag_for_url() {
+    local spec="$1"
+    if [[ "$spec" =~ ^(.+)@[^/@]+$ ]]; then
+        printf '%s' "${BASH_REMATCH[1]}"
+    else
+        printf '%s' "$spec"
+    fi
 }
 
-# classify_brew_info NAME KIND   (KIND = formula | cask)
-# Prints one of: ok | not-found | third-party-tap:<tap>
-classify_brew_info() {
-    local name="$1" kind="$2" out tap
-    local flag="--formula"
-    [[ "$kind" == "cask" ]] && flag="--cask"
+#######################################
+# WORKER: classify one task and emit one line
+# Input:  "<kind>|<name>" on stdin (or as positional argv via xargs -I {})
+# Output: "<verdict>|<kind>|<name>" to stdout
+# Verdicts:
+#   ok | not-found | third-party-tap:<tap> | tap-not-added:<tap>
+#######################################
+classify_one() {
+    local task="$1"
+    local kind="${task%%|*}"
+    local name="${task#*|}"
+    local out tap verdict url
 
-    if ! out=$(brew info "$flag" "$name" 2>&1); then
-        # Distinguish "tap not yet added" (recoverable, install script taps
-        # before installing) from "truly missing".
-        if grep -qE "requires the tap [^[:space:]]+" <<<"$out"; then
-            local needed_tap
-            needed_tap=$(grep -oE "requires the tap [^[:space:]]+" <<<"$out" | awk '{print $4}')
-            echo "tap-not-added:${needed_tap}"
-            return
-        fi
-        echo "not-found"
-        return
-    fi
-    # Detect "From: https://github.com/<user>/homebrew-<repo>" line
-    tap=$(grep -oE "From: https://github.com/[^/]+/homebrew-[^/]+" <<<"$out" | head -1)
-    if [[ -n "$tap" ]] && ! grep -qE "github.com/Homebrew/homebrew-(core|cask)" <<<"$tap"; then
-        echo "third-party-tap:${tap##*github.com/}"
-        return
-    fi
-    echo "ok"
+    case "$kind" in
+        formula|cask)
+            local flag="--formula"
+            [[ "$kind" == "cask" ]] && flag="--cask"
+            if ! out=$(brew info "$flag" "$name" 2>&1); then
+                if grep -qE "requires the tap [^[:space:]]+" <<<"$out"; then
+                    local needed_tap
+                    needed_tap=$(grep -oE "requires the tap [^[:space:]]+" <<<"$out" | awk '{print $4}')
+                    verdict="tap-not-added:${needed_tap}"
+                else
+                    verdict="not-found"
+                fi
+            else
+                tap=$(grep -oE "From: https://github.com/[^/]+/homebrew-[^/]+" <<<"$out" | head -1)
+                if [[ -n "$tap" ]] && ! grep -qE "github.com/Homebrew/homebrew-(core|cask)" <<<"$tap"; then
+                    verdict="third-party-tap:${tap##*github.com/}"
+                else
+                    verdict="ok"
+                fi
+            fi
+            ;;
+        npm|bun)
+            local pkg_for_url
+            pkg_for_url=$(strip_tag_for_url "$name")
+            url="https://registry.npmjs.org/${pkg_for_url}"
+            if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
+                verdict="ok"
+            else
+                verdict="not-found"
+            fi
+            ;;
+        uv|pipx)
+            local pkg_for_url
+            pkg_for_url=$(strip_tag_for_url "$name")
+            url="https://pypi.org/pypi/${pkg_for_url}/json"
+            if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
+                verdict="ok"
+            else
+                verdict="not-found"
+            fi
+            ;;
+        curl)
+            case "$name" in
+                ollama) url="https://ollama.com/install.sh" ;;
+                *)      printf 'skip|%s|%s\n' "$kind" "$name"; return 0 ;;
+            esac
+            if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
+                verdict="ok"
+            else
+                verdict="not-found"
+            fi
+            ;;
+        *)
+            printf 'skip|%s|%s\n' "$kind" "$name"
+            return 0
+            ;;
+    esac
+
+    printf '%s|%s|%s\n' "$verdict" "$kind" "$name"
 }
+export -f classify_one strip_tag_for_url
 
-# ── Build the to-install set ─────────────────────────────────────
+# ── Build inventory + to-install set ─────────────────────────────
 
-declare -A WILL_INSTALL_FORMULA=() WILL_INSTALL_CASK=()
 declare -A IN_INVENTORY_FORMULA=() IN_INVENTORY_CASK=()
+declare -A WILL_INSTALL_FORMULA=() WILL_INSTALL_CASK=()
 
-# Inventory
 if [[ -f "${SNAPSHOT_DIR}/11-brew-installed-on-request.txt" ]]; then
     while read -r n; do [[ -n "$n" ]] && IN_INVENTORY_FORMULA["$n"]=1; done \
         < <(read_inventory_names "${SNAPSHOT_DIR}/11-brew-installed-on-request.txt")
@@ -104,12 +151,9 @@ if [[ -f "${SNAPSHOT_DIR}/12-brew-cask.txt" ]]; then
         < <(read_inventory_names "${SNAPSHOT_DIR}/12-brew-cask.txt")
 fi
 
-# Profile (full)
 for f in brew.txt brew-developer.txt brew-full.txt; do
     [[ -f "${DATA_DIR}/$f" ]] || continue
     while read -r pkg; do
-        # Strip tap prefixes like "user/tap/" so we get the bare formula name
-        # for inventory lookup (brew list shows bare names).
         local_name="${pkg##*/}"
         if [[ -z "${IN_INVENTORY_FORMULA[$local_name]:-}" ]]; then
             WILL_INSTALL_FORMULA["$pkg"]=1
@@ -127,80 +171,60 @@ for f in brew-cask-developer.txt brew-cask-full.txt; do
     done < <(read_pkg_file "${DATA_DIR}/$f")
 done
 
-# ── Report header ───────────────────────────────────────────────
+# Hardcoded brew references in install scripts (not in any .txt profile)
+declare -a SCRIPT_REFS=(
+    "formula|fnm"
+    "formula|uv"
+    "formula|pnpm"
+    "formula|mise"
+    "cask|oven-sh/bun/bun"
+)
+
+# ── Build unified task list ──────────────────────────────────────
+
+TASKS=()
+for name in "${!WILL_INSTALL_FORMULA[@]}"; do TASKS+=("formula|$name"); done
+for name in "${!WILL_INSTALL_CASK[@]}";    do TASKS+=("cask|$name");    done
+for ref  in "${SCRIPT_REFS[@]}";           do TASKS+=("$ref");          done
+
+AI_TOOLS_FILE="${DATA_DIR}/ai-tools-full.txt"
+if [[ -f "$AI_TOOLS_FILE" ]]; then
+    while read -r entry; do
+        [[ -z "$entry" ]] && continue
+        TASKS+=("${entry/:/|}")
+    done < <(read_pkg_file "$AI_TOOLS_FILE")
+fi
 
 total_formula=${#WILL_INSTALL_FORMULA[@]}
 total_cask=${#WILL_INSTALL_CASK[@]}
+total_tasks=${#TASKS[@]}
 
 if (( ! QUIET )); then
     echo "Preflight against M1 inventory ($SNAPSHOT_DIR)"
     echo "  formulae to install on a fresh M5: $total_formula"
     echo "  casks to install on a fresh M5:    $total_cask"
-    echo "  validating each against \`brew info\`..."
+    echo "  total registry checks:             $total_tasks (parallelism=$PARALLELISM)"
     echo
 fi
 
-# ── Validate ────────────────────────────────────────────────────
+# ── Run all checks in parallel via xargs -P ──────────────────────
+
+RESULTS=$(printf '%s\n' "${TASKS[@]}" \
+    | xargs -P "$PARALLELISM" -I {} bash -c 'classify_one "$@"' _ {})
+
+# ── Aggregate results ────────────────────────────────────────────
 
 declare -a FAIL=() THIRDPARTY=() TAP_NEEDED=()
 
-validate_kind() {
-    local kind="$1" name verdict label
-    [[ "$kind" == "formula" ]] && local -n SET=WILL_INSTALL_FORMULA || local -n SET=WILL_INSTALL_CASK
-    label=$([[ "$kind" == "formula" ]] && echo "formula" || echo "cask")
-
-    for name in "${!SET[@]}"; do
-        verdict=$(classify_brew_info "$name" "$kind")
-        case "$verdict" in
-            ok)
-                (( QUIET )) || printf "  [OK]      %-7s %s\n" "$label" "$name"
-                ;;
-            not-found)
-                FAIL+=("$label: $name (not found in any tap)")
-                printf "  [FAIL]    %-7s %s — not found in any tap\n" "$label" "$name"
-                ;;
-            third-party-tap:*)
-                THIRDPARTY+=("$label: $name (${verdict#third-party-tap:})")
-                (( QUIET )) || printf "  [3rd-tap] %-7s %s — %s\n" "$label" "$name" "${verdict#third-party-tap:}"
-                ;;
-            tap-not-added:*)
-                TAP_NEEDED+=("$label: $name (tap ${verdict#tap-not-added:} required)")
-                (( QUIET )) || printf "  [tap req] %-7s %s — needs tap %s\n" "$label" "$name" "${verdict#tap-not-added:}"
-                ;;
-        esac
-    done
-}
-
-validate_kind formula
-validate_kind cask
-
-# ── Validate hardcoded brew references in install scripts ────────
-# fnm.sh, uv.sh and dev-env.sh call `brew install` for tools that are not
-# listed in any .txt profile file. Validate them explicitly so the preflight
-# also covers the dev-env path.
-
-(( QUIET )) || echo
-(( QUIET )) || echo "Validating hardcoded brew references in install scripts:"
-
-declare -a SCRIPT_REFS=(
-    "formula:fnm"           # src/install/fnm.sh
-    "formula:uv"            # src/install/uv.sh
-    "formula:pnpm"          # src/install/fnm.sh::install_global_npm
-    "formula:mise"          # src/install/dev-env.sh::install_mise
-    "cask:oven-sh/bun/bun"  # src/install/fnm.sh — third-party tap
-)
-
-for ref in "${SCRIPT_REFS[@]}"; do
-    kind="${ref%%:*}"
-    name="${ref#*:}"
-    verdict=$(classify_brew_info "$name" "$kind")
+while IFS='|' read -r verdict kind name; do
+    [[ -z "$verdict" ]] && continue
     case "$verdict" in
         ok)
             (( QUIET )) || printf "  [OK]      %-7s %s\n" "$kind" "$name"
             ;;
         not-found)
-            FAIL+=("$kind: $name (not found — referenced by install script)")
-            printf "  [FAIL]    %-7s %s — not found in any tap\n" "$kind" "$name"
+            FAIL+=("$kind: $name (not found in registry)")
+            printf "  [FAIL]    %-7s %s — not found\n" "$kind" "$name"
             ;;
         third-party-tap:*)
             THIRDPARTY+=("$kind: $name (${verdict#third-party-tap:})")
@@ -208,73 +232,20 @@ for ref in "${SCRIPT_REFS[@]}"; do
             ;;
         tap-not-added:*)
             TAP_NEEDED+=("$kind: $name (tap ${verdict#tap-not-added:} required)")
-            (( QUIET )) || printf "  [tap req] %-7s %s — needs tap %s (script will tap before install)\n" "$kind" "$name" "${verdict#tap-not-added:}"
+            (( QUIET )) || printf "  [tap req] %-7s %s — needs tap %s\n" "$kind" "$name" "${verdict#tap-not-added:}"
+            ;;
+        skip)
+            (( QUIET )) || printf "  [skip]    %-7s %s — no preflight available\n" "$kind" "$name"
             ;;
     esac
-done
-
-# ── Validate AI tool registry names ──────────────────────────────
-# ai-tools-full.txt entries are like "npm:<pkg>", "bun:<pkg>", "uv:<pkg>",
-# "curl:ollama". We hit the relevant registry with a HEAD request — same
-# class of bug as cask-name-not-found, just for npm/PyPI.
-
-AI_TOOLS_FILE="${DATA_DIR}/ai-tools-full.txt"
-
-if [[ -f "$AI_TOOLS_FILE" ]]; then
-    (( QUIET )) || echo
-    (( QUIET )) || echo "Validating ai-tools-full.txt registry names:"
-
-    while read -r entry; do
-        [[ -z "$entry" ]] && continue
-        prefix="${entry%%:*}"
-        pkg="${entry#*:}"
-
-        # Strip a trailing "@<tag>" from the package name for registry lookup.
-        # Tags (latest, beta, ...) are resolved at install time — registry
-        # URL must point to the bare package. Handles both scoped and unscoped:
-        #   @openai/codex@latest → @openai/codex
-        #   codex@latest         → codex
-        #   @openai/codex        → @openai/codex (unchanged, leading @ kept)
-        pkg_for_url="$pkg"
-        if [[ "$pkg" =~ ^(.+)@[^/@]+$ ]]; then
-            pkg_for_url="${BASH_REMATCH[1]}"
-        fi
-
-        case "$prefix" in
-            npm|bun)
-                # Bun shares the npm registry; same URL works for both.
-                url="https://registry.npmjs.org/${pkg_for_url}"
-                ;;
-            uv|pipx)
-                url="https://pypi.org/pypi/${pkg_for_url}/json"
-                ;;
-            curl)
-                # Hardcoded resolution per ai-tools.sh::curl handler.
-                case "$pkg" in
-                    ollama) url="https://ollama.com/install.sh" ;;
-                    *) (( QUIET )) || printf "  [skip]    curl:%s — no preflight URL configured\n" "$pkg"; continue ;;
-                esac
-                ;;
-            *)
-                (( QUIET )) || printf "  [skip]    %s — unknown prefix\n" "$entry"
-                continue
-                ;;
-        esac
-
-        if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
-            (( QUIET )) || printf "  [OK]      %-7s %s\n" "$prefix" "$pkg"
-        else
-            FAIL+=("$prefix:$pkg (registry HEAD failed at $url)")
-            printf "  [FAIL]    %-7s %s — registry not reachable\n" "$prefix" "$pkg"
-        fi
-    done < <(read_pkg_file "$AI_TOOLS_FILE")
-fi
+done <<<"$RESULTS"
 
 # ── Summary ─────────────────────────────────────────────────────
 
 echo
 echo "Preflight summary:"
-printf "  total to install:    %d formulae + %d casks\n" "$total_formula" "$total_cask"
+printf "  total to install:    %d formulae + %d casks + %d ai-tools\n" \
+    "$total_formula" "$total_cask" $((total_tasks - total_formula - total_cask - ${#SCRIPT_REFS[@]}))
 printf "  failures:            %d\n" "${#FAIL[@]}"
 printf "  third-party taps:    %d (auto-tap risk on restricted networks)\n" "${#THIRDPARTY[@]}"
 printf "  needs tap first:     %d (install script taps explicitly before install)\n" "${#TAP_NEEDED[@]}"
