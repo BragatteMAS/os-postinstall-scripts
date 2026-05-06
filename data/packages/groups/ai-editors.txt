@@ -1,0 +1,8 @@
+# AI editors & desktop apps — Cursor, Zed, Claude (desktop + CLI), ChatGPT, Antigravity
+cursor
+zed
+claude
+claude-code
+claude-code@latest
+chatgpt
+antigravity

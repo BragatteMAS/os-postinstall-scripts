@@ -203,18 +203,25 @@ install_profile() {
                     record_failure "brew full extras"
                 fi
                 ;;
-            brew-cask-developer.txt)
-                current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing brew cask packages..."
-                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh"; then
-                    record_failure "brew cask packages"
+            brew-cask-developer.txt|brew-cask-full.txt)
+                # In --groups mode, defer all cask install to a single
+                # interactive selector run AFTER the dispatch loop. Skip both
+                # brew-cask-* dispatch entries.
+                if [[ "${GROUPS_MODE:-}" == "true" ]]; then
+                    log_debug "Skipping $pkg_file (deferred to --groups selector)"
+                    continue
                 fi
-                ;;
-            brew-cask-full.txt)
                 current_step=$((current_step + 1))
-                show_progress "$current_step" "$total_steps" "Installing brew cask full extras..."
-                if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh" --full; then
-                    record_failure "brew cask full extras"
+                if [[ "$pkg_file" == "brew-cask-developer.txt" ]]; then
+                    show_progress "$current_step" "$total_steps" "Installing brew cask packages..."
+                    if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh"; then
+                        record_failure "brew cask packages"
+                    fi
+                else
+                    show_progress "$current_step" "$total_steps" "Installing brew cask full extras..."
+                    if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh" --full; then
+                        record_failure "brew cask full extras"
+                    fi
                 fi
                 ;;
             ai-tools-full.txt)
@@ -258,6 +265,22 @@ install_profile() {
                 ;;
         esac
     done < "$profile_file"
+
+    # ── --groups mode: run interactive cask selector ─────────────────────
+    # Defers all brew-cask-* dispatch to a single multi-select prompt over
+    # data/packages/groups/*.txt. User picks groups; only chosen groups install.
+    if [[ "${GROUPS_MODE:-}" == "true" ]]; then
+        source "${MACOS_DIR}/../../core/group-selector.sh"
+        local _selected
+        _selected=$(select_groups)
+        if [[ -n "$_selected" ]]; then
+            log_info "Installing selected groups..."
+            # shellcheck disable=SC2086 # word-splitting intentional
+            install_groups $_selected || record_failure "group install"
+        else
+            log_info "No groups selected — skipping cask install"
+        fi
+    fi
 
     # Run post-install hooks
     source "${MACOS_DIR}/../../core/hooks.sh" 2>/dev/null || true

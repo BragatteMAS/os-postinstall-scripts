@@ -1,0 +1,4 @@
+# Classic code editors + Warp terminal
+visual-studio-code
+sublime-text
+warp

@@ -106,6 +106,12 @@ parse_flags() {
                 export NONINTERACTIVE=true
                 shift
                 ;;
+            -g|--groups)
+                # Replace the all-or-nothing cask install with an interactive
+                # multi-select. Picks groups from data/packages/groups/*.txt.
+                export GROUPS_MODE=true
+                shift
+                ;;
             -h|--help)
                 # Pass --help through so main() can render it
                 REMAINING_ARGS+=("$1")
@@ -146,6 +152,7 @@ main() {
             echo "  -n, --dry-run     Show what would be done without making changes"
             echo "  -v, --verbose     Enable debug output with timestamps"
             echo "  -y, --unattended  Skip confirmation prompts"
+            echo "  -g, --groups      Replace all-or-nothing cask install with interactive picker"
             echo "  -h, --help        Show this help message"
             echo ""
             echo "Actions:"

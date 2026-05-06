@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![Version: 5.2.0](https://img.shields.io/badge/Version-5.2.0-orange?style=flat)](CHANGELOG.md)
+[![Version: 5.3.0](https://img.shields.io/badge/Version-5.3.0-orange?style=flat)](CHANGELOG.md)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat)](LICENSE)
 [![Platforms: Linux | macOS | Windows](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS%20%7C%20Windows-informational?style=flat)](README.md)
 [![Shell: Bash 4.0+](https://img.shields.io/badge/Shell-Bash%204.0%2B-4EAA25?style=flat&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
@@ -132,7 +132,30 @@ Aliases configured via `data/dotfiles/shared/aliases.sh`. Full reference: [`docs
 | `--dry-run` | `-n` | `DRY_RUN=true` | preview without installing |
 | `--verbose` | `-v` | `VERBOSE=true` | debug output with timestamps |
 | `--unattended` | `-y` | `UNATTENDED=true` | skip confirmation prompts |
+| `--groups` | `-g` | `GROUPS_MODE=true` | replace all-or-nothing cask install with interactive picker (10 curated groups) |
 | `--help` | `-h` | — | show help |
+
+### Cask groups (`--groups` mode)
+
+`bash setup.sh --groups developer` (or `full`) skips the default cask install
+and shows an interactive multi-select. You pick which groups to install:
+
+| Group | Apps |
+|---|---|
+| `browsers` | Firefox, Chromium, Chrome, Zen, Brave, Opera |
+| `ai-editors` | Cursor, Zed, Claude (desktop + CLI), ChatGPT, Antigravity |
+| `code-editors` | VS Code, Sublime Text, Warp |
+| `dev-infra` | Docker, OrbStack, DBeaver, Insomnia, GitHub Desktop |
+| `productivity` | Rectangle, Alt-Tab, Raycast, HiddenBar, Caffeine, AppCleaner, Numi, MeetingBar |
+| `communication` | Slack, Discord |
+| `knowledge` | Obsidian, Zotero |
+| `media` | IINA, Spotify, CapCut, Loom, Clop, Wispr Flow |
+| `creative` | Inkscape, GIMP, Affinity, Positron, RStudio |
+| `essentials` | Bitwarden, Google Drive, LibreOffice, Logi Options+, Karabiner, Nerd fonts |
+
+UI uses `gum choose --no-limit` (Charm's TUI) when available — bash numbered-menu
+fallback otherwise. All formulae, Rust CSV tools, and AI tools install as usual.
+Edit `data/packages/groups/*.txt` to customise.
 
 Customization (extra packages, custom profiles, dotfiles): [`docs/user-guide.md`](docs/user-guide.md).
 

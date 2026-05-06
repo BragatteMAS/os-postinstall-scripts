@@ -42,6 +42,9 @@ just
 gh
 lazygit
 jj
+
+# Interactive shell UI (used by setup.sh --groups selector)
+gum
 diff-so-fancy
 
 # Terminal multiplexer (mainstream — coexists com zellij em CSV)

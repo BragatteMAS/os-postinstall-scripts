@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.0] - 2026-05-06
+
+Interactive cask group selector. `setup.sh --groups` replaces the
+all-or-nothing cask install with a multi-select prompt over 10 curated
+groups (browsers, ai-editors, code-editors, dev-infra, productivity,
+communication, knowledge, media, creative, essentials).
+
+### Added
+- **`--groups` / `-g` flag** in `setup.sh`. When set, brew-cask-* dispatch
+  is deferred to a single interactive selector after the rest of install
+  completes. Pick groups by name; only chosen groups install.
+- **`src/core/group-selector.sh`**: implementation with two backends —
+  `gum choose --no-limit` if installed (Charm's TUI), bash fallback with
+  numbered comma-separated input otherwise. The selector auto-installs
+  `gum` via brew if missing (skipped in DRY_RUN).
+- **`data/packages/groups/*.txt`** (10 files): one per cask group, format
+  matches existing brew-cask-*.txt with a leading `# <Group Name> — <desc>`
+  comment used as the menu label.
+- **`gum`** added to `brew-developer.txt` so the selector backend is
+  available for any developer/full install.
+
+### Changed
+- `src/platforms/macos/main.sh`: brew-cask-developer.txt and
+  brew-cask-full.txt cases now check `GROUPS_MODE` and skip when set;
+  group-selector runs once at the end of the dispatch loop.
+
+### Notes
+- `--groups` is additive over the chosen profile: developer/full keeps
+  installing all formulae + Rust CSV + AI tools as before. Only the
+  cask install changes from "all" to "user-picked groups".
+- Bash fallback works on any host; gum is the polished UX.
+
 ## [5.2.0] - 2026-05-06
 
 Doc consolidation + preflight performance. Driven by user feedback that

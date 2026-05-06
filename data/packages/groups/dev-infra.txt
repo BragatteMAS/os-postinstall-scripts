@@ -1,0 +1,6 @@
+# Dev infra — Docker/OrbStack, DB GUI (DBeaver), API client (Insomnia), GitHub Desktop
+docker-desktop
+orbstack
+dbeaver-community
+insomnia
+github

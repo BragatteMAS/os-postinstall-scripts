@@ -1,0 +1,9 @@
+# Essentials & system — Bitwarden, Google Drive, LibreOffice, Logi Options+, Karabiner, Nerd fonts
+bitwarden
+google-drive
+libreoffice
+logi-options+
+karabiner-elements
+font-jetbrains-mono-nerd-font
+font-symbols-only-nerd-font
+font-sketchybar-app-font

@@ -1,0 +1,7 @@
+# Browsers — Firefox, Chromium, Chrome, Zen, Brave, Opera
+firefox
+chromium
+google-chrome
+zen-browser
+brave-browser
+opera
