@@ -320,6 +320,23 @@ main() {
         fi
     fi
 
+    # Offer terminal blueprint setup (interactive only) — separate from dotfiles
+    # because it covers a different layer (Starship preset, aliases bundle, zsh
+    # plugins curation, optional p10k migration). User testimony: when this
+    # wasn't surfaced, people didn't know the script existed.
+    if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
+        local terminal_setup="${SCRIPT_DIR}/terminal-setup.sh"
+        if [[ -x "$terminal_setup" ]]; then
+            echo ""
+            read -rp "Run terminal blueprint (Starship preset, aliases, zsh plugins)? [y/N] " answer
+            if [[ "$answer" =~ ^[yYsS]$ ]]; then
+                bash "$terminal_setup" --interactive
+            else
+                log_info "Skip. You can run it later: bash terminal-setup.sh --interactive"
+            fi
+        fi
+    fi
+
     # Save install state for future runs (R6: state detection)
     if [[ "${DRY_RUN:-}" != "true" ]]; then
         save_install_state "$profile"

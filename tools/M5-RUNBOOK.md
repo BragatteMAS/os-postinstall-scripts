@@ -80,7 +80,24 @@ cp /tmp/os-postinstall-*/brew-install.log ~/m5-install-stderr.log
 
 ---
 
-## 4. Post-install verification (M5, ~5 min)
+## 4. Terminal blueprint (M5, ~3 min — separate from setup.sh)
+
+`setup.sh` installs packages; the terminal **look and behavior**
+(Starship preset, MAS Oceanic theme, aliases bundle, zsh plugins) is
+a separate one-script flow. Since v5.1.4 `setup.sh` prompts for it at
+the end — but you can also run it standalone whenever:
+
+```sh
+bash terminal-setup.sh --interactive   # wizard — pick components
+# or:
+bash terminal-setup.sh                 # install everything
+```
+
+Use `--dry-run` to preview before applying.
+
+---
+
+## 5. Post-install verification (M5, ~5 min)
 
 - [ ] Open a **new** terminal window (so dotfiles re-source)
 - [ ] `which starship zoxide atuin` — all three should resolve
@@ -90,11 +107,11 @@ cp /tmp/os-postinstall-*/brew-install.log ~/m5-install-stderr.log
 - [ ] Spot-check casks that were missing on M1 actually opened:
       `open -a "Visual Studio Code"`, `open -a "DBeaver"`, `open -a "Rectangle"`
 
-If any check fails, see §5 Recovery.
+If any check fails, see §6 Recovery.
 
 ---
 
-## 5. Recovery cookbook (only if §3 or §4 fails)
+## 6. Recovery cookbook (only if §3 or §5 fails)
 
 | Symptom | Probable cause | Recovery |
 |---|---|---|
@@ -111,7 +128,7 @@ and the failing line.
 
 ---
 
-## 6. Post-migration (M5, when stable)
+## 7. Post-migration (M5, when stable)
 
 - [ ] Restore tarball from Bitwarden vault
 - [ ] Re-run `atuin sync` to pull history forward

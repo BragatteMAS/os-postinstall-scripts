@@ -12,7 +12,7 @@
 
 # AI CLI clients (via npm)
 npm:@anthropic-ai/claude-code
-npm:@openai/codex
+npm:@openai/codex@latest
 npm:@google/gemini-cli
 npm:@github/copilot
 

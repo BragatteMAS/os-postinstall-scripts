@@ -46,7 +46,39 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1 -Profile developer
 
 > Don't have Git yet? `winget install Git.Git`, restart PowerShell, then clone.
 
-> Just want a nice terminal (modern CLI tools, prompt, aliases) without the full setup? See `terminal-setup.sh` (macOS/Linux) or `examples/terminal-setup.ps1` (Windows).
+## Just Want the Terminal?
+
+If you only want a modern terminal (CLI tools + prompt + aliases + zsh plugins) and don't need the full system setup, run the terminal blueprint directly:
+
+```bash
+git clone https://github.com/BragatteMAS/os-postinstall-scripts
+bash os-postinstall-scripts/terminal-setup.sh --interactive  # wizard — choose components
+bash os-postinstall-scripts/terminal-setup.sh --dry-run      # preview first
+bash os-postinstall-scripts/terminal-setup.sh                # install everything
+```
+
+Windows: `examples/terminal-setup.ps1`.
+
+**What it installs:**
+
+| Component | Details |
+|-----------|---------|
+| Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
+| CLI tools | bat, eza, fd, fzf, ripgrep, delta, zoxide, starship |
+| Prompt | MAS Oceanic Theme (powerline, git, languages, status bar) + 3 presets |
+| Aliases | 50+ shortcuts for git, navigation, `sysup`, `mkcd`, `gcb` |
+| Functions | Welcome message, `h` (help), `preview` (fzf), `aliases` (search) |
+| Plugins | zsh-autosuggestions, zsh-syntax-highlighting, zsh-completions |
+| Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |
+
+Demo:
+
+<div align="center">
+<!-- Re-record: asciinema rec assets/demo.cast && agg --theme monokai --font-size 14 assets/demo.cast assets/demo.gif -->
+<img src="assets/demo.gif" alt="Dry-run preview of a minimal profile setup on macOS" width="700">
+</div>
+
+> Since v5.1.4 the main `setup.sh` also offers to run this at the end (interactive prompt). Skipping the prompt? Run `bash terminal-setup.sh --interactive` whenever you like.
 
 ## Profiles
 

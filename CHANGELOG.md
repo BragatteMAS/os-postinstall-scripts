@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.4] - 2026-05-06
+
+UX gap closure + ai-tools tag pinning. Driven by a second-pass review
+of the M5-bound flow: the terminal blueprint is a separate script users
+were not discovering after `setup.sh`, and ai CLIs were not pinned to
+their rolling channel.
+
+### Added
+- **`setup.sh` now offers terminal blueprint at the end** (interactive
+  only). Same prompt pattern as the dotfiles offer right above it. Skip
+  prints the standalone command for later use:
+  `bash terminal-setup.sh --interactive`.
+- **README.md restored "Just Want the Terminal?" section** with full
+  usage examples (`--interactive`, `--dry-run`, full install), component
+  table, and the demo asciinema gif. The section had been removed in the
+  v5.0.0 README streamline; surfaced from real user feedback that the
+  command "had disappeared".
+- **`tools/M5-RUNBOOK.md` §4** is now an explicit "Terminal blueprint"
+  step between install and verification.
+
+### Changed
+- **`@openai/codex` pinned to `@latest`** in `data/packages/ai-tools-full.txt`
+  for symmetry with the brew cask `claude-code@latest`. npm install
+  semantics are equivalent (latest is the default tag) — change is for
+  explicitness so users see the channel intent in the package list.
+
+### Notes
+- `claude` (Claude Desktop), `claude-code` and `claude-code@latest`
+  (CLI rolling channel) are intentionally distinct casks. We keep
+  `claude-code@latest` in `brew-cask-full.txt`.
+
 ## [5.1.3] - 2026-05-05
 
 Pre-flight breadth release. Closes the last gaps in pre-install validation

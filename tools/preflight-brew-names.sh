@@ -228,13 +228,25 @@ if [[ -f "$AI_TOOLS_FILE" ]]; then
         [[ -z "$entry" ]] && continue
         prefix="${entry%%:*}"
         pkg="${entry#*:}"
+
+        # Strip a trailing "@<tag>" from the package name for registry lookup.
+        # Tags (latest, beta, ...) are resolved at install time — registry
+        # URL must point to the bare package. Handles both scoped and unscoped:
+        #   @openai/codex@latest → @openai/codex
+        #   codex@latest         → codex
+        #   @openai/codex        → @openai/codex (unchanged, leading @ kept)
+        pkg_for_url="$pkg"
+        if [[ "$pkg" =~ ^(.+)@[^/@]+$ ]]; then
+            pkg_for_url="${BASH_REMATCH[1]}"
+        fi
+
         case "$prefix" in
             npm|bun)
                 # Bun shares the npm registry; same URL works for both.
-                url="https://registry.npmjs.org/${pkg}"
+                url="https://registry.npmjs.org/${pkg_for_url}"
                 ;;
             uv|pipx)
-                url="https://pypi.org/pypi/${pkg}/json"
+                url="https://pypi.org/pypi/${pkg_for_url}/json"
                 ;;
             curl)
                 # Hardcoded resolution per ai-tools.sh::curl handler.
