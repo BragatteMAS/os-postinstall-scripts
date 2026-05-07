@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.2] - 2026-05-06
+
+### Changed
+- **`positron` and `rstudio` moved from `creative` → `code-editors` group.**
+  Both are IDEs (Positron is Posit's multi-language successor to RStudio,
+  covering R + Python). They belong with code editors, not with design
+  software (Inkscape / GIMP / Affinity). README group table updated to
+  match.
+
 ## [5.3.1] - 2026-05-06
 
 Cleanup pass + refreshed demo recording.
