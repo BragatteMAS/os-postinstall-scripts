@@ -44,8 +44,6 @@ source "${SCRIPT_DIR}/../../../core/state.sh" || {
 # Snap Helper Functions
 #######################################
 
-# NOTE: retry_with_backoff() comes from core/errors.sh (already sourced)
-
 # is_snap_installed - Check if a Snap package is already installed
 # Args: $1 = package name
 # Returns: 0 if installed, 1 if not
@@ -54,8 +52,12 @@ is_snap_installed() {
     snap list "$pkg" &>/dev/null
 }
 
-# snap_install - Install a single Snap package with retry and idempotency
-# Handles classic: prefix for classic confinement packages
+# snap_install - Install a single Snap package idempotently with classifier
+# Handles classic: prefix for classic confinement packages.
+# Snap errors are mostly deterministic (package missing, classic flag missing,
+# already installed) — single attempt + per-failure classifier mirrors the
+# brew-cask.sh pattern adopted in v5.4.2. Transient network errors recover
+# by re-running setup.sh (idempotent).
 # Args: $1 = package entry (may have classic: prefix)
 # Returns: 0 on success, 1 on failure
 snap_install() {
@@ -63,7 +65,6 @@ snap_install() {
     local pkg="$entry"
     local classic_flag=""
 
-    # Parse classic: prefix
     if [[ "$entry" == classic:* ]]; then
         pkg="${entry#classic:}"
         classic_flag="--classic"
@@ -81,7 +82,10 @@ snap_install() {
 
     log_info "Installing: $pkg"
 
-    if retry_with_backoff sudo snap install "$pkg" $classic_flag; then
+    local err_buf rc=0
+    err_buf=$(sudo snap install "$pkg" $classic_flag 2>&1 >/dev/null) || rc=$?
+
+    if (( rc == 0 )); then
         if [[ -n "$classic_flag" ]]; then
             log_ok "Installed: $pkg (classic)"
         else
@@ -89,10 +93,27 @@ snap_install() {
         fi
         save_package_state "snap" "$pkg" "${PROFILE_NAME:-unknown}"
         return 0
-    else
-        log_warn "Package not found or install failed: $pkg"
-        return 1
     fi
+
+    local reason="exit $rc"
+    local hint=""
+    if grep -qiE "no snap found|not found in the store|cannot find" <<<"$err_buf"; then
+        reason="snap not found in store"
+        hint="Fix: snap find $pkg  (find correct name; snap may have been renamed)"
+    elif grep -qiE "is already installed" <<<"$err_buf"; then
+        reason="already installed (state file out of sync)"
+        hint="Fix: snap list $pkg  (verify); next setup.sh run will reconcile"
+    elif grep -qiE "requires --classic|requires classic confinement" <<<"$err_buf"; then
+        reason="package requires --classic confinement"
+        hint="Fix: prefix entry with 'classic:' in snap-*.txt (e.g., 'classic:$pkg')"
+    elif grep -qiE "could not be found|404|connection|network|timeout|resolve|temporarily unavailable" <<<"$err_buf"; then
+        reason="network error"
+        hint="Fix: re-run setup.sh — idempotent, only retries the missing items"
+    fi
+
+    log_error "Failed to install: $pkg ($reason)"
+    [[ -n "$hint" ]] && log_info "  → $hint"
+    return 1
 }
 
 #######################################
