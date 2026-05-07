@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.5] - 2026-05-07
+
+Cross-OS classifier parity. Snap (Linux), Flatpak (Linux), and WinGet
+(Windows) installers now emit the same actionable failure reasons +
+hints that brew-cask gained in v5.4.2. `linux/main.sh` drops external
+`retry_with_backoff` around snap/flatpak waves (mirrors `macos/main.sh:215`
+NOTE from v5.4.2). apt dispatcher unchanged — `apt.sh` has its own
+internal `apt-get` retry that handles repo timeouts at the right layer.
+
+### Fixed
+- **Snap installer (Linux): single-attempt + classifier**
+  (`src/platforms/linux/install/snap.sh::snap_install`). Previously
+  `retry_with_backoff sudo snap install` retried 3× on deterministic
+  errors (snap missing, classic flag missing) wasting ~50s each. Now:
+  single attempt, 4 classifier branches (not-found / classic / already
+  installed / network), each with an actionable hint.
+
+- **Flatpak installer (Linux): single-attempt + classifier**
+  (`src/platforms/linux/install/flatpak.sh::flatpak_install`). Same
+  retry pattern dropped, classifier added (Nothing matches / already
+  installed / permission / network).
+
+- **WinGet installer (Windows): classifier added**
+  (`src/platforms/windows/install/winget.ps1::Install-WinGetPackage`).
+  Previously generic "Failed to install" with no reason. Now: 4
+  branches (No package found / already installed / hash mismatch /
+  network) with hints. WinGet was already single-attempt — no retry to drop.
+
+### Changed
+- **`linux/main.sh`: snap/flatpak dispatchers no longer wrapped in
+  `retry_with_backoff`.** Mirrors `macos/main.sh:215` decision from
+  v5.4.2: per-package classifier surfaces the actionable reason; the
+  wave-level retry was multiplying deterministic failures. apt
+  dispatcher unchanged (apt.sh handles repo timeouts internally).
+
+### Added (tests)
+- 4 regression tests (`v5.4.5`) in `tests/test-regressions.bats`:
+  snap not-found, snap classic-required, flatpak not-found, linux
+  main.sh dispatcher pattern (no retry_with_backoff around snap/flatpak).
+- 1 Pester contract test (`tests/pester/winget.Tests.ps1`) covering
+  the WinGet classifier branches. Source-content fingerprint —
+  Windows CI runner with winget should layer real behavior tests on top.
+
 ## [5.4.4] - 2026-05-07
 
 Same class of bug as v5.4.0: another interactive prompt treated Enter as
