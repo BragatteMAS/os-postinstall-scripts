@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.3] - 2026-05-06
+
+Fixes a silent skip in the terminal blueprint reported by Deney as
+"pasta nao existente skippa o install".
+
+### Fixed
+- **`select_preset()` falls back to project config when chosen preset
+  is missing.** Before: hit `return 1` and the entire starship install
+  was silently skipped. Now: warns, falls back to
+  `data/dotfiles/starship/starship.toml` (always present in repo), and
+  only fails hard if THAT is also missing — with an actionable hint
+  (`cd <repo> && git pull && bash terminal-setup.sh --interactive`).
+
+### Added (tests)
+- 1 regression test (`v5.4.3`): builds a fake repo with project_config
+  but missing `presets/minimal.toml`, picks preset 2, asserts the
+  fallback to project_config kicks in instead of silent return 1.
+
 ## [5.4.2] - 2026-05-06
 
 Three concrete failures from Deney's run, three concrete fixes.

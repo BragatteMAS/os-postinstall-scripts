@@ -173,6 +173,37 @@ _run_cask_install_with_brew_stderr() {
     assert_output --partial "Fix: brew install --cask --force claude"
 }
 
+@test "[v5.4.3] select_preset falls back to project config when preset missing" {
+    # Reported by Deney: a missing preset file silently skipped the whole
+    # starship install ("pasta nao existente skippa o install"). Now we
+    # warn + fall back to project_config instead of return 1.
+    local tmp; tmp=$(mktemp -d)
+    local fake_repo="$tmp/repo"
+    mkdir -p "$fake_repo/terminal/presets" "$fake_repo/data/dotfiles/starship"
+    # project_config exists; minimal.toml does NOT (the preset user picks)
+    echo "format = '[project]'" > "$fake_repo/data/dotfiles/starship/starship.toml"
+
+    run bash -c '
+        SCRIPT_DIR="'"$fake_repo/terminal"'"
+        HOME="'"$tmp"'"
+        DRY_RUN=true
+        INTERACTIVE=true
+        log_info()  { echo "[INFO] $*"; }
+        log_warn()  { echo "[WARN] $*"; }
+        log_ok()    { echo "[OK] $*"; }
+        log_error() { echo "[ERROR] $*"; }
+        log_dry()   { echo "[DRY] $*"; }
+        eval "$(awk "/^select_preset\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/terminal/setup.sh")"
+        # User picks preset 2 (minimal) — file does not exist in fake_repo
+        echo "2" | select_preset
+    '
+
+    assert_success
+    assert_output --partial "Preset file not found"
+    assert_output --partial "Falling back to project starship config"
+    rm -rf "$tmp"
+}
+
 @test "[v5.4.1] terminal-setup diverts to .zshrc.local when target is symlink" {
     # Reported by Deney's M5: dotfiles-install.sh symlinks ~/.zshrc to
     # <repo>/data/dotfiles/zsh/zshrc. terminal-setup then `cat >> ~/.zshrc`

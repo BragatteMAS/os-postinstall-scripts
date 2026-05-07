@@ -334,9 +334,19 @@ select_preset() {
             ;;
     esac
 
+    # Graceful fallback when the chosen preset file is missing — previously
+    # returned 1 here, which silently skipped the entire starship install.
+    # Now: try project_config as a fallback before giving up.
     if [[ ! -f "$preset_file" ]]; then
-        log_error "Preset file not found: $preset_file"
-        return 1
+        log_warn "Preset file not found: $preset_file"
+        if [[ -f "$project_config" ]]; then
+            log_info "Falling back to project starship config"
+            preset_file="$project_config"
+        else
+            log_error "No starship preset available — repo may be incomplete"
+            log_info "  → Try: cd <repo> && git pull && bash terminal-setup.sh --interactive"
+            return 1
+        fi
     fi
 
     local config_dir="${HOME}/.config"
