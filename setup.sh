@@ -317,10 +317,16 @@ main() {
             ;;
     esac
 
-    # Offer dotfiles installation (interactive only)
+    # ── Optional config layers (after package install completes) ─────────
+    # Both prompts default to "n" because they MUTATE files in $HOME (.zshrc,
+    # .gitconfig, etc). Backups exist (~/.dotfiles-backup/), but we don't
+    # silently overwrite a user's existing config on timeout. The wording
+    # makes it clear these are the FINAL optional layers.
     if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
         echo ""
-        read -rp "Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
+        echo -e "${BLUE}─── Optional config layers (2 prompts, then done) ──────────────${NC}"
+        echo ""
+        read -rp "[1/2] Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
         if [[ "$answer" =~ ^[yYsS]$ ]]; then
             source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
             install_dotfiles
@@ -335,11 +341,13 @@ main() {
         local terminal_setup="${SCRIPT_DIR}/terminal-setup.sh"
         if [[ -x "$terminal_setup" ]]; then
             echo ""
-            read -rp "Run terminal blueprint (Starship preset, aliases, zsh plugins)? [y/N] " answer
+            read -rp "[2/2] Run terminal blueprint (Starship preset, aliases, zsh plugins)? [y/N] " answer
             if [[ "$answer" =~ ^[yYsS]$ ]]; then
                 bash "$terminal_setup" --interactive
+                echo ""
+                echo -e "${GREEN}─── Terminal blueprint done — installer is finishing up ───${NC}"
             else
-                log_info "Skip. You can run it later: bash terminal-setup.sh --interactive"
+                log_info "Skip. Run later with: bash terminal-setup.sh --interactive"
             fi
         fi
     fi

@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.0] - 2026-05-06
+
+UX repair driven by Deney's testimony: dev-env sub-prompts were
+defaulting against the user's intent, and the install flow visually
+"ended" mid-way at the terminal blueprint step.
+
+### Changed
+- **`show_category_menu` default is now 1 (All), not 3 (Skip).**
+  When the user picks `developer` or `full`, the wizard would ask
+  "Install Node? / Python? / mise?" with a 30s timeout — and silently
+  default to **Skip** if the user took longer to read the menu than the
+  timeout. Net effect: dev-env got installed only for users who clicked
+  fast. New default matches the profile they explicitly chose.
+- **`ask_tool` default is now "y", matching the `[Y/n]` prompt convention.**
+  Previously the prompt said `[Y/n]` (capital Y suggests default=yes),
+  but the actual timeout default was `"n"`. Pure UX trap — Enter now
+  installs as the prompt implies.
+- **Optional config layers section in `setup.sh`** now has a clear visual
+  separator and a `[1/2]` / `[2/2]` counter on the dotfiles + terminal
+  blueprint prompts, plus an explicit "installer is finishing up" line
+  after the terminal blueprint returns. The blueprint's own "Done!"
+  message no longer makes the main installer feel like it crashed mid-flow.
+
+### Added
+- **2 regression tests** (`test-regressions.bats`) guard against the
+  defaults silently flipping back to the broken values.
+
+### Notes
+- Numbering convention is now consistent in spirit: in every menu, the
+  default option is the one matching the user's apparent intent. No
+  source-code-level renumbering — the change is in defaults, not order.
+- Dotfiles + terminal-blueprint prompts keep `[y/N]` defaults because
+  they MUTATE files in $HOME (.zshrc, .gitconfig). Backups exist
+  (`~/.dotfiles-backup/`), but silent overwrite on timeout would be
+  worse UX than the current explicit opt-in.
+
 ## [5.3.3] - 2026-05-06
 
 ### Fixed

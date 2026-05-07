@@ -148,6 +148,23 @@ _run_cask_install_with_brew_stderr() {
     assert_output --partial "network error"
 }
 
+# ── interactive defaults (Deney's "menu logic inverted" report) ─────
+
+@test "[v5.4.0] show_category_menu default on timeout is 1 (All), not 3 (Skip)" {
+    # Previously defaulted to 3 (Skip) — silently un-installed dev-env
+    # categories for users who didn't react to the prompt within 30s.
+    # New default 1 (All) matches the profile the user picked.
+    grep -qE '"Select \[1-3\]"[[:space:]]+"1"' "$REPO_ROOT/src/core/interactive.sh"
+    ! grep -qE '"Select \[1-3\]"[[:space:]]+"3"' "$REPO_ROOT/src/core/interactive.sh"
+}
+
+@test "[v5.4.0] ask_tool default 'y' matches [Y/n] prompt convention" {
+    # Previously prompt said [Y/n] (capital Y = default) but the actual
+    # timeout default was "n". UX bug — Enter or timeout now installs.
+    grep -qE '"Install \$\{tool\}\? \[Y/n\]"[[:space:]]+"y"' "$REPO_ROOT/src/core/interactive.sh"
+    ! grep -qE '"Install \$\{tool\}\? \[Y/n\]"[[:space:]]+"n"' "$REPO_ROOT/src/core/interactive.sh"
+}
+
 @test "[8466ff3] cask install writes header + stderr to BREW_LOG" {
     # Validates the diagnostic path E2E: BREW_LOG must be appended with a
     # "=== brew install --cask <name> (rc=N) ===" header followed by the

@@ -58,25 +58,28 @@ show_category_menu() {
     local category="${1:-Tools}"
     local description="${2:-}"
 
-    # Non-interactive mode: install all
+    # Non-interactive mode: install all (matches profile intent)
     if [[ "${NONINTERACTIVE:-}" == "true" || ! -t 0 ]]; then
         return 0
     fi
 
     echo ""
     echo "Install ${category}? (${description})"
-    echo "  1) All"
+    echo "  1) All  (recommended — matches profile)"
     echo "  2) Choose individually"
-    echo "  3) Skip"
+    echo "  3) Skip this category"
     local choice
-    choice=$(read_with_timeout "Select [1-3]" "3")
+    # Default 1 (All) so a timeout follows the profile the user picked.
+    # Previously this defaulted to 3 (Skip) which silently un-did dev-env
+    # for users who took longer than 30s to read the menu.
+    choice=$(read_with_timeout "Select [1-3]" "1")
 
     case "$choice" in
         1) return 0 ;;
         2) return 1 ;;
         3) return 2 ;;
-        *) log_warn "Invalid choice '${choice}' — skipping ${category}"
-           return 2 ;;
+        *) log_warn "Invalid choice '${choice}' — installing all (default)"
+           return 0 ;;
     esac
 }
 
@@ -96,7 +99,10 @@ ask_tool() {
     fi
 
     local answer
-    answer=$(read_with_timeout "Install ${tool}? [Y/n]" "n")
+    # Default "y" matches the [Y/n] prompt convention (capital = default).
+    # Previously the prompt said [Y/n] but the actual default on timeout was
+    # "n" — UX bug (the user expected Enter to mean "yes install").
+    answer=$(read_with_timeout "Install ${tool}? [Y/n]" "y")
 
     case "$answer" in
         [nN]*) return 1 ;;
