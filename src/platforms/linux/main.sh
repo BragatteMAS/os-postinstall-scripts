@@ -212,7 +212,12 @@ install_profile() {
             ai-tools-full.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing AI tools..."
-                if ! retry_with_backoff bash "${INSTALL_DIR}/ai-tools.sh"; then
+                # NOTE: retry_with_backoff dropped here. ai-tools.sh is an
+                # orchestrator (multiple sub-installers); wave-level retry
+                # multiplied failures (each retry re-records the same failed
+                # sub-installer). Same rationale as dev-env.sh:138 which never
+                # had retry, and as v5.4.5 dropped retry around snap/flatpak.
+                if ! bash "${INSTALL_DIR}/ai-tools.sh"; then
                     record_failure "AI tools"
                 fi
                 ;;
