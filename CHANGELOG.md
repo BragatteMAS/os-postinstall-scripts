@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.6] - 2026-05-07
+
+Closes the remaining two interactive prompts that violated the v5.4.0
+"surface default inline" convention. ai-tools ollama prompt and
+group-selector bash fallback both treated Enter as a silent default
+without showing the user what would happen.
+
+### Fixed
+- **ai-tools.sh ollama prompt: surface default=2 (Skip).**
+  `Select [1-2]:` previously hid the default; Enter silently triggered
+  the `*)` catch-all (skip). Now: `Select [1-2, default=2]:`. Skip path
+  also upgraded from `log_debug` to `log_info` — v5.4.0 convention is
+  to make non-actions visible, not hide them behind a debug flag.
+
+- **group-selector.sh bash-fallback: surface default=none.**
+  Prompt listed valid inputs (`'all'`, `'none'`, numbers) but didn't
+  say what Enter does. Empty input was case-matched to `none`;
+  behavior unchanged, prompt now shows `[default=none]`.
+
+### Added (tests)
+- 3 regression tests (`v5.4.6`) in `tests/test-regressions.bats`:
+  ai-tools default=2 surfaced, skip log upgraded to log_info,
+  group-selector default=none surfaced. Suite: 22/22 OK.
+
 ## [5.4.5] - 2026-05-07
 
 Cross-OS classifier parity. Snap (Linux), Flatpak (Linux), and WinGet
