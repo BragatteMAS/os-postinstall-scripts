@@ -236,7 +236,7 @@ offer_ollama_model() {
     echo "Download a base model for Ollama?"
     echo "  1) llama3.2 (lightweight)"
     echo "  2) Skip"
-    read -rp "Select [1-2]: " choice
+    read -rp "Select [1-2, default=2]: " choice
 
     case "$choice" in
         1)
@@ -248,7 +248,7 @@ offer_ollama_model() {
             fi
             ;;
         *)
-            log_debug "Skipping model download"
+            log_info "Skipped model download (run 'ollama pull llama3.2' later if needed)"
             ;;
     esac
 }
