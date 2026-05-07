@@ -125,7 +125,7 @@ select_groups() {
     } >&2
 
     local input
-    read -r -p "Enter group numbers (comma-separated, e.g. 1,3,5), 'all', or 'none': " input >&2
+    read -r -p "Enter group numbers (comma-separated, e.g. 1,3,5), 'all', or 'none' [default=none]: " input >&2
 
     case "$input" in
         ""|none|skip) return 0 ;;
