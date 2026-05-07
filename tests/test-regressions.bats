@@ -158,6 +158,29 @@ _run_cask_install_with_brew_stderr() {
     ! grep -qE '"Select \[1-3\]"[[:space:]]+"3"' "$REPO_ROOT/src/core/interactive.sh"
 }
 
+@test "[v5.4.1] terminal-setup diverts to .zshrc.local when target is symlink" {
+    # Reported by Deney's M5: dotfiles-install.sh symlinks ~/.zshrc to
+    # <repo>/data/dotfiles/zsh/zshrc. terminal-setup then `cat >> ~/.zshrc`
+    # was writing INTO the repo file, polluting `git status`.
+    # Fix: detect symlink, divert to ~/.zshrc.local (already sourced by repo rc).
+    local tmp; tmp=$(mktemp -d)
+    ln -s "/fake/repo/zshrc" "$tmp/.zshrc"
+
+    run bash -c '
+        SHELL_RC="'"$tmp/.zshrc"'"
+        SHELL_NAME=zsh
+        HOME="'"$tmp"'"
+        DRY_RUN=true
+        log_info() { :; }; log_warn() { :; }; log_ok() { :; }; run() { :; }
+        update_shell_files() { :; }
+        eval "$(awk "/^setup_shell\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/terminal/setup.sh")"
+        setup_shell >/dev/null 2>&1
+        echo "$SHELL_RC"
+    '
+    [[ "$output" == "$tmp/.zshrc.local" ]]
+    rm -rf "$tmp"
+}
+
 @test "[v5.4.0] ask_tool default 'y' matches [Y/n] prompt convention" {
     # Previously prompt said [Y/n] (capital Y = default) but the actual
     # timeout default was "n". UX bug — Enter or timeout now installs.

@@ -450,6 +450,22 @@ update_shell_files() {
 
 # ─── Shell RC ─────────────────────────────────────────────────────────
 setup_shell() {
+    # Critical safety check: if SHELL_RC is a symlink (typical when
+    # dotfiles-install.sh symlinks ~/.zshrc to <repo>/data/dotfiles/zsh/zshrc),
+    # appending to it would WRITE INTO THE REPO and pollute git status. Detect
+    # the symlink case and divert to ~/.zshrc.local — already sourced by the
+    # repo's zshrc as the user-overrides hook.
+    local original_rc="$SHELL_RC"
+    if [[ -L "$SHELL_RC" ]]; then
+        local target
+        target=$(readlink "$SHELL_RC")
+        log_warn "$SHELL_RC is a symlink → $target"
+        log_warn "Diverting terminal-setup config to ${HOME}/.${SHELL_NAME}rc.local (sourced by the symlinked rc)"
+        SHELL_RC="${HOME}/.${SHELL_NAME}rc.local"
+        # Make sure the local file exists so the source line in the repo rc finds it.
+        [[ -f "$SHELL_RC" ]] || { run mkdir -p "$(dirname "$SHELL_RC")"; run touch "$SHELL_RC"; }
+    fi
+
     log_info "Configuring $SHELL_NAME ($SHELL_RC)..."
 
     # Always update copied files (aliases.sh, functions.sh) to latest version
@@ -462,7 +478,7 @@ setup_shell() {
         return 0
     fi
 
-    if [[ -f "$SHELL_RC" ]]; then
+    if [[ -f "$SHELL_RC" && -s "$SHELL_RC" ]]; then
         run cp "$SHELL_RC" "${SHELL_RC}.bak.$(date +%Y-%m-%d)"
         log_info "Backed up -> ${SHELL_RC}.bak.$(date +%Y-%m-%d)"
     fi

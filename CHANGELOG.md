@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.1] - 2026-05-06
+
+Critical fix from Deney's M5: terminal-setup was writing config blocks
+INTO the repo file when ~/.zshrc was a symlink (the typical state after
+running `dotfiles-install.sh`).
+
+### Fixed
+- **`terminal/setup.sh::setup_shell()` detects symlinked SHELL_RC and
+  diverts the appended block to `~/.zshrc.local`** (already sourced by
+  the repo's `data/dotfiles/zsh/zshrc` as the user-overrides hook).
+  Without this, every user with the dotfiles symlink ended up with an
+  uncommitted "Update zshrc" diff in their local clone after running
+  the terminal blueprint — config from one user contaminating the repo
+  artifact intended for everyone.
+- **`-s "$SHELL_RC"` guard before backup**: if the divert lands on a
+  brand-new empty `.zshrc.local`, we skip the backup step (nothing to
+  back up).
+
+### Added
+- **Regression test** `[v5.4.1] terminal-setup diverts to .zshrc.local
+  when target is symlink` — sets up a temp symlink rc, runs setup_shell
+  in dry-run, asserts SHELL_RC was rewritten to `.zshrc.local`.
+
 ## [5.4.0] - 2026-05-06
 
 UX repair driven by Deney's testimony: dev-env sub-prompts were
