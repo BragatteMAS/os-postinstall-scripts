@@ -22,10 +22,8 @@ antigravity
 
 # Communication (personal)
 discord
-meetingbar
 
 # macOS utilities (personal preferences)
-hiddenbar
 clop
 
 # Media & lazer
@@ -44,6 +42,3 @@ capcut
 zed
 numi
 karabiner-elements
-
-# Font extra (Sketchybar-specific, niche)
-font-sketchybar-app-font

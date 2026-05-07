@@ -54,7 +54,4 @@ rstudio
 # Design & creativity (open-source)
 inkscape
 gimp
-
-# Fonts (sane defaults for terminal + icons)
-font-jetbrains-mono-nerd-font
-font-symbols-only-nerd-font
+# Note: nerd fonts are installed by terminal-setup.sh, not here.

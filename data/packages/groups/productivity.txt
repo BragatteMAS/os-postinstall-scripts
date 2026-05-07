@@ -1,9 +1,7 @@
-# Productivity & window management — Rectangle, Alt-Tab, Raycast, HiddenBar, Caffeine, AppCleaner, Numi, MeetingBar
+# Productivity & window management — Rectangle, Alt-Tab, Raycast, Caffeine, AppCleaner, Numi
 rectangle
 alt-tab
 raycast
-hiddenbar
 caffeine
 appcleaner
 numi
-meetingbar

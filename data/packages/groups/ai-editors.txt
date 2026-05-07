@@ -1,8 +1,8 @@
-# AI editors & desktop apps — Cursor, Zed, Claude (desktop + CLI), ChatGPT, Antigravity
+# AI editors & desktop apps — Cursor, Zed, Claude (desktop + CLI rolling), ChatGPT, Antigravity
+# Note: only `claude-code@latest` (rolling channel) — `claude-code` (plain) is dropped to avoid the duplicate cask.
 cursor
 zed
 claude
-claude-code
 claude-code@latest
 chatgpt
 antigravity

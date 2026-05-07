@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.1] - 2026-05-06
+
+Cleanup pass + refreshed demo recording.
+
+### Removed
+- **Nerd fonts** (`font-jetbrains-mono-nerd-font`, `font-symbols-only-nerd-font`,
+  `font-sketchybar-app-font`) from `brew-cask-developer.txt`,
+  `brew-cask-full.txt`, and `groups/essentials.txt`. The Nerd font is
+  installed by `terminal-setup.sh` — keeping it in the cask lists triplicated
+  the same artefact. The Sketchybar font is too niche for default install.
+- **`meetingbar`** and **`hiddenbar`** from `brew-cask-full.txt` and
+  `groups/productivity.txt`. Cosmetic / niche apps; user can `brew install`
+  manually if wanted.
+- **`claude-code`** (plain) from `groups/ai-editors.txt`. Only
+  `claude-code@latest` (rolling channel CLI) ships now — the plain cask
+  was creating an ambiguous duplicate.
+
+### Changed
+- **`assets/demo.gif`** re-recorded with current `setup.sh --dry-run -y minimal`.
+  16 frames, 12.78 s, 418 KB (was a 51 KB placeholder from Feb 2026 with stale
+  output). Source `assets/demo.cast` regenerated alongside.
+
 ## [5.3.0] - 2026-05-06
 
 Interactive cask group selector. `setup.sh --groups` replaces the
