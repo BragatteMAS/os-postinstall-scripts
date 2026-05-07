@@ -158,6 +158,21 @@ _run_cask_install_with_brew_stderr() {
     ! grep -qE '"Select \[1-3\]"[[:space:]]+"3"' "$REPO_ROOT/src/core/interactive.sh"
 }
 
+@test "[v5.4.2] cask classify: 'conflicts with cask X' → conflict reason + fix hint" {
+    run _run_cask_install_with_brew_stderr "github" \
+        "Error: Cask github conflicts with cask github@beta. Remove the conflicting cask first."
+    assert_failure
+    assert_output --partial "conflicts with another cask (github@beta)"
+    assert_output --partial "Fix: brew uninstall --cask github@beta && brew install --cask github"
+}
+
+@test "[v5.4.2] cask classify: 'app exists' includes --force hint" {
+    run _run_cask_install_with_brew_stderr "claude" \
+        "Error: It seems there is already an App at '/Applications/Claude.app'."
+    assert_failure
+    assert_output --partial "Fix: brew install --cask --force claude"
+}
+
 @test "[v5.4.1] terminal-setup diverts to .zshrc.local when target is symlink" {
     # Reported by Deney's M5: dotfiles-install.sh symlinks ~/.zshrc to
     # <repo>/data/dotfiles/zsh/zshrc. terminal-setup then `cat >> ~/.zshrc`

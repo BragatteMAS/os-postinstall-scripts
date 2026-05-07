@@ -104,17 +104,30 @@ _brew_cask_install() {
         return 0
     fi
 
-    # Classify failure for the summary
+    # Classify failure for the summary. Each branch also emits a one-line
+    # actionable hint so the user knows the exact command to fix it.
     local reason="exit $rc"
-    if grep -qE "It seems there is already an App at|already exists" <<<"$err_buf"; then
+    local hint=""
+    if grep -qE "conflicts with cask '?[a-zA-Z0-9_@-]+|conflicts with another cask" <<<"$err_buf"; then
+        local conflicting
+        # Capture only valid cask name chars (alphanumeric, @, -, _) — prevents
+        # trailing punctuation like "." or "," from being absorbed.
+        conflicting=$(grep -oE "conflicts with cask '?[a-zA-Z0-9_@-]+" <<<"$err_buf" | head -1 | awk '{print $4}' | tr -d "'")
+        reason="conflicts with another cask${conflicting:+ ($conflicting)}"
+        hint="Fix: brew uninstall --cask ${conflicting:-<other>} && brew install --cask $cask"
+    elif grep -qE "It seems there is already an App at|already exists" <<<"$err_buf"; then
         reason="app exists at /Applications (installed manually before brew)"
+        hint="Fix: brew install --cask --force $cask  (overwrites the manual install)"
     elif grep -qiE "no available formula|cask .* is unavailable|Cask '.*' is unavailable" <<<"$err_buf"; then
         reason="cask name not found in any tap"
+        hint="Fix: brew search $cask  (find the new name; cask may have been renamed)"
     elif grep -qiE "could not be found|404|connection|network|timeout|resolve" <<<"$err_buf"; then
         reason="network error"
+        hint="Fix: re-run setup.sh — idempotent, only retries the missing items"
     fi
 
     log_error "Failed to install: $cask ($reason)"
+    [[ -n "$hint" ]] && log_info "  → $hint"
     return 1
 }
 

@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.2] - 2026-05-06
+
+Three concrete failures from Deney's run, three concrete fixes.
+
+### Removed
+- **`uv:fastapi-mcp`** from `data/packages/ai-tools-full.txt`. fastapi-mcp
+  is a Python *library* (no CLI executable), and `uv tool install` only
+  works for packages with entry points. brew said `No executables are
+  provided by package fastapi-mcp; removing tool` — accurate. Library-only
+  packages belong in per-project venvs, not global tool installs.
+
+### Added
+- **Cask classifier handles `conflicts with cask X`** (commit `5.4.2`).
+  Previously `Failed: github (exit 1)` — generic. Now:
+  `Failed to install: github (conflicts with another cask (github@beta))`
+  followed by `→ Fix: brew uninstall --cask github@beta && brew install --cask github`.
+- **Actionable hints** on every cask classification branch — `app exists`,
+  `cask not found`, `network error`, and the new `conflicts with` all
+  print the exact recovery command immediately after the failure.
+
+### Changed
+- **`retry_with_backoff` removed from the brew-cask wave wrappers** in
+  `src/platforms/macos/main.sh`. Cask failures are mostly deterministic
+  (app exists, cask renamed, conflicts) — retrying wastes ~50s and gets
+  the same error. Per-package classifier + hint tells the user what to
+  fix; transient network errors recover by re-running setup.sh
+  (idempotent). Same rationale that removed retry around dev-env in v5.1.0.
+
+### Added (tests)
+- 2 new regression tests cover the conflict classifier and the `--force`
+  hint on `app exists`.
+
 ## [5.4.1] - 2026-05-06
 
 Critical fix from Deney's M5: terminal-setup was writing config blocks

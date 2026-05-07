@@ -212,14 +212,20 @@ install_profile() {
                     continue
                 fi
                 current_step=$((current_step + 1))
+                # NOTE: retry_with_backoff dropped here (was wrapping the whole
+                # wave). Most cask failures are deterministic (app exists,
+                # cask renamed, conflicts) — retrying wastes 50s and produces
+                # the same error. Per-package classification + actionable hint
+                # in brew-cask.sh tells the user what to do; transient network
+                # errors are recovered by re-running setup.sh (idempotent).
                 if [[ "$pkg_file" == "brew-cask-developer.txt" ]]; then
                     show_progress "$current_step" "$total_steps" "Installing brew cask packages..."
-                    if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh"; then
+                    if ! bash "${MACOS_DIR}/install/brew-cask.sh"; then
                         record_failure "brew cask packages"
                     fi
                 else
                     show_progress "$current_step" "$total_steps" "Installing brew cask full extras..."
-                    if ! retry_with_backoff bash "${MACOS_DIR}/install/brew-cask.sh" --full; then
+                    if ! bash "${MACOS_DIR}/install/brew-cask.sh" --full; then
                         record_failure "brew cask full extras"
                     fi
                 fi

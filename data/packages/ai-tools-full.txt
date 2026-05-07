@@ -27,5 +27,7 @@ uv:claude-monitor
 uv:specify-cli
 
 # Utility (via uv — uv first, pipx only as fallback if uv ever fails)
+# Note: fastapi-mcp removed — it's a Python library (no CLI executable), so
+# `uv tool install` rejects it ("No executables are provided"). Library-only
+# packages belong in per-project venvs, not as global tools.
 uv:markitdown
-uv:fastapi-mcp
