@@ -274,3 +274,103 @@ _run_cask_install_with_brew_stderr() {
 
     rm -f "$brew_log"
 }
+
+# ── snap classifier (v5.4.5) ─────────────────────────────────────────
+#
+# Mirrors v5.4.2 cask classifier pattern. snap_install() now does single
+# attempt + classifier instead of retry_with_backoff. Helper stubs `sudo`
+# (which is what snap_install invokes) to emit a fixture stderr.
+
+_run_snap_install_with_stderr() {
+    local pkg="$1" stderr_fixture="$2" rc="${3:-1}"
+    bash -c '
+        unset _LOGGING_SOURCED _ERRORS_SOURCED _IDEMPOTENT_SOURCED _STATE_SOURCED _PACKAGES_SOURCED
+        source "'"$REPO_ROOT"'/src/core/logging.sh"
+        source "'"$REPO_ROOT"'/src/core/errors.sh"
+        source "'"$REPO_ROOT"'/src/core/idempotent.sh" 2>/dev/null
+        save_package_state() { :; }
+        load_packages() { PACKAGES=(); }
+        export -f save_package_state load_packages
+
+        STDERR_FIXTURE="$2"
+        SNAP_RC="$3"
+        snap() { return 1; }
+        sudo() {
+            >&2 echo "$STDERR_FIXTURE"
+            return "$SNAP_RC"
+        }
+        export -f snap sudo
+
+        eval "$(awk "/^is_snap_installed\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/linux/install/snap.sh")"
+        eval "$(awk "/^snap_install\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/linux/install/snap.sh")"
+
+        unset DRY_RUN
+        snap_install "$1"
+    ' _ "$pkg" "$stderr_fixture" "$rc"
+}
+
+@test "[v5.4.5] snap classify: 'no snap found' → not-found reason + hint" {
+    run _run_snap_install_with_stderr "missing-pkg" \
+        'error: no snap found for "missing-pkg"'
+    assert_failure
+    assert_output --partial "snap not found in store"
+    assert_output --partial "Fix: snap find missing-pkg"
+}
+
+@test "[v5.4.5] snap classify: 'requires --classic' → classic flag hint" {
+    run _run_snap_install_with_stderr "code" \
+        'error: This revision of snap "code" was published using classic confinement and thus requires --classic'
+    assert_failure
+    assert_output --partial "package requires --classic confinement"
+    assert_output --partial "prefix entry with 'classic:'"
+}
+
+# ── flatpak classifier (v5.4.5) ──────────────────────────────────────
+
+_run_flatpak_install_with_stderr() {
+    local app_id="$1" stderr_fixture="$2" rc="${3:-1}"
+    bash -c '
+        unset _LOGGING_SOURCED _ERRORS_SOURCED _IDEMPOTENT_SOURCED _STATE_SOURCED _PACKAGES_SOURCED
+        source "'"$REPO_ROOT"'/src/core/logging.sh"
+        source "'"$REPO_ROOT"'/src/core/errors.sh"
+        source "'"$REPO_ROOT"'/src/core/idempotent.sh" 2>/dev/null
+        save_package_state() { :; }
+        load_packages() { PACKAGES=(); }
+        export -f save_package_state load_packages
+
+        STDERR_FIXTURE="$2"
+        FLATPAK_RC="$3"
+        flatpak() {
+            if [[ "$1" == "list" ]]; then return 1; fi
+            >&2 echo "$STDERR_FIXTURE"
+            return "$FLATPAK_RC"
+        }
+        export -f flatpak
+
+        eval "$(awk "/^is_flatpak_installed\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/linux/install/flatpak.sh")"
+        eval "$(awk "/^flatpak_install\\(\\) \\{/,/^\\}\$/" "'"$REPO_ROOT"'/src/platforms/linux/install/flatpak.sh")"
+
+        unset DRY_RUN
+        flatpak_install "$1"
+    ' _ "$app_id" "$stderr_fixture" "$rc"
+}
+
+@test "[v5.4.5] flatpak classify: 'Nothing matches' → not-found reason + hint" {
+    run _run_flatpak_install_with_stderr "org.fake.app" \
+        'error: Nothing matches org.fake.app in remote flathub'
+    assert_failure
+    assert_output --partial "app_id not found in flathub"
+    assert_output --partial "Fix: flatpak search org.fake.app"
+}
+
+# ── linux main.sh: snap/flatpak waves no longer wrapped (v5.4.5) ─────
+
+@test "[v5.4.5] linux main.sh: snap/flatpak dispatchers are not wrapped in retry_with_backoff" {
+    # Mirror of macos/main.sh:215 NOTE — snap and flatpak dispatchers must
+    # not be wrapped in retry_with_backoff. Wrapping deterministic errors
+    # (package missing, classic flag missing) in retry wasted ~50s per
+    # failure before per-package classifier was added in v5.4.5.
+    run grep -nE 'retry_with_backoff bash .*(snap|flatpak)\.sh' \
+        "$REPO_ROOT/src/platforms/linux/main.sh"
+    assert_failure
+}
