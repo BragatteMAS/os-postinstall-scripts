@@ -173,28 +173,35 @@ install_profile() {
             flatpak-developer.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Flatpak packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh"; then
+                # NOTE: retry_with_backoff dropped here (was wrapping the whole
+                # wave). Flatpak failures are mostly deterministic (app_id wrong,
+                # already installed, permission). Per-package classifier in
+                # flatpak.sh surfaces actionable hints. Mirror v5.4.2 brew-cask.
+                if ! bash "${LINUX_DIR}/install/flatpak.sh"; then
                     record_failure "Flatpak packages"
                 fi
                 ;;
             flatpak-full.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Flatpak full extras..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/flatpak.sh" --full; then
+                if ! bash "${LINUX_DIR}/install/flatpak.sh" --full; then
                     record_failure "Flatpak full extras"
                 fi
                 ;;
             snap-developer.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Snap packages..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh"; then
+                # NOTE: retry_with_backoff dropped here. Snap failures are mostly
+                # deterministic (snap missing, classic flag missing, already
+                # installed). Per-package classifier in snap.sh surfaces hints.
+                if ! bash "${LINUX_DIR}/install/snap.sh"; then
                     record_failure "Snap packages"
                 fi
                 ;;
             snap-full.txt)
                 current_step=$((current_step + 1))
                 show_progress "$current_step" "$total_steps" "Installing Snap full extras..."
-                if ! retry_with_backoff bash "${LINUX_DIR}/install/snap.sh" --full; then
+                if ! bash "${LINUX_DIR}/install/snap.sh" --full; then
                     record_failure "Snap full extras"
                 fi
                 ;;
