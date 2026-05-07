@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.7] - 2026-05-07
+
+Closes the last orchestrator that was still under wave-level retry.
+v5.4.5 dropped `retry_with_backoff` around snap/flatpak in
+`linux/main.sh`; ai-tools (also an orchestrator) was missed. v5.4.7
+fixes the asymmetry — same rationale as `dev-env.sh:138` which never
+had retry.
+
+### Fixed
+- **`linux/main.sh`: ai-tools dispatcher no longer wrapped in
+  `retry_with_backoff`.** Wrapping an orchestrator multiplies failures
+  (each retry re-records the same failed sub-installer). The brew/apt
+  formulae paths still keep retry where it belongs (atomic transient
+  ops); the orchestrator boundary is now consistent across the dispatch
+  loop.
+
+### Added (tests)
+- 1 regression test (`v5.4.7`) in `tests/test-regressions.bats`:
+  ai-tools dispatcher pattern (no retry_with_backoff). Suite: 23/23 OK.
+
 ## [5.4.6] - 2026-05-07
 
 Closes the remaining two interactive prompts that violated the v5.4.0
