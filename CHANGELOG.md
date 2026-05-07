@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.3] - 2026-05-06
+
+### Fixed
+- **README version badge synced with tag** (was lagging at 5.3.1 since
+  the v5.3.2 commit didn't bump it). Cosmetic — no behaviour change.
+
 ## [5.3.2] - 2026-05-06
 
 ### Changed
