@@ -44,8 +44,6 @@ source "${SCRIPT_DIR}/../../../core/state.sh" || {
 # Flatpak Helper Functions
 #######################################
 
-# NOTE: retry_with_backoff() comes from core/errors.sh (already sourced)
-
 # ensure_flathub_remote - Add Flathub remote if not already configured
 # Returns: 0 on success, 1 on failure
 ensure_flathub_remote() {
@@ -72,7 +70,11 @@ is_flatpak_installed() {
     flatpak list --app --columns=application 2>/dev/null | grep -q "^${app_id}$"
 }
 
-# flatpak_install - Install a single Flatpak package with retry and idempotency
+# flatpak_install - Install a single Flatpak app idempotently with classifier
+# Flatpak errors are mostly deterministic (app_id wrong, already installed,
+# permission denied) — single attempt + per-failure classifier mirrors the
+# brew-cask.sh pattern adopted in v5.4.2. Transient network errors recover
+# by re-running setup.sh (idempotent).
 # Args: $1 = app ID
 # Returns: 0 on success, 1 on failure
 flatpak_install() {
@@ -90,14 +92,34 @@ flatpak_install() {
 
     log_info "Installing: $app_id"
 
-    if retry_with_backoff flatpak install flathub "$app_id" -y --noninteractive; then
+    local err_buf rc=0
+    err_buf=$(flatpak install flathub "$app_id" -y --noninteractive 2>&1 >/dev/null) || rc=$?
+
+    if (( rc == 0 )); then
         log_ok "Installed: $app_id"
         save_package_state "flatpak" "$app_id" "${PROFILE_NAME:-unknown}"
         return 0
-    else
-        log_warn "Package not found or install failed: $app_id"
-        return 1
     fi
+
+    local reason="exit $rc"
+    local hint=""
+    if grep -qiE "Nothing matches|No remote refs found|Couldn't find" <<<"$err_buf"; then
+        reason="app_id not found in flathub"
+        hint="Fix: flatpak search $app_id  (find correct name; reverse-DNS format)"
+    elif grep -qiE "is already installed" <<<"$err_buf"; then
+        reason="already installed (state file out of sync)"
+        hint="Fix: flatpak list | grep $app_id  (verify); next setup.sh run will reconcile"
+    elif grep -qiE "Permission denied|polkit|authentication|not authorized" <<<"$err_buf"; then
+        reason="permission denied"
+        hint="Fix: re-run with sudo, or use 'flatpak install --user'"
+    elif grep -qiE "could not be found|404|connection|network|timeout|resolve" <<<"$err_buf"; then
+        reason="network error"
+        hint="Fix: re-run setup.sh — idempotent, only retries the missing items"
+    fi
+
+    log_error "Failed to install: $app_id ($reason)"
+    [[ -n "$hint" ]] && log_info "  → $hint"
+    return 1
 }
 
 #######################################
