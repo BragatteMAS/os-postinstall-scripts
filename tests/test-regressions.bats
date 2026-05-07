@@ -374,3 +374,32 @@ _run_flatpak_install_with_stderr() {
         "$REPO_ROOT/src/platforms/linux/main.sh"
     assert_failure
 }
+
+# ── default surfacing convention (v5.4.6) ────────────────────────────
+#
+# v5.4.0 fixed show_category_menu, v5.4.4 fixed detect_previous_install.
+# Same class: prompt offered numeric choices but did not surface the
+# default, so Enter = surprise side effect. v5.4.6 closes the remaining
+# two prompts that had the same shape (ai-tools ollama, group-selector
+# bash fallback). Tests are grep-based — fingerprint that the convention
+# is in the source. Behavior tests would require interactive stdin
+# replay, which is overkill for a one-line prompt change.
+
+@test "[v5.4.6] ai-tools: ollama prompt surfaces default=2 (Skip)" {
+    grep -qE 'Select \[1-2, default=2\]' \
+        "$REPO_ROOT/src/install/ai-tools.sh"
+}
+
+@test "[v5.4.6] ai-tools: ollama skip path emits log_info, not log_debug" {
+    # Convention from v5.4.0: skip should be visible. log_debug hid the
+    # non-action behind a debug flag.
+    grep -qE 'log_info "Skipped model download' \
+        "$REPO_ROOT/src/install/ai-tools.sh"
+    ! grep -qE 'log_debug "Skipping model download' \
+        "$REPO_ROOT/src/install/ai-tools.sh"
+}
+
+@test "[v5.4.6] group-selector: bash-fallback prompt surfaces default=none" {
+    grep -qE "default=none" \
+        "$REPO_ROOT/src/core/group-selector.sh"
+}
