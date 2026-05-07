@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![Version: 5.4.3](https://img.shields.io/badge/Version-5.4.3-orange?style=flat)](CHANGELOG.md)
+[![Version: 5.4.4](https://img.shields.io/badge/Version-5.4.4-orange?style=flat)](CHANGELOG.md)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat)](LICENSE)
 [![Platforms: Linux | macOS | Windows](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS%20%7C%20Windows-informational?style=flat)](README.md)
 [![Shell: Bash 4.0+](https://img.shields.io/badge/Shell-Bash%204.0%2B-4EAA25?style=flat&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
@@ -118,9 +118,11 @@ Aliases configured via `data/dotfiles/shared/aliases.sh`. Full reference: [`docs
 
 ## Common Usage
 
+> **Skip every prompt** — `./setup.sh -y full` runs end-to-end with no interactive questions. Use this when you want a hands-off install on a fresh machine.
+
 ```bash
 ./setup.sh --dry-run         # preview, no changes
-./setup.sh -y full           # unattended full install
+./setup.sh -y full           # unattended full install (skips ALL prompts)
 ./setup.sh dotfiles          # symlink dotfiles only
 ./setup.sh unlink            # remove dotfile symlinks (restores backups)
 ./setup.sh defaults          # macOS system defaults (Dock, Finder, etc.)

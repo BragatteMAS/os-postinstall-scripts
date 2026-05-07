@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.4] - 2026-05-07
+
+Same class of bug as v5.4.0: another interactive prompt treated Enter as
+silent acceptance of "Update" without showing the default. README also adds
+a callout so `--unattended -y` is discoverable for users who want a
+hands-off install on a fresh machine.
+
+### Fixed
+- **`detect_previous_install` prompt surfaces `default=1`.**
+  `src/core/progress.sh:109` displayed `Select [1-3]:` and treated Enter as
+  Update via the `*) return 0` catch-all. Same bug class fixed in
+  `show_category_menu` at v5.4.0 — convention slipped past this prompt.
+  One-line fix mirrors that pattern: `Select [1-3, default=1]:`.
+
+### Changed
+- **README highlights `./setup.sh -y full`** as the skip-everything path.
+  Callout above the Common Usage code block + inline comment now reads
+  "skips ALL prompts" so new users notice it without scanning the flag table.
+
 ## [5.4.3] - 2026-05-06
 
 Fixes a silent skip in the terminal blueprint reported by Deney as
