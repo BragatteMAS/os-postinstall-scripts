@@ -403,3 +403,16 @@ _run_flatpak_install_with_stderr() {
     grep -qE "default=none" \
         "$REPO_ROOT/src/core/group-selector.sh"
 }
+
+# ── linux main.sh: last orchestrator without wave-level retry (v5.4.7) ──
+
+@test "[v5.4.7] linux main.sh: ai-tools dispatcher is not wrapped in retry_with_backoff" {
+    # ai-tools.sh is an orchestrator (multiple sub-installers); wave-level
+    # retry multiplied failures (each retry re-recorded the same failed
+    # sub-installer). Same rationale as dev-env.sh:138 which never had
+    # retry, and v5.4.5 dropped it for snap/flatpak. v5.4.7 closes the
+    # last orchestrator still under wave-level retry.
+    run grep -nE 'retry_with_backoff bash .*ai-tools\.sh' \
+        "$REPO_ROOT/src/platforms/linux/main.sh"
+    assert_failure
+}
