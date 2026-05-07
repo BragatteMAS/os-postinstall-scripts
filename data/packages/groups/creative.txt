@@ -1,6 +1,4 @@
-# Creative & science — Inkscape, GIMP, Affinity suite, Positron, RStudio
+# Creative — Inkscape, GIMP, Affinity suite
 inkscape
 gimp
 affinity
-positron
-rstudio

@@ -144,13 +144,13 @@ and shows an interactive multi-select. You pick which groups to install:
 |---|---|
 | `browsers` | Firefox, Chromium, Chrome, Zen, Brave, Opera |
 | `ai-editors` | Cursor, Zed, Claude (desktop + CLI), ChatGPT, Antigravity |
-| `code-editors` | VS Code, Sublime Text, Warp |
+| `code-editors` | VS Code, Sublime Text, Warp, Positron, RStudio |
 | `dev-infra` | Docker, OrbStack, DBeaver, Insomnia, GitHub Desktop |
 | `productivity` | Rectangle, Alt-Tab, Raycast, HiddenBar, Caffeine, AppCleaner, Numi, MeetingBar |
 | `communication` | Slack, Discord |
 | `knowledge` | Obsidian, Zotero |
 | `media` | IINA, Spotify, CapCut, Loom, Clop, Wispr Flow |
-| `creative` | Inkscape, GIMP, Affinity, Positron, RStudio |
+| `creative` | Inkscape, GIMP, Affinity |
 | `essentials` | Bitwarden, Google Drive, LibreOffice, Logi Options+, Karabiner, Nerd fonts |
 
 UI uses `gum choose --no-limit` (Charm's TUI) when available — bash numbered-menu

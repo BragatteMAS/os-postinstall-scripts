@@ -1,4 +1,6 @@
-# Classic code editors + Warp terminal
+# Code editors & data-science IDEs — VS Code, Sublime, Warp, Positron (R/Python), RStudio
 visual-studio-code
 sublime-text
 warp
+positron
+rstudio
