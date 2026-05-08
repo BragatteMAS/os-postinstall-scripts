@@ -185,7 +185,7 @@ detect_previous_install() {
     [[ ! -f "$state_file" ]] && return 0
 
     # Source state file to get previous values
-    local install_date="" profile="" platform="" version=""
+    local install_date="" profile="" platform="" version="" sections_done=""
     # shellcheck disable=SC1090
     source "$state_file"
 
@@ -194,20 +194,27 @@ detect_previous_install() {
     echo "  Profile:  ${profile:-unknown}"
     echo "  Platform: ${platform:-unknown}"
     echo "  Version:  ${version:-unknown}"
+    if [[ -n "$sections_done" ]]; then
+        echo "  Sections done: ${sections_done}"
+    fi
     echo ""
-    echo "  1) Update (reinstall with current profile)"
-    echo "  2) Fresh install (ignore previous state)"
-    echo "  3) Cancel"
+    echo "  1) Continue (skip sections marked done${sections_done:+: ${sections_done}})"
+    echo "  2) Reinstall everything (re-run all sections regardless of state)"
+    echo "  3) Fresh install (clear state, start over)"
+    echo "  4) Cancel"
 
     local choice
-    read -rp "Select [1-3, default=1]: " choice
+    read -rp "Select [1-4, default=1]: " choice
 
     case "$choice" in
         1) return 0 ;;
-        2) rm -f "$state_file"
+        2) clear_sections_done
+           log_info "Reinstalling everything (section state cleared)"
+           return 0 ;;
+        3) rm -f "$state_file"
            log_info "Starting fresh install"
            return 0 ;;
-        3) log_info "Cancelled by user"
+        4) log_info "Cancelled by user"
            return 1 ;;
         *) return 0 ;;
     esac
