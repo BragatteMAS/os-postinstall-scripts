@@ -416,3 +416,15 @@ _run_flatpak_install_with_stderr() {
         "$REPO_ROOT/src/platforms/linux/main.sh"
     assert_failure
 }
+
+# ── macos dispatcher: winget-*.txt symmetry (v5.4.8) ─────────────────
+
+@test "[v5.4.8] macos main.sh: all winget-*.txt files silenced as Windows-only" {
+    # Discovered by v5.4.7 dry-run audit on full profile: macos/main.sh
+    # only listed winget.txt as Windows-only; winget-developer.txt and
+    # winget-full.txt fell through to the *) catch-all and printed
+    # "WARN Unknown package file". Asymmetric with Linux which handles
+    # all brew-cask-* variants. Now all three winget files are matched.
+    grep -qE 'winget\.txt\|winget-developer\.txt\|winget-full\.txt' \
+        "$REPO_ROOT/src/platforms/macos/main.sh"
+}
