@@ -326,10 +326,17 @@ main() {
         echo ""
         echo -e "${BLUE}─── Optional config layers (2 prompts, then done) ──────────────${NC}"
         echo ""
-        read -rp "[1/2] Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
-        if [[ "$answer" =~ ^[yYsS]$ ]]; then
-            source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
-            install_dotfiles
+        if is_section_done "dotfiles"; then
+            log_info "[1/2] Dotfiles: already done in previous run — skipping"
+            log_info "      (pick option 2 'Reinstall everything' on next run to redo)"
+        else
+            read -rp "[1/2] Configure dotfiles (zshrc, gitconfig, starship)? [y/N] " answer
+            if [[ "$answer" =~ ^[yYsS]$ ]]; then
+                source "${SCRIPT_DIR}/src/install/dotfiles-install.sh"
+                if install_dotfiles; then
+                    mark_section_done "dotfiles"
+                fi
+            fi
         fi
     fi
 
@@ -341,13 +348,20 @@ main() {
         local terminal_setup="${SCRIPT_DIR}/terminal-setup.sh"
         if [[ -x "$terminal_setup" ]]; then
             echo ""
-            read -rp "[2/2] Run terminal blueprint (Starship preset, aliases, zsh plugins)? [y/N] " answer
-            if [[ "$answer" =~ ^[yYsS]$ ]]; then
-                bash "$terminal_setup" --interactive
-                echo ""
-                echo -e "${GREEN}─── Terminal blueprint done — installer is finishing up ───${NC}"
+            if is_section_done "terminal_blueprint"; then
+                log_info "[2/2] Terminal blueprint: already done in previous run — skipping"
+                log_info "      (pick option 2 'Reinstall everything' on next run to redo)"
             else
-                log_info "Skip. Run later with: bash terminal-setup.sh --interactive"
+                read -rp "[2/2] Run terminal blueprint (Starship preset, aliases, zsh plugins)? [y/N] " answer
+                if [[ "$answer" =~ ^[yYsS]$ ]]; then
+                    if bash "$terminal_setup" --interactive; then
+                        mark_section_done "terminal_blueprint"
+                    fi
+                    echo ""
+                    echo -e "${GREEN}─── Terminal blueprint done — installer is finishing up ───${NC}"
+                else
+                    log_info "Skip. Run later with: bash terminal-setup.sh --interactive"
+                fi
             fi
         fi
     fi

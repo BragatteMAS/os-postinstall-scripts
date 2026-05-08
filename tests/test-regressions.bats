@@ -416,3 +416,121 @@ _run_flatpak_install_with_stderr() {
         "$REPO_ROOT/src/platforms/linux/main.sh"
     assert_failure
 }
+
+# ── macos dispatcher: winget-*.txt symmetry (v5.4.8) ─────────────────
+
+@test "[v5.4.8] macos main.sh: all winget-*.txt files silenced as Windows-only" {
+    # Discovered by v5.4.7 dry-run audit on full profile: macos/main.sh
+    # only listed winget.txt as Windows-only; winget-developer.txt and
+    # winget-full.txt fell through to the *) catch-all and printed
+    # "WARN Unknown package file". Asymmetric with Linux which handles
+    # all brew-cask-* variants. Now all three winget files are matched.
+    grep -qE 'winget\.txt\|winget-developer\.txt\|winget-full\.txt' \
+        "$REPO_ROOT/src/platforms/macos/main.sh"
+}
+
+# ── skip granular: section state helpers (v5.5.0) ────────────────────
+#
+# Deney's wishlist: "se ja fez partes anteriores tem que ter algo para
+# pular mais facil." Section state lets dotfiles + terminal-blueprint
+# get marked done after success, then skipped on subsequent runs.
+
+_run_section_helpers_in_tmp_home() {
+    local cmd="$1"
+    local tmp; tmp=$(mktemp -d)
+    bash -c '
+        unset _LOGGING_SOURCED _PROGRESS_SOURCED
+        export HOME="'"$tmp"'"
+        export DRY_RUN=""
+        source "'"$REPO_ROOT"'/src/core/logging.sh"
+        source "'"$REPO_ROOT"'/src/core/progress.sh"
+        '"$cmd"'
+    '
+    rm -rf "$tmp"
+}
+
+@test "[v5.5.0] mark_section_done writes section to state file" {
+    run _run_section_helpers_in_tmp_home '
+        mark_section_done "dotfiles"
+        cat "$HOME/.config/os-postinstall/state"
+    '
+    assert_success
+    assert_output --partial "sections_done=dotfiles"
+}
+
+@test "[v5.5.0] mark_section_done is idempotent (no duplicate entries)" {
+    run _run_section_helpers_in_tmp_home '
+        mark_section_done "dotfiles"
+        mark_section_done "dotfiles"
+        mark_section_done "dotfiles"
+        grep "^sections_done=" "$HOME/.config/os-postinstall/state"
+    '
+    assert_success
+    [[ "$output" == "sections_done=dotfiles" ]]
+}
+
+@test "[v5.5.0] mark_section_done appends multiple distinct sections" {
+    run _run_section_helpers_in_tmp_home '
+        mark_section_done "dotfiles"
+        mark_section_done "terminal_blueprint"
+        grep "^sections_done=" "$HOME/.config/os-postinstall/state"
+    '
+    assert_success
+    assert_output --partial "dotfiles"
+    assert_output --partial "terminal_blueprint"
+}
+
+@test "[v5.5.0] is_section_done returns 0 for marked, 1 for unmarked" {
+    run _run_section_helpers_in_tmp_home '
+        mark_section_done "dotfiles"
+        if is_section_done "dotfiles"; then echo "DOTFILES_DONE"; fi
+        if is_section_done "missing_section"; then echo "WRONG"; else echo "MISSING_NOT_DONE"; fi
+    '
+    assert_success
+    assert_output --partial "DOTFILES_DONE"
+    assert_output --partial "MISSING_NOT_DONE"
+    refute_output --partial "WRONG"
+}
+
+@test "[v5.5.0] clear_sections_done removes line but preserves metadata" {
+    run _run_section_helpers_in_tmp_home '
+        DETECTED_OS=macos save_install_state "developer"
+        mark_section_done "dotfiles"
+        clear_sections_done
+        cat "$HOME/.config/os-postinstall/state"
+    '
+    assert_success
+    assert_output --partial "profile=developer"
+    assert_output --partial "platform=macos"
+    refute_output --partial "sections_done="
+}
+
+@test "[v5.5.0] save_install_state preserves existing sections_done" {
+    # Regression: original save_install_state clobbered the whole file,
+    # so a second save (e.g., final state save at end of setup.sh) would
+    # nuke any sections_done lines mark_section_done had written.
+    run _run_section_helpers_in_tmp_home '
+        DETECTED_OS=macos save_install_state "developer"
+        mark_section_done "dotfiles"
+        DETECTED_OS=macos save_install_state "developer"
+        cat "$HOME/.config/os-postinstall/state"
+    '
+    assert_success
+    assert_output --partial "sections_done=dotfiles"
+}
+
+@test "[v5.5.0] detect_previous_install offers 4 options (Continue is new)" {
+    grep -qE '1\) Continue \(skip sections marked done' \
+        "$REPO_ROOT/src/core/progress.sh"
+    grep -qE '2\) Reinstall everything' \
+        "$REPO_ROOT/src/core/progress.sh"
+    grep -qE 'Select \[1-4, default=1\]' \
+        "$REPO_ROOT/src/core/progress.sh"
+}
+
+@test "[v5.5.0] setup.sh gates dotfiles + terminal_blueprint on is_section_done" {
+    grep -qE 'is_section_done "dotfiles"' "$REPO_ROOT/setup.sh"
+    grep -qE 'is_section_done "terminal_blueprint"' "$REPO_ROOT/setup.sh"
+    grep -qE 'mark_section_done "dotfiles"' "$REPO_ROOT/setup.sh"
+    grep -qE 'mark_section_done "terminal_blueprint"' "$REPO_ROOT/setup.sh"
+}

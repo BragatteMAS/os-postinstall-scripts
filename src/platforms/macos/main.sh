@@ -262,9 +262,9 @@ install_profile() {
             npm-developer.txt)
                 log_debug "Skipping npm-developer.txt (handled by dev-env)"
                 ;;
-            winget.txt)
+            winget.txt|winget-developer.txt|winget-full.txt)
                 # Windows-only - skip silently on macOS
-                log_debug "Skipping winget.txt (Windows only)"
+                log_debug "Skipping $pkg_file (Windows only)"
                 ;;
             *)
                 log_warn "Unknown package file: $pkg_file"

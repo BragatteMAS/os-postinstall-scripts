@@ -69,14 +69,108 @@ save_install_state() {
     local state_dir="${HOME}/.config/os-postinstall"
     local state_file="${state_dir}/state"
 
+    # Preserve sections_done if state file already exists (don't clobber
+    # what mark_section_done() recorded during this run).
+    local preserved_sections=""
+    if [[ -f "$state_file" ]]; then
+        preserved_sections=$(grep '^sections_done=' "$state_file" 2>/dev/null) || true
+    fi
+
     mkdir -p "$state_dir"
-    cat > "$state_file" <<EOF
-install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')
-profile=${profile}
-platform=${DETECTED_OS:-unknown}
-version=${SCRIPT_VERSION:-4.3}
-EOF
+    {
+        echo "install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')"
+        echo "profile=${profile}"
+        echo "platform=${DETECTED_OS:-unknown}"
+        echo "version=${SCRIPT_VERSION:-4.3}"
+        [[ -n "$preserved_sections" ]] && echo "$preserved_sections"
+    } > "$state_file"
     log_debug "Saved install state to ${state_file}"
+}
+
+#######################################
+# mark_section_done()
+# Record that a section completed successfully. Idempotent.
+# Args: $1 = section name (e.g., "dotfiles", "terminal_blueprint")
+# Side effect: appends to sections_done line in state file
+# Honours DRY_RUN.
+#######################################
+mark_section_done() {
+    local section="$1"
+    [[ -z "$section" ]] && return 1
+    [[ "${DRY_RUN:-}" == "true" ]] && return 0
+
+    local state_dir="${HOME}/.config/os-postinstall"
+    local state_file="${state_dir}/state"
+    mkdir -p "$state_dir"
+    [[ ! -f "$state_file" ]] && touch "$state_file"
+
+    local current_sections=""
+    if grep -q '^sections_done=' "$state_file"; then
+        current_sections=$(grep '^sections_done=' "$state_file" | cut -d= -f2-)
+    fi
+
+    case " $current_sections " in
+        *" $section "*) return 0 ;;
+    esac
+
+    local new_sections
+    new_sections=$(printf '%s %s' "$current_sections" "$section" | xargs)
+
+    local tmp_file
+    tmp_file=$(mktemp)
+    grep -v '^sections_done=' "$state_file" > "$tmp_file" 2>/dev/null || true
+    echo "sections_done=$new_sections" >> "$tmp_file"
+    mv "$tmp_file" "$state_file"
+    log_debug "Marked section done: $section"
+}
+
+#######################################
+# is_section_done()
+# Check if a section is recorded as done in state file.
+# Args: $1 = section name
+# Returns: 0 if done, 1 if not done (or no state file)
+#######################################
+is_section_done() {
+    local section="$1"
+    [[ -z "$section" ]] && return 1
+
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 1
+
+    local sections_line
+    sections_line=$(grep '^sections_done=' "$state_file" 2>/dev/null) || return 1
+    local sections="${sections_line#sections_done=}"
+
+    case " $sections " in
+        *" $section "*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+#######################################
+# list_sections_done()
+# Echo space-separated list of sections done. Empty if none.
+#######################################
+list_sections_done() {
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 0
+    grep '^sections_done=' "$state_file" 2>/dev/null | cut -d= -f2- || true
+}
+
+#######################################
+# clear_sections_done()
+# Reset sections_done in state file (kept on "Reinstall everything" path).
+# Honours DRY_RUN.
+#######################################
+clear_sections_done() {
+    [[ "${DRY_RUN:-}" == "true" ]] && return 0
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 0
+
+    local tmp_file
+    tmp_file=$(mktemp)
+    grep -v '^sections_done=' "$state_file" > "$tmp_file" 2>/dev/null || true
+    mv "$tmp_file" "$state_file"
 }
 
 #######################################
@@ -91,7 +185,7 @@ detect_previous_install() {
     [[ ! -f "$state_file" ]] && return 0
 
     # Source state file to get previous values
-    local install_date="" profile="" platform="" version=""
+    local install_date="" profile="" platform="" version="" sections_done=""
     # shellcheck disable=SC1090
     source "$state_file"
 
@@ -100,20 +194,27 @@ detect_previous_install() {
     echo "  Profile:  ${profile:-unknown}"
     echo "  Platform: ${platform:-unknown}"
     echo "  Version:  ${version:-unknown}"
+    if [[ -n "$sections_done" ]]; then
+        echo "  Sections done: ${sections_done}"
+    fi
     echo ""
-    echo "  1) Update (reinstall with current profile)"
-    echo "  2) Fresh install (ignore previous state)"
-    echo "  3) Cancel"
+    echo "  1) Continue (skip sections marked done${sections_done:+: ${sections_done}})"
+    echo "  2) Reinstall everything (re-run all sections regardless of state)"
+    echo "  3) Fresh install (clear state, start over)"
+    echo "  4) Cancel"
 
     local choice
-    read -rp "Select [1-3, default=1]: " choice
+    read -rp "Select [1-4, default=1]: " choice
 
     case "$choice" in
         1) return 0 ;;
-        2) rm -f "$state_file"
+        2) clear_sections_done
+           log_info "Reinstalling everything (section state cleared)"
+           return 0 ;;
+        3) rm -f "$state_file"
            log_info "Starting fresh install"
            return 0 ;;
-        3) log_info "Cancelled by user"
+        4) log_info "Cancelled by user"
            return 1 ;;
         *) return 0 ;;
     esac
