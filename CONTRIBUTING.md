@@ -284,6 +284,24 @@ gh pr merge --squash --delete-branch
 git tag v5.x.y && git push origin v5.x.y
 ```
 
+#### Solo project nuance: admin-merge ≠ bypass
+
+This is a solo-maintained project. Branch protection requires a reviewer
+who doesn't exist (the author *is* the reviewer), so `gh pr merge --admin`
+is the only way to close PRs. **This is not bypass** — the PR is still
+created, the diff stays auditable, and the description captures intent.
+
+The distinction:
+
+- **Bypass** skips PR creation entirely (direct push to `main`) — no
+  reviewable diff, no description, no audit trail. Avoid.
+- **Admin merge** preserves the PR record and only short-circuits the
+  "wait for reviewer" step that does not apply when you *are* the only
+  reviewer. OK in solo mode.
+
+In short: always create the PR; using `--admin` to merge it is fine in
+solo context. Signed commits are still required (see Item GPG signing).
+
 ## Pull Request Process
 
 1. Fork the repository and create a feature branch from `main`
