@@ -69,14 +69,108 @@ save_install_state() {
     local state_dir="${HOME}/.config/os-postinstall"
     local state_file="${state_dir}/state"
 
+    # Preserve sections_done if state file already exists (don't clobber
+    # what mark_section_done() recorded during this run).
+    local preserved_sections=""
+    if [[ -f "$state_file" ]]; then
+        preserved_sections=$(grep '^sections_done=' "$state_file" 2>/dev/null) || true
+    fi
+
     mkdir -p "$state_dir"
-    cat > "$state_file" <<EOF
-install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')
-profile=${profile}
-platform=${DETECTED_OS:-unknown}
-version=${SCRIPT_VERSION:-4.3}
-EOF
+    {
+        echo "install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')"
+        echo "profile=${profile}"
+        echo "platform=${DETECTED_OS:-unknown}"
+        echo "version=${SCRIPT_VERSION:-4.3}"
+        [[ -n "$preserved_sections" ]] && echo "$preserved_sections"
+    } > "$state_file"
     log_debug "Saved install state to ${state_file}"
+}
+
+#######################################
+# mark_section_done()
+# Record that a section completed successfully. Idempotent.
+# Args: $1 = section name (e.g., "dotfiles", "terminal_blueprint")
+# Side effect: appends to sections_done line in state file
+# Honours DRY_RUN.
+#######################################
+mark_section_done() {
+    local section="$1"
+    [[ -z "$section" ]] && return 1
+    [[ "${DRY_RUN:-}" == "true" ]] && return 0
+
+    local state_dir="${HOME}/.config/os-postinstall"
+    local state_file="${state_dir}/state"
+    mkdir -p "$state_dir"
+    [[ ! -f "$state_file" ]] && touch "$state_file"
+
+    local current_sections=""
+    if grep -q '^sections_done=' "$state_file"; then
+        current_sections=$(grep '^sections_done=' "$state_file" | cut -d= -f2-)
+    fi
+
+    case " $current_sections " in
+        *" $section "*) return 0 ;;
+    esac
+
+    local new_sections
+    new_sections=$(printf '%s %s' "$current_sections" "$section" | xargs)
+
+    local tmp_file
+    tmp_file=$(mktemp)
+    grep -v '^sections_done=' "$state_file" > "$tmp_file" 2>/dev/null || true
+    echo "sections_done=$new_sections" >> "$tmp_file"
+    mv "$tmp_file" "$state_file"
+    log_debug "Marked section done: $section"
+}
+
+#######################################
+# is_section_done()
+# Check if a section is recorded as done in state file.
+# Args: $1 = section name
+# Returns: 0 if done, 1 if not done (or no state file)
+#######################################
+is_section_done() {
+    local section="$1"
+    [[ -z "$section" ]] && return 1
+
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 1
+
+    local sections_line
+    sections_line=$(grep '^sections_done=' "$state_file" 2>/dev/null) || return 1
+    local sections="${sections_line#sections_done=}"
+
+    case " $sections " in
+        *" $section "*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+#######################################
+# list_sections_done()
+# Echo space-separated list of sections done. Empty if none.
+#######################################
+list_sections_done() {
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 0
+    grep '^sections_done=' "$state_file" 2>/dev/null | cut -d= -f2- || true
+}
+
+#######################################
+# clear_sections_done()
+# Reset sections_done in state file (kept on "Reinstall everything" path).
+# Honours DRY_RUN.
+#######################################
+clear_sections_done() {
+    [[ "${DRY_RUN:-}" == "true" ]] && return 0
+    local state_file="${HOME}/.config/os-postinstall/state"
+    [[ ! -f "$state_file" ]] && return 0
+
+    local tmp_file
+    tmp_file=$(mktemp)
+    grep -v '^sections_done=' "$state_file" > "$tmp_file" 2>/dev/null || true
+    mv "$tmp_file" "$state_file"
 }
 
 #######################################
