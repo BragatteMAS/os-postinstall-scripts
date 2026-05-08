@@ -264,6 +264,26 @@ This project uses GitHub Flow.
 - All changes go through pull requests -- direct pushes to `main` are not accepted
 - There is no `develop`, `next`, or `staging` branch
 
+### Admin policy: PRs over bypass
+
+Maintainers with admin permission can bypass branch protection. **Don't.**
+The protection (PR required + signed commits) exists for review and
+provenance. Releases v5.4.4–v5.4.7 were pushed via admin bypass under
+time pressure; future releases should go through the PR flow even when
+the change feels "obviously safe."
+
+If a release truly requires bypass (incident hotfix), document the
+reason in the commit body so the bypass is auditable. Otherwise prefer:
+
+```bash
+git checkout -b release/v5.x.y
+# ... commits ...
+git push -u origin release/v5.x.y
+gh pr create --fill
+gh pr merge --squash --delete-branch
+git tag v5.x.y && git push origin v5.x.y
+```
+
 ## Pull Request Process
 
 1. Fork the repository and create a feature branch from `main`
