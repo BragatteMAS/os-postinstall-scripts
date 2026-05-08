@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.8] - 2026-05-08
+
+Discovered via v5.4.7 dry-run audit on `setup.sh --dry-run --unattended -y full`.
+macOS dispatcher emitted `WARN Unknown package file: winget-developer.txt`
+and the same for `winget-full.txt`. Asymmetric with Linux (which handles
+all brew-cask-* variants in one branch).
+
+### Fixed
+- **`macos/main.sh`: silence `winget-developer.txt` and `winget-full.txt`**
+  as Windows-only, same as `winget.txt`. The case branch now matches
+  all three files.
+
+### Added (tests)
+- 1 regression test (`v5.4.8`) in `tests/test-regressions.bats`:
+  macos dispatcher pattern (all winget-*.txt covered). Suite: 24/24 OK.
+
 ## [5.4.7] - 2026-05-07
 
 Closes the last orchestrator that was still under wave-level retry.
