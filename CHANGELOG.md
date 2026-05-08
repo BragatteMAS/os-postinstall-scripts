@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.0] - 2026-05-08
+
+Skip granular: closes Deney's wishlist ("se ja fez partes anteriores
+tem que ter algo para pular mais facil"). The `setup.sh` post-install
+prompts (dotfiles, terminal blueprint) are now gated on per-section
+state. Re-running `setup.sh` after a successful previous run silently
+skips sections that already completed, instead of asking again.
+
+This is a **MINOR** version bump because the menu shape of
+`detect_previous_install` changed (3 options -> 4 options), which
+is user-visible behavior even though no flag/API broke.
+
+### Added
+- **Section state helpers** in `src/core/progress.sh`:
+  - `mark_section_done <name>` — idempotent append to state file
+  - `is_section_done <name>` — 0/1 check
+  - `list_sections_done` — echo space-separated list
+  - `clear_sections_done` — reset sections line only
+
+  State file gains a new optional line `sections_done=...`. Existing
+  state files without the line continue to work; helpers create the
+  line on first call.
+
+- **`setup.sh` section gating**: dotfiles and terminal-blueprint
+  prompts are skipped (with informative `log_info`) when the section
+  is marked done. After a successful run of either, the section is
+  marked. No behavior change in `--unattended` mode (which never ran
+  these prompts to begin with).
+
+- **`detect_previous_install` 4-option menu**:
+  ```
+  1) Continue (skip sections marked done: <list>)
+  2) Reinstall everything (re-run all sections regardless of state)
+  3) Fresh install (clear state, start over)
+  4) Cancel
+  ```
+  Default = 1. Option 2 calls `clear_sections_done`, option 3 deletes
+  the state file. The prompt always surfaces `[1-4, default=1]`,
+  consistent with v5.4.0/v5.4.4/v5.4.6 default-surfacing convention.
+
+### Fixed
+- **`save_install_state` no longer clobbers `sections_done`**.
+  Previous version emitted only the 4 metadata fields, so any
+  `sections_done` line written by `mark_section_done` was wiped on
+  the next save (the final save at end of `setup.sh`). Regression
+  test added.
+
+### Added (tests)
+- 8 bats regression tests (`v5.5.0`) in `tests/test-regressions.bats`:
+  helper behavior, idempotency, multi-section, clear/preserve,
+  state file integrity across saves, menu shape, setup.sh wiring.
+
+- 3 Pester behavior scaffolds (Skip gate) in `tests/pester/winget.Tests.ps1`:
+  template tests for Windows CI runner. Documents the `winget.ps1`
+  refactor required (extract to `.psm1` module + thin runner) before
+  tests can flip from Skip to active.
+
+### Docs
+- `CONTRIBUTING.md`: admin policy section — PRs over branch-protection
+  bypass. Default release flow now documented as PR-based.
+- `docs/REFACTOR-SELECTORS.md`: planning document for unifying the
+  three selection mechanisms (`wizard.sh`, `interactive.sh`,
+  `group-selector.sh`) into `src/core/select.sh`. Marked v5.6.0+.
+
 ## [5.4.8] - 2026-05-08
 
 Discovered via v5.4.7 dry-run audit on `setup.sh --dry-run --unattended -y full`.
