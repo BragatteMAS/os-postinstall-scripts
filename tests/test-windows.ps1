@@ -210,9 +210,9 @@ Assert-Pass "logging.psm1 has 1 CmdletBinding" {
     $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/logging.psm1" -Pattern 'CmdletBinding').Count
     if ($count -ne 1) { throw "expected 1, got $count" }
 }
-Assert-Pass "errors.psm1 has 4 CmdletBinding" {
+Assert-Pass "errors.psm1 has 5 CmdletBinding" {
     $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/errors.psm1" -Pattern 'CmdletBinding').Count
-    if ($count -ne 4) { throw "expected 4, got $count" }
+    if ($count -ne 5) { throw "expected 5, got $count" }
 }
 Assert-Pass "packages.psm1 has 1 CmdletBinding" {
     $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/packages.psm1" -Pattern 'CmdletBinding').Count
