@@ -87,6 +87,19 @@ Assert-Pass "npm.ps1 exists" {
 Assert-Pass "ai-tools.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1")) { throw "missing" }
 }
+Assert-Pass "prompt.psm1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/core/prompt.psm1")) { throw "missing" }
+}
+Assert-Pass "[v5.6.0] Read-Default returns the default when NONINTERACTIVE" {
+    Import-Module "$ProjectRoot/src/platforms/windows/core/prompt.psm1" -Force
+    $env:NONINTERACTIVE = 'true'
+    try {
+        $r = Read-Default -Text 'Pick' -Default '2' -Keys '0-3'
+        if ($r -ne '2') { throw "expected '2', got '$r'" }
+    } finally {
+        Remove-Item Env:\NONINTERACTIVE -ErrorAction SilentlyContinue
+    }
+}
 
 Write-Host ""
 
@@ -103,6 +116,11 @@ Assert-Contains "NO_COLOR in logging.psm1" "$ProjectRoot/src/platforms/windows/c
 Assert-Contains "FAILURE_LOG in errors.psm1" "$ProjectRoot/src/platforms/windows/core/errors.psm1" "FAILURE_LOG"
 Assert-Contains "FAILURE_LOG in setup.ps1" "$ProjectRoot/setup.ps1" "FAILURE_LOG"
 Assert-Contains "WARN in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "WARN"
+
+# v5.6.0 cross-OS prompt contract (sibling of bash src/core/prompt.sh)
+Assert-Contains "[v5.6.0] main.ps1 menu defaults to developer (2), like bash wizard" "$ProjectRoot/src/platforms/windows/main.ps1" "Read-Default .*-Default '2'"
+Assert-Contains "[v5.6.0] prompt.psm1 renders the default into the hint" "$ProjectRoot/src/platforms/windows/core/prompt.psm1" ", default="
+Assert-NotContains "[v5.6.0] main.ps1 no longer uses bare Read-Host for the menu choice" "$ProjectRoot/src/platforms/windows/main.ps1" "Read-Host 'Enter your choice"
 Assert-Contains "winget tri-level dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "winget-developer\.txt"
 Assert-Contains "Requires -Version 5.1 in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Requires -Version 5\.1"
 

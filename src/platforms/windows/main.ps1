@@ -23,6 +23,7 @@ $ErrorActionPreference = 'Continue'
 # Import core modules
 $WindowsDir = $PSScriptRoot
 Import-Module "$WindowsDir/core/logging.psm1" -Force
+Import-Module "$WindowsDir/core/prompt.psm1" -Force
 Import-Module "$WindowsDir/core/packages.psm1" -Force
 Import-Module "$WindowsDir/core/errors.psm1" -Force
 Import-Module "$WindowsDir/core/progress.psm1" -Force
@@ -46,7 +47,7 @@ function Show-Menu {
     Write-Host ''
     Write-Host 'Select installation profile:'
     Write-Host '  1. Minimal   (essential packages only)'
-    Write-Host '  2. Developer (system + dev tools + AI)'
+    Write-Host '  2. Developer (system + dev tools + AI)  [default]'
     Write-Host '  3. Full      (everything)'
     Write-Host '  0. Exit'
     Write-Host ''
@@ -146,7 +147,8 @@ if ($Profile -ne '') {
 # Interactive mode: show menu loop
 do {
     Show-Menu
-    $choice = Read-Host 'Enter your choice (0-3)'
+    # Enter resolves to developer (2), matching the bash wizard's default.
+    $choice = Read-Default -Text 'Enter your choice' -Default '2' -Keys '0-3'
 
     switch ($choice) {
         '1' {
