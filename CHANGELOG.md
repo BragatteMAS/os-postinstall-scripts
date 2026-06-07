@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.0] - 2026-06-07
+
+Unified prompt contract: every default-bearing prompt now renders its
+visible hint FROM the default value, so a prompt can no longer advertise a
+default it does not use. This kills, by construction, the default-inversion
+bug class that was patched piecemeal across v5.4.0 / v5.4.4 / v5.4.6 — the
+same root cause, fixed four-plus times because each prompt was hand-coded.
+
+This is a **MINOR** version bump: the interactive prompts change shape (hint
+format, and the Windows profile menu now defaults to `developer` on Enter,
+matching the bash wizard), which is user-visible behavior — but no flag or
+`--unattended` API broke.
+
+### Added
+- **`prompt_default`** in `src/core/prompt.sh` (bash) and its PowerShell
+  sibling **`Read-Default`** in `src/platforms/windows/core/prompt.psm1`.
+  Shared cross-OS contract: the default is both displayed and returned (they
+  cannot diverge); `NONINTERACTIVE` auto-picks the default and logs it to
+  stderr; only the resolved value reaches stdout.
+- **`tests/test-core-prompt.bats`** — 8 behavioral contract tests covering
+  default resolution (empty / explicit / unattended / timeout) and the
+  stdout-cleanliness guard.
+- Windows prompt-contract tests in `tests/test-windows.ps1` (one behavioral
+  via the `NONINTERACTIVE` path, plus call-site parity guards).
+
+### Changed
+- **Six bash prompt sites** migrated onto `prompt_default`:
+  `show_category_menu`, `ask_tool` (`interactive.sh`),
+  `detect_previous_install` (`progress.sh`), `offer_ollama_model`
+  (`ai-tools.sh`), and `select_profile_interactive` + its confirm sub-step
+  (`wizard.sh`).
+- **Windows profile menu** (`main.ps1`) now defaults to **developer (2)** on
+  Enter — previously Enter fell through to "Invalid choice". The three OSes
+  now share the same Enter-selects-developer behavior.
+- **`docs/REFACTOR-SELECTORS.md`** updated to record the shipped (narrower)
+  approach versus the originally proposed `select_one`/`select_multi`.
+
+### Removed
+- **`read_with_timeout`** (`interactive.sh`) — superseded by `prompt_default`'s
+  built-in timeout; it had no remaining callers.
+
 ## [5.5.0] - 2026-05-08
 
 Skip granular: closes Deney's wishlist ("se ja fez partes anteriores

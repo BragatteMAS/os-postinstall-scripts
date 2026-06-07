@@ -1,8 +1,38 @@
 # Refactor: Unified Selection Mechanism
 
-> **Status**: Planned for v5.6.0+
-> **Estimated cost**: 2-3 days dedicated work
+> **Status**: ✅ Implemented in v5.6.0 — revised approach (see "What shipped" below)
 > **Created**: 2026-05-08 (during ultrathink audit pre-v5.5.0)
+> **Shipped**: 2026-06-07
+
+## What shipped (v5.6.0)
+
+The original proposal below was a unified **selection** abstraction
+(`select_one` / `select_multi`). On implementation it was deliberately
+narrowed: the recurring bug was never about *menu rendering* — it was about
+the *default* (the visible hint disagreeing with the value actually used).
+A single multi-renderer abstraction would have grown parameters for timeout,
+return-mode, value-mapping and a confirm-callback — a god-function at odds
+with the project's KISS principle.
+
+**What was built instead** — a small default-surfacing primitive that renders
+the hint FROM the default, so the two cannot diverge:
+
+- **bash** — `prompt_default` in `src/core/prompt.sh`. Six sites migrated
+  (`show_category_menu`, `ask_tool`, `detect_previous_install`,
+  `offer_ollama_model`, `select_profile_interactive` + its confirm step).
+  `read_with_timeout` removed (superseded).
+- **PowerShell** — `Read-Default` in `src/platforms/windows/core/prompt.psm1`.
+  The profile menu in `main.ps1` now defaults to developer on Enter, matching
+  the bash wizard across all three OSes.
+- **The three renderers were kept distinct** — they are three interaction
+  *types* (rich 1-of-N picker, binary confirm, dynamic N-of-M multi-select),
+  not duplication. They shared a *theme*, not a bug.
+
+Coverage ended up wider than this doc's original 3-site inventory: the default
+bug also lived in `detect_previous_install` and the ollama prompt, both fixed.
+The cross-OS contract lives in the two prompt files' headers (no separate ADR
+needed for a solo project). The original analysis is preserved below as the
+decision record.
 
 ## Problem
 
