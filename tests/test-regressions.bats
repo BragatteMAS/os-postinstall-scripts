@@ -154,8 +154,10 @@ _run_cask_install_with_brew_stderr() {
     # Previously defaulted to 3 (Skip) — silently un-installed dev-env
     # categories for users who didn't react to the prompt within 30s.
     # New default 1 (All) matches the profile the user picked.
-    grep -qE '"Select \[1-3\]"[[:space:]]+"1"' "$REPO_ROOT/src/core/interactive.sh"
-    ! grep -qE '"Select \[1-3\]"[[:space:]]+"3"' "$REPO_ROOT/src/core/interactive.sh"
+    # v5.6.0: call migrated to prompt_default "Select" <default> "1-3" 30 —
+    # the default is now the 2nd positional arg (rendered into the hint).
+    grep -qE 'prompt_default "Select" "1" "1-3"' "$REPO_ROOT/src/core/interactive.sh"
+    ! grep -qE 'prompt_default "Select" "3" "1-3"' "$REPO_ROOT/src/core/interactive.sh"
 }
 
 @test "[v5.4.2] cask classify: 'conflicts with cask X' → conflict reason + fix hint" {
@@ -230,8 +232,10 @@ _run_cask_install_with_brew_stderr() {
 @test "[v5.4.0] ask_tool default 'y' matches [Y/n] prompt convention" {
     # Previously prompt said [Y/n] (capital Y = default) but the actual
     # timeout default was "n". UX bug — Enter or timeout now installs.
-    grep -qE '"Install \$\{tool\}\? \[Y/n\]"[[:space:]]+"y"' "$REPO_ROOT/src/core/interactive.sh"
-    ! grep -qE '"Install \$\{tool\}\? \[Y/n\]"[[:space:]]+"n"' "$REPO_ROOT/src/core/interactive.sh"
+    # v5.6.0: call migrated to prompt_default "Install ${tool}?" <default> "Y/n" 30 —
+    # the default is now the 2nd positional arg (rendered into the hint).
+    grep -qE 'prompt_default "Install \$\{tool\}\?" "y" "Y/n"' "$REPO_ROOT/src/core/interactive.sh"
+    ! grep -qE 'prompt_default "Install \$\{tool\}\?" "n" "Y/n"' "$REPO_ROOT/src/core/interactive.sh"
 }
 
 @test "[8466ff3] cask install writes header + stderr to BREW_LOG" {
@@ -386,7 +390,9 @@ _run_flatpak_install_with_stderr() {
 # replay, which is overkill for a one-line prompt change.
 
 @test "[v5.4.6] ai-tools: ollama prompt surfaces default=2 (Skip)" {
-    grep -qE 'Select \[1-2, default=2\]' \
+    # v5.6.0: migrated to prompt_default "Select" "2" "1-2" — the surfaced
+    # default is now the 2nd positional arg (rendered into the hint).
+    grep -qE 'prompt_default "Select" "2" "1-2"' \
         "$REPO_ROOT/src/install/ai-tools.sh"
 }
 
@@ -524,7 +530,9 @@ _run_section_helpers_in_tmp_home() {
         "$REPO_ROOT/src/core/progress.sh"
     grep -qE '2\) Reinstall everything' \
         "$REPO_ROOT/src/core/progress.sh"
-    grep -qE 'Select \[1-4, default=1\]' \
+    # v5.6.0: migrated to prompt_default "Select" "1" "1-4" — the surfaced
+    # default is now the 2nd positional arg (rendered into the hint).
+    grep -qE 'prompt_default "Select" "1" "1-4"' \
         "$REPO_ROOT/src/core/progress.sh"
 }
 

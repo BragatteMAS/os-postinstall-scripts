@@ -236,7 +236,7 @@ offer_ollama_model() {
     echo "Download a base model for Ollama?"
     echo "  1) llama3.2 (lightweight)"
     echo "  2) Skip"
-    read -rp "Select [1-2, default=2]: " choice
+    choice=$(prompt_default "Select" "2" "1-2")
 
     case "$choice" in
         1)

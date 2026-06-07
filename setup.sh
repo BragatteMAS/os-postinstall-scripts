@@ -38,6 +38,7 @@ source "${SCRIPT_DIR}/config.sh"
 
 # Load core utilities
 source "${CORE_DIR}/logging.sh"
+source "${CORE_DIR}/prompt.sh"
 source "${CORE_DIR}/platform.sh"
 source "${CORE_DIR}/errors.sh"
 source "${CORE_DIR}/progress.sh"

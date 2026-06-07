@@ -21,6 +21,13 @@ if ! type log_info >/dev/null 2>&1; then
     unset _WIZARD_DIR
 fi
 
+# prompt_default() lives in prompt.sh — pull it if a caller didn't source it.
+if ! type prompt_default >/dev/null 2>&1; then
+    _WIZARD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    [[ -f "${_WIZARD_DIR}/prompt.sh" ]] && source "${_WIZARD_DIR}/prompt.sh"
+    unset _WIZARD_DIR
+fi
+
 #######################################
 # select_profile_interactive()
 # Show profile menu with live package counts and time estimates.
@@ -67,8 +74,7 @@ select_profile_interactive() {
         echo "  c) cancel and exit" >&2
         echo "" >&2
 
-        read -r -p "Choice [1/2/3/c, default=2]: " choice
-        choice="${choice:-2}"
+        choice=$(prompt_default "Choice" "2" "1/2/3/c")
 
         case "$choice" in
             1|min|minimal)               profile="minimal" ;;
@@ -90,8 +96,7 @@ select_profile_interactive() {
             echo "Mode: DRY-RUN — no changes will be made, only preview" >&2
         fi
         echo "" >&2
-        read -r -p "Proceed? [Y/n/b=back]: " confirm
-        confirm="${confirm:-Y}"
+        confirm=$(prompt_default "Proceed?" "Y" "Y/n/b=back")
 
         case "$confirm" in
             [yY]*|yes)        echo "$profile"; return 0 ;;

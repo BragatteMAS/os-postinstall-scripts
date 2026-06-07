@@ -204,7 +204,7 @@ detect_previous_install() {
     echo "  4) Cancel"
 
     local choice
-    read -rp "Select [1-4, default=1]: " choice
+    choice=$(prompt_default "Select" "1" "1-4")
 
     case "$choice" in
         1) return 0 ;;

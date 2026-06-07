@@ -25,27 +25,12 @@ if [[ -z "${_LOGGING_SOURCED:-}" ]]; then
     unset _INTERACTIVE_DIR
 fi
 
-#######################################
-# read_with_timeout()
-# Read user input with visible timeout and safe default
-#
-# Args: $1 = prompt text, $2 = default value on timeout, $3 = timeout seconds (default 30)
-# Echoes: user answer (or default on timeout)
-# Returns: 0 = got input, 1 = timeout (used default)
-#######################################
-read_with_timeout() {
-    local prompt="$1" default="$2" timeout="${3:-30}"
-    local answer
-
-    read -r -t "$timeout" -p "${prompt} [${timeout}s → ${default}]: " answer || {
-        echo ""
-        log_warn "Timeout — using default: ${default}"
-        echo "$default"
-        return 1
-    }
-    echo "${answer:-$default}"
-    return 0
-}
+# prompt_default() lives in prompt.sh — pull it if a caller didn't source it.
+if ! type prompt_default >/dev/null 2>&1; then
+    _INTERACTIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    [[ -f "${_INTERACTIVE_DIR}/prompt.sh" ]] && source "${_INTERACTIVE_DIR}/prompt.sh"
+    unset _INTERACTIVE_DIR
+fi
 
 #######################################
 # show_category_menu()
@@ -72,7 +57,7 @@ show_category_menu() {
     # Default 1 (All) so a timeout follows the profile the user picked.
     # Previously this defaulted to 3 (Skip) which silently un-did dev-env
     # for users who took longer than 30s to read the menu.
-    choice=$(read_with_timeout "Select [1-3]" "1")
+    choice=$(prompt_default "Select" "1" "1-3" 30)
 
     case "$choice" in
         1) return 0 ;;
@@ -102,7 +87,7 @@ ask_tool() {
     # Default "y" matches the [Y/n] prompt convention (capital = default).
     # Previously the prompt said [Y/n] but the actual default on timeout was
     # "n" — UX bug (the user expected Enter to mean "yes install").
-    answer=$(read_with_timeout "Install ${tool}? [Y/n]" "y")
+    answer=$(prompt_default "Install ${tool}?" "y" "Y/n" 30)
 
     case "$answer" in
         [nN]*) return 1 ;;
@@ -113,4 +98,4 @@ ask_tool() {
 #######################################
 # Export functions for subshells
 #######################################
-export -f read_with_timeout show_category_menu ask_tool
+export -f show_category_menu ask_tool
