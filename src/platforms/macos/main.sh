@@ -50,6 +50,11 @@ source "${MACOS_DIR}/../../core/csv.sh" || {
     exit 1
 }
 
+source "${MACOS_DIR}/../../core/wizard.sh" || {
+    log_error "Failed to load wizard.sh"
+    exit 1
+}
+
 # Cross-platform installers directory
 INSTALL_DIR="${MACOS_DIR}/../../install"
 
@@ -97,21 +102,6 @@ check_bash_upgrade() {
         echo ""
         log_info "Continuing with current Bash version..."
     fi
-}
-
-#######################################
-# show_menu()
-# Display macOS profile selection menu
-# Uses simple read/case (Bash 3.2 compatible, no select builtin)
-#######################################
-show_menu() {
-    echo ""
-    echo "Select installation profile:"
-    echo "  1. Minimal   — essential system packages only"
-    echo "  2. Developer — adds dev tools, Rust CLIs, dotfiles"
-    echo "  3. Full      — everything + AI tools (Claude, etc)"
-    echo "  0. Exit"
-    echo ""
 }
 
 #######################################
@@ -313,19 +303,10 @@ if [[ -n "${1:-}" ]]; then
     exit $?
 fi
 
-# INTERACTIVE MODE: no argument, show menu
-while true; do
-    show_menu
-    read -rp "Enter your choice (0-3): " choice
-
-    case $choice in
-        1) install_profile "minimal" ;;
-        2) install_profile "developer" ;;
-        3) install_profile "full" ;;
-        0) log_info "Exiting..."; exit 0 ;;
-        *) log_warn "Invalid choice" ;;
-    esac
-
-    echo ""
-    read -rp "Press Enter to continue..."
-done
+# INTERACTIVE MODE: no argument — use the shared wizard menu (same as setup.sh)
+if profile=$(select_profile_interactive "macos"); then
+    install_profile "$profile"
+else
+    log_info "Cancelled — no changes made."
+    exit 0
+fi
