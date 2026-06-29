@@ -55,3 +55,41 @@ setup() {
     assert_output --partial "developer"
     assert_output --partial "full"
 }
+
+# ── PP8: help callout in the menu ─────────────────────────────────
+
+@test "menu shows the help/dry-run tip and the preview option" {
+    run select_profile_interactive "linux" <<< $'2\nY'
+    assert_output --partial "preview"
+    assert_output --partial "--dry-run"
+    assert_output --partial "help"
+}
+
+@test "invalid choice message cites help and the preview key" {
+    # 'z' is invalid -> warns and re-prompts; then '2' + confirm selects.
+    run select_profile_interactive "linux" <<< $'z\n2\nY'
+    assert_output --partial "Invalid choice"
+    assert_output --partial "--help"
+}
+
+# ── PP9: preview a profile's package list (no changes) ────────────
+
+@test "preview (p) lists a profile then loops back to selection" {
+    # p -> preview which? 1 (minimal) -> back to menu -> 2 (developer) -> confirm
+    run --separate-stderr select_profile_interactive "linux" <<< $'p\n1\n2\nY'
+    assert_success
+    assert_equal "$output" "developer"          # stdout = final pick, not the preview
+}
+
+@test "preview output announces it makes no changes" {
+    run select_profile_interactive "linux" <<< $'p\n3\n2\nY'
+    assert_output --partial "Preview: full"
+    assert_output --partial "No changes made"
+}
+
+@test "preview_profile_packages is read-only and self-contained" {
+    run preview_profile_packages "minimal" "linux"
+    assert_success
+    assert_output --partial "Preview: minimal"
+    assert_output --partial "No changes made"
+}

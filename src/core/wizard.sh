@@ -29,6 +29,43 @@ if ! type prompt_default >/dev/null 2>&1; then
 fi
 
 #######################################
+# preview_profile_packages()
+# List what a profile would install — its package groups and CSV categories —
+# read straight from the profile manifest. Output goes to STDERR (the menu's
+# return value stays on STDOUT). Read-only: no changes are made.
+#
+# Self-contained on purpose: select_profile_interactive runs inside a
+# command-substitution subshell, so toggling DRY_RUN here could not reach the
+# parent shell that performs the install. Listing the manifest sidesteps that.
+#
+# Args: $1 = profile (minimal|developer|full), $2 = platform
+#######################################
+preview_profile_packages() {
+    local profile="$1" platform="$2"
+    local profile_file="${DATA_DIR:-}/packages/profiles/${profile}.txt"
+    local count line
+    count=$(count_packages_in_profile "$profile" "$platform" 2>/dev/null || echo "?")
+
+    echo "" >&2
+    echo "── Preview: ${profile} (~${count} packages on ${platform}) ──" >&2
+    if [[ -n "${DATA_DIR:-}" && -f "$profile_file" ]]; then
+        while IFS= read -r line || [[ -n "$line" ]]; do
+            line="${line#"${line%%[![:space:]]*}"}"   # left-trim
+            [[ -z "$line" || "$line" == \#* ]] && continue
+            if [[ "$line" == csv:* ]]; then
+                echo "    • CSV category: ${line#csv:}" >&2
+            else
+                echo "    • package group: ${line}" >&2
+            fi
+        done < "$profile_file"
+    else
+        echo "    (package manifest unavailable — DATA_DIR not set)" >&2
+    fi
+    echo "    No changes made — preview only." >&2
+    echo "" >&2
+}
+
+#######################################
 # select_profile_interactive()
 # Show profile menu with live package counts and time estimates.
 # Confirmation step supports "back" to re-pick.
@@ -71,19 +108,32 @@ select_profile_interactive() {
             esac
             echo "" >&2
         done
+        echo "  p) preview a profile's package list (no changes)" >&2
         echo "  c) cancel and exit" >&2
         echo "" >&2
+        echo "  Tip: add --dry-run to preview the full install; type 'h' after setup for help." >&2
+        echo "" >&2
 
-        choice=$(prompt_default "Choice" "2" "1/2/3/c")
+        choice=$(prompt_default "Choice" "2" "1/2/3/p/c")
 
         case "$choice" in
             1|min|minimal)               profile="minimal" ;;
             2|dev|developer|"")          profile="developer" ;;
             3|full)                      profile="full" ;;
+            p|P|preview)
+                local preview_pick
+                preview_pick=$(prompt_default "Preview which profile?" "2" "1/2/3")
+                case "$preview_pick" in
+                    1|min|minimal) preview_profile_packages "minimal" "$platform" ;;
+                    3|full)        preview_profile_packages "full" "$platform" ;;
+                    *)             preview_profile_packages "developer" "$platform" ;;
+                esac
+                continue
+                ;;
             c|C|cancel|q|Q|quit|exit|x|X) return 1 ;;
             *)
                 echo "" >&2
-                echo "Invalid choice: '${choice}' — try 1, 2, 3, or c." >&2
+                echo "Invalid choice: '${choice}' — try 1, 2, 3, p, or c (or run with --help)." >&2
                 continue
                 ;;
         esac
@@ -108,4 +158,4 @@ select_profile_interactive() {
 }
 
 # Export for subshells (parallel to interactive.sh / progress.sh)
-export -f select_profile_interactive
+export -f select_profile_interactive preview_profile_packages
