@@ -1,5 +1,12 @@
 # Nota Metodologica -- Pesquisa UX do Wizard de Instalacao
 
+> [!IMPORTANT]
+> **Este doc e PESQUISA/BENCHMARK, nao backlog.** Os line-refs e prioridades (incl.
+> "PP4 CRITICO") sao de fev/2026 e estao **defasados** — as releases v5.4.x→v5.6.0
+> entregaram a maior parte dos pain points. Para o **status atual** (o que esta feito
+> vs aberto), ver [`../wizard-ux-status.md`](../wizard-ux-status.md) (reconciliacao
+> 2026-06-29). O catalogo de padroes BMAD abaixo segue valido como referencia.
+
 > **Versao:** 1.1
 > **Ultima atualizacao:** 2026-02-24
 > **Responsavel:** Bragatte + Claude (pesquisa com agentes especializados)
