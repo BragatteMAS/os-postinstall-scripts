@@ -10,14 +10,17 @@
 # Uses winget list --id --exact for idempotent check before install
 # Failed installations tracked via Add-FailedItem for summary
 
-$ErrorActionPreference = 'Continue'
-
 # Accept which winget file to load (winget.txt | winget-developer.txt | winget-full.txt)
+# NOTE: param() must be the first statement in the script — placing anything
+# before it silently breaks argument binding (PowerShell treats `param` as a
+# command and every caller argument is dropped).
 param(
     [Parameter(Mandatory = $false)]
     [ValidateSet('winget.txt', 'winget-developer.txt', 'winget-full.txt')]
     [string]$PackageFile = 'winget.txt'
 )
+
+$ErrorActionPreference = 'Continue'
 
 # Import core modules
 Import-Module "$PSScriptRoot/../core/logging.psm1" -Force
@@ -74,7 +77,7 @@ function Install-WinGetPackage {
         $hint = "Fix: winget search $PackageId  (find correct ID; check casing)"
     }
     elseif ($errBuf -match 'already installed|is already in scope') {
-        $reason = 'already installed (state file out of sync)'
+        $reason = 'already installed (winget list disagreed with pre-install check)'
         $hint = "Fix: winget list --id $PackageId  (verify); next setup will reconcile"
     }
     elseif ($errBuf -match 'hash.*mismatch|installer hash') {
@@ -111,14 +114,14 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 
 # Load packages from data file
-$Packages = Read-PackageFile -FileName 'winget.txt'
+$Packages = Read-PackageFile -FileName $PackageFile
 
 if ($Packages.Count -eq 0) {
     Write-Log -Level WARN -Message 'No packages to install'
     exit 0
 }
 
-Write-Log -Level INFO -Message "Loaded $($Packages.Count) packages from winget.txt"
+Write-Log -Level INFO -Message "Loaded $($Packages.Count) packages from $PackageFile"
 
 # Install each package
 foreach ($pkg in $Packages) {

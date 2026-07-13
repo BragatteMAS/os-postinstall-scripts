@@ -139,6 +139,19 @@ Assert-Contains "Ollama WinGet in ai-tools.ps1" "$ProjectRoot/src/platforms/wind
 Assert-Contains "Read-PackageFile ai-tools-full in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Read-PackageFile.*ai-tools-full\.txt"
 Assert-Contains "DRY_RUN in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "DRY_RUN"
 
+# winget.ps1 -PackageFile binding (regression: param() after a statement is
+# parsed as a command call — arguments from main.ps1 tri-level dispatch were
+# silently dropped and developer/full lists never loaded)
+Assert-Pass "winget.ps1 param() is the first statement (binds -PackageFile)" {
+    $tokens = $null; $errors = $null
+    $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+        "$ProjectRoot/src/platforms/windows/install/winget.ps1", [ref]$tokens, [ref]$errors)
+    if ($errors.Count -ne 0) { throw "parse errors: $($errors[0].Message)" }
+    if ($null -eq $ast.ParamBlock) { throw "no param block bound to the script (param() is being parsed as a command)" }
+}
+Assert-Contains "winget.ps1 loads the requested package file, not a hardcoded one" "$ProjectRoot/src/platforms/windows/install/winget.ps1" 'Read-PackageFile -FileName \$PackageFile'
+Assert-NotContains "winget.ps1 does not hardcode winget.txt in Read-PackageFile" "$ProjectRoot/src/platforms/windows/install/winget.ps1" "Read-PackageFile -FileName 'winget\.txt'"
+
 # main.ps1 dispatch (Windows tri-level)
 Assert-Contains "winget base dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/winget\.ps1"
 Assert-Contains "npm dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/npm\.ps1"
