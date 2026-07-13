@@ -11,6 +11,7 @@ This guide helps you resolve common issues when using OS Post-Install Scripts. I
 - [Modern CLI Tools Issues](#modern-cli-tools-issues)
 - [Platform-Specific Issues](#platform-specific-issues)
 - [Performance Problems](#performance-problems)
+- [How to Undo an Installation](#how-to-undo-an-installation)
 - [Getting Help](#getting-help)
 
 ## 🚫 Installation Issues
@@ -464,6 +465,65 @@ docker system prune -a
 # Disable unused extensions
 ```
 
+## ↩️ How to Undo an Installation
+
+There is no automatic uninstall — that is a deliberate decision. Package
+managers can't safely undo shared dependencies for you, and a rollback that
+covers only part of what was installed is worse than none. Instead, the
+script records what it installed, and you decide what to remove.
+
+### What the script actually installed
+
+```bash
+# Source of truth: only packages the script freshly installed
+# (pre-existing packages never enter this file)
+cat ~/.config/os-postinstall/package-state.txt
+# Format: manager|package|install_date|profile
+```
+
+**Known limits:** cargo tools, dev-env installers (fnm/mise/uv), npm globals
+and AI tools are **not** tracked. On Windows there is no state tracking at
+all — use `winget list` and your judgment.
+
+### Dotfiles (fully reversible)
+
+```bash
+./setup.sh unlink   # removes symlinks, restores your previous dotfiles
+```
+
+### Removing packages, per manager
+
+Review each command's output before confirming — you own the judgment call.
+
+```bash
+# APT (Ubuntu/Debian) — the honest primitive is apt-mark, not apt remove:
+# "remove only if nothing else needs it" (respects the dependency graph)
+sudo apt-mark auto <package>
+sudo apt-get -s autoremove   # -s = simulate; review, then run without -s
+# Avoid `apt-get purge` unless you also want /etc configs gone
+
+# Homebrew (macOS)
+brew uses --installed <formula>   # who depends on it? (check BEFORE removing)
+brew uninstall <formula>
+brew uninstall --cask <app>       # WARNING: deletes the .app and its data
+brew autoremove --dry-run         # review orphaned deps, then run for real
+
+# Snap
+snap remove <package>             # keeps a 31-day snapshot (free undo)
+snap remove --purge <package>     # no snapshot
+
+# Flatpak
+flatpak uninstall <app-id>
+flatpak uninstall --unused        # clean orphaned runtimes
+
+# Cargo (isolated in ~/.cargo — zero risk to the system)
+cargo uninstall <tool>
+
+# WinGet (Windows)
+winget uninstall --id <ID> --exact
+# WARNING: EXE-based installers may open a GUI uninstaller even with --silent
+```
+
 ## 🆘 Getting Help
 
 ### Gathering Debug Information
@@ -514,9 +574,9 @@ rm -rf ~/.oh-my-zsh
 # Reset shell to bash
 chsh -s /bin/bash
 
-# Remove installed packages (Ubuntu/Debian)
-# Check installation log first!
-grep "apt install" install.log
+# Remove installed packages — see what the script actually installed:
+cat ~/.config/os-postinstall/package-state.txt
+# Then follow "How to Undo an Installation" above (apt-mark auto + autoremove)
 ```
 
 ## 💡 Prevention Tips
