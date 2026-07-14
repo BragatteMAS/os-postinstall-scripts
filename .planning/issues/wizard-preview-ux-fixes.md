@@ -24,6 +24,24 @@
 Verification: bats full suite green (incl. 10 new v5.6.1 cases), ShellCheck 36/36,
 dry-run E2E traverses all 10 waves, M5 real re-run = the live E2E test.
 
+**Live E2E result (M5 re-run, 2026-07-13/14):** FD3 fix confirmed in
+production — full dispatch traversed everything; 42 casks landed (vs 2
+before). Residuals for a follow-up:
+
+- `zen-browser` renamed upstream to `zen` — update brew-cask list.
+- `claude-code@latest` vs plain `claude-code` (bootstrap installs the
+  unpinned cask; the wave then sees a conflict) — pick ONE canonical name.
+- sudo-gated pkg casks fail (correctly) under unattended: docker-desktop,
+  google-drive, karabiner-elements, logi-options+ — document that these
+  need one interactive pass, or a `--sudo-casks` deferred wave.
+- ai-tools npm entry `@anthropic-ai/claude-code` conflicts (EEXIST on
+  /opt/homebrew/bin/claude) with the brew cask installed earlier — two
+  channels own the same binary; pick one (owner's rule: brew is canonical).
+- ollama official script installs Ollama.app fine but its PATH step needs
+  sudo → CLI symlink fails unattended; first `open -a Ollama` completes it.
+- atuin is still in packages.csv (rust-shell) and got installed, though the
+  owner discarded atuin in May/2026 — decide keep-in-catalog vs remove.
+
 ## 1. Preview lists package groups from other OSes (cosmetic, confusing)
 
 `p` → profile 3 on macOS listed `apt.txt`, `winget*.txt`, `flatpak-*`,
