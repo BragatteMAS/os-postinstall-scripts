@@ -157,13 +157,27 @@ install_profile() {
     if [[ "$profile_name" != "minimal" ]]; then
         current_step=$((current_step + 1))
         show_progress "$current_step" "$total_steps" "Setting up development environment..."
-        if ! bash "${INSTALL_DIR}/dev-env.sh"; then
+        # full = the user already chose "everything" at the profile menu; the
+        # category menus inside dev-env would re-ask what is already decided
+        # (and are the only mid-run prompts). NONINTERACTIVE makes them follow
+        # the profile intent (install all; SSH-key offer skipped, default was
+        # No anyway). developer keeps the menus — partial intent is plausible.
+        if [[ "$profile_name" == "full" ]]; then
+            if ! NONINTERACTIVE=true bash "${INSTALL_DIR}/dev-env.sh"; then
+                record_failure "dev-env"
+            fi
+        elif ! bash "${INSTALL_DIR}/dev-env.sh"; then
             record_failure "dev-env"
         fi
     fi
 
-    # Read profile and dispatch to macOS-relevant installers
-    while IFS= read -r pkg_file || [[ -n "$pkg_file" ]]; do
+    # Read profile and dispatch to macOS-relevant installers.
+    # The list rides on FD 3, NOT stdin: children (brew, installers) inherit
+    # stdin and can drain it, silently eating the remaining profile lines —
+    # observed live 2026-07-13 (M5 full install stopped after
+    # brew-developer.txt; casks/npm/ai-tools/csv/defaults never ran). Same
+    # pattern as csv.sh's install loop.
+    while IFS= read -r pkg_file <&3 || [[ -n "$pkg_file" ]]; do
         # Trim leading whitespace
         pkg_file="${pkg_file#"${pkg_file%%[![:space:]]*}"}"
 
@@ -260,7 +274,7 @@ install_profile() {
                 log_warn "Unknown package file: $pkg_file"
                 ;;
         esac
-    done < "$profile_file"
+    done 3< "$profile_file"
 
     # ── --groups mode: run interactive cask selector ─────────────────────
     # Defers all brew-cask-* dispatch to a single multi-select prompt over

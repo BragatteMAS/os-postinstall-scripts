@@ -137,6 +137,15 @@ install_csv_category() {
         fi
     done 3< <(read_csv_category "$category" "$csv_file")
 
+    # 0 rows and 0 failures are indistinguishable to callers unless we make
+    # the empty case loud: an unknown category or an unreadable CSV must be a
+    # failure, never a silent success (finding #10, 2026-07-13).
+    if [[ "$total" -eq 0 ]]; then
+        log_warn "csv:$category resolved 0 entries from $csv_file — category unknown or CSV unreadable"
+        type record_failure &>/dev/null && record_failure "csv:$category (0 entries)"
+        return 1
+    fi
+
     log_info "Summary (csv:$category): $installed installed, $skipped skipped, $failed failed (total $total)"
     return $((failed > 0 ? 1 : 0))
 }

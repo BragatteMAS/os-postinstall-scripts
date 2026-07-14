@@ -542,3 +542,83 @@ _run_section_helpers_in_tmp_home() {
     grep -qE 'mark_section_done "dotfiles"' "$REPO_ROOT/setup.sh"
     grep -qE 'mark_section_done "terminal_blueprint"' "$REPO_ROOT/setup.sh"
 }
+
+# ── v5.6.1: silent-layer regressions (M5 cutover findings, 2026-07-13) ──
+
+@test "[v5.6.1] dispatch loops feed the profile on FD3 (stdin-drain guard)" {
+    # Children (brew/apt/installers) inherit stdin; feeding the profile on
+    # stdin let a real `brew install` drain it — the M5 full install silently
+    # stopped after brew-developer.txt (casks/npm/ai-tools/csv never ran).
+    grep -qE 'read -r pkg_file <&3' "$REPO_ROOT/src/platforms/macos/main.sh"
+    grep -qE 'done 3< "\$profile_file"' "$REPO_ROOT/src/platforms/macos/main.sh"
+    grep -qE 'read -r pkg_file <&3' "$REPO_ROOT/src/platforms/linux/main.sh"
+    grep -qE 'done 3< "\$profile_file"' "$REPO_ROOT/src/platforms/linux/main.sh"
+}
+
+@test "[v5.6.1] install_csv_category fails loudly on 0 entries" {
+    run bash -c '
+        source "$1/src/core/logging.sh"
+        FAILED_ITEMS=()
+        source "$1/src/core/errors.sh"
+        DATA_DIR="$1/data"
+        source "$1/src/core/csv.sh"
+        install_csv_category "no-such-category"
+    ' _ "$REPO_ROOT"
+    assert_failure
+    assert_output --partial "0 entries"
+}
+
+@test "[v5.6.1] install_csv_category still succeeds on a real category (dry-run)" {
+    run bash -c '
+        source "$1/src/core/logging.sh"
+        FAILED_ITEMS=()
+        source "$1/src/core/errors.sh"
+        DATA_DIR="$1/data"
+        DRY_RUN=true
+        source "$1/src/core/csv.sh"
+        install_csv_category "rust-cli"
+    ' _ "$REPO_ROOT"
+    assert_success
+    assert_output --partial "Summary (csv:rust-cli)"
+    assert_output --partial "(total 19)"
+}
+
+@test "[v5.6.1] dry-run summary declares NOTHING was installed and hides post-install tips" {
+    run bash -c '
+        source "$1/src/core/logging.sh"
+        FAILED_ITEMS=()
+        source "$1/src/core/errors.sh"
+        source "$1/src/core/progress.sh"
+        DRY_RUN=true show_completion_summary "full" "macos"
+    ' _ "$REPO_ROOT"
+    assert_success
+    assert_output --partial "DRY-RUN complete — NOTHING was installed."
+    assert_output --partial "To install for real"
+    refute_output --partial "What's next"
+}
+
+@test "[v5.6.1] real-run summary keeps the post-install tips" {
+    run bash -c '
+        source "$1/src/core/logging.sh"
+        FAILED_ITEMS=()
+        source "$1/src/core/errors.sh"
+        source "$1/src/core/progress.sh"
+        show_completion_summary "full" "macos"
+    ' _ "$REPO_ROOT"
+    assert_success
+    assert_output --partial "What's next"
+    refute_output --partial "NOTHING was installed"
+}
+
+@test "[v5.6.1] setup.sh optional layers are gated off in dry-run" {
+    grep -qE '\[\[ "\$\{DRY_RUN:-\}" != "true" && "\$\{UNATTENDED:-\}" != "true" \]\]' \
+        "$REPO_ROOT/setup.sh"
+    grep -qE 'DRY_RUN.*Skipping optional config layers' "$REPO_ROOT/setup.sh"
+}
+
+@test "[v5.6.1] dev-env runs non-interactive for the full profile (no mid-install prompts)" {
+    grep -qE 'NONINTERACTIVE=true bash "\$\{INSTALL_DIR\}/dev-env.sh"' \
+        "$REPO_ROOT/src/platforms/macos/main.sh"
+    grep -qE 'NONINTERACTIVE=true bash "\$\{INSTALL_DIR\}/dev-env.sh"' \
+        "$REPO_ROOT/src/platforms/linux/main.sh"
+}
