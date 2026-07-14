@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.6.1] - 2026-07-13
+
+First full install on a genuinely fresh machine (the M1→M5 migration) served
+as live QA and surfaced ten findings — including one critical silent-failure
+class. All fixed same day; `.planning/issues/wizard-preview-ux-fixes.md`
+holds the forensic trail.
+
+This is a **PATCH** bump: pure bug fixes; no flag or API changed shape (the
+full profile losing its mid-install questions is a fix toward the documented
+walk-away contract, not new behavior).
+
+### Fixed
+- **CRITICAL — profile dispatch silently truncated (finding #10):** both
+  platform dispatch loops fed the profile list over **stdin**; any child
+  that reads stdin (a real `brew install` does) drained the remaining
+  lines. On the fresh M5, the full install died right after
+  `brew-developer.txt` — casks, npm, AI tools, all five `csv:rust-*`
+  categories and macos-defaults never ran, yet the summary said
+  "All sections completed successfully". The list now rides on FD 3 (the
+  pattern `csv.sh` already used) in `src/platforms/macos/main.sh` and
+  `src/platforms/linux/main.sh`.
+- **`install_csv_category` 0-entry silent success:** an unknown category or
+  unreadable CSV produced "0 installed, 0 failed" and returned success.
+  Now warns and fails loudly (`src/core/csv.sh`).
+- **Preview leaked other-OS groups (finding #1):** a macOS preview listed
+  apt/winget/snap/flatpak entries. The preview now mirrors the dispatch's
+  platform filter and notes how many entries were hidden (`wizard.sh`).
+- **Dry-run ambiguity (findings #2/#3/#4):** the preview ends with
+  "✓ Preview of 'X' done — nothing was installed."; the dry-run summary
+  closes with "DRY-RUN complete — NOTHING was installed" plus the exact
+  command for the real run, and no longer shows the post-install
+  "What's next" tips (`wizard.sh`, `progress.sh`).
+- **Optional layers ran inside dry-run (finding #5):** the dotfiles and
+  terminal-blueprint prompts are skipped entirely under `--dry-run`
+  (`setup.sh`).
+- **Mid-install prompts on full (finding #7):** dev-env's category menus
+  (mise/Node/Python) re-asked what the profile had already answered, in
+  the middle of a long run. `full` now runs dev-env `NONINTERACTIVE`
+  (menus follow profile intent; the SSH-key offer — default No — is
+  skipped). `developer` keeps its menus.
+- **Stale time estimates (finding #8):** the profile menu now shows honest
+  ranges (2-5 / 5-15 / 10-30 min) instead of ~5/~15/~30 (`wizard.sh`).
+
+### Added
+- Ten regression tests: FD3 static guards for both dispatch loops, csv
+  0-entry loud failure + real-category dry-run pass, dry-run vs real
+  summary contracts, setup.sh dry-run gates, dev-env
+  NONINTERACTIVE-on-full guards (`tests/test-regressions.bats`);
+  platform-filtered preview + explicit success footer
+  (`tests/test-core-wizard.bats`).
+
+Notes: finding #6 (a 24-minute dry-run "Duration") resolved as honest
+wall-clock inflated by prompt idle time — moot now that dry-run has no
+prompts; finding #9 (starship "missing from lists") was invalid — it lives
+in `packages.csv` and simply fell victim to #10.
+
 ## [5.6.0] - 2026-06-07
 
 Unified prompt contract: every default-bearing prompt now renders its
