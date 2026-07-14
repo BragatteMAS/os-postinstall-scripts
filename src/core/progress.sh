@@ -397,6 +397,23 @@ show_completion_summary() {
         log_ok "All sections completed successfully"
     fi
 
+    # Dry-run gets an unambiguous closing block INSTEAD of the post-install
+    # guidance: the owner ran a dry-run and could not tell whether anything
+    # had been installed, and "h/welcome" do not even exist on a clean system
+    # yet (findings #3/#4, 2026-07-13).
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        echo ""
+        log_ok "DRY-RUN complete — NOTHING was installed."
+        if [[ "$fail_count" -eq 0 ]]; then
+            echo "  All ${profile} sections simulated cleanly: 0 expected failures."
+        else
+            echo "  Simulation reported ${fail_count} issue(s) above — fix before the real run."
+        fi
+        echo "  To install for real: ./setup.sh ${profile}   (or ./setup.sh for the menu)"
+        echo ""
+        return 0
+    fi
+
     # Next steps (R3 + R4 from BMAD UX Research)
     echo ""
     echo "What's next:"

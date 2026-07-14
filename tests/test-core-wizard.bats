@@ -84,12 +84,47 @@ setup() {
 @test "preview output announces it makes no changes" {
     run select_profile_interactive "linux" <<< $'p\n3\n2\nY'
     assert_output --partial "Preview: full"
-    assert_output --partial "No changes made"
+    assert_output --partial "nothing was installed"
 }
 
 @test "preview_profile_packages is read-only and self-contained" {
     run preview_profile_packages "minimal" "linux"
     assert_success
     assert_output --partial "Preview: minimal"
-    assert_output --partial "No changes made"
+    assert_output --partial "nothing was installed"
+}
+
+# ── v5.6.1: preview platform filter + explicit success footer ──────
+# Finding #1 (2026-07-13, first run on a real fresh machine): a macos
+# preview listed apt/winget/snap/flatpak groups. Finding #2: the owner
+# could not tell whether the preview had worked.
+
+@test "[v5.6.1] preview on macos hides other-OS package groups" {
+    export DATA_DIR="${BATS_TEST_DIRNAME}/../data"
+    run preview_profile_packages "full" "macos"
+    assert_success
+    assert_output --partial "brew-developer.txt"
+    assert_output --partial "CSV category: rust-cli"
+    refute_output --partial "apt.txt"
+    refute_output --partial "winget"
+    refute_output --partial "snap-developer"
+    refute_output --partial "flatpak-developer"
+    assert_output --partial "entries for other platforms not shown"
+}
+
+@test "[v5.6.1] preview on linux hides brew/winget groups" {
+    export DATA_DIR="${BATS_TEST_DIRNAME}/../data"
+    run preview_profile_packages "full" "linux"
+    assert_success
+    assert_output --partial "apt.txt"
+    refute_output --partial "brew.txt"
+    refute_output --partial "winget"
+    refute_output --partial "macos-defaults"
+}
+
+@test "[v5.6.1] preview ends with an explicit success footer" {
+    export DATA_DIR="${BATS_TEST_DIRNAME}/../data"
+    run preview_profile_packages "developer" "macos"
+    assert_success
+    assert_output --partial "✓ Preview of 'developer' done — nothing was installed."
 }

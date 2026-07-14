@@ -323,7 +323,13 @@ main() {
     # .gitconfig, etc). Backups exist (~/.dotfiles-backup/), but we don't
     # silently overwrite a user's existing config on timeout. The wording
     # makes it clear these are the FINAL optional layers.
-    if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
+    # Dry-run must not reach the optional layers at all: they mutate $HOME and
+    # (observed 2026-07-13, finding #5) the blueprint announced completion
+    # inside a dry-run. Simulation ends at the package layer.
+    if [[ "${DRY_RUN:-}" == "true" ]]; then
+        log_info "[DRY_RUN] Skipping optional config layers (dotfiles, terminal blueprint)"
+    fi
+    if [[ "${DRY_RUN:-}" != "true" && "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
         echo ""
         echo -e "${BLUE}─── Optional config layers (2 prompts, then done) ──────────────${NC}"
         echo ""
@@ -345,7 +351,7 @@ main() {
     # because it covers a different layer (Starship preset, aliases bundle, zsh
     # plugins curation, optional p10k migration). User testimony: when this
     # wasn't surfaced, people didn't know the script existed.
-    if [[ "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
+    if [[ "${DRY_RUN:-}" != "true" && "${UNATTENDED:-}" != "true" ]] && [[ -t 0 ]]; then
         local terminal_setup="${SCRIPT_DIR}/terminal-setup.sh"
         if [[ -x "$terminal_setup" ]]; then
             echo ""

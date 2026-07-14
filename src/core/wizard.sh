@@ -43,7 +43,7 @@ fi
 preview_profile_packages() {
     local profile="$1" platform="$2"
     local profile_file="${DATA_DIR:-}/packages/profiles/${profile}.txt"
-    local count line
+    local count line hidden=0
     count=$(count_packages_in_profile "$profile" "$platform" 2>/dev/null || echo "?")
 
     echo "" >&2
@@ -52,17 +52,54 @@ preview_profile_packages() {
         while IFS= read -r line || [[ -n "$line" ]]; do
             line="${line#"${line%%[![:space:]]*}"}"   # left-trim
             [[ -z "$line" || "$line" == \#* ]] && continue
+            # Show only entries this platform's dispatch would actually run —
+            # the count above is already platform-filtered; the list must
+            # match it (finding #1: apt/winget groups leaked into a macos
+            # preview).
+            if ! _preview_entry_matches_platform "$line" "$platform"; then
+                hidden=$((hidden + 1))
+                continue
+            fi
             if [[ "$line" == csv:* ]]; then
                 echo "    • CSV category: ${line#csv:}" >&2
             else
                 echo "    • package group: ${line}" >&2
             fi
         done < "$profile_file"
+        [[ "$hidden" -gt 0 ]] && echo "    (${hidden} entries for other platforms not shown)" >&2
     else
         echo "    (package manifest unavailable — DATA_DIR not set)" >&2
     fi
-    echo "    No changes made — preview only." >&2
     echo "" >&2
+    echo "  ✓ Preview of '${profile}' done — nothing was installed." >&2
+    echo "" >&2
+}
+
+#######################################
+# _preview_entry_matches_platform(entry, platform)
+# Mirror of the platform filtering each main.sh dispatch applies. Unknown
+# platforms show everything (defensive default).
+#######################################
+_preview_entry_matches_platform() {
+    local entry="$1" platform="$2"
+    case "$platform" in
+        macos)
+            case "$entry" in
+                brew*|csv:*|npm-developer.txt|ai-tools-full.txt|macos-defaults.txt) return 0 ;;
+                *) return 1 ;;
+            esac ;;
+        linux)
+            case "$entry" in
+                apt*|flatpak*|snap*|csv:*|npm-developer.txt|ai-tools-full.txt) return 0 ;;
+                *) return 1 ;;
+            esac ;;
+        windows)
+            case "$entry" in
+                winget*|npm-developer.txt|ai-tools-full.txt) return 0 ;;
+                *) return 1 ;;
+            esac ;;
+        *) return 0 ;;
+    esac
 }
 
 #######################################
@@ -92,16 +129,16 @@ select_profile_interactive() {
             pkg_count=$(count_packages_in_profile "$p" "$platform" 2>/dev/null || echo "?")
             case "$p" in
                 minimal)
-                    printf "  1) %-12s ~5 min,  %s packages\n" "minimal" "$pkg_count" >&2
+                    printf "  1) %-12s 2-5 min,  %s packages\n" "minimal" "$pkg_count" >&2
                     echo   "                Modern Rust CLI baseline only (bat, eza, rg, fd, zoxide, delta + 14 more)" >&2
                     ;;
                 developer)
-                    printf "  2) %-12s ~15 min, %s packages  (default)\n" "developer" "$pkg_count" >&2
+                    printf "  2) %-12s 5-15 min, %s packages  (default)\n" "developer" "$pkg_count" >&2
                     echo   "                Neutral dev env: editors, Docker/OrbStack, browsers (Firefox+Chromium)," >&2
                     echo   "                Rust dev tools, GUI apps defensible to most devs" >&2
                     ;;
                 full)
-                    printf "  3) %-12s ~30 min, %s packages\n" "full" "$pkg_count" >&2
+                    printf "  3) %-12s 10-30 min, %s packages\n" "full" "$pkg_count" >&2
                     echo   "                developer + curator's pick (Chrome, Zen, Cursor, Claude, ChatGPT," >&2
                     echo   "                AI/MCP tools, design apps) — opinionated" >&2
                     ;;
@@ -158,4 +195,4 @@ select_profile_interactive() {
 }
 
 # Export for subshells (parallel to interactive.sh / progress.sh)
-export -f select_profile_interactive preview_profile_packages
+export -f select_profile_interactive preview_profile_packages _preview_entry_matches_platform
