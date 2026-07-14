@@ -622,3 +622,15 @@ _run_section_helpers_in_tmp_home() {
     grep -qE 'NONINTERACTIVE=true bash "\$\{INSTALL_DIR\}/dev-env.sh"' \
         "$REPO_ROOT/src/platforms/linux/main.sh"
 }
+
+@test "[v5.6.1] SCRIPT_VERSION, README badge and CHANGELOG head agree" {
+    script_v=$(grep -Eo 'SCRIPT_VERSION="[0-9]+\.[0-9]+\.[0-9]+"' "$REPO_ROOT/setup.sh" \
+        | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+    badge_v=$(grep -Eo 'Version-[0-9]+\.[0-9]+\.[0-9]+-' "$REPO_ROOT/README.md" \
+        | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+    changelog_v=$(grep -Eom1 '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' "$REPO_ROOT/CHANGELOG.md" \
+        | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+    [ -n "$script_v" ]
+    assert_equal "$script_v" "$badge_v"
+    assert_equal "$script_v" "$changelog_v"
+}

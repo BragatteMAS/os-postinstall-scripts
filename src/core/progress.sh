@@ -81,7 +81,7 @@ save_install_state() {
         echo "install_date=$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S')"
         echo "profile=${profile}"
         echo "platform=${DETECTED_OS:-unknown}"
-        echo "version=${SCRIPT_VERSION:-4.3}"
+        echo "version=${SCRIPT_VERSION:-unknown}"
         [[ -n "$preserved_sections" ]] && echo "$preserved_sections"
     } > "$state_file"
     log_debug "Saved install state to ${state_file}"

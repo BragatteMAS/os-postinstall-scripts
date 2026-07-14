@@ -47,6 +47,11 @@ walk-away contract, not new behavior).
   skipped). `developer` keeps its menus.
 - **Stale time estimates (finding #8):** the profile menu now shows honest
   ranges (2-5 / 5-15 / 10-30 min) instead of ~5/~15/~30 (`wizard.sh`).
+- **`SCRIPT_VERSION` was never defined:** every install state file recorded
+  `version=4.3` regardless of the actual release (the fallback at
+  `progress.sh`). `setup.sh` now exports the real version (guarded by a
+  drift test against the README badge and this file); the fallback for
+  direct `main.sh` runs became `unknown` instead of a wrong number.
 
 ### Added
 - Ten regression tests: FD3 static guards for both dispatch loops, csv
