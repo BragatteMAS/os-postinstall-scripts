@@ -290,6 +290,68 @@ profile entries. Idempotent via binary-in-PATH check.
 
 ---
 
+## 12. Fresh Machine & Migration (v5.6.1, live cutover QA)
+
+Lessons from the first full install on a genuinely fresh machine, used as
+live QA during a real machine-to-machine migration. General lessons — none
+of this is specific to a Mac→Mac pair. See also `docs/migration-guide.md`.
+
+### 12.1 Children Drain the Loop's Stdin (CRITICAL)
+A `while read ... done < file` dispatch loop hands its redirected stdin to
+every child it spawns. A real `brew install` reads stdin, so it silently ate
+the remaining profile lines: the install stopped after one wave and the
+summary still said success.
+**Fix:** feed loops that spawn children from FD 3 (`read <&3 ... done 3< file`).
+**Ref:** CHANGELOG 5.6.1, main.sh dispatch loops, regression tests `[v5.6.1]`
+
+### 12.2 "Zero Items" and "Zero Failures" Look Identical
+`install_csv_category` with an unresolvable data file processed 0 rows,
+reported "0 failed" and returned success. Empty work must be loud, never a
+silent pass.
+**Fix:** `total == 0` → warn + `record_failure` + return 1.
+**Ref:** src/core/csv.sh, CHANGELOG 5.6.1
+
+### 12.3 Unattended Mode vs sudo-Gated Installers
+pkg-based casks (docker-desktop, google-drive, karabiner-elements,
+logi-options+) require an admin password and fail correctly under
+`--unattended`/ssh. They are not errors to fix — they are a deferred wave.
+**Fix:** document/plan one interactive pass for sudo casks after the bulk run.
+**Ref:** .planning/issues/wizard-preview-ux-fixes.md (residuals)
+
+### 12.4 Installers That Insist on /usr/local Need No sudo on Apple Silicon
+Ollama's official script installs the app fine but its CLI symlink targets
+`/usr/local/bin` (sudo). On Apple Silicon, `/opt/homebrew/bin` is
+user-writable — symlink the bundled binary there instead; no privilege, no
+GUI wizard needed.
+**Fix:** `ln -sf /Applications/App.app/Contents/Resources/bin /opt/homebrew/bin/`.
+**Ref:** M5 cutover 2026-07-15
+
+### 12.5 macOS SACL Gates SSH Before Keys Are Even Checked
+`Permission denied (publickey)` can mean the user is not in the
+`com.apple.access_ssh` group — the SACL rejects before auth, indistinguishable
+from a bad key on the client side.
+**Fix:** `dseditgroup -o checkmember -m USER com.apple.access_ssh` is the
+one-line discriminator; fix via Sharing → Remote Login → Allow access.
+**Ref:** M5 cutover 2026-07-13
+
+### 12.6 A Passphrase-Protected Key Without Keychain Breaks Every Non-Interactive Client
+The ssh client derives the public key from the PRIVATE key and must sign;
+BatchMode cannot prompt for the passphrase, so auth fails even though the
+server-side authorized_keys is perfect — and `-vv` shows the key being
+"offered", which misleads the debugging toward the server.
+**Fix:** `ssh-add --apple-use-keychain` once per machine (must run in a real
+TTY).
+**Ref:** M5 cutover 2026-07-13
+
+### 12.7 GUI Clipboard/Paste Channels Corrupt Multi-Line Shell Blocks
+Universal Clipboard (and similar) can mangle quotes/newlines in pasted
+blocks (`dquote>` symptom). Anything longer than one short line should
+travel as a FILE (scp/rsync/AirDrop) and run as `bash file.sh`.
+**Fix:** ship scripts, not pastes, between machines.
+**Ref:** M5 cutover 2026-07-13
+
+---
+
 ## Summary
 
 | Categoria | Count | Severidade |
@@ -305,8 +367,9 @@ profile entries. Idempotent via binary-in-PATH check.
 | Testing | 5 | MEDIUM |
 | Architecture | 2 | MEDIUM |
 | Senior Dev Review (v4.2) | 5 | MEDIUM |
-| **Total** | **40** | |
+| Fresh Machine & Migration (v5.6.1) | 7 | HIGH |
+| **Total** | **47** | |
 
 ---
-*Compiled from Phases 1-17 research, plans, summaries, verifications, and ADRs*
-*Last updated: 2026-02-25*
+*Compiled from Phases 1-17 research, plans, summaries, verifications, ADRs, and the v5.6.1 live cutover*
+*Last updated: 2026-07-15*

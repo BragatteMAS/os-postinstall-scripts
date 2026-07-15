@@ -241,6 +241,30 @@ sudo apt update
 # Search for "Ubuntu PPA package-name"
 ```
 
+### Brew install failures — recovery cookbook
+
+Field-tested recoveries for mid-install brew failures (moved here from the
+README's old Mac-migration runbook):
+
+| Symptom | Probable cause | Recovery |
+|---|---|---|
+| `Failed to install: X (app exists at /Applications)` | App was put there manually before brew (DMG drag-and-drop) | `brew install --cask --force X` — overwrites and registers with brew |
+| `Failed to install: X (cask name not found)` | Cask renamed since release; tap missing | `brew search X` to find current name; update `data/packages/brew-cask-*.txt` |
+| `Failed to install: X (network error)` | Transient | Re-run `setup.sh <profile>` — idempotent, retries only the missing items |
+| `Failed: codex / claude-code / gemini-cli` (npm tools) | Node/npm not available because the fnm chain broke | Reinstall manually: `npm i -g @openai/codex@latest @anthropic-ai/claude-code @google/gemini-cli` |
+| `bun installation failed` | `oven-sh/bun` tap unreachable | `brew tap oven-sh/bun` manually, then re-run |
+| Wizard skipped — went straight to default | non-TTY (script piped through ssh/curl) | Pass the profile explicitly: `bash setup.sh full` |
+| Disk space warning aborted | < 10 GiB free | Free space, re-run. Idempotent — only the missing items install |
+| `github` cask conflict | Already have `github@beta` (same app, rolling channel) | Keep beta, or `brew uninstall --cask github@beta && brew install --cask github` |
+| Casks fail under `--unattended`/ssh (docker-desktop, google-drive, karabiner…) | pkg installers require an admin password | Run one interactive pass at the end: `brew install --cask <the failed ones>` |
+
+If failures appear in the final summary, copy the diagnostic log **before
+closing the terminal** — it lives inside a temp dir removed on exit:
+
+```bash
+cp "${TMPDIR:-/tmp}"/os-postinstall-*/brew-install.log ~/install-stderr.log
+```
+
 ## 👤 Profile Installation Problems
 
 ### Profile not found
