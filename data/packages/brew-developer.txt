@@ -30,6 +30,7 @@ cmake
 pkg-config
 openssl
 shellcheck
+bats-core
 biome
 
 # Universal data tools
@@ -42,6 +43,7 @@ just
 gh
 lazygit
 jj
+gitleaks
 
 # Interactive shell UI (used by setup.sh --groups selector)
 gum

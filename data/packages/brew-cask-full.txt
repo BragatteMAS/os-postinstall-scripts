@@ -19,12 +19,17 @@ claude
 claude-code@latest
 chatgpt
 antigravity
+windsurf
+devin-desktop
 
 # Communication (personal)
 discord
 
 # macOS utilities (personal preferences)
 clop
+hiddenbar
+meetingbar
+latest
 
 # Media & lazer
 spotify
@@ -42,3 +47,19 @@ capcut
 zed
 numi
 karabiner-elements
+
+# Terminals & web dev testing
+ghostty
+iterm2
+responsively
+
+# Fonts (terminal + design). macOS had no font path in the manifests; setup.ps1 covers Windows.
+font-jetbrains-mono-nerd-font
+font-symbols-only-nerd-font
+font-jetbrains-mono
+font-fira-code
+font-iosevka
+font-inter
+font-ibm-plex-sans
+font-source-sans-3
+font-sketchybar-app-font

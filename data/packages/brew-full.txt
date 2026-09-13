@@ -10,7 +10,7 @@
 # AI / Claude ecosystem
 claude-squad
 anomalyco/tap/opencode
-tw93/tap/mole
+mole
 yakitrak/yakitrak/obsidian-cli
 worktrunk
 
@@ -32,8 +32,23 @@ rig
 
 # Network niche
 cloudflared
+sshpass
 trafilatura
 
 # Custom / experimental taps
 dmno-dev/tap/varlock
 valkyrie00/bbrew/bbrew
+
+# Web / API infra (self-hosted + Supabase CLI)
+caddy
+postgrest
+supabase/tap/supabase
+
+# Docs / PDF
+poppler
+
+# AI / voice
+whisper.cpp
+
+# Cross-OS scripting (test setup.ps1 locally)
+powershell
