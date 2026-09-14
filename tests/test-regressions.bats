@@ -388,22 +388,7 @@ _run_flatpak_install_with_stderr() {
 # bash fallback). Tests are grep-based — fingerprint that the convention
 # is in the source. Behavior tests would require interactive stdin
 # replay, which is overkill for a one-line prompt change.
-
-@test "[v5.4.6] ai-tools: ollama prompt surfaces default=2 (Skip)" {
-    # v5.6.0: migrated to prompt_default "Select" "2" "1-2" — the surfaced
-    # default is now the 2nd positional arg (rendered into the hint).
-    grep -qE 'prompt_default "Select" "2" "1-2"' \
-        "$REPO_ROOT/src/install/ai-tools.sh"
-}
-
-@test "[v5.4.6] ai-tools: ollama skip path emits log_info, not log_debug" {
-    # Convention from v5.4.0: skip should be visible. log_debug hid the
-    # non-action behind a debug flag.
-    grep -qE 'log_info "Skipped model download' \
-        "$REPO_ROOT/src/install/ai-tools.sh"
-    ! grep -qE 'log_debug "Skipping model download' \
-        "$REPO_ROOT/src/install/ai-tools.sh"
-}
+# (the ai-tools ollama prompt was removed in v5.7.0 and its two tests with it)
 
 @test "[v5.4.6] group-selector: bash-fallback prompt surfaces default=none" {
     grep -qE "default=none" \
@@ -635,7 +620,7 @@ _run_section_helpers_in_tmp_home() {
     assert_equal "$script_v" "$changelog_v"
 }
 
-@test "[v5.6.2] sections_done with several sections survives being sourced" {
+@test "[v5.7.0] sections_done with several sections survives being sourced" {
     # M5 fresh install 2026-09-14: the state file stored `sections_done=a b c`
     # unquoted; show_previous_install sources it, so the shell ran the 2nd
     # section name as a command ("terminal_blueprint: command not found") and
@@ -653,4 +638,31 @@ _run_section_helpers_in_tmp_home() {
         [[ "$(list_sections_done)" == *terminal_blueprint* ]] || exit 3
     ' _ "$REPO_ROOT"
     assert_success
+}
+
+# ── tap trust and retired install paths (v5.7.0) ─────────────────────
+
+@test "[v5.7.0] brew_taps_in_packages lists each user/repo tap once" {
+    run bash -c '
+        source "$1/src/core/logging.sh"
+        source "$1/src/platforms/macos/install/brew-taps.sh"
+        PACKAGES=(git anomalyco/tap/opencode dmno-dev/tap/varlock anomalyco/tap/other bat)
+        brew_taps_in_packages
+    ' _ "$REPO_ROOT"
+    assert_success
+    assert_output $'anomalyco/tap\ndmno-dev/tap'
+}
+
+@test "[v5.7.0] brew installers ensure taps before installing (Homebrew 7 tap trust)" {
+    # Fresh M5 2026-09-14: Homebrew 7 skipped packages from untrusted taps
+    # with a warning while the run still summarised success.
+    grep -qE '^ensure_brew_taps$' "$REPO_ROOT/src/platforms/macos/install/brew.sh"
+    grep -qE '^ensure_brew_taps$' "$REPO_ROOT/src/platforms/macos/install/brew-cask.sh"
+    grep -qE 'brew trust --tap' "$REPO_ROOT/src/platforms/macos/install/brew-taps.sh"
+}
+
+@test "[v5.7.0] ollama is no longer an install option (curl: retired)" {
+    grep -c 'ollama.com/install.sh' "$REPO_ROOT/src/install/ai-tools.sh" | grep -qx 0
+    grep -c '^curl:' "$REPO_ROOT/data/packages/ai-tools-full.txt" | grep -qx 0
+    grep -c 'Ollama\.Ollama' "$REPO_ROOT/src/platforms/windows/install/ai-tools.ps1" | grep -qx 0
 }
