@@ -290,10 +290,10 @@ profile entries. Idempotent via binary-in-PATH check.
 
 ---
 
-## 12. Fresh Machine & Migration (v5.6.1, live cutover QA)
+## 12. Fresh Machine & Migration (v5.6.1 and v5.7.0, two live cutovers)
 
-Lessons from the first full install on a genuinely fresh machine, used as
-live QA during a real machine-to-machine migration. General lessons — none
+Lessons from two full installs on genuinely fresh machines (July and
+September 2026), used as live QA during real machine-to-machine migrations. General lessons — none
 of this is specific to a Mac→Mac pair. See also `docs/migration-guide.md`.
 
 ### 12.1 Children Drain the Loop's Stdin (CRITICAL)
@@ -350,6 +350,70 @@ travel as a FILE (scp/rsync/AirDrop) and run as `bash file.sh`.
 **Fix:** ship scripts, not pastes, between machines.
 **Ref:** M5 cutover 2026-07-13
 
+### 12.8 Homebrew ≥ 7 Ignores Untrusted Third-Party Taps Silently (CRITICAL)
+A fresh machine has trusted no tap. Homebrew 7 refuses formulae and casks from
+untrusted third-party taps and moves on with a *warning*; the wave still ends
+in "installed / skipped / failed" numbers that look fine. On the M5 the warning
+only surfaced on a later `brew install`; nothing in the earlier summary would
+have said which tap-qualified entries never installed.
+**Fix:** `brew tap` + `brew trust --tap user/repo` for every tap referenced by
+the manifest before installing (`brew-taps.sh`); classify "not trusted" as a
+failure that names the fix.
+**Ref:** M5 cutover 2026-09-14, `src/platforms/macos/install/brew-taps.sh`, tests `[v5.7.0]`
+
+### 12.9 A Core Formula Can Shadow the Tool You Meant (`rig`)
+`brew install rig` installs a fake-identity generator from homebrew/core, not
+r-lib's R version manager; the manifest carried the bare name for months and
+the fresh M5 obeyed it. The `r-lib/rig` tap does not load on Homebrew 7
+("invalid syntax in tap"), and `rig list` prints a header even when empty.
+**Fix:** read the description in `brew info <name>` before adding a bare name;
+install R from rig's official pkg + `sudo rig add release`; when checking "is
+anything installed", count version lines, not output lines.
+**Ref:** M5 cutover 2026-09-14, `.migration/cutover-v2/30-m5-post.sh`
+
+### 12.10 Unquoted Multi-Word Values Break a Sourced State File
+`mark_section_done` wrote `sections_done=a b c`; `show_previous_install`
+sources the file, so bash ran `b c` as a command ("terminal_blueprint: command
+not found") and the resume menu believed one section was done.
+**Fix:** write `sections_done="a b c"` and strip quotes in the text readers.
+Anything that is both written by code and sourced by the shell needs quoting
+rules, not just a line format.
+**Ref:** `src/core/progress.sh`, test `[v5.7.0] sections_done with several sections survives being sourced`
+
+### 12.11 A Re-Formatted Machine Keeps Its Hostname but Not Its Host Key
+Same `.local` name, new ed25519 host key: `ssh`, `scp` and `rsync` refuse with
+"REMOTE HOST IDENTIFICATION HAS CHANGED" and the push script dies at step one.
+**Fix:** verify the new fingerprint out of band (`ssh-keyscan -t ed25519 host |
+ssh-keygen -lf -`), then `ssh-keygen -R host` (and its IPs) before the first run.
+**Ref:** M5 cutover 2026-09-14
+
+### 12.12 TCC-Protected Bundles Make rsync Return 23
+`Photos Library.photoslibrary` and Apple's private plists in
+`~/Library/Preferences` (Contacts, Messages, Music, Home, Mail) cannot be read
+from a terminal without Full Disk Access; rsync copies everything else and
+exits 23, which a strict script treats as failure.
+**Fix:** exclude them explicitly (iCloud Photos rebuilds the library; the plists
+must not travel) and treat exit 23/24 as "partial: inspect the log", not "abort".
+**Ref:** M5 cutover 2026-09-14, `.migration/cutover-v2/20-m1-push-rsync.sh`
+
+### 12.13 A Symlink Into a Synced Cloud Folder Turns `mv` Into Publishing
+`~/Documents/ITpS` was a symlink to a shared Google Drive. A Downloads-triage
+script "created" it as a destination and routed 129 institutional files into
+the shared drive; Drive started syncing within seconds. `dust` and `fd` had
+hidden the link during the inventory.
+**Fix:** resolve every destination (`cd dir && pwd -P`) and refuse
+`CloudStorage`, Google Drive, OneDrive, Dropbox and iCloud; inventory with
+`ls -la` (shows `->`); keep a `src|dst` log so a mistake reverses in one loop.
+**Ref:** M5 cutover 2026-09-13, `.migration/cutover-v2/40-m1-downloads-triage.sh`
+
+### 12.14 Upstream Renames Break Tap-Qualified Names
+`yakitrak/yakitrak/obsidian-cli` became `notesmd-cli`; brew resolved the alias
+but warned about the tap, and the manifest kept a name that no longer exists.
+**Fix:** keep manifests on current names (`tools/preflight-brew-names.sh`
+catches it) and never put a comment on a package line: the parser only skips
+lines that start with `#`.
+**Ref:** M5 cutover 2026-09-14
+
 ---
 
 ## Summary
@@ -367,9 +431,9 @@ travel as a FILE (scp/rsync/AirDrop) and run as `bash file.sh`.
 | Testing | 5 | MEDIUM |
 | Architecture | 2 | MEDIUM |
 | Senior Dev Review (v4.2) | 5 | MEDIUM |
-| Fresh Machine & Migration (v5.6.1) | 7 | HIGH |
-| **Total** | **47** | |
+| Fresh Machine & Migration (v5.6.1, v5.7.0) | 14 | HIGH |
+| **Total** | **54** | |
 
 ---
-*Compiled from Phases 1-17 research, plans, summaries, verifications, ADRs, and the v5.6.1 live cutover*
-*Last updated: 2026-07-15*
+*Compiled from Phases 1-17 research, plans, summaries, verifications, ADRs, and the v5.6.1 and v5.7.0 live cutovers*
+*Last updated: 2026-09-14*

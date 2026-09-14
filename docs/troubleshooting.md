@@ -257,6 +257,7 @@ README's old Mac-migration runbook):
 | Disk space warning aborted | < 10 GiB free | Free space, re-run. Idempotent — only the missing items install |
 | `github` cask conflict | Already have `github@beta` (same app, rolling channel) | Keep beta, or `brew uninstall --cask github@beta && brew install --cask github` |
 | Casks fail under `--unattended`/ssh (docker-desktop, google-drive, karabiner…) | pkg installers require an admin password | Run one interactive pass at the end: `brew install --cask <the failed ones>` |
+| `Homebrew is currently ignoring formulae, casks and commands from these taps` (tap-qualified entries missing after a run) | Homebrew ≥ 7 refuses untrusted third-party taps and skips their packages without failing | 5.7.0+ taps and trusts every tap in the manifests before installing; by hand: `brew trust --tap user/repo`, then re-run `setup.sh <profile>` |
 
 If failures appear in the final summary, copy the diagnostic log **before
 closing the terminal** — it lives inside a temp dir removed on exit:
