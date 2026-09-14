@@ -43,7 +43,7 @@ After bootstrap, all the tooling `setup` expects is present.
 
 1. Platform-specific installers (apt / brew / brew-cask / winget / flatpak / snap)
 2. Cross-platform Rust CLI tools via `data/packages.csv` (`csv:rust-cli`, `csv:rust-dev`, etc.)
-3. AI tools (only in `full`): Claude Code, Codex, Gemini CLI, Ollama
+3. AI tools (only in `full`): Codex, OpenCode, markitdown, mcpl and personal npm globals (Claude Code comes from the brew cask)
 4. Dev environment: mise + fnm + uv (interactive: skip what you don't want)
 5. macOS system defaults (only on macOS, only `developer`/`full`)
 6. Post-install hooks in `data/hooks/`

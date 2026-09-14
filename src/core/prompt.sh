@@ -6,7 +6,7 @@
 #   can never advertise a different default than the one it actually uses —
 #   the bug class fixed piecemeal across v5.4.0 / v5.4.4 / v5.4.6
 #   (show_category_menu, ask_tool, detect_previous_install,
-#   offer_ollama_model, select_profile_interactive).
+#   select_profile_interactive).
 #
 # Cross-OS contract (PowerShell sibling Prompt-Default mirrors this):
 #   - Visible prompt always reads:  <text> [<keys>, default=<default>]:

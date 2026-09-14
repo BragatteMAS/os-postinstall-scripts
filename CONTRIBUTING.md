@@ -85,7 +85,7 @@ os-postinstall-scripts/
 │   │   # rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
 │   │   ├── fnm.sh              #   fnm + Node.js LTS + pnpm + bun (mise preferred)
 │   │   ├── uv.sh              #   uv + Python
-│   │   ├── ai-tools.sh         #   AI/MCP tools (Claude, Codex, Ollama, etc.)
+│   │   ├── ai-tools.sh         #   AI/MCP tools (Codex, OpenCode, mcpl, npm globals)
 │   │   └── dev-env.sh          #   Dev environment orchestrator
 │   └── installers/
 │       └── dotfiles-install.sh #   Dotfiles deployment

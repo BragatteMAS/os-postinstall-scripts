@@ -135,7 +135,6 @@ Assert-Contains "DRY_RUN in npm.ps1" "$ProjectRoot/src/platforms/windows/install
 
 # ai-tools.ps1 content
 Assert-Contains "prefix dispatch in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "switch.*prefix"
-Assert-Contains "Ollama WinGet in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Ollama\.Ollama"
 Assert-Contains "Read-PackageFile ai-tools-full in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Read-PackageFile.*ai-tools-full\.txt"
 Assert-Contains "DRY_RUN in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "DRY_RUN"
 

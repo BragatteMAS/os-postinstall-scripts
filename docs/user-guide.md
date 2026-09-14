@@ -69,7 +69,7 @@ For surgical use, sub-installers can be invoked directly. They source `config.sh
 
 ```bash
 bash src/install/dev-env.sh    # mise + fnm + uv (interactive: skip what you don't want)
-bash src/install/ai-tools.sh   # Claude Code, Codex, Gemini CLI, Ollama (full profile only)
+bash src/install/ai-tools.sh   # Codex, OpenCode, markitdown, mcpl + npm globals (full profile only)
 bash src/install/uv.sh         # Just Python via uv
 ```
 

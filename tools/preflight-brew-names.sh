@@ -113,16 +113,8 @@ classify_one() {
             fi
             ;;
         curl)
-            case "$name" in
-                ollama) url="https://ollama.com/install.sh" ;;
-                *)      printf 'skip|%s|%s\n' "$kind" "$name"; return 0 ;;
-            esac
-            if curl -fsSL --head --max-time 5 "$url" >/dev/null 2>&1; then
-                verdict="ok"
-            else
-                verdict="not-found"
-            fi
-            ;;
+            # v5.7.0: curl: entries are retired; nothing to verify upstream
+            printf 'skip|%s|%s\n' "$kind" "$name"; return 0 ;;
         *)
             printf 'skip|%s|%s\n' "$kind" "$name"
             return 0

@@ -3,7 +3,7 @@ set -o pipefail
 #######################################
 # Script: ai-tools.sh
 # Description: Cross-platform AI tools installer with prefix-based dispatch
-#              Handles npm: (CLI tools), curl: (ollama), and skips npx:/uv:/bare entries
+#              Handles npm: (CLI tools) and uv: (tools); warns on curl: (retired in 5.7.0); skips npx:/bare entries
 # Author: Bragatte
 # Date: 2026-02-06
 #######################################
@@ -107,33 +107,9 @@ install_ai_tool() {
             ;;
 
         curl)
-            case "$tool" in
-                ollama)
-                    # Idempotent check
-                    if command -v ollama &>/dev/null; then
-                        log_debug "Already installed: ollama"
-                        return 0
-                    fi
-
-                    if [[ "${DRY_RUN:-}" == "true" ]]; then
-                        log_info "[DRY_RUN] Would curl-install: ollama"
-                        return 0
-                    fi
-
-                    log_info "Installing ollama via official install script..."
-                    if safe_curl_sh "https://ollama.com/install.sh"; then
-                        log_ok "Installed: ollama"
-                        return 0
-                    else
-                        log_warn "Failed to install: ollama"
-                        return 1
-                    fi
-                    ;;
-                *)
-                    log_debug "Skipping unknown curl tool: $tool"
-                    return 0
-                    ;;
-            esac
+            # v5.7.0: curl-installed tools were retired (the only one was ollama).
+            log_warn "curl: entries are no longer supported (removed in 5.7.0): $tool — install it manually"
+            return 0
             ;;
 
         npx)
@@ -220,43 +196,6 @@ install_ai_tool() {
     esac
 }
 
-#######################################
-# offer_ollama_model()
-# Offer to download a base model in interactive mode
-#######################################
-offer_ollama_model() {
-    # Skip in non-interactive mode
-    if [[ "${NONINTERACTIVE:-}" == "true" || ! -t 0 ]]; then
-        return 0
-    fi
-
-    # Check if ollama is available
-    if ! command -v ollama &>/dev/null; then
-        return 0
-    fi
-
-    echo ""
-    echo "Download a base model for Ollama?"
-    echo "  1) llama3.2 (lightweight)"
-    echo "  2) Skip"
-    choice=$(prompt_default "Select" "2" "1-2")
-
-    case "$choice" in
-        1)
-            log_info "Downloading llama3.2 model..."
-            if ollama pull llama3.2; then
-                log_ok "Model downloaded: llama3.2"
-            else
-                log_warn "Failed to download llama3.2 model"
-            fi
-            ;;
-        *)
-            log_info "Skipped model download (run 'ollama pull llama3.2' later if needed)"
-            ;;
-    esac
-}
-
-#######################################
 # show_ai_summary()
 # Display API key configuration info
 #######################################
@@ -292,7 +231,7 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     log_banner "AI Coding Tools"
 
     # Interactive selection
-    show_category_menu "AI Coding Tools" "claude-code, codex, gemini-cli, ollama"
+    show_category_menu "AI Coding Tools" "codex, opencode, markitdown, mcpl, npm globals"
     menu_choice=$?
 
     case "$menu_choice" in
@@ -350,8 +289,6 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
         fi
     done
 
-    # Offer ollama model download
-    offer_ollama_model
 
     # Show API key info
     show_ai_summary

@@ -8,7 +8,7 @@
 # PowerShell equivalent of src/install/ai-tools.sh
 # Reads ai-tools-full.txt from data/packages/ and dispatches by prefix:
 #   npm:  -> npm install -g
-#   curl: -> WinGet equivalent on Windows (ollama -> Ollama.Ollama)
+#   curl: -> retired in 5.7.0 (warns and skips)
 #   npx:  -> skip (runs on demand)
 #   uv:   -> skip (runs on demand)
 #   bare  -> skip (informational only)
@@ -33,7 +33,7 @@ function Install-AiTool {
     .DESCRIPTION
         Parses prefix:tool format and dispatches to the correct installer.
         npm: uses npm install -g
-        curl: maps to WinGet on Windows (ollama -> Ollama.Ollama)
+        curl: retired in 5.7.0 (warns and skips)
         npx: skipped (runs on demand via npx)
         uv: skipped (runs on demand via uvx)
         bare words: skipped (informational only)
@@ -89,36 +89,8 @@ function Install-AiTool {
         }
 
         'curl' {
-            # On Windows, map curl-installed tools to WinGet equivalents
-            switch ($tool) {
-                'ollama' {
-                    # Idempotent check via WinGet
-                    if (Test-WinGetInstalled -PackageId 'Ollama.Ollama') {
-                        Write-Log -Level DEBUG -Message "Already installed: ollama"
-                        return
-                    }
-
-                    # DRY_RUN guard
-                    if ($env:DRY_RUN -eq 'true') {
-                        Write-Log -Level INFO -Message "[DRY_RUN] Would winget install: Ollama.Ollama"
-                        return
-                    }
-
-                    Write-Log -Level INFO -Message 'Installing ollama via WinGet...'
-                    winget install --id Ollama.Ollama --exact --accept-source-agreements --accept-package-agreements --silent --source winget 2>$null
-
-                    if ($LASTEXITCODE -eq 0) {
-                        Write-Log -Level OK -Message 'Installed: ollama'
-                    } else {
-                        Write-Log -Level WARN -Message 'Failed to install: ollama'
-                        Add-FailedItem -Item 'ollama'
-                    }
-                }
-
-                default {
-                    Write-Log -Level DEBUG -Message "Skipping unknown curl tool: $tool"
-                }
-            }
+            # v5.7.0: curl-installed tools were retired (the only one was ollama).
+            Write-Log -Level WARN -Message "curl: entries are no longer supported (removed in 5.7.0): $tool - install it manually"
         }
 
         'npx' {
