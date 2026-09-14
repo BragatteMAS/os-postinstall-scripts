@@ -60,3 +60,5 @@ font-sketchybar-app-font
 
 # Data science & publishing (personal)
 quarto
+# R: não vem do brew. A fórmula core "rig" é um gerador de identidades falsas e o tap r-lib/rig não
+# carrega no Homebrew atual; o R vai pelo pkg oficial do rig + `sudo rig add release` (ver .migration/cutover-v2).
