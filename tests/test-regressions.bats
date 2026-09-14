@@ -461,7 +461,7 @@ _run_section_helpers_in_tmp_home() {
         cat "$HOME/.config/os-postinstall/state"
     '
     assert_success
-    assert_output --partial "sections_done=dotfiles"
+    assert_output --partial 'sections_done="dotfiles"'
 }
 
 @test "[v5.5.0] mark_section_done is idempotent (no duplicate entries)" {
@@ -472,7 +472,7 @@ _run_section_helpers_in_tmp_home() {
         grep "^sections_done=" "$HOME/.config/os-postinstall/state"
     '
     assert_success
-    [[ "$output" == "sections_done=dotfiles" ]]
+    [[ "$output" == 'sections_done="dotfiles"' ]]
 }
 
 @test "[v5.5.0] mark_section_done appends multiple distinct sections" {
@@ -522,7 +522,7 @@ _run_section_helpers_in_tmp_home() {
         cat "$HOME/.config/os-postinstall/state"
     '
     assert_success
-    assert_output --partial "sections_done=dotfiles"
+    assert_output --partial 'sections_done="dotfiles"'
 }
 
 @test "[v5.5.0] detect_previous_install offers 4 options (Continue is new)" {
