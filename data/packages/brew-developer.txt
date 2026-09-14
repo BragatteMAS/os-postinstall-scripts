@@ -14,16 +14,14 @@ python
 node
 go
 rust
-r
+# R: installed via rig (brew-full.txt) for CRAN binaries — brew r removed 2026-09-13
 
 # Tool version orchestrator (mise = preferred path; manages Python/Node/Ruby/Go/R)
 mise
 
 # Python tooling
-# uv = preferred (Python package manager + isolated tools via `uv tool install`)
-# pipx = fallback ONLY if a tool fails via uv (rare; documented in functions.sh `h ai`)
+# uv = Python package manager + isolated tools via `uv tool install` (pipx removed 2026-09-13)
 uv
-pipx
 
 # Build / lint
 cmake

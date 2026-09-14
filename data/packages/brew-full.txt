@@ -8,20 +8,12 @@
 # to Bragatte's workflow (bioinfo, AI heavy, custom-tap experiments).
 
 # AI / Claude ecosystem
-claude-squad
 anomalyco/tap/opencode
 mole
 yakitrak/yakitrak/obsidian-cli
-worktrunk
 
-# Calendar / voice / niche scripting
-gcalcli
-espeak-ng
-
-# Dev infra (databases + Java)
-postgresql@17
+# Dev infra (cache)
 redis
-openjdk
 
 # Bioinfo / GIS
 gdal
@@ -30,17 +22,13 @@ librsvg
 resvg
 rig
 
-# Network niche
-cloudflared
-sshpass
+# Web extraction
 trafilatura
 
 # Custom / experimental taps
 dmno-dev/tap/varlock
-valkyrie00/bbrew/bbrew
 
-# Web / API infra (self-hosted + Supabase CLI)
-caddy
+# API infra (PostgREST + Supabase CLI)
 postgrest
 supabase/tap/supabase
 
@@ -50,5 +38,3 @@ poppler
 # AI / voice
 whisper.cpp
 
-# Cross-OS scripting (test setup.ps1 locally)
-powershell

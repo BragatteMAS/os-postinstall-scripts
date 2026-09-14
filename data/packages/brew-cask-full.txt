@@ -7,29 +7,26 @@
 # These are Bragatte's specific browser, AI editor, communication, and
 # personal-use choices. Keeps `brew-cask-developer.txt` neutral for other devs.
 
-# Browsers (personal preferences, in priority order: chrome > zen > brave > opera)
+# Browsers (personal preferences: chrome > arc > zen > brave)
 google-chrome
+arc
 zen-browser
 brave-browser
-opera
 
 # AI editors & desktop clients
 cursor
 claude
 claude-code@latest
-chatgpt
 antigravity
-windsurf
-devin-desktop
+t3-code
 
 # Communication (personal)
-discord
+whatsapp
 
 # macOS utilities (personal preferences)
 clop
+maccy
 hiddenbar
-meetingbar
-latest
 
 # Media & lazer
 spotify
@@ -39,18 +36,15 @@ logi-options+
 
 # Voice & recording
 wispr-flow
+superwhisper
 loom
 
 # Design & creativity (Affinity has free tier — Figma alt)
 affinity
-capcut
-zed
 numi
 karabiner-elements
 
-# Terminals & web dev testing
-ghostty
-iterm2
+# Web dev testing
 responsively
 
 # Fonts (terminal + design). macOS had no font path in the manifests; setup.ps1 covers Windows.
@@ -63,3 +57,6 @@ font-inter
 font-ibm-plex-sans
 font-source-sans-3
 font-sketchybar-app-font
+
+# Data science & publishing (personal)
+quarto

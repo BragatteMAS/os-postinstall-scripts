@@ -173,7 +173,10 @@ install_ai_tool() {
                 log_warn "uv not found, skipping: $tool"
                 return 1
             fi
-            if uv tool list 2>/dev/null | grep -q "^$tool "; then
+            # git+URL entries: the listed tool name is the repo basename (git+https://.../mcp-launchpad -> mcp-launchpad)
+            local tool_name="$tool"
+            [[ "$tool" == git+* ]] && tool_name="$(basename "${tool%.git}")"
+            if uv tool list 2>/dev/null | grep -q "^$tool_name "; then
                 log_debug "Already installed: $tool"
                 return 0
             fi

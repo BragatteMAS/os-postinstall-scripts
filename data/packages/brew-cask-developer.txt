@@ -5,18 +5,11 @@
 # Run with `./setup.sh developer` or `./setup.sh full`.
 # For Bragatte's personal pick (Chrome, Zen, Brave, Cursor, etc.) see brew-cask-full.txt.
 
-# Browsers — 2 engines (Blink + Gecko) for dev web testing
-firefox
-chromium
-
 # Window management & launcher
 rectangle
-alt-tab
 raycast
 
-# Editor + terminal (mainstream open-source defaults)
-visual-studio-code
-sublime-text
+# Terminal (mainstream open-source default)
 warp
 
 # Notes & research
@@ -24,7 +17,6 @@ obsidian
 zotero
 
 # Dev tools
-docker-desktop
 orbstack
 dbeaver-community
 insomnia
@@ -37,12 +29,8 @@ bitwarden
 appcleaner
 caffeine
 
-# Office & media
-libreoffice
+# Media
 iina
-
-# Communication (mainstream dev/work)
-slack
 
 # Cloud sync
 google-drive
@@ -51,7 +39,4 @@ google-drive
 positron
 rstudio
 
-# Design & creativity (open-source)
-inkscape
-gimp
-# Note: nerd fonts are installed by terminal-setup.sh, not here.
+# Note: fonts live in brew-cask-full.txt (Fonts section); setup.ps1 installs a nerd font on Windows.
