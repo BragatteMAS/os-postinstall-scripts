@@ -95,6 +95,8 @@ _brew_formula_install() {
     local reason="exit $rc"
     if grep -qiE "no available formula|formula .* is unavailable" <<<"$err_buf"; then
         reason="formula name not found in any tap"
+    elif grep -qiE "not trusted|tap trust|untrusted tap" <<<"$err_buf"; then
+        reason="tap not trusted (Homebrew 7) — brew trust --tap ${pkg%/*}"
     elif grep -qiE "404|connection|network|timeout|resolve" <<<"$err_buf"; then
         reason="network error"
     fi
@@ -136,6 +138,8 @@ case "${1:-}" in
     --full)      pkg_file="brew-full.txt" ;;
 esac
 
+source "${SCRIPT_DIR}/brew-taps.sh" || { echo "ERROR: cannot source brew-taps.sh" >&2; exit 1; }
+
 # Load packages from data file
 if ! load_packages "$pkg_file"; then
     log_error "Failed to load brew packages from data/packages/$pkg_file"
@@ -143,6 +147,9 @@ if ! load_packages "$pkg_file"; then
 fi
 
 log_info "Loaded ${#PACKAGES[@]} formulae from $pkg_file"
+
+# Homebrew >= 7 ignores untrusted third-party taps silently (PITFALLS 12.8)
+ensure_brew_taps
 
 # Install formulae
 log_info "Installing ${#PACKAGES[@]} Homebrew formulae..."
