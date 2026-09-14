@@ -1,3 +1,2 @@
-# Communication — Slack, Discord
-slack
-discord
+# Communication — WhatsApp
+whatsapp

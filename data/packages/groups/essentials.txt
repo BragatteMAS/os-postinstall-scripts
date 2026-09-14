@@ -1,7 +1,6 @@
-# Essentials & system — Bitwarden, Google Drive, LibreOffice, Logi Options+, Karabiner
+# Essentials & system — Bitwarden, Google Drive, Logi Options+, Karabiner
 # Note: nerd fonts come from terminal-setup.sh, not from this group.
 bitwarden
 google-drive
-libreoffice
 logi-options+
 karabiner-elements

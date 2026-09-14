@@ -1,4 +1,2 @@
-# Creative — Inkscape, GIMP, Affinity suite
-inkscape
-gimp
+# Creative — Affinity suite
 affinity

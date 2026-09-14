@@ -1,3 +1,4 @@
-# Knowledge & notes — Obsidian, Zotero
+# Knowledge & notes — Obsidian, Zotero, Quarto
 obsidian
 zotero
+quarto

@@ -1,7 +1,5 @@
-# Browsers — Firefox, Chromium, Chrome, Zen, Brave, Opera
-firefox
-chromium
+# Browsers — Chrome, Arc, Zen, Brave
 google-chrome
+arc
 zen-browser
 brave-browser
-opera

@@ -1,6 +1,4 @@
-# Code editors & data-science IDEs — VS Code, Sublime, Warp, Positron (R/Python), RStudio
-visual-studio-code
-sublime-text
+# Code editors & data-science IDEs — Warp, Positron, RStudio
 warp
 positron
 rstudio

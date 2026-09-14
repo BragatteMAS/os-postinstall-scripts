@@ -1,7 +1,7 @@
-# Media — IINA video player, Spotify, CapCut, Loom, Clop image optimizer, Wispr Flow voice
+# Media — IINA video player, Spotify, Loom, Clop image optimizer, Wispr Flow, superwhisper
 iina
 spotify
-capcut
 loom
 clop
 wispr-flow
+superwhisper
