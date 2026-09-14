@@ -106,7 +106,7 @@ mark_section_done() {
 
     local current_sections=""
     if grep -q '^sections_done=' "$state_file"; then
-        current_sections=$(grep '^sections_done=' "$state_file" | cut -d= -f2-)
+        current_sections=$(grep '^sections_done=' "$state_file" | cut -d= -f2- | tr -d '"')
     fi
 
     case " $current_sections " in
@@ -119,7 +119,7 @@ mark_section_done() {
     local tmp_file
     tmp_file=$(mktemp)
     grep -v '^sections_done=' "$state_file" > "$tmp_file" 2>/dev/null || true
-    echo "sections_done=$new_sections" >> "$tmp_file"
+    echo "sections_done=\"$new_sections\"" >> "$tmp_file"
     mv "$tmp_file" "$state_file"
     log_debug "Marked section done: $section"
 }
@@ -140,6 +140,7 @@ is_section_done() {
     local sections_line
     sections_line=$(grep '^sections_done=' "$state_file" 2>/dev/null) || return 1
     local sections="${sections_line#sections_done=}"
+    sections="${sections//\"/}"
 
     case " $sections " in
         *" $section "*) return 0 ;;
@@ -154,7 +155,7 @@ is_section_done() {
 list_sections_done() {
     local state_file="${HOME}/.config/os-postinstall/state"
     [[ ! -f "$state_file" ]] && return 0
-    grep '^sections_done=' "$state_file" 2>/dev/null | cut -d= -f2- || true
+    grep '^sections_done=' "$state_file" 2>/dev/null | cut -d= -f2- | tr -d '"' || true
 }
 
 #######################################

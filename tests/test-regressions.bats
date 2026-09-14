@@ -634,3 +634,23 @@ _run_section_helpers_in_tmp_home() {
     assert_equal "$script_v" "$badge_v"
     assert_equal "$script_v" "$changelog_v"
 }
+
+@test "[v5.6.2] sections_done with several sections survives being sourced" {
+    # M5 fresh install 2026-09-14: the state file stored `sections_done=a b c`
+    # unquoted; show_previous_install sources it, so the shell ran the 2nd
+    # section name as a command ("terminal_blueprint: command not found") and
+    # the wizard believed only one section was done.
+    HOME="$BATS_TEST_TMPDIR" run bash -c '
+        source "$1/src/core/logging.sh"
+        source "$1/src/core/progress.sh"
+        mark_section_done packages
+        mark_section_done dotfiles
+        mark_section_done terminal_blueprint
+        sections_done=""
+        source "$HOME/.config/os-postinstall/state"
+        [[ "$sections_done" == "packages dotfiles terminal_blueprint" ]] || exit 1
+        is_section_done terminal_blueprint || exit 2
+        [[ "$(list_sections_done)" == *terminal_blueprint* ]] || exit 3
+    ' _ "$REPO_ROOT"
+    assert_success
+}
