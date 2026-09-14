@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.0] - 2026-09-14
+
+Second fresh-machine cutover: the M5 was re-formatted and M1→M5 was redone on
+2026-09-13/14 over Wi-Fi — repo-first bootstrap (memory vault, chezmoi, this
+repo, `setup.sh full`), then ~50 GB of rsync in 23 minutes. The fresh install
+again worked as live QA: six product findings, all fixed here, plus manifests
+pruned to a "fresh stack" (latest R and Python, nothing copied from the old
+machine's libraries; only authored AI config travels). The cutover notes live
+in `docs/migration-guide.md` and `docs/PITFALLS.md` §12.8–12.14.
+
+This is a **MINOR** bump: the installer gains a tap-trust step and the `curl:`
+install path is retired; profile names, flags and file formats are unchanged.
+
+### Added
+- **Tap trust step (Homebrew ≥ 7):** untrusted third-party taps are ignored
+  *silently* by Homebrew 7, so tap-qualified entries (`user/repo/name`) could
+  fail to install on a fresh machine while the run looked successful.
+  `brew.sh` and `brew-cask.sh` now `brew tap` + `brew trust --tap` every tap
+  referenced by the manifest before installing
+  (`src/platforms/macos/install/brew-taps.sh`); a "tap not trusted" failure is
+  classified with the fix in the summary.
+- Regression tests `[v5.7.0]`: state file survives `source`; tap extraction
+  lists each tap once; both installers ensure taps; `curl:` installs nothing.
+- `docs/migration-guide.md`: repo-first bootstrap, the fresh-stack rule,
+  Downloads triage, and seven new field-tested pitfalls (Migration Assistant,
+  charging cables, stale host keys, TCC-protected bundles, cloud-synced
+  symlinks, tap trust, shadowing core formulae).
+- `docs/troubleshooting.md`: recovery row for "ignoring formulae … from these
+  taps".
+
+### Changed
+- **Manifests reshaped to a fresh personal stack** after an item-by-item review
+  with evidence (`.app` present + last-used date, shell history, `brew list`).
+  In: arc, maccy, whatsapp, t3-code, quarto, superwhisper, postgrest, supabase,
+  poppler, whisper.cpp, mole, bats-core, gitleaks, a Fonts section, personal
+  npm globals (bw, ccusage, pptxgenjs, docx, firecrawl-cli, …) and `mcpl`
+  installed from its git repo. The `developer` cask list now reflects the
+  2026-09 opinion (see Removed).
+- **R is no longer installed by brew.** homebrew/core `rig` is a fake-identity
+  generator and the `r-lib/rig` tap does not load on Homebrew 7; R comes from
+  rig's official pkg + `sudo rig add release` (documented in the guide).
+- `ai-tools.sh`: the `uv:` idempotency check derives the tool name from
+  `git+` URLs; `ai-tools-full.txt` points to `docs/migration-guide.md`.
+- Cask groups (`--groups`) pruned to the same decisions as the profiles.
+- `h ai` helper lists the current AI stack.
+
+### Removed
+- **Ollama as an install option:** `curl:ollama` (install script on
+  macOS/Linux, WinGet mapping on Windows), the post-install model prompt and its
+  two `[v5.4.6]` tests. `curl:` entries now log a warning and are skipped.
+- From the profiles (abandoned or duplicated): docker-desktop (OrbStack stays),
+  visual-studio-code, chromium, firefox, opera, sublime-text, zed, gimp,
+  inkscape, libreoffice, slack, discord, chatgpt, capcut, alt-tab, meetingbar,
+  latest; orphan casks iterm2, ghostty, windsurf, devin-desktop, r-app;
+  formulae r, rig, pipx, worktrunk, claude-squad, gcalcli, espeak-ng,
+  postgresql@17, openjdk, cloudflared, sshpass, bbrew, caddy, powershell;
+  `npm:@anthropic-ai/claude-code` (the brew cask is canonical), gemini-cli,
+  copilot, `uv:claude-monitor`, `uv:specify-cli`.
+
+### Fixed
+- **State file broke `source`:** `sections_done=a b c` was written unquoted;
+  `show_previous_install` sources the file, so the shell ran the second section
+  name as a command ("terminal_blueprint: command not found") and the resume
+  menu believed only one section was done (`progress.sh`).
+- `yakitrak/yakitrak/obsidian-cli` was renamed upstream to `notesmd-cli`.
+
 ## [5.6.1] - 2026-07-13
 
 First full install on a genuinely fresh machine (the M1→M5 migration) served

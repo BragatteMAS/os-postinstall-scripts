@@ -32,7 +32,7 @@ set -o pipefail
 # Product version — bump on release. Must match the README badge and the
 # CHANGELOG head entry (tests/test-regressions.bats guards the sync).
 # save_install_state() writes it into ~/.config/os-postinstall/state.
-export SCRIPT_VERSION="5.6.1"
+export SCRIPT_VERSION="5.7.0"
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
