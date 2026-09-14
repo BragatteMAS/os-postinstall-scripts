@@ -10,7 +10,8 @@
 # AI / Claude ecosystem
 anomalyco/tap/opencode
 mole
-yakitrak/yakitrak/obsidian-cli
+# renamed upstream (was obsidian-cli); binary is still obsidian-cli on older installs
+yakitrak/yakitrak/notesmd-cli
 
 # Dev infra (cache)
 redis
