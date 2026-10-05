@@ -110,5 +110,5 @@ elif command -v yum &>/dev/null; then
 elif command -v pacman &>/dev/null; then
     sysup() { sudo pacman -Syu && _sysup_ai_tools; }
 fi
-bum() { sysup "$@"; }
-upall() { sysup "$@"; }
+function bum { sysup "$@"; }
+function upall { sysup "$@"; }
