@@ -66,7 +66,7 @@ Windows: `examples/terminal-setup.ps1`.
 | Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
 | CLI tools | bat, eza, fd, fzf, ripgrep, delta, zoxide, starship |
 | Prompt | MAS Oceanic Theme (powerline, git, languages, status bar) + 3 presets |
-| Aliases | 50+ shortcuts for git, navigation, `sysup`, `mkcd`, `gcb` |
+| Aliases | 50+ shortcuts for git, navigation, `sysup` (system + installed AI CLIs), `mkcd`, `gcb` |
 | Functions | Welcome message, `h` (help), `preview` (fzf), `aliases` (search) |
 | Plugins | zsh-autosuggestions, zsh-syntax-highlighting, zsh-completions |
 | Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |

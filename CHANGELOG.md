@@ -13,6 +13,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `@openai/codex` via bun). Each update is independent: a failure is listed at
   the end and does not abort the rest of `sysup`.
 
+### Fixed
+- `data/dotfiles/shared/aliases.sh`: `bum` and `upall` are defined with the
+  `function` keyword. When the user's own `.zshrc` already has `alias bum=...`,
+  `bum() { ... }` fails to parse in zsh ("defining function based on alias")
+  and nothing after that line is loaded; the keyword form defines cleanly and
+  the alias keeps precedence (PITFALLS 12.17).
+
+### Changed
+- `data/dotfiles/git/gitignore`: ignore `**/.claude/.cc-writes/`.
+
+### Docs
+- `docs/migration-guide.md`: repo-first order is `setup.sh` **before**
+  `chezmoi apply`; the age identity must be fetched from the password manager
+  before the first apply.
+- `docs/PITFALLS.md` 12.15–12.18: setup.sh vs chezmoi ordering, the age key
+  lives in no repo, function names that collide with aliases, installers
+  writing through the dotfile symlinks into the repo templates.
+- `docs/user-guide.md`: `sysup` under Maintenance; local overrides
+  (`~/.zshrc.local`, `~/.bashrc.local`, `~/.gitconfig.local`) and the
+  `git diff HEAD -- data/dotfiles/` check before committing.
+- `docs/troubleshooting.md`: `sysup: failed to update`, `bum` shadowed by a
+  user alias, personal lines appearing in the repo diff.
+- `README.md`, `terminal/README.md` and the `h` help text: `sysup` covers the
+  installed AI coding CLIs.
+
 ## [5.7.0] - 2026-09-14
 
 Second fresh-machine cutover: the M5 was re-formatted and M1→M5 was redone on

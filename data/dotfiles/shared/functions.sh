@@ -210,6 +210,7 @@ h() {
             echo "  duh           disk usage this dir (1 level deep)"
             echo "  ports         show listening network ports"
             echo "  sysup         full system update (brew/apt/yum/pacman)"
+            echo "                + installed AI CLIs (claude-code, opencode, codex)"
             echo "                aliases: bum, upall"
             echo ""
             echo "  Safety: rm/cp/mv ask before overwrite (-i)"

@@ -152,6 +152,33 @@ source ~/.bashrc
 ls -la ~/.*rc
 ```
 
+### `sysup: failed to update: ...`
+
+**Problem:** `sysup` (or `bum` / `upall`) ends with a line listing one or more AI coding CLIs
+
+**Solution:** the system update itself finished; only the listed CLIs were skipped. Rerun the matching command to see the real error:
+```bash
+brew upgrade claude-code@latest     # claude-code
+bun i -g opencode-ai@latest         # opencode-ai
+bun i -g @openai/codex@latest       # @openai/codex
+```
+
+### `bum` does not run the repo's `sysup`
+
+**Problem:** `bum` behaves differently from `sysup`
+
+**Solution:** an `alias bum=...` in your own `~/.zshrc` takes precedence over the function shipped here (pitfall 12.17). Check with `whence -v bum`; remove the alias, or call `sysup` directly.
+
+### Personal lines show up in `git diff` of this repo
+
+**Problem:** `data/dotfiles/` has changes you did not make (a `[user]` block, a `PATH` line)
+
+**Solution:** an installer wrote through the `~/.bashrc` / `~/.gitconfig` symlink. Move the lines to the `.local` override and restore the template:
+```bash
+git diff HEAD -- data/dotfiles/
+git restore --staged --worktree data/dotfiles/git/gitconfig   # after moving the lines
+```
+
 ### Zsh is very slow to start
 
 **Problem:** Shell takes several seconds to start

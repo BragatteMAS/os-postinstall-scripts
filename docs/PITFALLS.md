@@ -416,6 +416,57 @@ lines that start with `#`.
 
 ---
 
+### 12.15 `setup.sh` Overwrites Shell Files That chezmoi Manages
+The repo-first order was `chezmoi apply` → `setup.sh`; the dotfiles step then
+replaced `.zshrc`, `.gitconfig` and `starship.toml` (chezmoi-managed, personal)
+with the generic templates from `data/dotfiles/` (kept in `~/.dotfiles-backup/`),
+and `chezmoi status` showed `MM` on all three the next day.
+**Fix:** run `setup.sh` *before* `chezmoi apply`, so the personal files land
+last, or skip the dotfiles module when chezmoi owns those paths. After any
+`setup.sh` run, `chezmoi status` must come back empty.
+**Ref:** M5 cutover 2026-09-14
+
+---
+
+### 12.16 The age Identity Lives in No Repo
+`chezmoi apply` on the fresh machine failed on the encrypted file with
+"encryption not configured": `~/.config/chezmoi/chezmoi.toml` and
+`~/.config/chezmoi/key.txt` are not part of the dotfiles repo, rsync did not
+carry them, and the guide never said where the key was.
+**Fix:** before the first apply, `brew install age`, fetch the identity from the
+password manager into `~/.config/chezmoi/key.txt` (`chmod 600`) and write
+`chezmoi.toml` with `encryption = "age"`, `identity` and `recipient`
+(`age-keygen -y key.txt`). Never paste the key into a chat or a terminal whose
+logs you do not control.
+**Ref:** M5 cutover 2026-09-14
+
+---
+
+### 12.17 A Function Named Like an Existing Alias Does Not Parse in zsh
+`shared/aliases.sh` defined `bum() { sysup "$@"; }`; the user's own `.zshrc`
+already had `alias bum=...`. zsh expands aliases while parsing, so the
+definition became `defining function based on alias` + `parse error`, and
+everything after that line in `aliases.sh` was silently skipped.
+**Fix:** define with the keyword form, `function bum { ...; }`, which is not
+alias-expanded in zsh or bash; an existing alias keeps precedence. Test with
+`zsh -i -c true 2>&1` after installing dotfiles: it must print nothing.
+**Ref:** M5 cutover 2026-09-14
+
+---
+
+### 12.18 Installers Write Through the Dotfile Symlinks Into the Repo
+`~/.bashrc`, `~/.zshrc`, `~/.gitconfig` and `~/.config/git/ignore` are symlinks
+into `data/dotfiles/`. `git config --global user.email`, `git lfs install` and
+the `rig` installer appended to those targets, so a personal `[user]` block and
+a machine-only `PATH` line sat staged in the generic templates of a public
+repo, one `git commit` away from being published.
+**Fix:** review `git diff HEAD -- data/dotfiles/` before every commit; identity
+goes in `~/.gitconfig.local`, shell lines in `~/.zshrc.local` /
+`~/.bashrc.local` (all outside the repo), then `git restore` the template.
+**Ref:** review of 2026-10-05
+
+---
+
 ## Summary
 
 | Categoria | Count | Severidade |
@@ -431,9 +482,9 @@ lines that start with `#`.
 | Testing | 5 | MEDIUM |
 | Architecture | 2 | MEDIUM |
 | Senior Dev Review (v4.2) | 5 | MEDIUM |
-| Fresh Machine & Migration (v5.6.1, v5.7.0) | 14 | HIGH |
-| **Total** | **54** | |
+| Fresh Machine & Migration (v5.6.1, v5.7.0) | 18 | HIGH |
+| **Total** | **58** | |
 
 ---
 *Compiled from Phases 1-17 research, plans, summaries, verifications, ADRs, and the v5.6.1 and v5.7.0 live cutovers*
-*Last updated: 2026-09-14*
+*Last updated: 2026-10-05*

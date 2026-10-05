@@ -122,6 +122,16 @@ Managed paths:
 
 Git user identity (`user.name`, `user.email`) is collected interactively and stored in `~/.gitconfig.local` (sourced by the repo-managed `~/.gitconfig`), so the shared config stays generic.
 
+Machine-specific lines belong in the local overrides, which live outside the repo and are never committed:
+
+| Override | Loaded by |
+|----------|-----------|
+| `~/.zshrc.local` | `~/.zshrc` (last line) |
+| `~/.bashrc.local` | `~/.bashrc` (last line) |
+| `~/.gitconfig.local` | `~/.gitconfig` (`[include]`) |
+
+Because the targets are symlinks, any installer that appends to `~/.bashrc`, `~/.zshrc` or `~/.gitconfig` (`git config --global`, `git lfs install`, `rig`, version managers) writes straight into `data/dotfiles/` in this clone. Before committing, run `git diff HEAD -- data/dotfiles/`, move those lines to the matching `.local` file and restore the template (pitfall 12.18).
+
 ## Drift detection
 
 Compare currently installed packages against `data/packages/*.txt` lists:
@@ -190,6 +200,14 @@ git pull
 git describe --tags    # current version
 cat CHANGELOG.md       # what changed
 ```
+
+### Keep the system up to date
+
+```bash
+sysup                  # aliases: bum, upall
+```
+
+Runs the platform package manager (`brew`, `apt`, `yum` or `pacman`) and then updates the AI coding CLIs that are already installed: the `claude-code@latest` cask, and `opencode-ai` and `@openai/codex` through `bun`. Nothing new is installed. Each CLI update is independent: when one fails, the others and the rest of `sysup` still run, and the failures are listed at the end (`sysup: failed to update: ...`) so they can be rerun by hand.
 
 ### Re-run after package list changes
 

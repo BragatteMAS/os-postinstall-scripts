@@ -48,9 +48,15 @@ know who you are from the network alone, before any cable or rsync:
 1. Package manager, `git` and `gh`; `gh auth login` over HTTPS (no ssh key is
    needed for GitHub).
 2. `git clone` the memory vault into place.
-3. `chezmoi init <dotfiles-repo>` then `chezmoi apply` (exclude encrypted files
-   until their key is on the machine).
-4. `git clone` this repo → `./setup.sh <profile>` (dry-run first).
+3. `chezmoi init <dotfiles-repo>`, but **apply only after step 4**: the
+   dotfiles step of `setup.sh` writes generic `.zshrc`, `.gitconfig` and
+   `starship.toml` and would overwrite the personal ones (pitfall 12.15).
+   Before the first apply, put the age identity in place: `brew install age`,
+   fetch `key.txt` from the password manager into `~/.config/chezmoi/`
+   (`chmod 600`) and write `chezmoi.toml` with `encryption = "age"`,
+   `identity` and `recipient` (pitfall 12.16).
+4. `git clone` this repo → `./setup.sh <profile>` (dry-run first), then
+   `chezmoi apply` and confirm `chezmoi status` is empty.
 5. Only then rsync what no repo covers: working trees (with their stashes and
    local branches), app state, shell history.
 
