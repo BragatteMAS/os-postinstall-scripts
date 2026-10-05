@@ -82,14 +82,33 @@ fi
 # -----------------------------------------------------------------------------
 # System update — sysup (primary), bum/upall (secondary)
 # -----------------------------------------------------------------------------
+# AI coding CLIs: only the ones already installed are updated. Each step is
+# independent and never aborts sysup; failures are listed at the end.
+_sysup_ai_tools() {
+    local failed=""
+    if command -v brew &>/dev/null && brew list --cask claude-code@latest &>/dev/null; then
+        brew upgrade claude-code@latest || failed="$failed claude-code"
+    fi
+    if command -v bun &>/dev/null; then
+        if command -v opencode &>/dev/null; then
+            bun i -g opencode-ai@latest || failed="$failed opencode-ai"
+        fi
+        if command -v codex &>/dev/null; then
+            bun i -g @openai/codex@latest || failed="$failed @openai/codex"
+        fi
+    fi
+    [ -z "$failed" ] || echo "sysup: failed to update:$failed (rerun the command by hand)" >&2
+    return 0
+}
+
 if command -v brew &>/dev/null; then
-    sysup() { brew update && brew upgrade && brew cleanup && { brew doctor 2>&1 | grep -v 'Please note' || true; }; }
+    sysup() { brew update && brew upgrade && _sysup_ai_tools && brew cleanup && { brew doctor 2>&1 | grep -v 'Please note' || true; }; }
 elif command -v apt &>/dev/null; then
-    sysup() { sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y; }
+    sysup() { sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && _sysup_ai_tools; }
 elif command -v yum &>/dev/null; then
-    sysup() { sudo yum update -y; }
+    sysup() { sudo yum update -y && _sysup_ai_tools; }
 elif command -v pacman &>/dev/null; then
-    sysup() { sudo pacman -Syu; }
+    sysup() { sudo pacman -Syu && _sysup_ai_tools; }
 fi
 bum() { sysup "$@"; }
 upall() { sysup "$@"; }

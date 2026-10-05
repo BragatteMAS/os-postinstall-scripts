@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `data/dotfiles/shared/aliases.sh`: `sysup` also updates the AI coding CLIs
+  that are already installed (`claude-code@latest` cask, `opencode-ai` and
+  `@openai/codex` via bun). Each update is independent: a failure is listed at
+  the end and does not abort the rest of `sysup`.
+
 ## [5.7.0] - 2026-09-14
 
 Second fresh-machine cutover: the M5 was re-formatted and M1→M5 was redone on
