@@ -78,3 +78,5 @@ vendor/
 .cache/
 *.bak
 *.backup
+
+**/.claude/.cc-writes/
