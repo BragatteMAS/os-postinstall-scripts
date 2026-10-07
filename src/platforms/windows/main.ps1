@@ -129,6 +129,27 @@ function Install-Profile {
             }
         }
     }
+
+    # Terminal layer: CLI tools, Starship and the PowerShell profile, which is
+    # where `bum` (the update command) lives. It is the same script that runs
+    # standalone as examples/terminal-setup.ps1 and it leaves an already
+    # configured profile untouched. The minimal profile stays package-only.
+    if ($ProfileName -ne 'minimal') {
+        $terminalSetup = "$ProjectRoot/examples/terminal-setup.ps1"
+        if (Test-Path $terminalSetup) {
+            Write-Log -Level INFO -Message 'Configuring terminal and PowerShell profile (bum)...'
+            # Run it in its own PowerShell process. This script (and setup.ps1)
+            # has a parameter named $Profile, which replaces the automatic
+            # $PROFILE (the profile file path) for anything called from here;
+            # a fresh process gets the real path back.
+            $psExe = (Get-Process -Id $PID).Path
+            $terminalArgs = @('-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $terminalSetup)
+            if ($env:DRY_RUN -eq 'true') { $terminalArgs += '-DryRun' }
+            & $psExe @terminalArgs
+        } else {
+            Write-Log -Level WARN -Message "Terminal setup not found: $terminalSetup"
+        }
+    }
 }
 
 #######################################

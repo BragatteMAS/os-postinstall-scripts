@@ -8,7 +8,6 @@
 # to Bragatte's workflow (bioinfo, AI heavy, custom-tap experiments).
 
 # AI / Claude ecosystem
-anomalyco/tap/opencode
 mole
 # renamed upstream (was obsidian-cli); binary is still obsidian-cli on older installs
 yakitrak/yakitrak/notesmd-cli

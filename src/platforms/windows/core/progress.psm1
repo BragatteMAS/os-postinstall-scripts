@@ -9,7 +9,7 @@
 # Show-DryRunBanner, Get-PlatformStepCount, Show-CompletionSummary
 
 # Import logging module
-Import-Module "$PSScriptRoot/logging.psm1" -Force
+Import-Module "$PSScriptRoot/logging.psm1"
 
 function Show-DryRunBanner {
     <#

@@ -4,6 +4,9 @@
 # DON'T run `./setup.ps1 -Profile full` if you want neutral dev defaults.
 # Use `./setup.ps1 -Profile developer` instead.
 
+# AI coding CLI (paridade com o cask claude-code@latest do brew)
+Anthropic.ClaudeCode
+
 # Browser personal preference
 BraveSoftware.BraveBrowser
 

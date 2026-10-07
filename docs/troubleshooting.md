@@ -152,22 +152,31 @@ source ~/.bashrc
 ls -la ~/.*rc
 ```
 
-### `sysup: failed to update: ...`
+### `bum: failed: ...`
 
-**Problem:** `sysup` (or `bum` / `upall`) ends with a line listing one or more AI coding CLIs
+**Problem:** `bum` ends with a line listing one or more steps
 
-**Solution:** the system update itself finished; only the listed CLIs were skipped. Rerun the matching command to see the real error:
+**Solution:** every other step finished; only the listed ones failed. Rerun the matching command to see the real error:
 ```bash
+brew upgrade                        # brew upgrade
 brew upgrade claude-code@latest     # claude-code
 bun i -g opencode-ai@latest         # opencode-ai
 bun i -g @openai/codex@latest       # @openai/codex
+npm update -g <package>             # npm globals
+uv tool upgrade --all               # uv tools
 ```
 
-### `bum` does not run the repo's `sysup`
+### `sysup` or `upall`: command not found
 
-**Problem:** `bum` behaves differently from `sysup`
+**Problem:** the earlier names of the update command no longer exist
 
-**Solution:** an `alias bum=...` in your own `~/.zshrc` takes precedence over the function shipped here (pitfall 12.17). Check with `whence -v bum`; remove the alias, or call `sysup` directly.
+**Solution:** use `bum`. If `~/.config/shell/aliases.sh` is an older copy, reinstall the dotfiles (`./setup.sh dotfiles`).
+
+### `bum` does not run the function from this repo
+
+**Problem:** `bum` behaves differently from what is described here
+
+**Solution:** an `alias bum=...` in your own `~/.zshrc` takes precedence over the function shipped here (pitfall 12.17). Check with `whence -v bum`.
 
 ### Personal lines show up in `git diff` of this repo
 
@@ -278,7 +287,9 @@ README's old Mac-migration runbook):
 | `Failed to install: X (app exists at /Applications)` | App was put there manually before brew (DMG drag-and-drop) | `brew install --cask --force X` — overwrites and registers with brew |
 | `Failed to install: X (cask name not found)` | Cask renamed since release; tap missing | `brew search X` to find current name; update `data/packages/brew-cask-*.txt` |
 | `Failed to install: X (network error)` | Transient | Re-run `setup.sh <profile>` — idempotent, retries only the missing items |
-| `Failed: codex / claude-code / gemini-cli` (npm tools) | Node/npm not available because the fnm chain broke | Reinstall manually: `npm i -g @openai/codex@latest @anthropic-ai/claude-code @google/gemini-cli` |
+| `Failed: firecrawl-cli / fallow / ...` (npm tools) | Node/npm not available because the fnm chain broke | Reinstall manually: `npm i -g <package>` |
+| `Failed: @openai/codex / opencode-ai` (bun tools) | bun missing or not on PATH yet | Install bun, open a new terminal, then `bun add -g @openai/codex opencode-ai` |
+| `uv not found, skipping uv tool: X` | uv missing or not on PATH yet (Windows: new terminal after winget) | Re-run the profile, or `uv tool install X` |
 | `bun installation failed` | `oven-sh/bun` tap unreachable | `brew tap oven-sh/bun` manually, then re-run |
 | Wizard skipped — went straight to default | non-TTY (script piped through ssh/curl) | Pass the profile explicitly: `bash setup.sh full` |
 | Disk space warning aborted | < 10 GiB free | Free space, re-run. Idempotent — only the missing items install |

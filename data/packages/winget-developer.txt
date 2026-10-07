@@ -25,6 +25,12 @@ SlackTechnologies.Slack
 VideoLAN.VLC
 HandBrake.HandBrake
 
+# Runtimes for npm-developer.txt and for the npm:, bun: and uv: entries of
+# ai-tools-full.txt (paridade com brew)
+OpenJS.NodeJS.LTS
+Oven-sh.Bun
+astral-sh.uv
+
 # Data science
 RStudio.RStudio
 

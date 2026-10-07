@@ -204,10 +204,19 @@ cat CHANGELOG.md       # what changed
 ### Keep the system up to date
 
 ```bash
-sysup                  # aliases: bum, upall
+bum
 ```
 
-Runs the platform package manager (`brew`, `apt`, `yum` or `pacman`) and then updates the AI coding CLIs that are already installed: the `claude-code@latest` cask, and `opencode-ai` and `@openai/codex` through `bun`. Nothing new is installed. Each CLI update is independent: when one fails, the others and the rest of `sysup` still run, and the failures are listed at the end (`sysup: failed to update: ...`) so they can be rerun by hand.
+One command on the three platforms. Each step runs on its own: when one fails, the others still run and the failed steps are listed at the end (`bum: failed: ...`, exit status 1 on macOS/Linux). Nothing new is installed.
+
+| Step | macOS / Linux | Windows |
+|------|---------------|---------|
+| System packages | `brew`, or `apt` / `yum` / `pacman` outside macOS | `winget upgrade --all` |
+| AI coding CLIs already installed | `claude-code@latest` cask; `opencode-ai` and `@openai/codex` through `bun` | Claude Code through winget; `opencode-ai` and `@openai/codex` through `bun` |
+| Global npm packages | all except `npm` and `corepack` | same |
+| Python CLI tools | `uv tool upgrade --all` | same |
+
+On macOS/Linux `bum` is a shell function from `data/dotfiles/shared/aliases.sh`. On Windows it is a PowerShell function that `examples/terminal-setup.ps1` writes to `$PROFILE`; `setup.ps1` runs that script for the `developer` and `full` profiles, so `bum` is there after the install. `sysup` and `upall`, the earlier names, were removed.
 
 ### Re-run after package list changes
 

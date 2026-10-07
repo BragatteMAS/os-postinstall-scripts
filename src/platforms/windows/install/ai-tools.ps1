@@ -10,7 +10,8 @@
 #   npm:  -> npm install -g
 #   curl: -> retired in 5.7.0 (warns and skips)
 #   npx:  -> skip (runs on demand)
-#   uv:   -> skip (runs on demand)
+#   bun:  -> bun add -g
+#   uv:   -> uv tool install
 #   bare  -> skip (informational only)
 # Failed installations tracked via Add-FailedItem for summary
 
@@ -35,7 +36,8 @@ function Install-AiTool {
         npm: uses npm install -g
         curl: retired in 5.7.0 (warns and skips)
         npx: skipped (runs on demand via npx)
-        uv: skipped (runs on demand via uvx)
+        bun: uses bun add -g
+        uv: uses uv tool install
         bare words: skipped (informational only)
     .PARAMETER Entry
         The entry from ai-tools-full.txt (e.g., "npm:@anthropic-ai/claude-code").
@@ -97,8 +99,64 @@ function Install-AiTool {
             Write-Log -Level DEBUG -Message "Skipping npx tool (runs on demand): $tool"
         }
 
+        'bun' {
+            if (-not (Get-Command bun -ErrorAction SilentlyContinue)) {
+                Write-Log -Level WARN -Message "bun not found, skipping bun tool: $tool"
+                Add-FailedItem -Item $tool
+                return
+            }
+
+            # Idempotent check
+            if (Test-BunInstalled -PackageName $tool) {
+                Write-Log -Level DEBUG -Message "Already installed: $tool"
+                return
+            }
+
+            # DRY_RUN guard
+            if ($env:DRY_RUN -eq 'true') {
+                Write-Log -Level INFO -Message "[DRY_RUN] Would bun add -g: $tool"
+                return
+            }
+
+            Write-Log -Level INFO -Message "Installing bun tool: $tool"
+            bun add -g $tool 2>$null
+
+            if ($LASTEXITCODE -eq 0) {
+                Write-Log -Level OK -Message "Installed: $tool"
+            } else {
+                Write-Log -Level WARN -Message "Failed to install: $tool"
+                Add-FailedItem -Item $tool
+            }
+        }
+
         'uv' {
-            Write-Log -Level DEBUG -Message "Skipping uv tool (runs on demand): $tool"
+            if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
+                Write-Log -Level WARN -Message "uv not found, skipping uv tool: $tool"
+                Add-FailedItem -Item $tool
+                return
+            }
+
+            # Idempotent check
+            if (Test-UvToolInstalled -ToolName $tool) {
+                Write-Log -Level DEBUG -Message "Already installed: $tool"
+                return
+            }
+
+            # DRY_RUN guard
+            if ($env:DRY_RUN -eq 'true') {
+                Write-Log -Level INFO -Message "[DRY_RUN] Would uv tool install: $tool"
+                return
+            }
+
+            Write-Log -Level INFO -Message "Installing uv tool: $tool"
+            uv tool install $tool 2>$null
+
+            if ($LASTEXITCODE -eq 0) {
+                Write-Log -Level OK -Message "Installed: $tool"
+            } else {
+                Write-Log -Level WARN -Message "Failed to install: $tool"
+                Add-FailedItem -Item $tool
+            }
         }
 
         default {
@@ -139,6 +197,16 @@ if ($Packages.Count -eq 0) {
 }
 
 Write-Log -Level INFO -Message "Loaded $($Packages.Count) entries from ai-tools-full.txt"
+
+# node, bun and uv installed by winget earlier in this run are not on the PATH
+# of the current session yet; add what the registry has.
+if ($env:OS -eq 'Windows_NT') {
+    $env:Path = @(
+        $env:Path
+        [Environment]::GetEnvironmentVariable('Path', 'Machine')
+        [Environment]::GetEnvironmentVariable('Path', 'User')
+    ) -join ';'
+}
 
 # Install each tool via prefix dispatch
 foreach ($entry in $Packages) {

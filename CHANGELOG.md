@@ -8,12 +8,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `bum` on Windows: a PowerShell function written to `$PROFILE` by
+  `examples/terminal-setup.ps1`, with the same step-by-step behaviour (winget,
+  bun, npm globals, uv tools, failed steps listed at the end). `setup.ps1`
+  runs the terminal setup for the `developer` and `full` profiles, so the
+  profile and `bum` come with the install.
+- Windows parity: `OpenJS.NodeJS.LTS` joins `winget-developer.txt` and
+  `Anthropic.ClaudeCode` joins `winget-full.txt`; `npm.ps1` reloads `PATH` so
+  the node installed earlier in the run is found.
+- `bum` updates global npm packages (all but `npm` and `corepack`) and uv
+  tools (`uv tool upgrade --all`).
+- Windows: `ai-tools.ps1` installs `bun:` entries (`bun add -g`) and `uv:` entries
+  (`uv tool install`); both were skipped, so opencode and the uv tools never
+  reached a Windows machine. `Oven-sh.Bun` and `astral-sh.uv` join
+  `winget-developer.txt`, and the script reloads `PATH` from the registry so
+  tools installed by winget earlier in the same run are found.
+- `data/packages/ai-tools-full.txt`: `uv:pre-commit` and `npm:fallow` join the
+  `full` profile.
 - `data/dotfiles/shared/aliases.sh`: `sysup` also updates the AI coding CLIs
   that are already installed (`claude-code@latest` cask, `opencode-ai` and
   `@openai/codex` via bun). Each update is independent: a failure is listed at
   the end and does not abort the rest of `sysup`.
 
 ### Fixed
+- Windows: `errors.psm1` and `progress.psm1` imported `logging.psm1` with
+  `-Force`, which unloaded the copy the calling script had imported; every
+  `Write-Log` after that failed with "not recognized" (reproduced on
+  PowerShell 7.6).
 - `data/dotfiles/shared/aliases.sh`: `bum` and `upall` are defined with the
   `function` keyword. When the user's own `.zshrc` already has `alias bum=...`,
   `bum() { ... }` fails to parse in zsh ("defining function based on alias")
@@ -21,7 +42,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the alias keeps precedence (PITFALLS 12.17).
 
 ### Changed
+- `data/dotfiles/shared/aliases.sh`: `bum` is the update command, written for
+  bash and zsh. Every step runs on its own and the failed ones are listed at
+  the end with exit status 1; before, one failing package in `brew upgrade`
+  skipped everything after it. `sysup` and `upall` are removed.
+- `full` profile: `npm:prime-agent` (not on npm, 404) gives way to
+  `npm:@earendil-works/pi-coding-agent`.
+- One install channel per AI CLI: codex moves from npm to bun
+  (`bun:@openai/codex`) and the `anomalyco/tap/opencode` formula leaves
+  `brew-full.txt`; opencode stays on bun. Two channels left a stale copy
+  behind (codex 0.154.0 on npm next to 0.160.1 on bun).
 - `data/dotfiles/git/gitignore`: ignore `**/.claude/.cc-writes/`.
+
+### Removed
+- `full` profile: `ccusage`, `@observablehq/framework`, `cline` and `clawdbot`
+  (unused since the September install).
 
 ### Docs
 - `docs/migration-guide.md`: repo-first order is `setup.sh` **before**

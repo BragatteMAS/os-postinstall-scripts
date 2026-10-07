@@ -10,7 +10,9 @@
 # Tracks failed items, computes semantic exit codes (0=success, 1=partial, 2=critical)
 
 # Import logging module
-Import-Module "$PSScriptRoot/logging.psm1" -Force
+# No -Force here: re-importing from inside a module unloads the copy the
+# calling script imported, and Write-Log disappears from its scope.
+Import-Module "$PSScriptRoot/logging.psm1"
 
 # Simple array for failure tracking
 # For ~35 packages, += performance is irrelevant; KISS over ArrayList/List

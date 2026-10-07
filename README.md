@@ -66,7 +66,7 @@ Windows: `examples/terminal-setup.ps1`.
 | Nerd Font | JetBrainsMono Nerd Font (auto-installed) |
 | CLI tools | bat, eza, fd, fzf, ripgrep, delta, zoxide, starship |
 | Prompt | MAS Oceanic Theme (powerline, git, languages, status bar) + 3 presets |
-| Aliases | 50+ shortcuts for git, navigation, `sysup` (system + installed AI CLIs), `mkcd`, `gcb` |
+| Aliases | 50+ shortcuts for git, navigation, `bum` (full update: system, AI CLIs, npm globals, uv tools), `mkcd`, `gcb` |
 | Functions | Welcome message, `h` (help), `preview` (fzf), `aliases` (search) |
 | Plugins | zsh-autosuggestions, zsh-syntax-highlighting, zsh-completions |
 | Safety | `--dry-run` preview, `--interactive` wizard, automatic backups, idempotent |
@@ -167,7 +167,7 @@ Customization (extra packages, custom profiles, dotfiles): [`docs/user-guide.md`
 |----------|------------------|---------------|
 | Ubuntu / Pop!_OS / Mint | APT, Snap, Flatpak, Cargo, npm | x86_64, arm64 |
 | macOS | Homebrew, Brew Cask, Cargo, npm | Intel + Apple Silicon |
-| Windows 10/11 | WinGet, npm | x86_64 |
+| Windows 10/11 | WinGet, npm, bun, uv | x86_64 |
 
 ## Troubleshooting
 

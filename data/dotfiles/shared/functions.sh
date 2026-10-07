@@ -119,7 +119,7 @@ h() {
             echo "FIND: preview (fzf+bat)  aliases (fzf)  cmd <term>"
             echo "TOOL: bat fd rg eza delta z yazi starship  (h tools)"
             echo "AI:   claude codex opencode markitdown mcpl  (h ai)"
-            echo "UTIL: c path now df duh ports sysup welcome"
+            echo "UTIL: c path now df duh ports bum welcome"
             echo "SAFE: rm/cp/mv confirm before overwrite"
             echo ""
             [[ -n "$_e" ]] && echo "💡 h <word>    try: h nav  h ai  h fzf  h commit  h all" \
@@ -131,7 +131,7 @@ h() {
             echo "                  → browse files, Enter to select"
             echo "  aliases         browse all aliases with fzf"
             echo "  cmd <term>      search aliases + functions by keyword"
-            echo "                  → cmd git  cmd update  cmd sysup"
+            echo "                  → cmd git  cmd update  cmd bum"
             echo "  rg <term>       search inside files (ripgrep)"
             echo "                  → rg TODO  rg -i 'error' logs/"
             echo "  fd <pattern>    find files by name"
@@ -209,9 +209,9 @@ h() {
             echo "  df / du       disk free / disk usage"
             echo "  duh           disk usage this dir (1 level deep)"
             echo "  ports         show listening network ports"
-            echo "  sysup         full system update (brew/apt/yum/pacman)"
-            echo "                + installed AI CLIs (claude-code, opencode, codex)"
-            echo "                aliases: bum, upall"
+            echo "  bum           full update, step by step: brew/apt/yum/pacman,"
+            echo "                installed AI CLIs, npm globals, uv tools;"
+            echo "                failed steps are listed at the end"
             echo ""
             echo "  Safety: rm/cp/mv ask before overwrite (-i)"
             echo "  Emoji: export TERMINAL_EMOJI=false for ASCII mode"
@@ -287,7 +287,7 @@ h() {
 cmd() {
     local search="$1"
     if [[ -z "$search" ]]; then
-        echo "Usage: cmd <term>  (e.g. cmd git, cmd sysup)"
+        echo "Usage: cmd <term>  (e.g. cmd git, cmd bum)"
         return 1
     fi
     if _use_emoji; then

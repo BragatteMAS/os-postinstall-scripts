@@ -458,6 +458,59 @@ function gb  { git branch @args }
 Set-Alias -Name h -Value Get-History -Force
 Set-Alias -Name c -Value Clear-Host -Force
 
+# System update: the same command as `bum` on macOS and Linux.
+# Every step runs on its own: one failure does not stop the others, and the
+# failed steps are listed at the end. Steps are picked by which tools exist:
+#   winget  apps and CLIs (Claude Code, node, bun and uv come from winget)
+#   bun     the AI coding CLIs that are already installed
+#   npm     global packages (npm and corepack follow the node install)
+#   uv      Python CLI tools
+# winget may ask for elevation on some packages.
+function bum {
+    $failed = New-Object System.Collections.Generic.List[string]
+
+    function Invoke-BumStep {
+        param([string]$Label, [scriptblock]$Action)
+        Write-Host "==> $Label" -ForegroundColor Cyan
+        $global:LASTEXITCODE = 0
+        try { & $Action } catch { Write-Host $_ -ForegroundColor Red; $global:LASTEXITCODE = 1 }
+        if ($LASTEXITCODE -ne 0) { $failed.Add($Label) }
+    }
+
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        Invoke-BumStep 'winget upgrade' { winget upgrade --all --accept-source-agreements --accept-package-agreements }
+    }
+
+    if (Get-Command bun -ErrorAction SilentlyContinue) {
+        if (Get-Command opencode -ErrorAction SilentlyContinue) {
+            Invoke-BumStep 'opencode-ai' { bun add -g 'opencode-ai@latest' }
+        }
+        if (Get-Command codex -ErrorAction SilentlyContinue) {
+            Invoke-BumStep '@openai/codex' { bun add -g '@openai/codex@latest' }
+        }
+    }
+
+    if (Get-Command npm -ErrorAction SilentlyContinue) {
+        $npmGlobals = @(npm ls -g --depth=0 --parseable 2>$null |
+            Where-Object { $_ -match '[\\/]node_modules[\\/]' } |
+            ForEach-Object { ($_ -replace '^.*[\\/]node_modules[\\/]', '') -replace '\\', '/' } |
+            Where-Object { $_ -notin @('npm', 'corepack') })
+        if ($npmGlobals.Count -gt 0) {
+            Invoke-BumStep 'npm globals' { npm update -g @npmGlobals }
+        }
+    }
+
+    if (Get-Command uv -ErrorAction SilentlyContinue) {
+        Invoke-BumStep 'uv tools' { uv tool upgrade --all }
+    }
+
+    if ($failed.Count -gt 0) {
+        Write-Host "bum: failed: $($failed -join ', ')" -ForegroundColor Yellow
+        return
+    }
+    Write-Host 'bum: everything updated' -ForegroundColor Green
+}
+
 '@
     }
 

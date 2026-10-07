@@ -10,10 +10,8 @@
 # (MCP Launchpad = `mcpl`, installed below from its git repo; the PyPI `mcpl` is a different package).
 # Run `h ai` for runtime help. See docs/migration-guide.md for machine moves.
 
-# AI CLI client (via npm) — Claude Code comes from the brew cask, not npm
-npm:@openai/codex@latest
-
-# AI CLI alternative (via bun — opencode is bun-distributed)
+# AI CLI clients (via bun, one channel per tool) — Claude Code comes from the brew cask
+bun:@openai/codex
 bun:opencode-ai
 
 # Utility (via uv — uv first, pipx only as fallback if uv ever fails)
@@ -23,15 +21,18 @@ bun:opencode-ai
 uv:markitdown
 # MCP Launchpad (mcpl) — from git; the installer derives the tool name from the URL for the idempotent check
 uv:git+https://github.com/kenneth-liao/mcp-launchpad
+# Git hook runner, used by repos that ship a .pre-commit-config.yaml
+uv:pre-commit
 
 # Personal npm globals (full only)
 npm:@bitwarden/cli
-npm:ccusage
 npm:pptxgenjs
 npm:docx
 npm:firecrawl-cli
-npm:@observablehq/framework
+npm:fallow
 npm:gsd-pi
-npm:prime-agent
-npm:cline
-npm:clawdbot
+# Coding agents kept side by side for evaluation. Each is a standalone CLI;
+# neither is wired as the default of any harness or config.
+npm:@earendil-works/pi-coding-agent
+# prime-agent: no package with this name on npm (404 on 2026-10-07); add the
+# entry here once the right package name is confirmed.

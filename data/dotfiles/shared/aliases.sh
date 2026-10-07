@@ -80,35 +80,85 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# System update — sysup (primary), bum/upall (secondary)
+# System update — bum
 # -----------------------------------------------------------------------------
-# AI coding CLIs: only the ones already installed are updated. Each step is
-# independent and never aborts sysup; failures are listed at the end.
-_sysup_ai_tools() {
-    local failed=""
-    if command -v brew &>/dev/null && brew list --cask claude-code@latest &>/dev/null; then
-        brew upgrade claude-code@latest || failed="$failed claude-code"
-    fi
-    if command -v bun &>/dev/null; then
-        if command -v opencode &>/dev/null; then
-            bun i -g opencode-ai@latest || failed="$failed opencode-ai"
-        fi
-        if command -v codex &>/dev/null; then
-            bun i -g @openai/codex@latest || failed="$failed @openai/codex"
-        fi
-    fi
-    [ -z "$failed" ] || echo "sysup: failed to update:$failed (rerun the command by hand)" >&2
-    return 0
+# Every step runs on its own: one failure does not stop the others, and the
+# failed steps are listed at the end (exit status 1). Steps are picked by which
+# tools exist, not by machine: brew anywhere, apt/yum/pacman outside macOS,
+# then the AI coding CLIs already installed, global npm packages and uv tools.
+# Windows has the same command in the PowerShell profile (terminal-setup.ps1).
+_bum_step() {  # _bum_step <label> <command...>
+    local label="$1"; shift
+    printf '==> %s\n' "$label"
+    "$@" || _bum_failed="${_bum_failed}${_bum_failed:+, }${label}"
 }
 
-if command -v brew &>/dev/null; then
-    sysup() { brew update && brew upgrade && _sysup_ai_tools && brew cleanup && { brew doctor 2>&1 | grep -v 'Please note' || true; }; }
-elif command -v apt &>/dev/null; then
-    sysup() { sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && _sysup_ai_tools; }
-elif command -v yum &>/dev/null; then
-    sysup() { sudo yum update -y && _sysup_ai_tools; }
-elif command -v pacman &>/dev/null; then
-    sysup() { sudo pacman -Syu && _sysup_ai_tools; }
-fi
-function bum { sysup "$@"; }
-function upall { sysup "$@"; }
+# npm and corepack follow the node install, so they are left to the package manager.
+_bum_npm_globals() {
+    npm ls -g --depth=0 --parseable 2>/dev/null \
+        | sed -n 's|.*/node_modules/||p' \
+        | grep -v -x -e npm -e corepack
+}
+
+_bum_npm_update() {
+    _bum_npm_globals | xargs npm update -g
+}
+
+# Keyword form on purpose: `bum() {` fails to parse in zsh when the user
+# already has an alias named bum (PITFALLS 12.17).
+function bum {
+    local _bum_failed=""
+
+    # System packages
+    if command -v brew >/dev/null 2>&1; then
+        _bum_step "brew update" brew update
+        _bum_step "brew upgrade" brew upgrade
+    fi
+    if [ "$(uname -s)" != "Darwin" ]; then
+        if command -v apt >/dev/null 2>&1; then
+            _bum_step "apt update" sudo apt update
+            _bum_step "apt upgrade" sudo apt upgrade -y
+            _bum_step "apt autoremove" sudo apt autoremove -y
+        elif command -v yum >/dev/null 2>&1; then
+            _bum_step "yum update" sudo yum update -y
+        elif command -v pacman >/dev/null 2>&1; then
+            _bum_step "pacman -Syu" sudo pacman -Syu
+        fi
+    fi
+
+    # AI coding CLIs: only the ones already installed are updated
+    if command -v brew >/dev/null 2>&1 && brew list --cask claude-code@latest >/dev/null 2>&1; then
+        _bum_step "claude-code" brew upgrade claude-code@latest
+    fi
+    if command -v bun >/dev/null 2>&1; then
+        if command -v opencode >/dev/null 2>&1; then
+            _bum_step "opencode-ai" bun i -g opencode-ai@latest
+        fi
+        if command -v codex >/dev/null 2>&1; then
+            _bum_step "@openai/codex" bun i -g @openai/codex@latest
+        fi
+    fi
+
+    # Global npm packages
+    if command -v npm >/dev/null 2>&1 && [ -n "$(_bum_npm_globals)" ]; then
+        _bum_step "npm globals" _bum_npm_update
+    fi
+
+    # Python CLI tools installed with uv
+    if command -v uv >/dev/null 2>&1; then
+        _bum_step "uv tools" uv tool upgrade --all
+    fi
+
+    # Housekeeping (brew doctor is informational, never counted as a failure)
+    if command -v brew >/dev/null 2>&1; then
+        _bum_step "brew cleanup" brew cleanup
+        printf '==> %s\n' "brew doctor"
+        brew doctor 2>&1 | grep -v 'Please note' || true
+    fi
+
+    if [ -n "$_bum_failed" ]; then
+        echo "bum: failed: $_bum_failed" >&2
+        return 1
+    fi
+    echo "bum: everything updated"
+}

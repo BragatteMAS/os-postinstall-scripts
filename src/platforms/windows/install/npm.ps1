@@ -68,13 +68,23 @@ function Install-NpmPackage {
 
 Write-Log -Level BANNER -Message 'NPM Global Package Installer'
 
+# node installed by winget earlier in this run is not on the PATH of the
+# current session yet; add what the registry has.
+if ($env:OS -eq 'Windows_NT') {
+    $env:Path = @(
+        $env:Path
+        [Environment]::GetEnvironmentVariable('Path', 'Machine')
+        [Environment]::GetEnvironmentVariable('Path', 'User')
+    ) -join ';'
+}
+
 # Node.js availability check
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     Write-Log -Level WARN -Message 'Node.js not found - skipping npm packages'
     Write-Host ''
     Write-Host '  Node.js is required for npm global packages.'
     Write-Host '  Install options:'
-    Write-Host '    1. WinGet: winget install Schniz.fnm (winget.txt includes fnm)'
+    Write-Host '    1. WinGet: winget install OpenJS.NodeJS.LTS (in winget-developer.txt)'
     Write-Host '    2. Download from: https://nodejs.org'
     Write-Host ''
     exit 0

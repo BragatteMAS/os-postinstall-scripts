@@ -123,6 +123,8 @@ Assert-Contains "[v5.6.0] prompt.psm1 renders the default into the hint" "$Proje
 Assert-NotContains "[v5.6.0] main.ps1 no longer uses bare Read-Host for the menu choice" "$ProjectRoot/src/platforms/windows/main.ps1" "Read-Host 'Enter your choice"
 Assert-Contains "winget tri-level dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "winget-developer\.txt"
 Assert-Contains "Requires -Version 5.1 in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "Requires -Version 5\.1"
+Assert-Contains "main.ps1 runs the terminal setup (profile and bum)" "$ProjectRoot/src/platforms/windows/main.ps1" "terminal-setup\.ps1"
+Assert-Contains "bum function in terminal-setup.ps1 profile block" "$ProjectRoot/examples/terminal-setup.ps1" "function bum \{"
 
 # cargo.ps1 removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
 # Windows CSV runner not implemented yet (see main.ps1 csv:rust-* dispatch case)
@@ -137,6 +139,10 @@ Assert-Contains "DRY_RUN in npm.ps1" "$ProjectRoot/src/platforms/windows/install
 Assert-Contains "prefix dispatch in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "switch.*prefix"
 Assert-Contains "Read-PackageFile ai-tools-full in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "Read-PackageFile.*ai-tools-full\.txt"
 Assert-Contains "DRY_RUN in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "DRY_RUN"
+Assert-Contains "bun add -g in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "bun add -g"
+Assert-Contains "uv tool install in ai-tools.ps1" "$ProjectRoot/src/platforms/windows/install/ai-tools.ps1" "uv tool install"
+Assert-Contains "bun runtime in winget-developer.txt" "$ProjectRoot/data/packages/winget-developer.txt" "Oven-sh\.Bun"
+Assert-Contains "uv runtime in winget-developer.txt" "$ProjectRoot/data/packages/winget-developer.txt" "astral-sh\.uv"
 
 # winget.ps1 -PackageFile binding (regression: param() after a statement is
 # parsed as a command call — arguments from main.ps1 tri-level dispatch were
@@ -230,9 +236,9 @@ Assert-Pass "packages.psm1 has 1 CmdletBinding" {
     $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/packages.psm1" -Pattern 'CmdletBinding').Count
     if ($count -ne 1) { throw "expected 1, got $count" }
 }
-Assert-Pass "idempotent.psm1 has 3 CmdletBinding" {
+Assert-Pass "idempotent.psm1 has 5 CmdletBinding" {
     $count = (Select-String -Path "$ProjectRoot/src/platforms/windows/core/idempotent.psm1" -Pattern 'CmdletBinding').Count
-    if ($count -ne 3) { throw "expected 3, got $count" }
+    if ($count -ne 5) { throw "expected 5, got $count" }
 }
 
 # Anti-pattern: no ShouldProcess anywhere
