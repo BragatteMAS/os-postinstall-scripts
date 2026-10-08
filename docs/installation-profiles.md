@@ -121,7 +121,7 @@ All package lists live in `data/packages/`. Suffix indicates profile membership:
 | `brew-full.txt` | full only | Homebrew | macOS Bragatte personal formulae |
 | `brew-cask-developer.txt` | dev/full | Homebrew Cask | macOS GUI apps (dev defaults) |
 | `brew-cask-full.txt` | full only | Homebrew Cask | macOS GUI apps (Bragatte's pick) |
-| `data/packages.csv` (rows with category=rust-*) | dev/full | Brew/Cargo | Rust CLI tools — installer chooses brew or cargo per `prefer` column |
+| `data/packages.csv` (rows with category=rust-*) | min/dev/full | Brew/Cargo/WinGet | Rust CLI tools — installer chooses brew or cargo per `prefer` column; Windows uses the `winget` column and falls back to cargo |
 | `npm-developer.txt` | dev/full | npm | Node.js global packages |
 | `ai-tools-full.txt` | full only | Mixed | AI/MCP development tools |
 | `flatpak-developer.txt` | dev/full | Flatpak | Linux sandboxed apps |

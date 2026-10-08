@@ -116,7 +116,9 @@ function bum {
     fi
     if [ "$(uname -s)" != "Darwin" ]; then
         if command -v apt >/dev/null 2>&1; then
-            _bum_step "apt update" sudo apt update
+            # Without Error-Mode=any, apt update exits 0 when it cannot
+            # reach the repositories and the failure goes unnoticed.
+            _bum_step "apt update" sudo apt update -o APT::Update::Error-Mode=any
             _bum_step "apt upgrade" sudo apt upgrade -y
             _bum_step "apt autoremove" sudo apt autoremove -y
         elif command -v yum >/dev/null 2>&1; then

@@ -81,6 +81,9 @@ Assert-Pass "setup.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/setup.ps1")) { throw "missing" }
 }
 # cargo.ps1 removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
+Assert-Pass "csv.ps1 exists" {
+    if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/csv.ps1")) { throw "missing" }
+}
 Assert-Pass "npm.ps1 exists" {
     if (-not (Test-Path "$ProjectRoot/src/platforms/windows/install/npm.ps1")) { throw "missing" }
 }
@@ -126,8 +129,23 @@ Assert-Contains "Requires -Version 5.1 in main.ps1" "$ProjectRoot/src/platforms/
 Assert-Contains "main.ps1 runs the terminal setup (profile and bum)" "$ProjectRoot/src/platforms/windows/main.ps1" "terminal-setup\.ps1"
 Assert-Contains "bum function in terminal-setup.ps1 profile block" "$ProjectRoot/examples/terminal-setup.ps1" "function bum \{"
 
-# cargo.ps1 removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
-# Windows CSV runner not implemented yet (see main.ps1 csv:rust-* dispatch case)
+# csv.ps1 content (Windows runner for data/packages.csv)
+Assert-Contains "csv:rust-* dispatch in main.ps1" "$ProjectRoot/src/platforms/windows/main.ps1" "install/csv\.ps1"
+Assert-Contains "csv:rust-* counted as a step in progress.psm1" "$ProjectRoot/src/platforms/windows/core/progress.psm1" "csv:rust-"
+Assert-Contains "winget install in csv.ps1" "$ProjectRoot/src/platforms/windows/install/csv.ps1" "winget install --id"
+Assert-Contains "cargo fallback in csv.ps1" "$ProjectRoot/src/platforms/windows/install/csv.ps1" "cargo install"
+Assert-Contains "DRY_RUN in csv.ps1" "$ProjectRoot/src/platforms/windows/install/csv.ps1" "DRY_RUN"
+Assert-NotContains "no CmdletBinding in csv.ps1" "$ProjectRoot/src/platforms/windows/install/csv.ps1" "CmdletBinding"
+Assert-Contains "winget column in packages.csv header" "$ProjectRoot/data/packages.csv" "^category,name,brew,cargo,binary,prefer,description,winget$"
+Assert-Pass "every packages.csv row has 8 columns and a Windows source" {
+    $rows = Get-Content "$ProjectRoot/data/packages.csv" -Encoding UTF8 | Where-Object { $_ -match '^rust-' }
+    if ($rows.Count -eq 0) { throw 'no rows' }
+    foreach ($r in $rows) {
+        $c = $r.Split(',')
+        if ($c.Count -ne 8) { throw "expected 8 columns: $r" }
+        if ($c[7] -eq '' -and $c[3] -eq '') { throw "no winget and no cargo: $r" }
+    }
+}
 
 # npm.ps1 content
 Assert-Contains "npm install -g in npm.ps1" "$ProjectRoot/src/platforms/windows/install/npm.ps1" "npm install -g"

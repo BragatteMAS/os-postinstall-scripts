@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Windows installs the Rust tools of `data/packages.csv`: a new `winget`
+  column (31 of the 53 tools have a package) and
+  `src/platforms/windows/install/csv.ps1`, which `main.ps1` runs for every
+  `csv:rust-*` entry of the profile. A tool without a winget package is
+  installed with cargo when cargo exists and reported as unavailable when it
+  does not. Until now Windows skipped all `csv:rust-*` entries.
 - `bum` on Windows: a PowerShell function written to `$PROFILE` by
   `examples/terminal-setup.ps1`, with the same step-by-step behaviour (winget,
   bun, npm globals, uv tools, failed steps listed at the end). `setup.ps1`
@@ -31,6 +37,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the end and does not abort the rest of `sysup`.
 
 ### Fixed
+- `bum` on Linux: `apt update` exits 0 when the repositories are unreachable,
+  so an offline run ended with "everything updated". It now runs with
+  `APT::Update::Error-Mode=any` and the step is listed as failed (found by
+  running `bum` in a Debian 12 container with the network cut).
+- `data/packages.csv`: the description of `jaq` had a comma, so every reader
+  that splits on commas saw one column too many for that row.
 - Windows: `errors.psm1` and `progress.psm1` imported `logging.psm1` with
   `-Force`, which unloaded the copy the calling script had imported; every
   `Write-Log` after that failed with "not recognized" (reproduced on

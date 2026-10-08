@@ -36,7 +36,7 @@ function Get-PlatformStepCount {
     .DESCRIPTION
         Reads a profile file and counts entries that map to Windows installers
         (winget.txt, winget-developer.txt, winget-full.txt, npm-developer.txt,
-        ai-tools-full.txt). Non-Windows files (apt*, brew*, csv:rust-*) skipped.
+        ai-tools-full.txt, csv:rust-*). Non-Windows files (apt*, brew*) skipped.
     .PARAMETER ProfileFile
         Path to the profile file.
     .OUTPUTS
@@ -64,6 +64,7 @@ function Get-PlatformStepCount {
             '^winget-full\.txt$'      { $count++ }
             '^npm-developer\.txt$'    { $count++ }
             '^ai-tools-full\.txt$'    { $count++ }
+            '^csv:rust-[a-z]+$'       { $count++ }
         }
     }
 

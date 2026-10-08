@@ -31,6 +31,13 @@ The catalog lives in `data/packages.csv` (53 Rust tools across 5 categories).
 Each row declares both `brew` and `cargo` source with a `prefer` column —
 the installer respects your preference and falls back automatically.
 
+On Windows the same catalog is installed by `setup.ps1` from the `winget`
+column: 31 of the 53 tools have a winget package. The other 22 (the
+`cargo-*` extensions and tools such as `qsv`, `jaq`, `ouch` and `pueue`)
+exist only on crates.io; they are installed with cargo when Rust is on the
+machine (`winget install Rustlang.Rustup`) and reported as unavailable,
+not as failures, when it is not.
+
 ### Browse what's installed
 
 ```bash

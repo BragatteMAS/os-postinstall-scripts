@@ -8,9 +8,8 @@
 # PowerShell equivalent of src/platforms/linux/main.sh
 # Dual-mode: $Profile param for unattended, interactive menu otherwise
 # Reads profile file directly, dispatches winget*.txt (tri-level), npm-developer.txt,
-# ai-tools-full.txt to platform installers.
+# ai-tools-full.txt and csv:rust-* (data/packages.csv) to platform installers.
 # Non-Windows package files (apt*.txt, brew*.txt) silently skipped.
-# csv:rust-* entries skipped (Windows CSV runner not implemented yet).
 # Windows tri-level: winget.txt (base), winget-developer.txt (dev+full), winget-full.txt (full only).
 
 param(
@@ -57,7 +56,7 @@ function Show-Menu {
 # Install-Profile
 # Install packages for a given profile
 # Reads profile file directly (no Read-Profile abstraction)
-# Dispatches winget*.txt (tri-level), npm-developer.txt, ai-tools-full.txt; skips non-Windows files
+# Dispatches winget*.txt (tri-level), npm-developer.txt, ai-tools-full.txt, csv:rust-*; skips non-Windows files
 #######################################
 function Install-Profile {
     param(
@@ -118,10 +117,14 @@ function Install-Profile {
                 & "$WindowsDir/install/ai-tools.ps1"
                 if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
-            '^csv:rust-' {
-                # Rust tools are managed via data/packages.csv (Onda 5).
-                # Windows CSV runner not implemented yet — skip silently.
-                Write-Log -Level DEBUG -Message "Skipping $pkgFile (Windows CSV runner not implemented)"
+            '^csv:(rust-[a-z]+)$' {
+                # Rust tools are managed via data/packages.csv (Onda 5):
+                # winget ID when the tool has one, cargo otherwise.
+                $currentStep++
+                $csvCategory = $Matches[1]
+                Write-Log -Level INFO -Message "[Step ${currentStep}/${totalSteps}] Installing Rust tools (csv:$csvCategory)..."
+                & "$WindowsDir/install/csv.ps1" -Category $csvCategory
+                if ($LASTEXITCODE -gt $script:worstExit) { $script:worstExit = $LASTEXITCODE }
             }
             default {
                 # Non-Windows package files (apt.txt, brew.txt, cargo-*.txt, etc.): skip silently

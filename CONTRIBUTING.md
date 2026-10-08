@@ -80,7 +80,7 @@ os-postinstall-scripts/
 │   ├── platforms/              # Platform-specific orchestrators
 │   │   ├── linux/              #   Linux orchestrator and installers
 │   │   ├── macos/              #   macOS orchestrator and installers
-│   │   └── windows/            #   Windows modules (PowerShell)
+│   │   └── windows/            #   Windows modules (PowerShell); install/csv.ps1 reads data/packages.csv
 │   ├── install/                # Cross-platform tool installers
 │   │   # rust-cli.sh removed in Onda 5 — Rust tools live in data/packages.csv (csv:rust-*)
 │   │   ├── fnm.sh              #   fnm + Node.js LTS + pnpm + bun (mise preferred)
