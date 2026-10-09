@@ -33,5 +33,6 @@ npm:fallow
 # Coding agents kept side by side for evaluation. Each is a standalone CLI;
 # neither is wired as the default of any harness or config.
 npm:@earendil-works/pi-coding-agent
-# prime-agent: no package with this name on npm (404 on 2026-10-07); add the
-# entry here once the right package name is confirmed.
+# prime-agent (PrimeIntellect-ai/prime-agent) is left out on purpose: it is
+# installed only by its own script (curl | sh), with no npm package and no
+# Homebrew formula yet (checked on 2026-10-09). Revisit when a formula exists.

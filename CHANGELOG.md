@@ -77,6 +77,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   longer supported") and its workflow is no longer used.
 
 ### Docs
+- `data/packages/ai-tools-full.txt`: the note on `prime-agent` names the
+  project (`PrimeIntellect-ai/prime-agent`) and why it stays out of the
+  manifest: script-only install, no npm package or Homebrew formula yet.
 - `docs/migration-guide.md`: repo-first order is `setup.sh` **before**
   `chezmoi apply`; the age identity must be fetched from the password manager
   before the first apply.
