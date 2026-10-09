@@ -30,7 +30,6 @@ npm:pptxgenjs
 npm:docx
 npm:firecrawl-cli
 npm:fallow
-npm:gsd-pi
 # Coding agents kept side by side for evaluation. Each is a standalone CLI;
 # neither is wired as the default of any harness or config.
 npm:@earendil-works/pi-coding-agent

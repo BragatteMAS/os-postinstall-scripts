@@ -112,7 +112,9 @@ function bum {
     # System packages
     if command -v brew >/dev/null 2>&1; then
         _bum_step "brew update" brew update
-        _bum_step "brew upgrade" brew upgrade
+        # Homebrew 7 asks for confirmation before upgrading; HOMEBREW_NO_ASK
+        # keeps bum unattended (older versions ignore the variable).
+        _bum_step "brew upgrade" env HOMEBREW_NO_ASK=1 brew upgrade
     fi
     if [ "$(uname -s)" != "Darwin" ]; then
         if command -v apt >/dev/null 2>&1; then
@@ -130,7 +132,7 @@ function bum {
 
     # AI coding CLIs: only the ones already installed are updated
     if command -v brew >/dev/null 2>&1 && brew list --cask claude-code@latest >/dev/null 2>&1; then
-        _bum_step "claude-code" brew upgrade claude-code@latest
+        _bum_step "claude-code" env HOMEBREW_NO_ASK=1 brew upgrade claude-code@latest
     fi
     if command -v bun >/dev/null 2>&1; then
         if command -v opencode >/dev/null 2>&1; then

@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the end and does not abort the rest of `sysup`.
 
 ### Fixed
+- `bum` on macOS: Homebrew 7 asks "Do you want to proceed with the upgrade?"
+  before `brew upgrade`, so `bum` stopped and waited for an answer. The two
+  `brew upgrade` steps now run with `HOMEBREW_NO_ASK=1` (found by running
+  `bum` on macOS with Homebrew 7.0.9).
 - `bum` on Linux: `apt update` exits 0 when the repositories are unreachable,
   so an offline run ended with "everything updated". It now runs with
   `APT::Update::Error-Mode=any` and the step is listed as failed (found by
@@ -69,6 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - `full` profile: `ccusage`, `@observablehq/framework`, `cline` and `clawdbot`
   (unused since the September install).
+- `full` profile: `npm:gsd-pi`. The package is deprecated on npm ("Package no
+  longer supported") and its workflow is no longer used.
 
 ### Docs
 - `docs/migration-guide.md`: repo-first order is `setup.sh` **before**

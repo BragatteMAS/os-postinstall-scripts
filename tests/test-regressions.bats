@@ -666,3 +666,35 @@ _run_section_helpers_in_tmp_home() {
     grep -c '^curl:' "$REPO_ROOT/data/packages/ai-tools-full.txt" | grep -qx 0
     grep -c 'Ollama\.Ollama' "$REPO_ROOT/src/platforms/windows/install/ai-tools.ps1" | grep -qx 0
 }
+
+# ── bum runs unattended (Homebrew 7 ask mode) ────────────────────────
+
+@test "bum upgrades brew without the Homebrew 7 confirmation prompt" {
+    # Real run on macOS 2026-10-09 (Homebrew 7.0.9): `brew upgrade` stopped at
+    # "Do you want to proceed with the upgrade? [y/n]". Every tool bum could
+    # reach is stubbed, so nothing real is updated by this test.
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs"
+    printf '#!/bin/sh\necho "NO_ASK=${HOMEBREW_NO_ASK:-unset} $*" >> "%s/brew.log"\n' \
+        "$BATS_TEST_TMPDIR" > "$stubs/brew"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in bun npm uv; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    chmod +x "$stubs"/*
+
+    PATH="$stubs:/usr/bin:/bin" run bash -c '
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        bum
+    ' _ "$REPO_ROOT"
+    assert_success
+    assert_output --partial "bum: everything updated"
+
+    run grep -x "NO_ASK=1 upgrade" "$BATS_TEST_TMPDIR/brew.log"
+    assert_success
+    run grep -x "NO_ASK=1 upgrade claude-code@latest" "$BATS_TEST_TMPDIR/brew.log"
+    assert_success
+    # The variable must not leak into the other brew calls.
+    run grep -x "NO_ASK=unset update" "$BATS_TEST_TMPDIR/brew.log"
+    assert_success
+}
