@@ -171,7 +171,10 @@ _bum_run() {
         _bum_step "claude-code" env HOMEBREW_NO_ASK=1 brew upgrade claude-code@latest
     fi
     if command -v bun >/dev/null 2>&1; then
-        if command -v opencode >/dev/null 2>&1; then
+        # Only the bun copy of opencode is updated here; the brew one (macOS)
+        # goes with brew upgrade. Reinstalling it with bun would put npm's
+        # 1.x in ~/.bun/bin, ahead of brew's v2 in PATH.
+        if [ "$(command -v opencode 2>/dev/null)" = "${BUN_INSTALL:-$HOME/.bun}/bin/opencode" ]; then
             _bum_step "opencode-ai" bun i -g opencode-ai@latest
         fi
         if command -v codex >/dev/null 2>&1; then

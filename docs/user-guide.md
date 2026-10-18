@@ -212,7 +212,7 @@ One command on the three platforms. Each step runs on its own: when one fails, t
 | Step | macOS / Linux | Windows |
 |------|---------------|---------|
 | System packages | `brew`, or `apt` / `yum` / `pacman` outside macOS | `winget upgrade --all` |
-| AI coding CLIs already installed | `claude-code@latest` cask; `opencode-ai` and `@openai/codex` through `bun` | Claude Code through winget; `opencode-ai` and `@openai/codex` through `bun` |
+| AI coding CLIs already installed | `claude-code@latest` cask; opencode with `brew upgrade` on macOS and through `bun` on Linux; `@openai/codex` through `bun` | Claude Code through winget; `opencode-ai` and `@openai/codex` through `bun` |
 | Global npm packages | all except `npm` and `corepack` | same |
 | Python CLI tools | `uv tool upgrade --all` | same |
 | Python | newest stable release through the brew `python` alias | not covered |

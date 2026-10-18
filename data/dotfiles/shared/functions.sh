@@ -220,7 +220,7 @@ h() {
             [[ -n "$_e" ]] && echo "🤖 AI Tools & MCPs:" || echo "AI Tools & MCPs:"
             echo "  claude            Anthropic Claude Code CLI (npm)"
             echo "  codex             OpenAI Codex CLI (npm)"
-            echo "  opencode          OpenCode open-source alt (bun)"
+            echo "  opencode          OpenCode open-source alt (brew on macOS, bun elsewhere)"
             echo "  markitdown        Convert files to markdown for LLM context (uv)"
             echo ""
             echo "  MCPs (Model Context Protocol) — managed via mcpl:"

@@ -921,3 +921,75 @@ _run_bum() {
     ' _ "$REPO_ROOT" "$BATS_TEST_TMPDIR/work"
     assert_output "$(cd "$BATS_TEST_TMPDIR/work" && pwd -P)"
 }
+
+# ── opencode comes from brew on macOS ────────────────────────────────
+
+# Helper: stubs every tool bum could reach; bun logs its arguments. The
+# opencode binary goes in $1, the brew prefix or the bun one. ~/.bun/bin
+# comes first in PATH, as on the machine where the bun copy hid brew's v2.
+_bum_opencode_stubs() {
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs" "$BATS_TEST_TMPDIR/home/.bun/bin" "$BATS_TEST_TMPDIR/brew/bin"
+    printf '#!/bin/sh\necho "$*" >> "%s/bun.log"\nexit 0\n' "$BATS_TEST_TMPDIR" > "$stubs/bun"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in brew npm uv; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    printf '#!/bin/sh\nexit 0\n' > "$1/opencode"
+    chmod +x "$stubs"/* "$1/opencode"
+}
+
+# Helper: runs bum with HOME in the test dir and BUN_INSTALL unset.
+_run_bum_opencode() {
+    run env -u BUN_INSTALL HOME="$BATS_TEST_TMPDIR/home" \
+        PATH="$BATS_TEST_TMPDIR/bin:$BATS_TEST_TMPDIR/home/.bun/bin:$BATS_TEST_TMPDIR/brew/bin:/usr/bin:/bin" \
+        bash -c '
+            source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+            bum
+        ' _ "$REPO_ROOT"
+}
+
+@test "bum leaves a brew opencode to brew upgrade" {
+    # Real case on macOS 2026-10-17: npm opencode-ai stops at 1.19.3 and v2
+    # is on homebrew/core only; bun i -g would put 1.x ahead of brew's 2.0.32.
+    _bum_opencode_stubs "$BATS_TEST_TMPDIR/brew/bin"
+
+    _run_bum_opencode
+    assert_success
+    run grep opencode "$BATS_TEST_TMPDIR/bun.log"
+    assert_failure
+}
+
+@test "bum updates a bun opencode with bun" {
+    _bum_opencode_stubs "$BATS_TEST_TMPDIR/home/.bun/bin"
+
+    _run_bum_opencode
+    assert_success
+    run grep -x "i -g opencode-ai@latest" "$BATS_TEST_TMPDIR/bun.log"
+    assert_success
+}
+
+@test "ai-tools.sh skips bun:opencode-ai on macOS and installs it elsewhere" {
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs"
+    printf '#!/bin/sh\necho "$*" >> "%s/bun.log"\nexit 0\n' "$BATS_TEST_TMPDIR" > "$stubs/bun"
+    printf '#!/bin/sh\necho "${FAKE_UNAME:-Darwin}"\n' > "$stubs/uname"
+    chmod +x "$stubs"/*
+
+    for os in Darwin Linux; do
+        FAKE_UNAME="$os" PATH="$stubs:/usr/bin:/bin" run bash -c '
+            source "$1/src/install/ai-tools.sh"
+            install_ai_tool bun:opencode-ai
+            install_ai_tool bun:@openai/codex
+        ' _ "$REPO_ROOT"
+        assert_success
+        mv "$BATS_TEST_TMPDIR/bun.log" "$BATS_TEST_TMPDIR/bun-$os.log"
+    done
+
+    run grep -x "add -g opencode-ai" "$BATS_TEST_TMPDIR/bun-Darwin.log"
+    assert_failure
+    run grep -x "add -g @openai/codex" "$BATS_TEST_TMPDIR/bun-Darwin.log"
+    assert_success
+    run grep -x "add -g opencode-ai" "$BATS_TEST_TMPDIR/bun-Linux.log"
+    assert_success
+}

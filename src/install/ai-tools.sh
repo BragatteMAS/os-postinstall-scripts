@@ -118,6 +118,13 @@ install_ai_tool() {
             ;;
 
         bun)
+            # On macOS opencode comes from brew (brew-full.txt): v2 is on
+            # homebrew/core only, and a bun copy in ~/.bun/bin would come
+            # first in PATH.
+            if [[ "$tool" == "opencode-ai" && "$(uname -s)" == "Darwin" ]]; then
+                log_info "Skipping bun:$tool on macOS: brew installs opencode"
+                return 0
+            fi
             if [[ "${DRY_RUN:-}" == "true" ]]; then
                 log_info "[DRY_RUN] Would bun add -g: $tool"
                 return 0

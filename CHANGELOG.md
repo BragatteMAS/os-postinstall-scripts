@@ -83,9 +83,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `full` profile: `npm:prime-agent` (not on npm, 404) gives way to
   `npm:@earendil-works/pi-coding-agent`.
 - One install channel per AI CLI: codex moves from npm to bun
-  (`bun:@openai/codex`) and the `anomalyco/tap/opencode` formula leaves
-  `brew-full.txt`; opencode stays on bun. Two channels left a stale copy
-  behind (codex 0.154.0 on npm next to 0.160.1 on bun).
+  (`bun:@openai/codex`). Two channels left a stale copy behind (codex 0.154.0
+  on npm next to 0.160.1 on bun). opencode is installed with brew on macOS
+  (`opencode` from homebrew/core in `brew-full.txt`, in place of the
+  `anomalyco/tap/opencode` formula; `ai-tools.sh` skips `bun:opencode-ai`
+  there) and with bun on Linux and Windows. opencode v2 is published on
+  homebrew/core only: npm `opencode-ai` stops at 1.19.3 (2026-10-16), and
+  `~/.bun/bin` comes before the brew prefix in PATH, so a bun copy hid
+  brew's 2.0.32. `bum` updates opencode with bun only when the `opencode` in
+  PATH is the bun copy.
 - `data/dotfiles/git/gitignore`: ignore `**/.claude/.cc-writes/`.
 - `data/dotfiles/git/gitignore`: ignore `**/.claude/settings.local.json`,
   the per-user Claude Code settings of each project.

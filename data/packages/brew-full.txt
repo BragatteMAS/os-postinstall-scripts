@@ -9,6 +9,9 @@
 
 # AI / Claude ecosystem
 mole
+# opencode v2 is published on homebrew/core only (npm opencode-ai stops at 1.x);
+# ai-tools.sh skips bun:opencode-ai on macOS, so brew is its one channel here
+opencode
 # renamed upstream (was obsidian-cli); binary is still obsidian-cli on older installs
 yakitrak/yakitrak/notesmd-cli
 

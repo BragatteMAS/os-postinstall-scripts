@@ -160,7 +160,7 @@ ls -la ~/.*rc
 ```bash
 brew upgrade                        # brew upgrade
 brew upgrade claude-code@latest     # claude-code
-bun i -g opencode-ai@latest         # opencode-ai
+bun i -g opencode-ai@latest         # opencode-ai (Linux; on macOS it is brew upgrade opencode)
 bun i -g @openai/codex@latest       # @openai/codex
 npm update -g <package>             # npm globals
 uv tool upgrade --all               # uv tools
@@ -288,7 +288,7 @@ README's old Mac-migration runbook):
 | `Failed to install: X (cask name not found)` | Cask renamed since release; tap missing | `brew search X` to find current name; update `data/packages/brew-cask-*.txt` |
 | `Failed to install: X (network error)` | Transient | Re-run `setup.sh <profile>` — idempotent, retries only the missing items |
 | `Failed: firecrawl-cli / fallow / ...` (npm tools) | Node/npm not available because the fnm chain broke | Reinstall manually: `npm i -g <package>` |
-| `Failed: @openai/codex / opencode-ai` (bun tools) | bun missing or not on PATH yet | Install bun, open a new terminal, then `bun add -g @openai/codex opencode-ai` |
+| `Failed: @openai/codex / opencode-ai` (bun tools) | bun missing or not on PATH yet | Install bun, open a new terminal, then `bun add -g @openai/codex opencode-ai` (on macOS opencode comes from `brew install opencode`) |
 | `uv not found, skipping uv tool: X` | uv missing or not on PATH yet (Windows: new terminal after winget) | Re-run the profile, or `uv tool install X` |
 | `bun installation failed` | `oven-sh/bun` tap unreachable | `brew tap oven-sh/bun` manually, then re-run |
 | Wizard skipped — went straight to default | non-TTY (script piped through ssh/curl) | Pass the profile explicitly: `bash setup.sh full` |
