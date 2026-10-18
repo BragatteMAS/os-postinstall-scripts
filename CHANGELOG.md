@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `bum` keeps Python on the newest stable release: when a Python was
+  installed with brew on request and brew no longer provides `python3`, it
+  installs the `python` alias again. Homebrew moves the alias to each new
+  release, but `brew upgrade` stays on the installed formula, and only the
+  formula behind the alias provides `python3`. Seen on 2026-10-10, after the
+  alias had moved from `python@3.14` to `python@3.15`: `python3` fell back to
+  the system 3.9.
+- `BUM_PYTHON=latest bum` also installs the newest Python pre-release with
+  uv, next to the stable one; `python3` does not change. Exercised with stubs
+  only: uv 0.13.0 lists no pre-release to install. `docs/user-guide.md`
+  describes both steps and the `uv` commands to do the same by hand. The
+  Windows `bum` does not have them.
 - Windows installs the Rust tools of `data/packages.csv`: a new `winget`
   column (31 of the 53 tools have a package) and
   `src/platforms/windows/install/csv.ps1`, which `main.ps1` runs for every

@@ -86,7 +86,10 @@ fi
 # failed steps are listed at the end (exit status 1). Steps are picked by which
 # tools exist, not by machine: brew anywhere, apt/yum/pacman outside macOS,
 # then the AI coding CLIs already installed, global npm packages and uv tools.
-# Windows has the same command in the PowerShell profile (terminal-setup.ps1).
+# Python stays on the newest stable release through the brew `python` alias;
+# BUM_PYTHON=latest adds the newest pre-release through uv.
+# Windows has the same command in the PowerShell profile (terminal-setup.ps1),
+# without the two Python steps.
 _bum_step() {  # _bum_step <label> <command...>
     local label="$1"; shift
     printf '==> %s\n' "$label"
@@ -104,6 +107,29 @@ _bum_npm_update() {
     _bum_npm_globals | xargs npm update -g
 }
 
+# True when a Python was installed with brew on request and brew no longer
+# provides python3. Only the formula behind the `python` alias provides it,
+# and `brew upgrade` stays on the installed formula when the alias moves to a
+# new release: python3 falls back to the system Python.
+_bum_brew_python_stale() {
+    brew list --installed-on-request 2>/dev/null | grep -q '^python@' \
+        && [ ! -e "$(brew --prefix)/bin/python3" ]
+}
+
+# Newest Python pre-release uv can download, as the name uv installs it by
+# (cpython-3.16.0a2-macos-aarch64-none): the release after the newest stable
+# one. Prints nothing when there is none. uv only knows the versions of its
+# own release, so this runs after uv was updated.
+_bum_python_prerelease() {
+    local stable
+    stable=$(uv python list --only-downloads cpython 2>/dev/null \
+        | sed -n 's/^cpython-3\.\([0-9][0-9]*\)\.[0-9][0-9]*-.*/\1/p' \
+        | sort -n | tail -1)
+    [ -n "$stable" ] || return 0
+    uv python list --only-downloads "3.$((stable + 1))" 2>/dev/null \
+        | sed -n '/+/!s/^\(cpython-[^ ]*\).*/\1/p' | head -1
+}
+
 # Keyword form on purpose: `bum() {` fails to parse in zsh when the user
 # already has an alias named bum (PITFALLS 12.17).
 # Runs from $HOME in a subshell: brew refuses to start in a directory that
@@ -113,7 +139,7 @@ function bum {
 }
 
 _bum_run() {
-    local _bum_failed=""
+    local _bum_failed="" _bum_pre=""
 
     # System packages
     if command -v brew >/dev/null 2>&1; then
@@ -121,6 +147,10 @@ _bum_run() {
         # Homebrew 7 asks for confirmation before upgrading; HOMEBREW_NO_ASK
         # keeps bum unattended (older versions ignore the variable).
         _bum_step "brew upgrade" env HOMEBREW_NO_ASK=1 brew upgrade
+        # Python follows the newest stable release: the alias, not a version.
+        if _bum_brew_python_stale; then
+            _bum_step "brew install python" env HOMEBREW_NO_ASK=1 brew install python
+        fi
     fi
     if [ "$(uname -s)" != "Darwin" ]; then
         if command -v apt >/dev/null 2>&1; then
@@ -157,6 +187,16 @@ _bum_run() {
     # Python CLI tools installed with uv
     if command -v uv >/dev/null 2>&1; then
         _bum_step "uv tools" uv tool upgrade --all
+        # Opt-in: BUM_PYTHON=latest also installs the newest Python
+        # pre-release, next to the stable one. python3 stays on stable.
+        if [ "${BUM_PYTHON:-}" = "latest" ]; then
+            _bum_pre="$(_bum_python_prerelease)"
+            if [ -n "$_bum_pre" ]; then
+                _bum_step "python pre-release" uv python install "$_bum_pre"
+            else
+                printf '==> %s\n' "python pre-release: none available"
+            fi
+        fi
     fi
 
     # Housekeeping (brew doctor is informational, never counted as a failure)

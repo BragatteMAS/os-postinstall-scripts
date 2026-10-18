@@ -699,6 +699,134 @@ _run_section_helpers_in_tmp_home() {
     assert_success
 }
 
+# ── bum keeps Python on the newest stable release ────────────────────
+
+# Helper: stubs every tool bum could reach. brew and uv log their arguments
+# and answer the queries of the Python steps from files in $BUM_FIXTURES, so
+# nothing real is installed.
+_bum_python_stubs() {
+    export BUM_FIXTURES="$BATS_TEST_TMPDIR"
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs" "$BUM_FIXTURES/prefix/bin"
+    printf '%s\n' '#!/bin/sh' \
+        'echo "NO_ASK=${HOMEBREW_NO_ASK:-unset} $*" >> "$BUM_FIXTURES/brew.log"' \
+        'case "$*" in' \
+        '    --prefix) echo "$BUM_FIXTURES/prefix" ;;' \
+        '    "list --installed-on-request") cat "$BUM_FIXTURES/brew-requested" 2>/dev/null ;;' \
+        'esac' \
+        'exit 0' > "$stubs/brew"
+    printf '%s\n' '#!/bin/sh' \
+        'echo "$*" >> "$BUM_FIXTURES/uv.log"' \
+        'case "$*" in' \
+        '    "python list --only-downloads cpython") cat "$BUM_FIXTURES/uv-downloads" 2>/dev/null ;;' \
+        '    "python list --only-downloads 3.16") cat "$BUM_FIXTURES/uv-next" 2>/dev/null ;;' \
+        'esac' \
+        'exit 0' > "$stubs/uv"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in bun npm; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    chmod +x "$stubs"/*
+}
+
+# Helper: runs bum against the stubs. Arguments are VAR=value pairs.
+_run_bum() {
+    PATH="$BATS_TEST_TMPDIR/bin:/usr/bin:/bin" run env "$@" bash -c '
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        bum
+    ' _ "$REPO_ROOT"
+}
+
+@test "bum installs the brew python alias again when python3 is gone" {
+    # Real case on macOS 2026-10-10 (Homebrew 7.0.9): the `python` alias had
+    # moved from python@3.14 to python@3.15. `brew upgrade` kept python@3.14,
+    # which no longer provides python3, and python3 fell back to the system 3.9.
+    _bum_python_stubs
+    echo "python@3.14" > "$BUM_FIXTURES/brew-requested"
+
+    _run_bum
+    assert_success
+    assert_output --partial "bum: everything updated"
+    run grep -x "NO_ASK=1 install python" "$BUM_FIXTURES/brew.log"
+    assert_success
+}
+
+@test "bum leaves brew python alone while it provides python3" {
+    _bum_python_stubs
+    echo "python@3.15" > "$BUM_FIXTURES/brew-requested"
+    touch "$BUM_FIXTURES/prefix/bin/python3"
+
+    _run_bum
+    assert_success
+    run grep "install python" "$BUM_FIXTURES/brew.log"
+    assert_failure
+}
+
+@test "bum installs no brew python when none was asked for" {
+    _bum_python_stubs
+    printf 'git\nuv\n' > "$BUM_FIXTURES/brew-requested"
+
+    _run_bum
+    assert_success
+    run grep "install python" "$BUM_FIXTURES/brew.log"
+    assert_failure
+}
+
+@test "BUM_PYTHON=latest installs the newest Python pre-release with uv" {
+    # Stubbed: uv 0.13.0 lists no pre-release (2026-10-13), so this branch has
+    # not run against a real one. The lines follow the format of
+    # `uv python list --only-downloads`.
+    _bum_python_stubs
+    printf '%s\n' \
+        'cpython-3.16.0a2-macos-aarch64-none                 <download available>' \
+        'cpython-3.16.0a2+freethreaded-macos-aarch64-none    <download available>' \
+        > "$BUM_FIXTURES/uv-next"
+    {
+        cat "$BUM_FIXTURES/uv-next"
+        printf '%s\n' \
+            'cpython-3.15.0-macos-aarch64-none                   <download available>' \
+            'cpython-3.15.0+freethreaded-macos-aarch64-none      <download available>' \
+            'cpython-3.14.8-macos-aarch64-none                   <download available>' \
+            'cpython-3.9.25-macos-aarch64-none                   <download available>'
+    } > "$BUM_FIXTURES/uv-downloads"
+
+    _run_bum BUM_PYTHON=latest
+    assert_success
+    assert_output --partial "bum: everything updated"
+    run grep -x "python install cpython-3.16.0a2-macos-aarch64-none" "$BUM_FIXTURES/uv.log"
+    assert_success
+}
+
+@test "BUM_PYTHON=latest says so when there is no pre-release" {
+    _bum_python_stubs
+    printf '%s\n' \
+        'cpython-3.15.0-macos-aarch64-none                   <download available>' \
+        'cpython-3.14.8-macos-aarch64-none                   <download available>' \
+        > "$BUM_FIXTURES/uv-downloads"
+
+    _run_bum BUM_PYTHON=latest
+    assert_success
+    assert_output --partial "python pre-release: none available"
+    assert_output --partial "bum: everything updated"
+    run grep "python install" "$BUM_FIXTURES/uv.log"
+    assert_failure
+}
+
+@test "bum installs no Python pre-release unless BUM_PYTHON=latest" {
+    _bum_python_stubs
+    printf '%s\n' \
+        'cpython-3.16.0a2-macos-aarch64-none                 <download available>' \
+        > "$BUM_FIXTURES/uv-next"
+    printf '%s\n' \
+        'cpython-3.15.0-macos-aarch64-none                   <download available>' \
+        > "$BUM_FIXTURES/uv-downloads"
+
+    _run_bum
+    assert_success
+    run grep "python" "$BUM_FIXTURES/uv.log"
+    assert_failure
+}
+
 # ── bum runs from $HOME ──────────────────────────────────────────────
 
 @test "bum runs from HOME when the current directory is gone" {

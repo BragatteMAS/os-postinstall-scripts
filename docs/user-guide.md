@@ -207,7 +207,7 @@ cat CHANGELOG.md       # what changed
 bum
 ```
 
-One command on the three platforms. Each step runs on its own: when one fails, the others still run and the failed steps are listed at the end (`bum: failed: ...`, exit status 1 on macOS/Linux). Nothing new is installed.
+One command on the three platforms. Each step runs on its own: when one fails, the others still run and the failed steps are listed at the end (`bum: failed: ...`, exit status 1 on macOS/Linux). Nothing new is installed, except a new Python release (below).
 
 | Step | macOS / Linux | Windows |
 |------|---------------|---------|
@@ -215,6 +215,19 @@ One command on the three platforms. Each step runs on its own: when one fails, t
 | AI coding CLIs already installed | `claude-code@latest` cask; `opencode-ai` and `@openai/codex` through `bun` | Claude Code through winget; `opencode-ai` and `@openai/codex` through `bun` |
 | Global npm packages | all except `npm` and `corepack` | same |
 | Python CLI tools | `uv tool upgrade --all` | same |
+| Python | newest stable release through the brew `python` alias | not covered |
+
+**Python stays on the newest stable release.** Homebrew moves the `python` alias to each new stable release, and only the formula behind the alias provides `python3`. `brew upgrade` stays on the formula that is installed, so after a new release `python3` falls back to the system Python. When a Python was installed with brew on request and brew no longer provides `python3`, `bum` installs the alias again.
+
+To try the next release before it is stable (3.16 in the examples, while 3.15 is the stable one):
+
+```bash
+BUM_PYTHON=latest bum            # bum also installs the newest pre-release with uv
+uv python install 3.16           # the same by hand
+uv run --python 3.16 script.py   # use it for one command
+```
+
+`python3` stays on the stable release in every case; the pre-release answers by its own name (`python3.16`) or through `uv`. Set `export BUM_PYTHON=latest` in your shell profile to keep it on. uv only knows the Python releases that existed when its own version was built, so a new pre-release shows up after uv is updated. The `uv` commands work on Windows too; the Windows `bum` does not have the two Python steps.
 
 On macOS/Linux `bum` is a shell function from `data/dotfiles/shared/aliases.sh`. On Windows it is a PowerShell function that `examples/terminal-setup.ps1` writes to `$PROFILE`; `setup.ps1` runs that script for the `developer` and `full` profiles, so `bum` is there after the install. `sysup` and `upall`, the earlier names, were removed.
 
