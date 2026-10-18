@@ -106,7 +106,13 @@ _bum_npm_update() {
 
 # Keyword form on purpose: `bum() {` fails to parse in zsh when the user
 # already has an alias named bum (PITFALLS 12.17).
+# Runs from $HOME in a subshell: brew refuses to start in a directory that
+# was deleted or that macOS privacy controls block, and the caller stays put.
 function bum {
+    ( builtin cd -- "$HOME" && _bum_run )
+}
+
+_bum_run() {
     local _bum_failed=""
 
     # System packages

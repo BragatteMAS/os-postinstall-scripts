@@ -698,3 +698,98 @@ _run_section_helpers_in_tmp_home() {
     run grep -x "NO_ASK=unset update" "$BATS_TEST_TMPDIR/brew.log"
     assert_success
 }
+
+# ── bum runs from $HOME ──────────────────────────────────────────────
+
+@test "bum runs from HOME when the current directory is gone" {
+    # Real run on macOS 2026-10-15: in a terminal without access to
+    # ~/Documents, brew stopped at "getcwd: Operation not permitted"; a
+    # deleted directory fails the same way. The brew stub logs where it ran.
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs" "$BATS_TEST_TMPDIR/home" "$BATS_TEST_TMPDIR/gone" "$BATS_TEST_TMPDIR/work"
+    printf '#!/bin/sh\necho "$(pwd -P 2>/dev/null || echo gone)" >> "%s/brew.log"\n' \
+        "$BATS_TEST_TMPDIR" > "$stubs/brew"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in bun npm uv; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    chmod +x "$stubs"/*
+
+    HOME="$BATS_TEST_TMPDIR/home" PATH="$stubs:/usr/bin:/bin" run bash -c '
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        cd "$2" && rmdir "$2"
+        bum
+    ' _ "$REPO_ROOT" "$BATS_TEST_TMPDIR/gone"
+    assert_success
+    assert_output --partial "bum: everything updated"
+    run sort -u "$BATS_TEST_TMPDIR/brew.log"
+    assert_output "$(cd "$BATS_TEST_TMPDIR/home" && pwd -P)"
+
+    # The caller stays in its own directory.
+    HOME="$BATS_TEST_TMPDIR/home" PATH="$stubs:/usr/bin:/bin" run bash -c '
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        cd "$2" && bum >/dev/null 2>&1
+        pwd -P
+    ' _ "$REPO_ROOT" "$BATS_TEST_TMPDIR/work"
+    assert_output "$(cd "$BATS_TEST_TMPDIR/work" && pwd -P)"
+}
+
+@test "bum keeps the exit status of a failed step when it runs from HOME" {
+    # The subshell must not swallow a failure: the step is listed and bum
+    # exits 1.
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs" "$BATS_TEST_TMPDIR/home"
+    printf '#!/bin/sh\ncase "$1" in upgrade) exit 1 ;; esac\nexit 0\n' > "$stubs/brew"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in bun npm uv; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    chmod +x "$stubs"/*
+
+    HOME="$BATS_TEST_TMPDIR/home" PATH="$stubs:/usr/bin:/bin" run bash -c '
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        bum
+    ' _ "$REPO_ROOT"
+    assert_failure
+    assert_output --partial "bum: failed: brew upgrade"
+}
+
+@test "bum runs from HOME in zsh, called through an alias as in ~/.zshrc" {
+    # The user's ~/.zshrc has `alias bum=_bum_then_regen`, a wrapper that
+    # calls `\bum`. aliases.sh has to load with that alias defined, and the
+    # function has to run from $HOME, keep its exit status and leave the
+    # caller where it was. zsh -c parses its whole string first, so the call
+    # goes through eval for the alias to expand.
+    local zsh_bin
+    zsh_bin="$(command -v zsh)" || skip "zsh not installed"
+    local stubs="$BATS_TEST_TMPDIR/bin"
+    mkdir -p "$stubs" "$BATS_TEST_TMPDIR/home" "$BATS_TEST_TMPDIR/gone" "$BATS_TEST_TMPDIR/work"
+    printf '#!/bin/sh\necho "$(pwd -P 2>/dev/null || echo gone)" >> "%s/brew.log"\ncase "$1" in upgrade) exit 1 ;; esac\nexit 0\n' \
+        "$BATS_TEST_TMPDIR" > "$stubs/brew"
+    printf '#!/bin/sh\necho Darwin\n' > "$stubs/uname"
+    for tool in bun npm uv; do
+        printf '#!/bin/sh\nexit 0\n' > "$stubs/$tool"
+    done
+    chmod +x "$stubs"/*
+
+    HOME="$BATS_TEST_TMPDIR/home" PATH="$stubs:/usr/bin:/bin" run "$zsh_bin" -f -c '
+        _bum_then_regen() { \bum "$@"; }
+        alias bum=_bum_then_regen
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        cd "$2" && rmdir "$2"
+        eval bum
+    ' _ "$REPO_ROOT" "$BATS_TEST_TMPDIR/gone"
+    assert_failure
+    assert_output --partial "bum: failed: brew upgrade"
+    run sort -u "$BATS_TEST_TMPDIR/brew.log"
+    assert_output "$(cd "$BATS_TEST_TMPDIR/home" && pwd -P)"
+
+    HOME="$BATS_TEST_TMPDIR/home" PATH="$stubs:/usr/bin:/bin" run "$zsh_bin" -f -c '
+        _bum_then_regen() { \bum "$@"; }
+        alias bum=_bum_then_regen
+        source "$1/data/dotfiles/shared/aliases.sh" >/dev/null 2>&1
+        cd "$2" && eval bum >/dev/null 2>&1
+        pwd -P
+    ' _ "$REPO_ROOT" "$BATS_TEST_TMPDIR/work"
+    assert_output "$(cd "$BATS_TEST_TMPDIR/work" && pwd -P)"
+}

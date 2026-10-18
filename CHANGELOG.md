@@ -56,6 +56,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `bum() { ... }` fails to parse in zsh ("defining function based on alias")
   and nothing after that line is loaded; the keyword form defines cleanly and
   the alias keeps precedence (PITFALLS 12.17).
+- `bum` runs from `$HOME`, in a subshell, so the caller stays in its own
+  directory. `brew` does not start in a directory it cannot read: in a
+  terminal without access to `~/Documents`, `bum` stopped at
+  `getcwd: Operation not permitted` (macOS, 2026-10-15), and a deleted
+  directory fails the same way. Tested in bash and in zsh through an alias,
+  as `~/.zshrc` calls it.
 
 ### Changed
 - `data/dotfiles/shared/aliases.sh`: `bum` is the update command, written for
