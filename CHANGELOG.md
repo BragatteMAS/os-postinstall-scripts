@@ -87,6 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `brew-full.txt`; opencode stays on bun. Two channels left a stale copy
   behind (codex 0.154.0 on npm next to 0.160.1 on bun).
 - `data/dotfiles/git/gitignore`: ignore `**/.claude/.cc-writes/`.
+- `data/dotfiles/git/gitignore`: ignore `**/.claude/settings.local.json`,
+  the per-user Claude Code settings of each project.
 
 ### Removed
 - `full` profile: `ccusage`, `@observablehq/framework`, `cline` and `clawdbot`
